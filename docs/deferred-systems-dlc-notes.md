@@ -41,6 +41,22 @@ Five factions tied to world zones and playstyle identity:
 - **Weekly quest infrastructure** needed for factions — if daily/weekly quests are built for base game, architect the system to support faction-tagged quest types
 - **Enemy tagging** — outlaw-type enemies referenced in faction damage bonus design; tag enemy types in the combat system from the start (outlaw, beast, undead, arcane, elite, etc.) so faction damage bonuses can be applied cleanly later
 
+### Guild–Faction Integration Plan
+The Guild System (designed in full — see docs/guild-system.md) was built with faction DLC in mind. When factions launch, the following connections activate:
+
+- **Guild Primary Faction Declaration** — guilds vote (same governance pattern as tax rate changes) to declare a primary faction allegiance, mirroring the individual player soft allegiance model
+- **Guild Faction Standing** — separate from individual member standing, accumulated via member contributions in faction zones and faction-themed Guild Bounties (e.g. "The Crown Bounty — defeat 200 Outlaw-tagged enemies guild-wide")
+- **Guild tax routing option** — leadership can choose to route a portion of guild tax toward faction standing instead of the bank, as a strategic decision
+- **Alliance System activates faction wars** — the Guild Tier 6 Alliance unlock was specifically designed for this. Allied guilds sharing a faction allegiance combine forces during war weeks; opposing faction guilds become natural rivals
+- **Guild Hub visual faction theming** — once a guild declares a primary faction, Guild Hub art stages could take on faction-specific visual flavor (different banners, color accents) while keeping the same progression stages
+- **Zone Conquest extension** — the Warlord subclass Zone Conquest mechanic (guild gets priority resource access after clearing a zone boss) extends to contribute to faction territory control once factions launch
+
+**Implementation constraints for base game:**
+- Guild data model needs a nullable `primary_faction_id` field from day one — unused until DLC but prevents schema rework
+- Guild Bounty system must be built generically — a "faction-themed bounty" should just be a bounty with a faction tag, not a separate system
+- Alliance system's "shared faction" check should be a boolean that simply returns false/unused pre-DLC
+- Guild Hub art pipeline should keep faction color variant potential in mind if budget allows, though this can be retrofitted post-launch without issue
+
 ---
 
 ## 📋 Deferred System: Faction Wars
@@ -113,14 +129,31 @@ A support/debuff hybrid that operates through performance rather than healing or
 ### Core Concept
 Inverted Summoner — user is primary damage dealer, tamed real-world creatures fight alongside and buff the user or debuff enemies. Permanent familiars from the world, not conjured constructs.
 
+### Primary Stats: DEX + CHA
+- DEX: Physical skill to weaken and approach creatures during taming
+- CHA: Force of personality to bond with creatures — affects taming success rate, familiar bond strength, and creature quality tier
+
 ### Distinction from Summoner
 - Summoner: backline, conjured constructs do the fighting, user buffs constructs
 - Beastbond: frontline, user does primary damage, real creatures buff user stats or debuff enemies
+
+### CHA Role
+Beastbond is the first DLC to make CHA a meaningful gameplay stat beyond economy margins. This is intentional — CHA grows in importance across DLC releases:
+
+| Phase | CHA Role |
+|-------|---------|
+| Base game | Exchange margin bonus only — minor, passive |
+| Beastbond DLC | Taming success rate, familiar bond strength, creature quality |
+| Bard DLC | Primary combat stat — performance debuffs, party buffs |
+| Faction DLC | NPC standing gains, diplomatic quest rewards |
+
+Market quest CHA bonus (currently Silver/Gold Marks only in base game) will be activated post-Beastbond DLC release.
 
 ### Base Game Constraints
 - Beastmastery Talent already in spec sheets — Grimoire-locked to Beastbond
 - Familiars active only when Beastbond Grimoire is equipped
 - Grand Exchange creature listing already stubbed at Beastmastery 75
+- CHA formula slots must remain open in stat scaling — do not hardcode CHA as economy-only in implementation
 
 ---
 
@@ -153,5 +186,5 @@ Samurai discipline and Focus mechanic. Wardancing is the primary exclusive Talen
 
 ---
 
-*Document version 0.2 — Deferred Systems & Future DLC Notes*
+*Document version 0.3 — Deferred Systems & Future DLC Notes*
 *Updated as new systems are deferred or constraints are identified*

@@ -1,307 +1,318 @@
-# ⚔️ Project Grimoire — Semi-Idle RPG Game Design Document
-### Version 0.2 — Architecture & Systems Overview
+# ⚔️ Project Grimoire — Master Design Document
+### Version 1.0 — Architecture & Systems Overview
+
+> This is the master overview document. Detailed specs for each system live in their own dedicated docs within `/docs`. This document exists to give a single accurate picture of the whole game and link out to detail where needed.
 
 ---
 
 ## 🎯 Core Design Philosophy
 
-**Semi-Idle Loop:** Tasks run automatically when offline (idle), but active play triggers **Attunement Bonuses** — multipliers on XP, resource yield, or rare drop rates for players who engage directly. This rewards both playstyles without punishing either.
+**Semi-Idle Loop:** Tasks run automatically when offline (idle), but active play triggers an **Attunement Surge** — a multiplier on XP, resource yield, or rare drop rates for players who engage directly. This rewards both playstyles without punishing either.
 
-**Attunement Bonus:** The working name for the active-play multiplier. When a player manually triggers or interacts with a task (tapping a node, timing a strike, solving a mini-challenge), they receive an **Attunement Surge** that boosts XP gain by 1.5x–3x for that action window.
+**Attunement Surge:** When a player manually triggers or interacts with a task (tapping a node, drawing a bow, drawing a rune combination), they receive a boost to XP and quality/drop chance for that action. Full mechanic detail per Talent lives in `docs/talent-spec-sheets.md`.
 
 ---
 
-## 📊 Core Character Stats (D&D-Inspired)
+## 📊 Core Character Stats
 
-| Stat | Abbreviation | Role in Game |
-|------|-------------|--------------|
-| **Strength** | STR | Melee damage, carry weight, mining/chopping efficiency |
-| **Dexterity** | DEX | Attack speed, dodge chance, ranged accuracy, lockpicking |
-| **Vitality** | VIT | Max HP, poison/disease resistance, stamina pool |
-| **Intelligence** | INT | Spell power, enchanting potency, alchemy effectiveness |
-| **Willpower** | WIL | Mana pool, idle task persistence, resistance to debuffs |
-| **Luck** | LCK | Rare drop rate, critical hits, treasure find chance |
-| **Charisma** | CHA | (Multiplayer/Economy) Trade prices, NPC quest rewards, faction reputation |
+| Stat | Abbreviation | Role |
+|------|-------------|------|
+| **Strength** | STR | Melee damage, carry weight |
+| **Dexterity** | DEX | Universal accuracy stat across all Grimoires, evasion contribution |
+| **Vitality** | VIT | Max HP, stamina pool |
+| **Intelligence** | INT | Spell damage, Enchanting potency, Alchemy effectiveness |
+| **Willpower** | WIL | Mana pool, healing boost, debuff resistance, idle persistence |
+| **Luck** | LCK | Rare drop rate, passive combat wild-card effects |
+| **Charisma** | CHA | Exchange margins (base game); Beastbond taming, Bard combat, Faction standing (DLC roadmap) |
 
-**Stat Growth:** Stats grow both via direct training AND as secondary gains from Talent use. E.g., drawing a bow repeatedly passively grows DEX; brewing potions grows INT.
+Full combat math, derived stats, and the hit/evasion/block resolution loop live in `docs/stat-scaling-combat-formulas.md`.
+
+**Stat Growth:** Hybrid model — Talent level milestones grant small permanent stat passives, equipment provides the largest bonuses, Enchanting stacks on top. No separate stat XP grind.
 
 ---
 
 ## 🧙 Class Archetypes & Subclasses
 
-> **Monetization Note:** Base classes are free. Subclasses (except one starter subclass per path) are **premium unlocks**. Subclasses add value far beyond combat style — they open exclusive Talent branches, economy access, and multiplayer roles.
+Full subclass trees with every unlock, hybrid gate, and build identity live in:
+- `docs/subclass-trees-warden.md`
+- `docs/subclass-trees-arcanist.md`
+- `docs/subclass-trees-vanguard.md`
 
-### 🏹 The Warden Path *(Archer/Hunter)* — **PHASE 1 LAUNCH CLASS**
-Primary stats: DEX, LCK
+### 🏹 The Warden Path — **PHASE 1 LAUNCH CLASS**
+Primary stats: DEX, LCK · Combat: Bowstring mechanic
 
-**Base Warden:** Ranged combat, basic trapping, animal tracking. Access to the Bowstring active combat mechanic.
+| Subclass | Status | Identity |
+|----------|--------|----------|
+| **Sharpshot** | Base game | Precision archer — slow, deliberate, massive single hits |
+| **Lone Wanderer** | Base game | Rapid fire, poison stacking, solo specialist |
+| Beastbond | DLC | Tames real creatures, user is primary damage, creatures buff/debuff |
 
-| Subclass | Unlock | Focus | Non-Combat Value |
-|----------|--------|-------|-----------------|
-| **Sharpshot** | Free (starter) | Precision, long range, trap craft | Crafted traps run idle; Attunement crits give bonus XP |
-| **Beastbond** | Premium 💰 | Taming, pets, creature mastery | Tamed familiars assist Foraging, Trapping, Cultivation; Familiar Exchange access |
-| **Lone Wanderer** | Premium 💰 | Solo survivability, stealth, scouting | Bonus XP/drops solo; reveals hidden resource nodes; access to Gleaning deep tree |
+### 🔮 The Arcanist Path
+Primary stats: INT, WIL · Combat: Runic Constellation mechanic
 
-### 🔮 The Arcanist Path *(Magic/Sorcery)* — Phase 2
-Primary stats: INT, WIL
+| Subclass | Status | Identity |
+|----------|--------|----------|
+| **Runeweaver** | Base game | Elemental battlemage, counter-combinations, AoE control |
+| **Summoner** | Base game | Backline tactician — conjured constructs fight, user buffs/debuffs them |
+| **Lifebinder** | Base game | Essential raid healer, self-sustaining solo |
+| Warlock | DLC | Soul harvesting, Soulbinding exclusive, Black Ledger access |
 
-**Base Arcanist:** Elemental spellcasting, basic enchanting, reagent sensitivity (better Foraging quality baseline).
+### ⚔️ The Vanguard Path
+Primary stats: STR, VIT · Combat: Melee combo system
 
-| Subclass | Unlock | Focus | Non-Combat Value |
-|----------|--------|-------|-----------------|
-| **Runeweaver** | Free (starter) | Elemental magic, AoE | Unlocks Runeforging on weapons/armor; Runelore deep tree |
-| **Warlock** | Premium 💰 | Dark pacts, curses, soul harvest | Soulbinding idle loop; binds slain enemies for passive soul resources |
-| **Summoner** | Premium 💰 | Minion control, familiars | Summons assist idle tasks (imp mines, sprite forages); stacks with economy |
-| **Lifebinder** | Premium 💰 *(Multiplayer unlock)* | Healing, auras, group support | Party idle rate buffs; enables raid healer role; Aura Inscription branch |
+| Subclass | Status | Identity |
+|----------|--------|----------|
+| **Warlord** | Base game | Immovable tank, Zone Conquest, essential raid role |
+| **Shadowblade** | Base game | Burst assassin, heaviest Gleaning dependency, Black Ledger access |
+| Kensei | DLC | Samurai discipline, Focus mechanic, Wardancing |
 
-### ⚔️ The Vanguard Path *(Melee Fighter)* — Phase 2
-Primary stats: STR, VIT
+### Future Path (DLC, path TBD)
+| Subclass | Status | Identity |
+|----------|--------|----------|
+| Bard/Minstrel | DLC | WIL + CHA performance support — debuffs enemies, buffs party |
 
-**Base Vanguard:** Heavy melee, defensive stances, resource carry bonus.
+**All 7 base game Grimoires are available as the starting choice** — no forced "free tier." Additional Grimoires cost 500 GM or real money. DLC Grimoires cost more (2,500 GM or real money) — see `docs/monetization-scope.md`.
 
-| Subclass | Unlock | Focus | Non-Combat Value |
-|----------|--------|-------|-----------------|
-| **Warlord** | Free (starter) | Commanding, AoE, tanking | Zone conquest for guild resource priority; Guild Hall bonuses |
-| **Shadowblade** | Premium 💰 | Rogue, poison, ambush | Shadowcraft deep tree; steal resources from hostile zones; Gleaning bonus |
-| **Kensei** | Premium 💰 | Samurai discipline, precision | Focus mechanic — idle streaks build up burst; Wardancing ritual weapons |
+---
+
+## 📖 The Grimoire Binding System
+
+Class identity is determined by which Grimoire is equipped — no separate character creation needed. One character can experience every path by switching Grimoires.
+
+- **Swap cooldown:** ~24 hours
+- **Stats and inventory:** Shared across all Grimoires (full character sheet)
+- **Universal Talents** (carry across all Grimoires): all Gathering, all Processing, Slaying, Runelore, Enchanting, Inscription
+- **Grimoire-locked Talents**: Marksmanship (Warden), Spellcasting (Arcanist), Bulwark + Wardancing (Vanguard), Shadowcraft (Shadowblade), Soulbinding (Warlock DLC), Beastmastery (Beastbond DLC)
+
+Full economy, listing types, and Grimoire pricing live in `docs/wayferers-exchange-and-grimoire-system.md`.
 
 ---
 
 ## 🛠️ Talents System
 
-> Talents are grouped into **Gathering**, **Processing**, **Combat**, and **Arcane** trees. Talents heavily influence combat — your proficiency in Cookery affects how long you last in a dungeon; Alchemy determines your potion belt; Tanning/Runesmithing determine the gear you can equip. Combat and Talent progression are deeply interwoven.
+20+ Talents across four trees — Gathering, Processing, Combat, Arcane. Full spec sheets with every level unlock, XP curve, and cross-Talent dependency live in `docs/talent-spec-sheets.md`.
+
+### Unlock Terminology by Category
+| Category | Term |
+|----------|------|
+| Runesmithing, Smelting, Artificing, Tanning, Timber Shaping | **Schematic** |
+| Tailoring, Arcane Weaving | **Pattern** |
+| Alchemy, Cookery | **Formulae** |
+| Combat Talents | **Technique** |
+| All Gathering Talents | **Field Notes** |
+| Inscription, Enchanting, Runelore, Divination, Soulbinding | **Codex Entry** |
+
+### Talent List
+**Gathering:** Foraging, Felling, Delving, Trapping, Dredging, Gleaning, Cultivation, Tracking
+**Processing:** Tanning, Smelting, Timber Shaping, Runesmithing, Arcane Weaving, Alchemy, Cookery, Tailoring, Artificing, Inscription
+**Combat:** Marksmanship, Slaying, Beastmastery, Bulwark, Wardancing, Shadowcraft, Spellcasting
+**Arcane:** Enchanting, Divination, Runelore, Soulbinding
+
+**Level cap:** 100 base, expandable to 120 then 150 via DLC Tome of Mastery purchases. Level 100 capstones are designed around **mastery and consistency, not power spikes** — rare materials and powerful unlocks live at levels 82–92, preserving expansion headroom.
 
 ---
 
-### 🌿 Gathering Talents
+## ⚒️ Assembly & Crafting
 
-| Talent Name | Description | Primary Stat | Yields |
-|-------------|-------------|--------------|--------|
-| **Foraging** | Collect herbs, fungi, berries, roots in the wild | DEX, LCK | Reagents, food ingredients, rare botanicals |
-| **Felling** | Chop trees; different biomes yield different wood types | STR | Timber, bark, sap, nesting materials |
-| **Delving** | Mine ores, gems, fossils underground | STR, VIT | Ores, gems, fossils, rare earth minerals |
-| **Trapping** | Set snares and cages for animals and creatures | DEX, INT | Pelts, creature parts, live animals (Beastbond) |
-| **Dredging** | Fish, net, and dive in water zones | DEX, LCK | Fish, pearls, sunken items, aquatic reagents |
-| **Gleaning** | Scavenge battlefields, ruins, dungeons for loot | LCK | Salvage, broken gear, rare finds, old coins |
-| **Cultivation** | Farm crops, grow reagent plants, tend orchards | WIL | Crops, fiber, paper plants, rare herbs, alchemical plants |
-| **Tracking** | Read terrain to locate rare creatures and hidden nodes | DEX, INT | Reveals rare spawn locations; feeds Trapping and Beastmastery |
+Full material tables, cross-Talent requirements, and weapon/armor component breakdowns live in `docs/assembly-materials-crafting-system.md`.
 
----
+**Core rules:**
+- Weapons/Tools/Quivers: 2 components (one per contributing Talent) + 1 rare material at Assembly
+- Armor: 3 components + 1 rare material at Assembly
+- Rare materials added at the **Workbench during Assembly**, not during component crafting
+- All components AND rare materials consumed regardless of success or failure
+- **Fail cascade:** Masterwork fail → Refined attempt → Rough attempt → Crude floor (never a total loss)
+- Tools are **permanent** — no degradation, upgrade motivation only
+- Rare materials follow a cross-Talent pattern — gathering tools require combat-sourced materials and vice versa, driving guild interdependence
 
-### ⚙️ Processing Talents
-
-| Talent Name | Description | Primary Stat | Requires |
-|-------------|-------------|--------------|----------|
-| **Tanning** | Process hides into leather goods | DEX, INT | Trapping output |
-| **Smelting** | Refine raw ores into metal bars | STR, INT | Delving output |
-| **Timber Shaping** | Mill and shape logs into planks, beams, components | STR, DEX | Felling output |
-| **Runesmithing** | Forge weapons and armor from refined materials | STR, INT | Smelting + Timber Shaping output |
-| **Arcane Weaving** | Craft magical items, staves, wands, foci | INT, WIL | Foraging + Smelting/Tanning output |
-| **Alchemy** | Brew potions, poisons, and elixirs | INT, LCK | Foraging + Cultivation output |
-| **Cookery** | Prepare food for stat buffs, HP recovery, and dungeon provisioning | VIT, INT | Cultivation + Dredging + Trapping output |
-| **Tailoring** | Craft cloth armor, cloaks, bags, quivers | DEX | Cultivation (fiber) + Tanning |
-| **Artificing** | Build mechanical devices, traps, contraptions | INT, DEX | Smelting + Timber Shaping + Gleaning |
-| **Inscription** | Create scrolls, spellbooks, maps, contracts, diplomacy texts | INT, WIL | Cultivation (paper plants) + Foraging (inks) |
-
-> **Cookery note:** Cookery is its own full Processing Talent, not part of Cultivation. Cultivation grows the ingredients; Cookery transforms them. A high Cookery level is essential for dungeon/raid survivability — prepared meals grant timed stat buffs that potions cannot replicate.
+### Quality Tiers
+| Tier | Color | Source |
+|------|-------|--------|
+| Crude | Grey | Base game |
+| Rough | White | Base game |
+| Refined | Green | Base game |
+| Pristine | Blue | Base game |
+| Masterwork | Purple | Base game — primarily raids |
+| Legendary | Gold | DLC / Events only |
 
 ---
 
-### ⚔️ Combat Talents
+## ⚔️ Combat Systems
 
-> Combat Talents are where Talent investment visibly shapes your combat identity. Your gear (from Processing Talents), your consumables (Alchemy + Cookery), and your subclass all feed into how these play out.
+### Bowstring Mechanic (Warden)
+Over-the-shoulder perspective. Press and drag to draw the bowstring — the further back, the more power. A fading aim arc shows rough trajectory. Enemy weak points glow with a subtle pixel highlight for a brief window when draw begins — fast, accurate players land crits. Draw distance affects damage slightly; **accuracy is the primary skill**. Idle auto-combat fires at a mid-draw damage baseline — this prevents players from gaining an advantage by spam-tapping instead of committing to full draws.
 
-| Talent Name | Description | Primary Stat | Notes |
-|-------------|-------------|--------------|-------|
-| **Marksmanship** | Ranged combat proficiency — accuracy, draw speed, crit chance | DEX, LCK | Warden primary; governs Bowstring mechanic depth |
-| **Slaying** | General monster combat for XP and drops | STR or DEX or INT | Scales with class path; idle auto-combat available |
-| **Beastmastery** | Tame, train, and command creatures | CHA, DEX | Beastbond subclass unlocks advanced trees; Tracking feeds this |
-| **Wardancing** | Ritual combat forms that grant combat buffs | STR, DEX, WIL | Kensei focus mechanic; requires Runesmithing (ritual weapons) |
-| **Shadowcraft** | Stealth, ambush, poison application | DEX, LCK | Shadowblade exclusive deep tree; Alchemy feeds poison branch |
-| **Dueling** | PvP and arena combat | All combat stats | Phase 4 unlock; competitive ranking system |
-| **Vanguarding** | Heavy defense, shield wall, aggro control | STR, VIT | Warlord primary; key tank role in multiplayer dungeons/raids |
+### Runic Constellation (Arcanist)
+A fixed layout of 8 rune nodes (Ignis, Glacius, Tempest, Terra, Ventus, Vita, Umbra, Lux). Players draw lines connecting runes to cast combination spells — same gesture, but **subclass alters what each rune does**, not the layout. Combination depth unlocks with Spellcasting level, from single runes up to full constellation casts at level 88+.
 
----
-
-### 🔮 Arcane Talents
-
-| Talent Name | Description | Primary Stat | Notes |
-|-------------|-------------|--------------|-------|
-| **Spellcasting** | Direct offensive/defensive magic | INT, WIL | Arcanist primary; limited access for other classes |
-| **Enchanting** | Imbue gear with stat bonuses | INT, LCK | Requires Inscription + Runesmithing output |
-| **Soulbinding** | Bind spirits, harvest souls from defeated enemies | WIL, LCK | Warlock exclusive; feeds passive soul resource idle loop |
-| **Divination** | Predict resource node locations, reveal hidden drops | INT, LCK | Passive bonus to Foraging, Gleaning, Dredging |
-| **Runelore** | Study and decode ancient runes for passive bonuses | INT | Unlocks Runeweaver depth; Inscription feeds this |
-
----
-
-## 🔗 Talent Cross-Dependency Map
-
+### Combat Resolution Loop
 ```
-GATHERING ──────────────────────────────────────────────────
-Foraging ──────┬──► Alchemy
-               ├──► Cookery (herbs/ingredients)
-               └──► Inscription (inks)
+Hit Roll → Evasion Check → Block Check → Damage Roll → LCK Wild Card → Debuff Application
+```
+Evasion comes from armor type + DEX. Block is a separate roll determined by armor tier — Plate has low evasion/high block, Leather is balanced, Vestments lean evasion. Full formulas in `docs/stat-scaling-combat-formulas.md`.
 
-Felling ───────┬──► Timber Shaping
-               └──► Artificing (components)
+---
 
-Delving ───────┬──► Smelting
-               └──► Runelore (fossil study)
+## 🗺️ World & Zones
 
-Trapping ──────┬──► Tanning
-               ├──► Cookery (meat)
-               └──► Beastmastery (live captures)
+Full zone tables, enemy rosters, drop tables, and bosses live in `docs/enemy-zone-tables.md`.
 
-Dredging ──────┬──► Cookery (fish)
-               ├──► Alchemy (aquatic reagents)
-               └──► Arcane Weaving (pearls/scales)
+- **10 zones across 5 tiers**, 2 branching options per tier — players choose biome/enemy focus
+- **Zone unlock** — highest single combat Talent across ALL equipped Grimoires
+- **Combat targeting** — players select both zone AND specific enemy type, each enemy has a spawn weight (common enemies spawn more, elites rarer)
+- **Zone bosses** — active play only, random spawn chance (~1 in 20 encounters), 10 minute despawn timer
+- **Enemy faction tags** (`[Outlaw]`, `[Beast]`, `[Undead]`, `[Arcane]`, `[Void]`, `[Nature]`, `[Elite]`, `[Boss]`, `[Legendary]`) applied to every enemy from day one for DLC faction bonus compatibility
 
-Cultivation ───┬──► Cookery (crops, fruit, grain)
-               ├──► Alchemy (grown reagents)
-               ├──► Inscription (paper plants)
-               └──► Tailoring (fiber crops)
+### Zone List
+| Tier | Zones |
+|------|-------|
+| 1 | Grimwood Fringe, Saltmarsh Shore |
+| 2 | Ashfen Mire, Ironspine Reaches |
+| 3 | Dreadhollow, Cinderpeak |
+| 4 | Veilborn Wastes, Shattered Citadel |
+| 5 | Ashenwold, Elder Reaches |
 
-Gleaning ──────┬──► Smelting (salvage metal)
-               ├──► Artificing (parts)
-               └──► Inscription (old texts → Runelore)
+### Dungeons & Raids
+- **Dungeons:** 2 active per month, rotate on the 1st, not idle-able, active play required
+- **Raids:** 1 active per quarter, 25–45 minutes, 3-phase structure (approach → boss → aftermath), active only, only source of Masterwork tier materials in base game
 
-Tracking ──────┬──► Trapping (node location)
-               ├──► Beastmastery (creature intel)
-               └──► Gleaning (battlefield locations)
+---
 
-PROCESSING ─────────────────────────────────────────────────
-Smelting ──────┬──► Runesmithing
-               ├──► Artificing
-               └──► Enchanting (metal foci)
+## 🌍 Economy
 
-Timber Shaping ┬──► Runesmithing (hafts/handles)
-               └──► Artificing (frames)
+Full market mechanics live in `docs/wayferers-exchange-and-grimoire-system.md`.
 
-Tanning ───────┬──► Tailoring
-               └──► Arcane Weaving (leather components)
+### Currency
+**Silver Marks (SM)** and **Gold Marks (GM)** only. 1,000 SM = 1 GM (informal reference).
 
-Runesmithing ──┬──► Enchanting (base gear)
-               └──► Wardancing (ritual weapons)
+### The Wayfarer's Exchange
+Unified marketplace — minimum any Talent level 10 to access, no guild requirement. Three listing types:
+- **Auction** — starting bid, optional buyout, 1/7/15 day duration, all-or-nothing, 3% listing fee
+- **Store Listing** — fixed price, partial fills allowed, 2% listing fee
+- **Buy Order** — buyer fronts Marks in escrow, sellers can fulfill any portion, no listing fee
 
-Arcane Weaving ┬──► Spellcasting (foci required)
-               └──► Soulbinding (ritual components)
+**Shadowblade-exclusive Black Ledger** — hidden Exchange section for untraceable hostile-zone Gleaning goods, no listing fee, but Faction NPC seizure risk once factions launch.
 
-Alchemy ───────┬──► Slaying/Marksmanship (combat potions)
-               ├──► Beastmastery (taming lures)
-               └──► Shadowcraft (poisons)
+---
 
-Cookery ───────┬──► Slaying (dungeon provisions)
-               ├──► Marksmanship (focus meals → crit bonus)
-               └──► Vanguarding (endurance meals → HP regen)
+## 🏰 Guilds
 
-Inscription ───┬──► Enchanting (scrolls)
-               ├──► Divination (maps/charts)
-               └──► Runelore (texts)
+Full guild system lives in `docs/guild-system.md`.
 
-ARCANE ──────────────────────────────────────────────────────
-Runelore ──────► Runeweaving ──► Runesmithing (bonus tier)
-Divination ────► Foraging/Dredging/Gleaning (node reveal)
-Enchanting ────► All gear slots (stat bonuses)
-Soulbinding ───► Warlock idle loop (soul resource generation)
+- **Creation:** 2,000 GM, starts at 10 member roster
+- **Roster growth:** Permanent upgrades funded by guild bank, up to Tier 6 (100 members)
+- **Funding:** Automatic tax (0–5%, leadership vote + 48hr delay) on member Exchange sales + voluntary donations
+- **Spending categories:** Permanent roster upgrades, consumable economy/drop-rate buffs (never XP), Guild Bounties, infinite Guild Prestige (draws from current balance — genuine trade-off against other spending)
+- **Guild Hub** — visual backdrop that evolves with Prestige level, from a campfire gathering up to a Stronghold Capital
+- **Cross-guild access** — Guest system (no upgrade required) for raids/dungeons, Alliance system (Tier 6) for formal cooperation, sets foundation for DLC Faction Wars
 
-COMBAT ──────────────────────────────────────────────────────
-Marksmanship ──► DEX growth ──► Trapping/Dredging efficiency
-Beastmastery ──► Familiar slots ──► Idle task assistance
-Slaying ───────► LCK/STR growth ──► Better Gleaning yields
-Vanguarding ───► STR/VIT growth ──► Delving efficiency boost
+---
+
+## 📋 Daily & Weekly Quests
+
+Full quest system lives in `docs/daily-weekly-quest-system.md`.
+
+- **Board-based, player chosen** — not auto-assigned
+- **5 of 10 daily quests, 2 of 6 weekly quests** acceptable at once
+- **Refreshes midnight UTC** for all players simultaneously
+- **Difficulty scales with highest Talent level** (Novice through Master), harder quests pay better
+- **Categories:** Gathering, Processing, Combat, Crafting, Market, Challenge
+- **Rewards:** Hybrid of Marks, rare materials, and temporary Talent XP boosts (quest rewards only — never sold for real money)
+
+---
+
+## 🎬 Onboarding
+
+Full flow lives in `docs/onboarding-flow.md`.
+
+Tutorial-first structure: brief world intro → first Talent (Foraging) → first combat (Bowstring) → Grimoire selection → free play. Fully skippable except the Grimoire choice itself. Total guided time under 5 minutes. Natural contextual tooltips take over after onboarding rather than a feature dump.
+
+---
+
+## 📱 While You Were Away
+
+Full screen spec lives in `docs/while-you-were-away.md`.
+
+Auto-collected gains, highlights-first presentation (level ups, rare drops, missed boss spawns), common resources summarized by Talent rather than itemized. 24-hour idle accumulation cap.
+
+---
+
+## 💰 Monetization
+
+Full scope lives in `docs/monetization-scope.md`.
+
+**Core promise:** Nothing is exclusively pay-walled. Real money buys convenience and cosmetics only — never power. No XP boosts, no stat-affecting exclusives, no guild power, no loot boxes, ever.
+
+---
+
+## 📋 Deferred Systems & DLC Roadmap
+
+Full notes and base-game architectural constraints live in `docs/deferred-systems-dlc-notes.md`.
+
+| System | Target |
+|--------|--------|
+| Faction System + Faction Wars | Level 120 cap DLC |
+| Beastbond, Warlock, Kensei subclasses | DLC |
+| Bard/Minstrel subclass | DLC |
+| Dueling/PvP Arena | Phase 4 |
+| Hard mode dungeons / New Game Plus | DLC |
+| Mythic quality tier | DLC events only |
+
+---
+
+## 🎨 Art Direction — 2D Pixel Art Style
+
+Project Grimoire uses a **2D pixel art style** inspired by Kingdom Two Crowns — clean limited palettes, strong readable silhouettes, hard pixel edges, dark fantasy medieval tone with candlelight amber accents. This applies to characters, enemies, items, and UI alike — the interface itself uses pixel-drawn icons and panel borders rather than illustrated or emoji-based elements, keeping the whole experience tonally consistent.
+
+### Combat & Raid Perspective
+- **Solo combat (Warden):** Over-the-shoulder view, archer visible from behind in foreground, enemy ahead
+- **Dungeons & Raids:** Party locked to bottom of screen, world scrolls toward them; on enemy encounter each player's screen independently shifts to their own over-the-shoulder view
+- **Boss encounters:** World stops scrolling, boss enters from top of screen
+
+### Sprite & Art Tool Stack
+| Tool | Role |
+|------|------|
+| **Sprite AI** | Primary sprite generation — exports at game-ready pixel dimensions, built-in animator and pixel editor |
+| **Leonardo.ai** | Concept exploration, reference generation |
+| **Aseprite** | Manual pixel-level refinement |
+
+### Unity 2D Considerations
+- Unity 2D Sprite Renderer + 2D Animation package for character rigs
+- Spine worth evaluating for fluid animation if budget allows
+- UI built with Unity UI Toolkit for cross-platform scaling
+- Particle effects for Attunement surges and combat crits via Unity Particle System (2D mode)
+
+---
+
+## 🛠️ Confirmed Tech Stack
+
+| Layer | Tool |
+|-------|------|
+| **Engine** | Unity (2022.3 LTS or Unity 6) |
+| **Language** | C# |
+| **Version Control** | GitHub |
+| **AI Dev** | Claude Code + Unity MCP |
+| **Backend** | Supabase — player data, idle calculations (server-side via Edge Functions), economy, auth |
+| **Notifications** | Firebase Cloud Messaging |
+| **Monetization** | Unity IAP (App Store, Google Play, Steam) |
+| **Analytics** | GameAnalytics |
+| **Task Management** | Supabase-backed TaskBoard with Vercel frontend |
+
+### Development Workflow
+```
+Claude.ai chat ──► Design decisions & doc updates
+       │
+       ▼
+   GitHub ◄─────────────────────────────────┐
+       │                                     │
+       ▼                                     │
+Claude Code (desktop) + Unity MCP ──► Unity Editor ──► Pushes code
+       │
+       ▼
+  Supabase backend
 ```
 
----
-
-## 🏹 Active Combat: The Bowstring Mechanic (Warden — Phase 1)
-
-The Warden's combat is the flagship of the active play system and sets the tone for how other class mechanics will be designed later.
-
-### How It Works
-- **Enemies spawn** in your current zone as you traverse or idle
-- When combat triggers, a **Bowstring UI** appears — a circular arc around your character
-- **Draw:** Press and hold your thumb anywhere on screen; the string pulls back with visual/haptic tension feedback
-- **Aim:** The direction your thumb draws back determines shot angle — pull left to aim right, pull up-left to aim up-right (mirrored slingshot logic, intuitive after 30 seconds)
-- **Release:** Lift thumb to fire; a trajectory arc shows briefly before release for skill expression
-- **Power:** Hold duration determines draw power — affects damage and range
-- **Idle fallback:** When not actively playing, the Warden auto-fires at base accuracy with no Attunement bonus
-
-### Attunement Bonuses in Combat
-| Action | Bonus |
-|--------|-------|
-| **Critical Hit** (precise aim on highlighted zone) | +150% XP for that kill, rare drop roll |
-| **Headshot** (small target zone, active only) | Instant kill on normal enemies; stagger on elites |
-| **Rapid Fire** (3 shots in quick succession) | Marksmanship XP burst |
-| **Trick Shot** (bank off terrain, Sharpshot subclass) | Bonus loot from enemy |
-
-### Combat Talent Feed-Through
-- **Alchemy** → Poison-tipped arrows, fire arrows, frost bolts
-- **Tailoring** → Quiver upgrades (more arrow slots, draw speed bonus)
-- **Runesmithing** → Runed bows (stat bonuses, elemental damage)
-- **Cookery** → Pre-combat meals (focus meal = +crit chance for X minutes)
-- **Beastmastery** → Familiar assists during combat (Beastbond subclass)
-- **Tracking** → Enemy weak points revealed before combat begins
-
----
-
-## 🔄 The Semi-Idle Loop Explained
-
-### Idle Mode (Offline / Background)
-- Tasks assigned to a **Grimoire Queue** run continuously
-- Base XP and resource rates apply
-- Returns calculated on session return ("While You Were Away" screen)
-
-### Active Mode (Attunement System)
-| Talent | Active Interaction | Attunement Bonus |
-|--------|-------------------|-----------------|
-| Felling | Tap at the right rhythm (bark crack visual cue) | +50% timber, rare wood chance |
-| Delving | Tap glowing ore veins before they fade | +75% XP, gem drop chance up |
-| Marksmanship / Slaying | Bowstring mechanic, ability rotations | +100% XP, rare drop rate, crit bonuses |
-| Alchemy | Stir timing mini-game | +1 extra potion per batch |
-| Foraging | Choose which plant to pick when multiples appear | Better reagent quality tier |
-| Dredging | Cast timing / line tension management | Bigger/rarer fish |
-| Cookery | Recipe timing (heat management mini-game) | Extra portion, higher quality buff meal |
-
-### Stamina & Willpower
-- **Stamina Pool** (VIT): limits how long active bursts can sustain Attunement Surges
-- **Willpower** (WIL): governs idle task persistence — higher WIL = queue runs longer before efficiency decay
-
----
-
-## 🌍 Economy & World Systems (Roadmap)
-
-| System | Description | Talent Dependencies |
-|--------|-------------|-------------------|
-| **Grand Exchange** | Unified player-driven market for resources, crafted goods, AND familiars/creatures | CHA affects margins; Beastmastery unlocks creature listings |
-| **Guild Halls** | Shared resource pools, group tasks, raid staging | Warlord unlocks zone conquest |
-| **Faction Reputation** | NPCs offer quests, unlock zones, special recipes, exclusive subclass gear | CHA, Inscription (diplomacy scrolls); needs full design pass |
-| **Skirmish Board** | Daily PvE challenges — timed runs, bounties, zone events | All combat Talents; solo and group variants |
-
-> **Black Market removed.** Shadowblade's economy value now lives in the Gleaning deep tree (battlefield scavenging) and hostile zone resource theft, which feeds into the Grand Exchange as rare/untraceable goods — no separate system needed.
-
-> **Faction Reputation** is noted as a high-value system but needs a dedicated design pass to determine: how factions intersect with subclasses, whether faction standing affects multiplayer access, and how Inscription (diplomacy) feeds into standing gains.
-
----
-
-## 🤝 Multiplayer Systems (Phase 4+)
-
-Combat needs to feel like a **team effort**, not solo combat in proximity. Design pillars:
-
-- **Dungeons:** 3–5 player instanced runs. Roles matter — tank (Vanguard/Warlord), healer (Lifebinder), DPS (all paths). Cookery provisions are shared from a party larder. Alchemy potions are personal.
-- **Raids:** 10+ player events. Scheduled or world-triggered. Guild Halls serve as staging. Warlord zone conquest unlocks raid-tier resource zones.
-- **Daily Skirmishes:** Solo or duo timed combat challenges on the Skirmish Board. Rewards rare materials and faction standing. Accessible at low-mid progression.
-- **Team Synergies:** Class combos should feel meaningful — Beastbond familiars can scout ahead; Shadowblade can disable enemy patrols; Lifebinder auras buff idle task rates for the full party between pulls.
-
----
-
-## 📱 Mobile-First UX Considerations
-
-- **Grimoire Queue UI:** Drag-and-drop task prioritization
-- **Attunement Alerts:** Push notifications on rare events (rare node, boss spawn, discovery)
-- **One-Thumb Navigation:** Core loop works without precision; Attunement bonuses optional but rewarding
-- **Session Summary:** "While You Were Away" scroll on app open
-- **Steam Crossplay:** Shared progress; Steam gets enhanced UI + mouse/keyboard Attunement mechanics (click timing, precision aiming)
+Full handoff procedure and session log live in `docs/session-handoff-log.md` — every design session ends with updated docs pushed to GitHub and a structured handoff prompt for Claude Code, which also updates the TaskBoard.
 
 ---
 
@@ -309,11 +320,12 @@ Combat needs to feel like a **team effort**, not solo combat in proximity. Desig
 
 | Phase | Scope |
 |-------|-------|
-| **Phase 1** | Warden class + Sharpshot subclass, Bowstring combat mechanic, core idle loop, Foraging + Trapping + Dredging + Cookery + Alchemy Talents |
-| **Phase 2** | All Gathering/Processing Talents, Arcanist + Vanguard paths, Grand Exchange, premium subclass unlocks |
-| **Phase 3** | Arcane Talents, Faction Reputation system, Beastbond + Warlock + Kensei subclasses |
-| **Phase 4** | Multiplayer, Dungeons, Raids, Daily Skirmishes, Guild Halls, Lifebinder subclass |
-| **Phase 5** | Steam release, crossplay, enhanced PC UI, keyboard/mouse Attunement mechanics |
+| **Phase 1** | Warden (Sharpshot), Bowstring mechanic, core idle loop, Foraging/Trapping/Dredging/Cookery/Alchemy/Marksmanship/Slaying, Grimwood Fringe + Saltmarsh Shore zones, basic Wayfarer's Exchange |
+| **Phase 2** | Remaining base game Talents, Arcanist + Vanguard paths, full Wayfarer's Exchange, all base game subclasses |
+| **Phase 3** | Remaining Arcane Talents, full zone rollout, dungeon/raid systems |
+| **Phase 4** | Multiplayer — guilds, dungeons, raids, daily skirmishes, full subclass roster including Lifebinder group features |
+| **Phase 5** | Steam release, crossplay, enhanced PC UI, keyboard/mouse Attunement input |
+| **DLC** | Faction system + wars (level 120 cap), Beastbond, Warlock, Kensei, Bard/Minstrel, hard mode dungeons |
 
 ---
 
@@ -327,103 +339,12 @@ Combat needs to feel like a **team effort**, not solo combat in proximity. Desig
 - **Felling** (not "Woodcutting")
 - **Runesmithing** (not "Smithing")
 - **Soulbinding** (not "Prayer/Devotion")
-- **Grand Exchange** (not "Auction House") *(Note: confirm no trademark conflict with RuneScape's Grand Exchange — may need alternate name)*
+- **Wayfarer's Exchange** (not "Grand Exchange" — avoids RuneScape conflict)
 - **Marksmanship** (not "Ranged")
-- **Vanguarding** (not "Defence/Defense")
+- **Bulwark** (not "Defence/Defense" or "Vanguarding" — avoids redundancy with class name)
 - **Bowstring** (not "Slingshot" — avoids Pokémon GO comparison in marketing)
 
 ---
 
----
-
-## 🛠️ Confirmed Tech Stack
-
-| Layer | Tool | Role |
-|-------|------|------|
-| **Engine** | Unity (2022.3 LTS or Unity 6) | Game client, iOS/Android/Steam builds |
-| **Language** | C# | All game logic and systems |
-| **Version Control** | GitHub | Single source of truth for code and design docs |
-| **AI Dev** | Claude Code + Unity MCP | C# implementation, scene manipulation, debugging |
-| **Backend** | Supabase | Player data, idle calculations, economy, auth |
-| **Notifications** | Firebase Cloud Messaging | Push alerts for Attunement events, rare drops |
-| **Monetization** | Unity IAP | Handles App Store, Google Play, and Steam purchases |
-| **Analytics** | GameAnalytics | Player behavior, retention, economy balance |
-
-### Development Workflow
-```
-Mobile (this chat) ──► Design decisions & doc updates
-         │
-         ▼
-      GitHub ◄──────────────────────────────────────┐
-         │                                           │
-         ▼                                           │
-Claude Code (desktop)                                │
-  + Unity MCP connector  ──► Unity Editor ──► Pushes code
-         │
-         ▼
-    Supabase backend
-```
-
-### Notes
-- Design doc lives in GitHub repo under `/docs/design-doc.md`
-- Claude Code reads the design doc directly to inform implementation
-- Unity MCP allows Claude Code to manipulate scenes, create assets, and run tests without manual copy-paste
-- Supabase handles all idle calculations server-side to prevent cheating
-
----
-
-## 🎨 Art Direction — 2D Style
-
-Project Grimoire launches as a **2D art style** game. All character, enemy, environment, and UI design decisions should be made with this constraint in mind. A 3D upgrade path can be evaluated post-launch.
-
-### Visual Style Goals
-- Rich, stylized 2D sprites — not pixel art, not hyper-realistic — think illustrated RPG style (similar to Darkest Dungeon, Hollow Knight, or Raid: Shadow Legends card art)
-- Equipment and subclass visually reflected on character sprites (armor sets, weapons change sprite appearance)
-- Biome-distinct environments for different resource zones (forest, cave, coastal, ruins, etc.)
-- Animated sprite sheets for combat, Attunement actions, and idle states
-
-### Combat & Raid Perspective
-
-**Solo Combat (Warden Phase 1)**
-- Top-down traversal view during exploration
-- When combat triggers, perspective shifts to **over-the-shoulder / third-person behind your character only**
-- Enemies are ahead, world recedes behind them
-- **Bowstring mechanic** operates front-to-back: draw back toward the player, aim left-to-right across the screen — natural and intuitive in this perspective
-- Critical hit zones visible on enemies as highlighted weak points
-
-**Dungeons & Raids (Multiplayer)**
-- Party is **locked to the bottom of the screen** in a horizontal formation
-- The **world scrolls upward** toward the party — camera is fixed, environment moves, giving the feel of advancing without disorienting camera rotation
-- Tank holds center, ranged holds flanks, healer positions based on party needs
-- When an enemy encounter triggers, each player's screen **independently shifts to their own over-the-shoulder perspective** — you fight your targets, your party fights theirs simultaneously
-- After the encounter clears, world scrolling resumes automatically
-- **Boss encounters:** world stops scrolling, boss enters from top of screen, full party engages from their individual over-the-shoulder perspectives
-
-**Idle/Talent Screens**
-- Stylized UI panels with looping animated talent scenes in the background (e.g., axe-swing animation behind Felling queue, fish jumping behind Dredging)
-
-### Sprite & Item Art Tool Stack
-
-| Tool | Role | Why |
-|------|------|-----|
-| **Leonardo.ai** | Character concepts, enemies, environments | Built for game dev, sprite-focused models, strong quality |
-| **Scenario.gg** | Item icons, talent assets, consistency layer | Trains on YOUR approved art — generates new assets that match your locked style |
-| **Adobe Firefly** | UI elements, icons, polish | Clean commercial-safe output, good for interface art |
-| **Stable Diffusion** (optional) | Bulk generation, experimentation | Free, full control, higher skill floor |
-
-**Workflow:**
-1. Use **Leonardo.ai** to generate and approve initial character/enemy/environment concepts
-2. Lock art style from approved set
-3. Train **Scenario.gg** on approved art → use for all ongoing item, talent, and asset generation
-4. Export transparent PNGs → import into Unity as sprite sheets
-
-### Unity 2D Considerations
-- Use **Unity's 2D Sprite Renderer** and **2D Animation package** for character rigs
-- **Spine** (third-party) is worth evaluating for fluid 2D character animation if budget allows
-- UI built with **Unity UI Toolkit** for scalability across mobile and Steam screen sizes
-- Particle effects for Attunement surges, spell impacts, and combat crits handled via **Unity Particle System** (2D mode)
-
----
-
-*Document version 0.5 — Project Grimoire*
-*Next: Individual Talent spec sheets · Stat scaling formulas · Bowstring mechanic detail · Faction Reputation design pass · Grand Exchange name confirmation*
+*Document version 1.0 — Project Grimoire Master Design Document*
+*This document is a summary and index. For implementation detail always defer to the dedicated doc referenced in each section.*

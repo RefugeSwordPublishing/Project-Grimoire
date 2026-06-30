@@ -23,7 +23,7 @@
 | **Intelligence** | INT | Spell damage, Enchanting potency | Alchemy effectiveness |
 | **Willpower** | WIL | Mana pool, healing boost, debuff resistance | Idle queue persistence |
 | **Luck** | LCK | Rare drop rate, passive combat wild card | Gleaning bonus |
-| **Charisma** | CHA | Exchange margins, NPC rewards | DLC faction/Bard mechanics |
+| **Charisma** | CHA | Exchange margins, NPC rewards | Beastbond taming (DLC 1), Bard combat (DLC 2), Faction standing (DLC 3) |
 
 ---
 
@@ -432,14 +432,31 @@ Target: A fully geared player at tier-appropriate equipment should survive ~30 h
 
 ## 📋 DLC Stat Notes
 
-**Bard/Minstrel (DLC — path TBD)**
+### CHA Progression Roadmap
+CHA is intentionally limited in base game to avoid dead stat syndrome. Each DLC meaningfully expands its role:
+
+| Phase | CHA Role |
+|-------|---------|
+| Base game | Exchange margin bonus only — minor passive effect |
+| Beastbond DLC | Taming success rate, familiar bond strength, creature quality tier |
+| Bard DLC | Primary combat stat — performance debuffs, party aura buffs |
+| Faction DLC | NPC standing gains, diplomatic quest rewards, faction war influence |
+
+**Implementation constraint:** Do NOT hardcode CHA as economy-only. Leave combat and taming formula slots returning 0 until relevant DLC ships.
+
+### Bard / Minstrel (DLC — path TBD)
 - Primary stats: WIL and CHA
-- CHA combat role: Performance debuffs — high CHA reduces enemy accuracy and damage
-- WIL combat role: Sustain auras, extended buff duration
+- CHA combat role: Performance debuffs — reduces enemy accuracy and damage
+- WIL combat role: Extended buff duration, sustain auras for party
 - Specific formula to be designed at DLC spec phase
-- Base game constraint: CHA and WIL formula slots reserved — don't hardcode them as purely non-combat
+
+### Beastbond (DLC — Warden path)
+- Primary stats: DEX and CHA
+- CHA taming role: Taming success rate, familiar bond strength, creature quality tier
+- DEX taming role: Weakening and approaching creatures during taming encounter
+- Specific taming formula to be designed at DLC spec phase
 
 ---
 
-*Document version 0.1 — Stat Scaling & Combat Formulas*
-*Next: Daily/weekly quest structure · Onboarding flow · While You Were Away screen · Main design doc cleanup*
+*Document version 0.2 — Stat Scaling & Combat Formulas*
+*Next: Onboarding flow · While You Were Away screen · Main design doc cleanup*
