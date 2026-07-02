@@ -186,5 +186,21 @@ Samurai discipline and Focus mechanic. Wardancing is the primary exclusive Talen
 
 ---
 
+## 📋 Deferred System: Player Trade Agreement System
+
+**Planned Release:** Phase 4 (Multiplayer expansion)
+**Design Status:** Concept only
+
+### Core Concept
+A player-contract system where skilled Talent users can post service agreements — "I will enchant X gear for Y marks" or "I will assemble Epic tier items for Z marks." Players send items directly to the service provider who completes the work and sends back.
+
+Natural extension of the Send to Player inventory mechanic already designed. Requires trust system or escrow to prevent scams — design at Phase 4.
+
+### Base Game Constraints
+- Send to Player mechanic must support multi-item transfers (not just single items) to enable this later
+- Inscription players enchanting other players' gear should be possible mechanically from the start even without the formal contract UI
+
+---
+
 *Document version 0.3 — Deferred Systems & Future DLC Notes*
 *Updated as new systems are deferred or constraints are identified*

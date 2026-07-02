@@ -1,13 +1,16 @@
 # ⚔️ Project Grimoire — Arcanist Subclass Trees
-### Version 0.1
+### Version 0.2
 
 ---
 
 ## 🔮 Arcanist Path Overview
 
-The Arcanist is the Phase 2 launch class. Primary stats INT and WIL. Combat is built around the **Runic Constellation mechanic** — drawing lines between rune nodes on screen to cast spells. Combination depth, cast speed, and potency are the core combat levers.
+**Arcanist is a category label, not a playable character.** Players choose a specific Arcanist Grimoire (Runeweaver, Summoner, Lifebinder, or Warlock DLC) — that subclass IS their identity from day one. There is no generic "base Arcanist" character.
 
-**Universal Arcanist passives** (apply to all Arcanist Grimoires regardless of subclass):
+**Arcanist path passive bonus** (applies to ALL Arcanist Grimoires):
+- +2 INT baseline — reflects the Arcanist's natural arcane affinity regardless of subclass
+
+**Universal Arcanist mechanics** (apply to all Arcanist Grimoires):
 - Runic Constellation always active in combat
 - Single rune casts available from level 1 Spellcasting
 - 2-rune combinations unlock at Spellcasting 16
@@ -107,7 +110,7 @@ The Summoner's core mechanic — conjured from arcane energy, not tamed from the
 | **Void Shade** | 59 | Foraging 57 | Summon Unlock | Conjure a Void Shade — debuffer summon. Voidmoss (Foraging 57) knowledge of void essence required. |
 | **Arcane Surge** | 66 | — | Technique | All active summons deal +50% damage for 10 seconds. Major burst tool for boss encounters. |
 | **Summon Resilience** | 73 | Arcane Weaving 43 | Passive | All summons +25% HP permanently. Arcane Weaving knowledge of magical construction deepens summon durability. |
-| **Celestial Guardian** | 79 | Enchanting 56 | Summon Unlock | Conjure a Celestial Guardian — hybrid tank/attacker. Enchanting 56 required to weave light magic into construct form. |
+| **Celestial Guardian** | 79 | Inscription 56 | Summon Unlock | Conjure a Celestial Guardian — hybrid tank/attacker. Inscription 56 required to weave light magic into construct form. |
 | **Triple Summon** | 86 | Slaying 79 | Passive | Maintain 3 summons simultaneously. Deep combat experience required to coordinate three entities. |
 | **Summon Ascendancy** | 93 | Runelore 71 | Passive | All summons inherit the elemental bonus from the Runeweaver's last cast — cross-subclass knowledge. Runelore 71 required to understand elemental transference. |
 | **Eternal Construct** *(Level 100 capstone)* | 100 | — | Passive | Active summon during idle never despawns between sessions — persists indefinitely until combat is engaged. Mastery — the Summoner's constructs have achieved semi-permanent form. |
@@ -123,7 +126,7 @@ The Summoner is the **tactical backline commander** — never in direct danger, 
 
 **Synergizes with:**
 - Alchemy — Ember Sprite requires Alchemy knowledge; potions buff summon duration indirectly
-- Enchanting — Celestial Guardian gates on Enchanting 56
+- Enchanting — Celestial Guardian gates on Inscription 56
 - Arcane Weaving — Summon Resilience gates on Arcane Weaving 43
 - Runelore — Summon Ascendancy gates on Runelore 71 — rewards cross-system investment
 
@@ -170,7 +173,7 @@ The Lifebinder's rune constellation produces fundamentally different effects —
 | **Cryo-Stasis** | 59 | — | Technique | Target ally becomes briefly invincible for 4 seconds. Cannot act during stasis. Critical raid cooldown for saving downed players. 90 second cooldown. |
 | **Soul Tether** | 66 | Soulbinding 1* | Passive | Tether self to one ally — 15% of damage they take is redirected to Lifebinder instead. *Requires having equipped Warlock Grimoire at least once — cross-path knowledge of soul mechanics. |
 | **Revive Pulse** | 73 | Slaying 57 | Technique | Resurrect a downed party member with 50% HP. Combat experience (Slaying 57) required to understand the line between life and death. 5 minute cooldown. |
-| **Aura of Warding** | 79 | Enchanting 38 | Passive | All party members gain +10% resistance to all damage types while Lifebinder is in party. Enchanting knowledge of protective imbuing required. |
+| **Aura of Warding** | 79 | Inscription 38 | Passive | All party members gain +10% resistance to all damage types while Lifebinder is in party. Inscription knowledge of protective imbuing required. |
 | **Mass Restoration** | 86 | Inscription 64 | Technique | Full party — restores 80% HP, removes all debuffs, grants 8 seconds of damage immunity. The Lifebinder's ultimate group save. 10 minute cooldown. |
 | **Undying Aura** | 93 | Cookery 54 | Passive | Party members in Dungeon Provision Pack range never drop below 1 HP from a single hit. Cookery provisioning knowledge required. |
 | **Eternal Vigil** *(Level 100 capstone)* | 100 | — | Passive | Aura of Vitality now applies during idle sessions — party members assigned to the same dungeon queue as a Lifebinder receive passive HP regen even while offline. Mastery — the Lifebinder's care extends beyond active play. |
@@ -188,7 +191,7 @@ The Lifebinder is the **raid healer and party sustain engine** — indispensable
 - Cookery — Mending Pulse and Undying Aura both gate on Cookery — provisioning and healing are linked
 - Inscription — Restoration Wave and Mass Restoration gate on Inscription levels
 - Alchemy — Debuff Cleanse gates on Alchemy knowledge of antidotes
-- Enchanting — Aura of Warding gates on Enchanting 38
+- Enchanting — Aura of Warding gates on Inscription 38
 
 ---
 

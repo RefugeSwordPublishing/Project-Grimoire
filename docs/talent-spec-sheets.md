@@ -56,7 +56,7 @@ Level 100 capstones are about consistency, not power spikes. This preserves expa
 | Alchemy, Cookery | **Formulae** |
 | Combat Talents | **Technique** |
 | All Gathering Talents | **Field Notes** |
-| Inscription, Enchanting, Runelore, Divination, Soulbinding | **Codex Entry** |
+| Inscription, Runelore, Divination, Soulbinding | **Codex Entry** |
 
 ### Weapon & Tool Quality Tiers
 All assembled weapons and tools have five quality tiers. Tier is determined at the **Workbench** during Assembly.
@@ -575,7 +575,7 @@ All assembled weapons and tools have five quality tiers. Tier is determined at t
 ---
 
 ### 📜 Inscription
-> Create scrolls, spellbooks, maps, contracts, and diplomatic texts. Feeds Enchanting, Divination, and Runelore.
+> Create scrolls, spellbooks, zone maps, and diplomatic texts. Also handles gear enchanting directly — Enchanting is merged into this Talent. Feeds Divination and Runelore.
 
 **Primary Stats:** INT, WIL
 **Unlock Term:** Codex Entry
@@ -584,16 +584,23 @@ All assembled weapons and tools have five quality tiers. Tier is determined at t
 
 | Level | Codex Entry Unlock | Requires | Output |
 |-------|-------------------|----------|--------|
-| 1 | Zone Map | Reed Paper (Cultivation 24) + Ink | Zone layout reveal; sell value |
-| 11 | Minor Enchant Scroll | Reed Paper + Quartz dust | Single-use Enchanting application |
+| 1 | Rough Zone Map | Reed Paper (Cultivation 24) + Ink | Zone-specific: +5% yield, +2% drop rate for 1hr in that zone. Player-sellable on Exchange |
+| 25 | Refined Zone Map | Papyrus + Silver Ink | +8% yield, +4% drop rate for 1hr — higher Exchange value |
+| 51 | Pristine Zone Map | Papyrus + Starbloom Ink | +12% yield, +6% drop rate for 1hr |
+| 76 | Masterwork Zone Map | Grimoire Root Ink | +15% yield, +8% drop rate for 1hr — endgame farming staple |
 | 22 | Faction Letter | Papyrus (Cultivation 24) + Silver Ink | Faction Reputation gain item |
 | 33 | Spellbook Page | Papyrus + Starbloom Ink | Arcanist Technique carrier |
 | 41 | WIL passive +2 | — | Stat milestone |
+| 44 | Crude gear enchantment | Any Crude tier gear owned | Imbue stat bonuses on Crude weapons/armor |
+| 55 | Rough gear enchantment | Rough tier gear owned | Imbue stat bonuses on Rough weapons/armor |
+| 66 | Refined gear enchantment | Refined tier gear owned | Imbue stat bonuses on Refined weapons/armor |
+| 77 | Pristine gear enchantment | Pristine tier gear owned | Dual enchant slot unlocked |
+| 88 | Masterwork gear enchantment | Masterwork tier gear owned | Triple enchant slot unlocked |
 | 48 | Codex Entry: Ancient Text Copy | Ancient Text Fragment (Gleaning 38) | Feeds Runelore deep unlock |
 | 56 | Treasure Map | Dragon Eel Ink (Dredging 73) | Reveals hidden Gleaning cache |
 | 64 | INT passive +2 | — | Stat milestone |
 | 72 | Codex Entry: Diplomatic Charter | Grimoire Root Ink (Foraging 83) | High Faction Reputation item |
-| 81 | Codex Entry: Summoner's Tome | Void Kraken Ink (Dredging 84) | Summoner subclass deep tree |
+| 81 | *(Summoner's Tome removed — now a rare dungeon/raid drop, not crafted)* | — | — |
 | 91 | Codex Entry: The Living Grimoire | Soulflower Ink + Worldseed Paper | Passive XP boost to all Talents |
 | 100 | All scrolls produced with maximum charge count | Mastery — scroll output always at charge cap |
 
@@ -683,12 +690,9 @@ All assembled weapons and tools have five quality tiers. Tier is determined at t
 ---
 
 ### ✨ Enchanting
-> Imbue weapons and armor with stat bonuses and elemental effects. Codex Entries determine available enchantments.
+> ⚠️ MERGED INTO INSCRIPTION — Enchanting is no longer a separate Talent. Gear enchanting unlocks are now gated within the Inscription Talent by equipment tier ownership. See Inscription spec above for full enchanting unlock table.
 
-**Primary Stats:** INT, LCK
-**Unlock Term:** Codex Entry
-**Idle Action:** Auto-enchants queued gear
-**Active Attunement:** Rune tracing — draw the correct rune shape for bonus enchantment potency
+*This section retained for reference only — do not implement as a separate Talent.*
 
 | Level | Codex Entry Unlock | Requires | Output |
 |-------|-------------------|----------|--------|
@@ -841,11 +845,12 @@ Same rune, same gesture — different effect based on subclass:
 | Poison Quiver Buff | Alchemy 19 + Tailoring 14 + Marksmanship 24 |
 | Elemental Quiver | Tailoring 67 + Arcane Weaving 62 |
 | Void Gear Assembly | Smelting 84 + Delving 92 + Timber Shaping 74 + Runesmithing 84 |
-| Triple Enchant Slot | Enchanting 91 + Inscription 81 |
+| Triple Enchant Slot | Inscription 88 (Masterwork gear enchantment unlock) |
 | Legendary Assembly | Assembler Talent 85+ + Legendary material + relevant components |
-| Full Constellation Spellcasting | Spellcasting 88 + Arcane Weaving 69 + Inscription 64 |
+| Full Constellation Spellcasting | Spellcasting 88 + Arcane Weaving 69 + Inscription 55 |
 
 ---
 
-*Document version 0.2 — Talent Spec Sheets*
+*Document version 0.3 — Talent Spec Sheets*
+*Key change: Enchanting merged into Inscription. Summoner's Tome moved to dungeon/raid drop. Zone Maps now consumable buffs with tier progression.*
 *Next: Enemy zone tables · Assembly material tables · Grand Exchange baseline item values · Subclass deep tree specs · Stat scaling formulas*

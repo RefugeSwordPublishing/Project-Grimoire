@@ -106,7 +106,8 @@ Full economy, listing types, and Grimoire pricing live in `docs/wayferers-exchan
 **Gathering:** Foraging, Felling, Delving, Trapping, Dredging, Gleaning, Cultivation, Tracking
 **Processing:** Tanning, Smelting, Timber Shaping, Runesmithing, Arcane Weaving, Alchemy, Cookery, Tailoring, Artificing, Inscription
 **Combat:** Marksmanship, Slaying, Beastmastery, Bulwark, Wardancing, Shadowcraft, Spellcasting
-**Arcane:** Enchanting, Divination, Runelore, Soulbinding
+**Arcane:** Divination, Runelore, Soulbinding
+*(Enchanting merged into Inscription — no longer a separate Talent)*
 
 **Level cap:** 100 base, expandable to 120 then 150 via DLC Tome of Mastery purchases. Level 100 capstones are designed around **mastery and consistency, not power spikes** — rare materials and powerful unlocks live at levels 82–92, preserving expansion headroom.
 

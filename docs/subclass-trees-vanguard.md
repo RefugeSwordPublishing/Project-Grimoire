@@ -1,18 +1,21 @@
 # ⚔️ Project Grimoire — Vanguard Subclass Trees
-### Version 0.1
+### Version 0.2
 
 ---
 
 ## ⚔️ Vanguard Path Overview
 
-The Vanguard is the Phase 2 melee class. Primary stats STR and VIT. Combat is built around close-range engagement, defensive stances, and melee combo sequences. Where the Warden controls distance and the Arcanist controls the battlefield, the Vanguard controls the enemy directly — locking them down, absorbing punishment, and dealing sustained damage.
+**Vanguard is a category label, not a playable character.** Players choose a specific Vanguard Grimoire (Warlord, Shadowblade, or Kensei DLC) — that subclass IS their identity from day one. There is no generic "base Vanguard" character.
 
-**Universal Vanguard passives** (apply to all Vanguard Grimoires regardless of subclass):
+**Vanguard path passive bonus** (applies to ALL Vanguard Grimoires):
+- +2 STR baseline — reflects the Vanguard's natural melee affinity regardless of subclass
+- Carry weight bonus — all Vanguard Grimoires hold more materials in field inventory than other paths
+
+**Universal Vanguard mechanics** (apply to all Vanguard Grimoires):
 - Bulwark is the primary defensive Talent (Grimoire-locked to Vanguard)
 - Wardancing unlocks ritual combat forms (Grimoire-locked to Vanguard)
 - Melee combo system active in combat — chaining attacks builds combo meter
 - Idle fallback: auto-combat at base melee rate, combo meter does not build during idle
-- Carry weight bonus — Vanguards can hold more materials in field inventory than other paths
 
 ---
 

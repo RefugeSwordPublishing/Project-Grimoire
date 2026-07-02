@@ -1,24 +1,35 @@
 # ⚔️ Project Grimoire — Warden Subclass Trees
-### Version 0.1
+### Version 0.2
 
 ---
 
 ## 🏹 Warden Path Overview
 
-The Warden is the Phase 1 launch class. Primary stats DEX and LCK. Combat is built around the **Bowstring mechanic** — over-the-shoulder perspective, front-to-back draw, left-to-right aim. Fire rate, coating procs, and critical hits are the core combat levers.
+**Warden is a category label, not a playable character.** Players choose a specific Warden Grimoire (Sharpshot, Lone Wanderer, or Beastbond DLC) — that subclass IS their identity from day one. There is no generic "base Warden" character.
 
-**Universal Warden passives** (apply to all Warden Grimoires regardless of subclass):
+**Warden path passive bonus** (applies to ALL Warden Grimoires):
+- +2 DEX baseline — reflects the Warden's natural ranged affinity regardless of subclass
+
+**Universal Warden mechanics** (apply to all Warden Grimoires):
 - Bowstring mechanic always active in combat
 - Quiver equipped item enables infinite standard arrows
 - Marksmanship is the primary combat Talent
 - Coating buffs from Alchemy apply to quiver slot
+
+**Bowstring tuning per subclass:**
+| Subclass | Weak point glow duration | Fire rate | Damage model |
+|----------|------------------------|-----------|-------------|
+| Sharpshot | Longer — rewards patience and precise aim | Slow | Single massive hits |
+| Lone Wanderer | Shorter — rewards speed and rapid attempts | Fast | Many smaller proc hits |
+
+Same Bowstring mechanic, two different skill expressions. May be revisited for further mechanical distinction in a later design pass.
 
 ---
 
 ## 🎯 Grimoire of the Sharpshot
 *"Patience is the first weapon. Everything else is secondary."*
 
-**Unlock:** Free — given at game start if Warden path chosen
+**Unlock:** Any player may choose this as their starting Grimoire, or purchase for 500 GM
 **Playstyle:** Precision over volume. Slow, deliberate shots with massive single-hit payoff. The Sharpshot rewards active play more than any other subclass — every mechanic incentivizes accurate manual input.
 **Idle behavior:** Auto-combat fires at reduced rate but maintains Aimed Shot targeting on highest HP enemy
 **Signature passive:** *Steady Hand* — draw time increases by 20% but damage per shot increases by 30% from the moment the Grimoire is equipped
@@ -70,7 +81,7 @@ The Sharpshot is the **sniper** of Project Grimoire. Every unlock deepens the si
 ## 🌲 Grimoire of the Lone Wanderer
 *"The wilderness provides. You just have to know how to ask."*
 
-**Unlock:** Premium — 500 GM or real money purchase
+**Unlock:** Available as starting Grimoire choice or purchase for 500 GM
 **Playstyle:** Self-sufficient survivalist. Rapid fire, poison proc stacking, stealth, and solo zone bonuses. Where the Sharpshot rewards precision, the Lone Wanderer rewards aggression and preparation. Built for players who want to push into higher zones solo and profit from it.
 **Idle behavior:** Auto-combat at standard fire rate with poison coating active if applied before idle. Stealth passive gives bonus drop chance on first enemy per idle session.
 **Signature passive:** *Wanderer's Instinct* — when playing solo (no active party), all XP gains +10% and rare drop chance +5%. Always active.

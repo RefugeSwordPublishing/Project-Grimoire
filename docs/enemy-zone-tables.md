@@ -494,6 +494,7 @@ Two dungeons active per month, drawn from this pool:
 > Lower tier dungeons remain in rotation pool — useful for players still progressing
 > Each month's 2 active dungeons announced at month start
 > Dungeon boss always drops 1 tier higher rare material than the host zone standard
+> Summoner's Tome: rare drop from dungeon bosses (Tier 3+) and raid bosses — unlocks Summoner deep subclass tree
 
 ### Quarterly Raid Schedule
 One raid active per quarter:
