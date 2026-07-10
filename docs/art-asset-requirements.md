@@ -1,40 +1,98 @@
 # ⚔️ Project Grimoire — Art Asset Requirements by Phase
-### Version 0.2
+### Version 0.3
 
-> Style target throughout: Kingdom Two Crowns-inspired pixel art — clean limited palettes, strong silhouettes, hard pixel edges, dark fantasy medieval tone with amber candlelight accents. Generated via Sprite AI MCP connector in Claude Code, refined in Aseprite as needed.
+> **Art Style: HD-2D (Grimoire Variant)**
+> Inspired by Octopath Traveler's cinematic HD-2D approach — painterly pre-rendered backgrounds with rich atmospheric depth, expressive lighting, and strong zone identity — but with two key distinctions: **full-body realistic-proportion pixel art characters** (not chibi) and a **front-to-back scrolling camera perspective** (not side-scrolling plane).
+
+---
+
+## 🎨 Art Direction Reference
+
+### Overall Style — HD-2D Grimoire Variant
+| Element | Octopath Traveler | Project Grimoire |
+|---------|-----------------|-----------------|
+| Backgrounds | High-res painterly, parallax depth | Same — cinematic, layered, atmospheric |
+| Characters | Small chibi pixel sprites | Full-body realistic/semi-realistic pixel art |
+| Camera | Side-scrolling plane | Front-to-back — player moves into the screen |
+| Depth of field | Side-plane depth | Front-to-back depth — foreground blurs as player moves deeper |
+| Lighting | Strong mood lighting | Same + heavy bloom on torches, magic, god rays |
+
+### Background Environments
+- High resolution, painterly/pre-rendered — each zone feels cinematic and distinct
+- Layered parallax depth — multiple Z-depth layers (foreground, midground, background, skybox)
+- Strong mood lighting per zone — torches, magic glows, environmental light sources
+- Atmospheric particles per zone — fog, drifting embers, dust motes, rain, snow
+- God rays and volumetric light where zone atmosphere warrants it
+
+**Per-zone color grading (post-processing LUT per zone):**
+| Zone | Color Grade | Atmosphere |
+|------|------------|-----------|
+| Grimwood Fringe | Cool greens, dappled light | Forest, filtered sunlight |
+| Saltmarsh Shore | Teal/grey, sea haze | Coastal fog, salt spray |
+| Ashfen Mire | Desaturated greens/grays | Swamp murk, sickly glow |
+| Ironspine Reaches | Warm amber/rust | Arid mountain, dust haze |
+| Dreadhollow (Tier 3) | Deep purple/black | Shadow and rot |
+| Cinderpeak (Tier 3) | Orange/red, ember glow | Volcanic, ember particles |
+
+### Character Art — Full-Body Pixel Art
+Characters depart from Octopath's chibi proportions. Grimoire characters are:
+- **Realistic or semi-realistic body proportions** — closer to modern RPG character art in pixel form
+- **Detailed at gameplay scale** — readable silhouette from distance, detailed up close
+- **Expressive** — facial features readable, posture communicates class identity
+- **Reference:** Think Blasphemous, Dead Cells, or Hollow Knight's proportional detail applied to pixel art RPG characters
+
+### Camera & Scrolling
+- **Front-to-back perspective** — player character moves into the screen depth, not left/right
+- **Zone traversal:** World scrolls as player moves deeper — foreground elements pass by
+- **Depth of field:** Foreground elements blur as player advances, background has atmospheric haze
+- **Combat:** Over-the-shoulder view consistent with traversal direction — player behind, enemy ahead in the depth plane
+
+### Post-Processing Stack (Unity URP)
+| Effect | Setting | Notes |
+|--------|---------|-------|
+| Bloom | Heavy on light sources | Torches, magic effects, environmental lighting, rune glows |
+| Depth of Field | Front-to-back tuned | Foreground blur on traversal, combat has shallow DOF on enemy |
+| Color Grading | Per-zone LUT | Swap LUT on zone transition |
+| Atmospheric Particles | Per-zone particle systems | Fog, embers, dust, rain — always subtle, never obstructive |
+| God Rays | Volumetric where appropriate | Forest clearings, dungeon shafts of light, boss rooms |
+| Chromatic Aberration | Subtle on hit effects only | Not constant — used for impact feedback |
+| Vignette | Light ambient vignette | Frames the scene, increases during boss fights |
 
 ---
 
 ## 🖥️ Resolution Standards
 
-Project Grimoire targets both mobile and Steam/PC. All sprites are generated at higher resolution than classic pixel art games to ensure clarity on high-DPI mobile screens and PC monitors without muddiness.
+Project Grimoire targets both mobile and Steam/PC. Character sprites use realistic proportions at sufficient resolution to support HD-2D visual fidelity.
 
 | Asset Type | Resolution | Notes |
 |-----------|-----------|-------|
-| Standard characters | **256x256** | Full detail for layered equipment layers |
+| Standard characters | **256x256** | Full-body realistic proportion pixel art |
 | Standard enemies | **256x256** | Consistent with character scale |
-| Elite enemies | **256x256** | Same as standard — visual distinction via design not size |
-| Zone bosses | **320x320** | Slightly larger silhouette than standard enemies |
-| Raid bosses | **512x512** | Screen-filling moment — worth full detail |
-| Item icons (inventory) | **64x64** | Examined closely in inventory — up from 32x32 |
-| Rare material icons | **64x64** | High-value items deserve extra detail |
+| Elite enemies | **256x256** | Visual distinction via design not size |
+| Zone bosses | **320x320** | Larger silhouette, more imposing presence |
+| Raid bosses | **512x512** | Screen-filling — maximum detail |
+| Item icons (inventory) | **64x64** | Examined closely in inventory |
+| Rare material icons | **64x64** | High-value items deserve detail |
 | Currency icons | **48x48** | SM and GM coins |
-| Quality tier badges | **32x32** | Small corner overlay — clean at this size |
-| Environment backdrops | **1920x1080** | Full HD, no change needed |
+| Quality tier badges | **32x32** | Corner overlay — needs colorblind shape variants |
+| Environment backdrops | **1920x1080** | Painterly/pre-rendered, HD-2D style |
+| Background layers (parallax) | **1920x1080 per layer** | 3–5 layers per zone for parallax depth |
+| Foreground elements | **Variable** | Trees, rocks, debris that blur with depth of field |
 | Dungeon tilesets | **32x32 per tile** | Standard tileset grid |
-| UI panel borders (9-slice) | **96x96** | Cleaner 9-slice at higher DPI |
+| UI panel borders (9-slice) | **96x96** | Clean at higher DPI |
 | UI nav icons | **48x48** | Bottom nav and HUD icons |
-| Grimoire icons | **96x96** | Featured items — deserve extra detail |
+| Grimoire icons | **96x96** | Featured items — deserve detail |
 | Onboarding panels | **1920x1080** | Full screen illustrated scenes |
 | App icon | **1024x1024** | App store requirement |
-| Loading screen / splash | **1920x1080** | First impression |
+| Loading screen / splash | **1920x1080** | First impression — full HD-2D scene |
 
 ### Unity Import Settings (apply to all sprites)
-- **Filter Mode:** Point (no filter) — critical, prevents blurring on upscale
+- **Filter Mode:** Point (no filter) for character/enemy/UI sprites
+- **Filter Mode:** Bilinear for background environment layers (painterly, not pixel-art-strict)
 - **Compression:** None for characters/enemies, Lossless for backgrounds
-- **Pixels Per Unit:** 100 across all sprites — must be consistent or scale breaks
-- **Max Texture Size:** 2048 for standard sprites, 4096 for boss sprites
-- **Sprite Mode:** Multiple (for sprite sheets), Single (for individual icons)
+- **Pixels Per Unit:** 100 across all character/enemy sprites — must be consistent
+- **Max Texture Size:** 2048 for standard sprites, 4096 for boss and background sprites
+- **Sprite Mode:** Multiple (sprite sheets), Single (icons, backgrounds)
 
 ### Sprite Sheet Format
 Characters and enemies exported as uniform grid sprite sheets:
@@ -42,6 +100,18 @@ Characters and enemies exported as uniform grid sprite sheets:
 - All frames same size (matching resolution standard above)
 - Animations ordered: idle → walk → attack → hit → death
 - Equipment layers as separate sprite sheets matching frame count exactly
+
+### Background Layer Stack (per zone)
+Each zone environment is composed of multiple layers rendered at different Z depths:
+```
+Layer 1 — Skybox/far background (lowest parallax)
+Layer 2 — Distant environment (mountains, treeline)
+Layer 3 — Midground environment (primary scene)
+Layer 4 — Foreground details (rocks, near trees)
+Layer 5 — Particle systems (fog, embers, dust)
+Layer 6 — UI overlay
+```
+Depth of field blurs Layer 4 as player moves deeper — gives the front-to-back parallax feel.
 
 ---
 
@@ -250,5 +320,5 @@ All DLC sprites follow same resolution standards as base game equivalents.
 
 ---
 
-*Document version 0.2 — Art Asset Requirements by Phase*
-*Updated: Resolution standards raised to 256x256 for characters/enemies, 64x64 for item icons. Unity import settings added. Layered equipment format clarified.*
+*Document version 0.3 — Art Asset Requirements by Phase*
+*Updated: Full HD-2D art direction added (Grimoire Variant). Full-body realistic proportion characters, front-to-back camera, post-processing stack, per-zone color grading, parallax background layers. Replaces Kingdom Two Crowns reference.*

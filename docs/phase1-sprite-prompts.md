@@ -11,7 +11,7 @@
 
 Append this to every prompt for consistency:
 ```
-limited palette, dark pixel outline, Kingdom Two Crowns pixel art style, transparent background
+limited palette, dark pixel outline, HD-2D pixel art style — full-body realistic proportions, Octopath Traveler-inspired atmospheric lighting, transparent background
 ```
 
 ---
@@ -22,27 +22,27 @@ Generate as **separate layers** so equipment can be swapped in Unity without reg
 
 **Layer 1 — Base Body (no equipment)**
 ```
-warden archer base body, neutral skin tone, simple tunic, idle pose, side view, limited palette, dark pixel outline, Kingdom Two Crowns pixel art style, transparent background, 64x64
+warden archer base body, neutral skin tone, simple tunic, idle pose, side view, limited palette, dark pixel outline, HD-2D pixel art style — full-body realistic proportions, Octopath Traveler-inspired atmospheric lighting, transparent background, 64x64
 ```
 
 **Layer 2 — Hood/Cloak (Sharpshot variant)**
 ```
-hooded cloak layer only, forest green fabric, worn edges, fits over base body silhouette, side view, limited palette, dark pixel outline, Kingdom Two Crowns pixel art style, transparent background, 64x64
+hooded cloak layer only, forest green fabric, worn edges, fits over base body silhouette, side view, limited palette, dark pixel outline, HD-2D pixel art style — full-body realistic proportions, Octopath Traveler-inspired atmospheric lighting, transparent background, 64x64
 ```
 
 **Layer 3 — Hood/Cloak (Lone Wanderer variant)**
 ```
-hooded cloak layer only, amber and brown fabric, ragged edges, fits over base body silhouette, side view, limited palette, dark pixel outline, Kingdom Two Crowns pixel art style, transparent background, 64x64
+hooded cloak layer only, amber and brown fabric, ragged edges, fits over base body silhouette, side view, limited palette, dark pixel outline, HD-2D pixel art style — full-body realistic proportions, Octopath Traveler-inspired atmospheric lighting, transparent background, 64x64
 ```
 
 **Layer 4 — Quiver (worn on back, separate layer)**
 ```
-leather quiver layer only, worn on back position, brown leather, arrow fletching visible at top, side view, limited palette, dark pixel outline, Kingdom Two Crowns pixel art style, transparent background, 64x64
+leather quiver layer only, worn on back position, brown leather, arrow fletching visible at top, side view, limited palette, dark pixel outline, HD-2D pixel art style — full-body realistic proportions, Octopath Traveler-inspired atmospheric lighting, transparent background, 64x64
 ```
 
 **Layer 5 — Bow (held in hand, separate layer)**
 ```
-wooden longbow layer only, held at side grip position, simple curve, side view, limited palette, dark pixel outline, Kingdom Two Crowns pixel art style, transparent background, 64x64
+wooden longbow layer only, held at side grip position, simple curve, side view, limited palette, dark pixel outline, HD-2D pixel art style — full-body realistic proportions, Octopath Traveler-inspired atmospheric lighting, transparent background, 64x64
 ```
 
 **Animation passes needed per base body:**
@@ -59,7 +59,7 @@ death animation, 4 frames, collapse
 ```
 archer character from behind, over the shoulder view, hood visible from back, 
 quiver on back visible, bow arm extended to left side, standing combat stance, 
-limited palette, dark pixel outline, Kingdom Two Crowns pixel art style, 
+limited palette, dark pixel outline, HD-2D pixel art style — full-body realistic proportions, Octopath Traveler-inspired atmospheric lighting, 
 transparent background, 96x96
 ```
 
@@ -72,28 +72,28 @@ Each enemy needs the standard 5-pass animation set: idle, walk, attack, hit, dea
 **Grimwood Brigand**
 ```
 human bandit enemy, mismatched leather armor, short sword, scruffy appearance, 
-side view, limited palette, dark pixel outline, Kingdom Two Crowns pixel art style, 
+side view, limited palette, dark pixel outline, HD-2D pixel art style — full-body realistic proportions, Octopath Traveler-inspired atmospheric lighting, 
 transparent background, 64x64
 ```
 
 **Forest Wolf**
 ```
 wild wolf enemy, grey-brown fur, lean build, bared teeth, four-legged stance, 
-side view, limited palette, dark pixel outline, Kingdom Two Crowns pixel art style, 
+side view, limited palette, dark pixel outline, HD-2D pixel art style — full-body realistic proportions, Octopath Traveler-inspired atmospheric lighting, 
 transparent background, 64x48
 ```
 
 **Poacher**
 ```
 human poacher enemy, hunting leathers, crossbow weapon, hood up, 
-side view, limited palette, dark pixel outline, Kingdom Two Crowns pixel art style, 
+side view, limited palette, dark pixel outline, HD-2D pixel art style — full-body realistic proportions, Octopath Traveler-inspired atmospheric lighting, 
 transparent background, 64x64
 ```
 
 **Grimwood Bear**
 ```
 forest bear enemy, dark brown fur, large hulking build, claws visible, 
-side view, limited palette, dark pixel outline, Kingdom Two Crowns pixel art style, 
+side view, limited palette, dark pixel outline, HD-2D pixel art style — full-body realistic proportions, Octopath Traveler-inspired atmospheric lighting, 
 transparent background, 80x64
 ```
 
@@ -102,7 +102,7 @@ transparent background, 80x64
 elite bandit scout enemy, reinforced leather armor with metal studs, hooded, 
 dual daggers, slightly larger and more detailed than common bandit, subtle golden 
 trim to denote elite status, side view, limited palette, dark pixel outline, 
-Kingdom Two Crowns pixel art style, transparent background, 64x64
+HD-2D pixel art style — full-body realistic proportions, Octopath Traveler-inspired atmospheric lighting, transparent background, 64x64
 ```
 
 **Aldric the Poacher King (Boss)**
@@ -120,21 +120,21 @@ pixel art style, transparent background, 96x96
 **Saltmarsh Smuggler**
 ```
 human smuggler enemy, dark coastal clothing, cutlass weapon, weathered look, 
-side view, limited palette, dark pixel outline, Kingdom Two Crowns pixel art style, 
+side view, limited palette, dark pixel outline, HD-2D pixel art style — full-body realistic proportions, Octopath Traveler-inspired atmospheric lighting, 
 transparent background, 64x64
 ```
 
 **Shore Crab**
 ```
 giant shore crab enemy, hardened shell, large pincers, low crouched stance, 
-side view, limited palette, dark pixel outline, Kingdom Two Crowns pixel art style, 
+side view, limited palette, dark pixel outline, HD-2D pixel art style — full-body realistic proportions, Octopath Traveler-inspired atmospheric lighting, 
 transparent background, 64x40
 ```
 
 **Coastal Poacher**
 ```
 human coastal poacher enemy, fishing net weapon, oilskin coat, 
-side view, limited palette, dark pixel outline, Kingdom Two Crowns pixel art style, 
+side view, limited palette, dark pixel outline, HD-2D pixel art style — full-body realistic proportions, Octopath Traveler-inspired atmospheric lighting, 
 transparent background, 64x64
 ```
 
@@ -149,21 +149,21 @@ pixel art style, transparent background, 96x48
 ```
 elite aquatic creature enemy, humanoid amphibious form, barnacle-covered skin, 
 glowing eyes, subtle blue elite trim, side view, limited palette, dark pixel outline, 
-Kingdom Two Crowns pixel art style, transparent background, 64x64
+HD-2D pixel art style — full-body realistic proportions, Octopath Traveler-inspired atmospheric lighting, transparent background, 64x64
 ```
 
 **Smuggler Captain (Elite)**
 ```
 elite smuggler captain enemy, ornate coat, tricorn hat, rapier weapon, 
 confident stance, subtle gold elite trim, side view, limited palette, 
-dark pixel outline, Kingdom Two Crowns pixel art style, transparent background, 64x64
+dark pixel outline, HD-2D pixel art style — full-body realistic proportions, Octopath Traveler-inspired atmospheric lighting, transparent background, 64x64
 ```
 
 **The Saltmother (Boss)**
 ```
 boss enemy, massive coastal serpent, ancient barnacle-scarred scales, 
 coiled imposing form, glowing eyes, larger than standard enemy silhouette, 
-side view, limited palette, dark pixel outline, Kingdom Two Crowns pixel art style, 
+side view, limited palette, dark pixel outline, HD-2D pixel art style — full-body realistic proportions, Octopath Traveler-inspired atmospheric lighting, 
 transparent background, 128x96
 ```
 
@@ -175,41 +175,41 @@ transparent background, 128x96
 ```
 forest clearing background, pine and oak trees, dirt path, dappled sunlight, 
 distant campfire smoke, side view scene composition, limited palette, 
-Kingdom Two Crowns pixel art style, 16:9, no characters
+HD-2D pixel art style — full-body realistic proportions, Octopath Traveler-inspired atmospheric lighting, 16:9, no characters
 ```
 
 **Grimwood Fringe — Traversal Backdrop**
 ```
 wide forest landscape, layered tree depth, worn path winding through, 
-distant mountains, limited palette, Kingdom Two Crowns pixel art style, 
+distant mountains, limited palette, HD-2D pixel art style — full-body realistic proportions, Octopath Traveler-inspired atmospheric lighting, 
 16:9, no characters
 ```
 
 **Saltmarsh Shore — Combat Backdrop**
 ```
 coastal cove background, rocky cliffs, tide pools, grey overcast sky, 
-side view scene composition, limited palette, Kingdom Two Crowns pixel art style, 
+side view scene composition, limited palette, HD-2D pixel art style — full-body realistic proportions, Octopath Traveler-inspired atmospheric lighting, 
 16:9, no characters
 ```
 
 **Saltmarsh Shore — Traversal Backdrop**
 ```
 wide coastal landscape, cliff edges, distant sea, scattered driftwood, 
-limited palette, Kingdom Two Crowns pixel art style, 16:9, no characters
+limited palette, HD-2D pixel art style — full-body realistic proportions, Octopath Traveler-inspired atmospheric lighting, 16:9, no characters
 ```
 
 **Aldric's Warren — Dungeon Interior**
 ```
 bandit camp cave interior tileset, wooden support beams, scattered crates, 
 torchlight, dirt floor, modular tile pieces, limited palette, 
-Kingdom Two Crowns pixel art style, no characters
+HD-2D pixel art style — full-body realistic proportions, Octopath Traveler-inspired atmospheric lighting, no characters
 ```
 
 **Crestfall Cove — Dungeon Interior**
 ```
 coastal smuggler cave interior tileset, wooden crates and barrels, 
 hanging nets, torchlight, damp stone floor, modular tile pieces, 
-limited palette, Kingdom Two Crowns pixel art style, no characters
+limited palette, HD-2D pixel art style — full-body realistic proportions, Octopath Traveler-inspired atmospheric lighting, no characters
 ```
 
 ---
@@ -220,20 +220,20 @@ limited palette, Kingdom Two Crowns pixel art style, no characters
 ```
 item icon set, fantasy herbs and botanicals: common herb, ironwort, 
 wild berry cluster, thornroot, small flat icons, limited palette, 
-dark pixel outline, Kingdom Two Crowns pixel art style, transparent background, 32x32
+dark pixel outline, HD-2D pixel art style — full-body realistic proportions, Octopath Traveler-inspired atmospheric lighting, transparent background, 32x32
 ```
 
 **Trapping Set**
 ```
 item icon set, animal pelts and parts: rabbit pelt, fox pelt, deer hide, 
 boar tusk, wolf pelt, small flat icons, limited palette, dark pixel outline, 
-Kingdom Two Crowns pixel art style, transparent background, 32x32
+HD-2D pixel art style — full-body realistic proportions, Octopath Traveler-inspired atmospheric lighting, transparent background, 32x32
 ```
 
 **Dredging Set**
 ```
 item icon set, fish and aquatic items: perch, carp, pearl, small flat icons, 
-limited palette, dark pixel outline, Kingdom Two Crowns pixel art style, 
+limited palette, dark pixel outline, HD-2D pixel art style — full-body realistic proportions, Octopath Traveler-inspired atmospheric lighting, 
 transparent background, 32x32
 ```
 
@@ -245,22 +245,22 @@ pixel art style, transparent background, 32x32
 ```
 ```
 item icon, crude uncut gemstone, grey-blue rough stone, irregular fracture lines, 
-limited palette, dark pixel outline, Kingdom Two Crowns pixel art style, 
+limited palette, dark pixel outline, HD-2D pixel art style — full-body realistic proportions, Octopath Traveler-inspired atmospheric lighting, 
 transparent background, 32x32
 ```
 ```
 item icon, crude phantom pelt, ghostly pale fur with faint blue glow, 
-limited palette, dark pixel outline, Kingdom Two Crowns pixel art style, 
+limited palette, dark pixel outline, HD-2D pixel art style — full-body realistic proportions, Octopath Traveler-inspired atmospheric lighting, 
 transparent background, 32x32
 ```
 ```
 item icon, crude abyssal pearl, dark teal pearl with faint shimmer, 
-limited palette, dark pixel outline, Kingdom Two Crowns pixel art style, 
+limited palette, dark pixel outline, HD-2D pixel art style — full-body realistic proportions, Octopath Traveler-inspired atmospheric lighting, 
 transparent background, 32x32
 ```
 ```
 item icon, crude void spore, dark purple fungal spore pod, faint glow, 
-limited palette, dark pixel outline, Kingdom Two Crowns pixel art style, 
+limited palette, dark pixel outline, HD-2D pixel art style — full-body realistic proportions, Octopath Traveler-inspired atmospheric lighting, 
 transparent background, 32x32
 ```
 
@@ -272,7 +272,7 @@ transparent background, 32x32
 ```
 item icon set, glass potion bottles: healing draught (red liquid), 
 antidote vial (green liquid), poison coating (purple liquid), corked tops, 
-limited palette, dark pixel outline, Kingdom Two Crowns pixel art style, 
+limited palette, dark pixel outline, HD-2D pixel art style — full-body realistic proportions, Octopath Traveler-inspired atmospheric lighting, 
 transparent background, 32x32
 ```
 
@@ -280,7 +280,7 @@ transparent background, 32x32
 ```
 item icon set, cooked food items: roasted rabbit on skewer, herb broth in bowl, 
 venison stew in pot, small flat icons, limited palette, dark pixel outline, 
-Kingdom Two Crowns pixel art style, transparent background, 32x32
+HD-2D pixel art style — full-body realistic proportions, Octopath Traveler-inspired atmospheric lighting, transparent background, 32x32
 ```
 
 ---
@@ -308,7 +308,7 @@ pixel art style, transparent background, 64x64
 ```
 item icon and equipped back layer, standard leather quiver, brown leather, 
 visible arrow fletching, crude quality, limited palette, dark pixel outline, 
-Kingdom Two Crowns pixel art style, transparent background, 64x64
+HD-2D pixel art style — full-body realistic proportions, Octopath Traveler-inspired atmospheric lighting, transparent background, 64x64
 ```
 ```
 item icon and equipped back layer, reinforced quiver, metal-trimmed leather, 
@@ -320,7 +320,7 @@ pixel art style, transparent background, 64x64
 ```
 item icon and equipped layer set, crude leather armor: chest piece, 
 helm, boots, gloves, rough stitching, worn brown leather, limited palette, 
-dark pixel outline, Kingdom Two Crowns pixel art style, transparent background, 64x64
+dark pixel outline, HD-2D pixel art style — full-body realistic proportions, Octopath Traveler-inspired atmospheric lighting, transparent background, 64x64
 ```
 
 ---
@@ -330,12 +330,12 @@ dark pixel outline, Kingdom Two Crowns pixel art style, transparent background, 
 **Currency Icons**
 ```
 item icon, silver coin with grimoire sigil engraving, 
-limited palette, dark pixel outline, Kingdom Two Crowns pixel art style, 
+limited palette, dark pixel outline, HD-2D pixel art style — full-body realistic proportions, Octopath Traveler-inspired atmospheric lighting, 
 transparent background, 24x24
 ```
 ```
 item icon, gold coin with grimoire sigil engraving, 
-limited palette, dark pixel outline, Kingdom Two Crowns pixel art style, 
+limited palette, dark pixel outline, HD-2D pixel art style — full-body realistic proportions, Octopath Traveler-inspired atmospheric lighting, 
 transparent background, 24x24
 ```
 
@@ -344,19 +344,19 @@ transparent background, 24x24
 small corner badge icon set, quality tier indicators: grey crude badge, 
 white rough badge, green refined badge, blue pristine badge, purple masterwork 
 badge, small gem-shaped icons, limited palette, dark pixel outline, 
-Kingdom Two Crowns pixel art style, transparent background, 16x16
+HD-2D pixel art style — full-body realistic proportions, Octopath Traveler-inspired atmospheric lighting, transparent background, 16x16
 ```
 
 **Grimoire Visuals**
 ```
 item icon and equipped visual, leather-bound spellbook, forest green cover, 
 golden clasp, glowing faint aura, Sharpshot Grimoire, limited palette, 
-dark pixel outline, Kingdom Two Crowns pixel art style, transparent background, 48x48
+dark pixel outline, HD-2D pixel art style — full-body realistic proportions, Octopath Traveler-inspired atmospheric lighting, transparent background, 48x48
 ```
 ```
 item icon and equipped visual, leather-bound spellbook, amber brown cover, 
 worn edges, glowing faint aura, Lone Wanderer Grimoire, limited palette, 
-dark pixel outline, Kingdom Two Crowns pixel art style, transparent background, 48x48
+dark pixel outline, HD-2D pixel art style — full-body realistic proportions, Octopath Traveler-inspired atmospheric lighting, transparent background, 48x48
 ```
 
 ---
@@ -367,14 +367,14 @@ dark pixel outline, Kingdom Two Crowns pixel art style, transparent background, 
 ```
 wide illustrated scene, fantasy world overview, forest mountain and coastline 
 visible, small lone figure in foreground, atmospheric lighting, 
-limited palette, dark pixel outline, Kingdom Two Crowns pixel art style, 16:9
+limited palette, dark pixel outline, HD-2D pixel art style — full-body realistic proportions, Octopath Traveler-inspired atmospheric lighting, 16:9
 ```
 
 **World Intro Panel 2**
 ```
 illustrated scene, several leather-bound grimoires resting on wooden table, 
 each glowing a different color, candlelight, limited palette, dark pixel outline, 
-Kingdom Two Crowns pixel art style, 16:9
+HD-2D pixel art style — full-body realistic proportions, Octopath Traveler-inspired atmospheric lighting, 16:9
 ```
 
 **World Intro Panel 3**
@@ -388,7 +388,7 @@ pixel art style, 16:9
 ```
 illustrated scene, stone chamber interior, candlelit table with multiple 
 glowing grimoires arranged in a row, warm amber lighting, limited palette, 
-dark pixel outline, Kingdom Two Crowns pixel art style, 16:9
+dark pixel outline, HD-2D pixel art style — full-body realistic proportions, Octopath Traveler-inspired atmospheric lighting, 16:9
 ```
 
 ---
