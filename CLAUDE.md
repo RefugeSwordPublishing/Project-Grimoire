@@ -27,9 +27,9 @@ All design documentation lives in /docs — read these before implementing anyth
 - Language: C#
 - Backend: Supabase (REST API + Edge Functions for idle calculations)
 - Notifications: Firebase Cloud Messaging
-- Monetization: Unity IAP (App Store + Google Play + Steam)
+- Monetization: Unity IAP + RevenueCat (RevenueCat handles cross-platform purchase validation, entitlement grants, conversion reporting — do not build custom receipt validation)
 - Analytics: GameAnalytics
-- Art: Pixel art style — Sprite AI / Leonardo.ai generated assets
+- Art: Pixel art style — Sprite AI generated assets via MCP connector (connected directly to Claude Code)
 - Version control: GitHub
 
 ## Core design decisions (locked)
@@ -59,6 +59,15 @@ All design documentation lives in /docs — read these before implementing anyth
 - Supabase backend — player data, idle calculations server-side
 - "While You Were Away" session return screen
 - Silver and Gold Mark currency system
+
+## Art generation workflow
+Sprite AI is connected via MCP — use it directly for Phase 1 sprite generation rather than asking Dustin to generate art manually in browser.
+- Prompt library lives at docs/phase1-sprite-prompts.md — use these prompts as-is or adapt them
+- Generate the Warden base body first, then use it as a style reference for all subsequent generations (enemies, items) to keep visual consistency
+- Standard style suffix to append to every prompt: "limited palette, dark pixel outline, Kingdom Two Crowns pixel art style, transparent background"
+- Save generated sprites to Assets/Sprites/ in the appropriate subfolder (Characters/, Enemies/, Items/, Environments/, UI/)
+- Layered equipment approach: generate base character body separate from equipment (bow, quiver, armor, cloak) as individual layers so gear can be swapped in Unity without regenerating the whole character
+- Follow the generation order in docs/phase1-sprite-prompts.md: Warden base + animations → bow/quiver layers (test layering works) → 13 Tier 1 enemies → item icons → environments → UI elements → onboarding panels
 
 ## Architecture guidelines
 - Keep idle calculations server-side via Supabase Edge Functions — prevents cheating

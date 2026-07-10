@@ -222,6 +222,58 @@ Tapping this shows which Grimoire was previously equipped and when the swap was 
 
 ---
 
+## ⚔️ Combat Tab (Character Panel)
+
+A dedicated Combat Tab on the character screen replaces the old combat Talent entries. Combat progression lives on each Grimoire individually — not in the shared Talent system.
+
+```
+CHARACTER — Combat Tab
+┌─────────────────────────────────────┐
+│ ⚔ Total Combat Level: 90           │
+│   (Sharpshot 80 + Lifebinder 10)   │
+│                                     │
+│ EQUIPPED GRIMOIRE                   │
+│ Grimoire of Sharpshot  ★  Lv 80    │
+│ ████████████████████░░ 84% to 81   │
+│                                     │
+│ UNLOCKED TECHNIQUES                 │
+│ ✓ Basic Draw           (Lv 1)      │
+│ ✓ Aimed Shot           (Lv 9)      │
+│ ✓ Rapid Fire           (Lv 31)     │
+│ ✓ Headshot             (Lv 44)     │
+│ ✓ Trick Shot           (Lv 52)     │
+│ ○ Volley               (Lv 66)     │
+│ ○ Void Arrow           (Lv 79)     │
+│ ○ Hunter's Instinct    (Lv 86)     │
+│                                     │
+│ OTHER OWNED GRIMOIRES               │
+│ Lifebinder             Lv 10        │
+│ Runeweaver             Not owned    │
+│ Lone Wanderer          Not owned    │
+└─────────────────────────────────────┘
+```
+
+**Combat Tab rules:**
+- ★ marks the highest-leveled owned Grimoire — prestige indicator
+- Total Combat Level displayed prominently — the bragging rights stat
+- Unlocked Techniques shown with checkmarks, locked with empty circles
+- Tapping any locked Technique shows what level it unlocks at
+- Other Grimoires section shows all 7 base game Grimoires — owned show level, unowned show "Not owned" with purchase prompt
+- Zone access reminder at bottom: "Current zone access: Tier 3 (Total Combat Level 90)"
+
+**Supabase schema addition:**
+```
+player_grimoire_levels table:
+  player_id     UUID (FK)
+  grimoire_id   TEXT
+  combat_level  INTEGER
+  combat_xp     INTEGER
+  owned_at      TIMESTAMP
+```
+Total Combat Level = SUM(combat_level) across all rows for player_id
+
+---
+
 ## 📊 Active Buff HUD
 
 A persistent row of buff icons displayed just below the top status bar — always visible without navigating to the character screen.

@@ -150,6 +150,19 @@ The ×0.4 factor means Defense never fully negates damage — always at least 1 
 ```
 Max HP = 50 + (VIT × 4) + VIT Equipment Bonus × 3
 ```
+
+**Subclass HP modifiers:**
+| Subclass | HP Modifier | Notes |
+|----------|------------|-------|
+| Standard (all others) | ×1.0 | Base formula |
+| Lifebinder | ×1.6 | Largest HP pool — needs it for spell cost system |
+| Summoner | ×0.25 personal HP | Plus construct HP pool — see Summoner Spec for full effective HP formula |
+
+**Summoner effective HP:**
+```
+Summoner Effective HP = (Base HP × 0.25) + Sum of all active construct HP
+```
+Summoner personal HP is only exposed when all constructs fall. Constructs collectively form the primary HP pool. See Summoner Spec doc for construct HP values by tier.
 | VIT | Base HP |
 |-----|---------|
 | 10 | 90 |
@@ -378,6 +391,54 @@ This means:
 
 ---
 
+
+---
+
+## ⚔️ Aggro System — Hybrid Model
+
+Aggro determines which player enemies target in group combat (dungeons and raids). The hybrid model ensures tanks can reliably hold threat over active damage dealers without requiring constant manual intervention.
+
+### Aggro Formula
+```
+Total Aggro = Passive Rate (per second) + (Damage/Healing Dealt × Class Multiplier) + Taunt Combo Value
+```
+
+### Passive Aggro Rate (per second)
+Tanks generate baseline aggro just by being present — critical for idle scenarios where a Warlord may not be actively comboing but still needs to hold threat.
+
+| Class/Subclass | Passive Aggro/sec | Damage Multiplier | Notes |
+|---------------|------------------|------------------|-------|
+| Warlord | 15/sec | ×1.5 | Strong passive + taunt combos |
+| Bulwark | 20/sec | ×1.2 | Highest passive — pure tank |
+| Shadowblade | 0/sec | ×0.3 | Actively avoids aggro |
+| Sharpshot | 2/sec | ×0.8 | Low — damage dealer |
+| Lone Wanderer | 2/sec | ×0.6 | Lowest — stealth/solo |
+| Runeweaver | 3/sec | ×0.9 | Standard damage dealer |
+| Summoner | 2/sec | ×0.5 | Constructs generate own aggro separately |
+| Lifebinder | 2/sec | ×0.4 | Healing generates minor aggro |
+
+### Construct Aggro (Summoner)
+Each Summoner construct generates aggro independently based on damage dealt. See Summoner Spec for full construct aggro multiplier table. The Summoner personal aggro (×0.2) means they almost never become a target as long as constructs are active.
+
+### Aggro Decay
+- All players: aggro decays 5% per second when no actions taken
+- Warlord/Bulwark: decay reduced to 2% per second — passive rate compensates for brief pauses
+- On combat end: aggro resets fully for all players
+
+### Taunt Combos (Vanguard only)
+Certain Vanguard melee combos spike aggro dramatically — see Vanguard Combo System doc for full taunt values. Taunt combos are required in raids to keep the boss on the tank when Runeweavers are dealing heavy damage.
+
+### Healing Aggro (Lifebinder)
+| Action | Aggro Generated |
+|--------|----------------|
+| Single heal | ×0.4 of heal amount |
+| HOT tick (per tick) | ×0.2 per tick |
+| Mass heal (all allies) | ×0.6 of total heal |
+| Offensive spell | ×0.8 standard |
+
+Healing generates less aggro than damage — Lifebinder rarely pulls enemies off the tank unless healing extremely aggressively.
+
+---
 ## 🛡️ Character Sheet — Player Facing View
 
 What players see on their character sheet (no raw formulas visible):
@@ -458,5 +519,6 @@ CHA is intentionally limited in base game to avoid dead stat syndrome. Each DLC 
 
 ---
 
-*Document version 0.2 — Stat Scaling & Combat Formulas*
+*Document version 0.3 — Stat Scaling & Combat Formulas*
+*Added: Aggro hybrid model, construct aggro system, healing aggro rates*
 *Next: Onboarding flow · While You Were Away screen · Main design doc cleanup*

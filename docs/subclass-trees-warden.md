@@ -1,5 +1,5 @@
 # ⚔️ Project Grimoire — Warden Subclass Trees
-### Version 0.2
+### Version 0.4
 
 ---
 
@@ -10,10 +10,22 @@
 **Warden path passive bonus** (applies to ALL Warden Grimoires):
 - +2 DEX baseline — reflects the Warden's natural ranged affinity regardless of subclass
 
+**Permanent stat bonuses from Warden Grimoire combat milestones:**
+| Grimoire | Level 23 | Level 38 | Level 63 | Level 81 |
+|---------|---------|---------|---------|---------|
+| Sharpshot | DEX +1 | LCK +1 | DEX +2 | LCK +2 |
+| Lone Wanderer | DEX +1 | LCK +1 | DEX +2 | LCK +2 |
+| Beastbond (DLC) | DEX +1 | LCK +1 | DEX +2 | LCK +2 |
+
+Stat bonuses are permanent to the character and accumulate across ALL owned Grimoires regardless of path. See docs/warfare-spec.md for full cross-path accumulation details.
+
+**Grimoire Combat Progression:**
+Combat no longer uses a shared Talent. Each Warden Grimoire has its own combat level (1–100) tracked independently. Purchasing a new Grimoire starts its combat progression at level 1. Combat XP from Slaying feeds the currently equipped Grimoire's combat level. Techniques and combat unlocks live on the Combat Tab of the Character Panel, not the Talents page.
+
 **Universal Warden mechanics** (apply to all Warden Grimoires):
 - Bowstring mechanic always active in combat
 - Quiver equipped item enables infinite standard arrows
-- Marksmanship is the primary combat Talent
+- Grimoire Combat Progression governs all Warden combat unlocks — not a shared Talent
 - Coating buffs from Alchemy apply to quiver slot
 
 **Bowstring tuning per subclass:**
@@ -37,13 +49,13 @@ Same Bowstring mechanic, two different skill expressions. May be revisited for f
 ---
 
 ### Hybrid Unlock Gates
-Sharpshot unlocks require a combination of **Marksmanship level** (Grimoire-locked) and **cross-Talent milestones** (universal carry-over).
+Sharpshot unlocks require a combination of **Grimoire combat level** (Sharpshot Grimoire-specific) and **cross-Talent milestones** (universal carry-over).
 
 ---
 
 ### 🌿 Sharpshot Tree
 
-| Unlock | Marksmanship Req | Cross-Talent Req | Type | Description |
+| Unlock | Grimoire Combat Level | Cross-Talent Req | Type | Description |
 |--------|-----------------|-----------------|------|-------------|
 | **Steady Hand** | 1 | — | Signature Passive | Draw time +20%, damage per shot +30%. Always active. |
 | **Piercing Shot** | 9 | Runesmithing 6 | Technique | Shots penetrate enemies in a line — hits multiple targets. Requires reinforced arrowhead from Runesmithing. |
@@ -89,13 +101,13 @@ The Sharpshot is the **sniper** of Project Grimoire. Every unlock deepens the si
 ---
 
 ### Hybrid Unlock Gates
-Lone Wanderer unlocks require **Marksmanship level** (Grimoire-locked) and cross-Talent milestones focused on self-sufficiency and survival.
+Lone Wanderer unlocks require **Grimoire combat level** (Lone Wanderer Grimoire-specific) and cross-Talent milestones focused on self-sufficiency and survival.
 
 ---
 
 ### 🌿 Lone Wanderer Tree
 
-| Unlock | Marksmanship Req | Cross-Talent Req | Type | Description |
+| Unlock | Grimoire Combat Level | Cross-Talent Req | Type | Description |
 |--------|-----------------|-----------------|------|-------------|
 | **Wanderer's Instinct** | 1 | — | Signature Passive | Solo play: XP +10%, rare drop chance +5%. Always active when no party is formed. |
 | **Rapid Nock** | 9 | — | Passive | Fire rate +10%. The Lone Wanderer's first step toward proc-stacking builds. |
@@ -110,7 +122,7 @@ Lone Wanderer unlocks require **Marksmanship level** (Grimoire-locked) and cross
 | **Survivalist's Feast** | 73 | Cookery 54 | Passive | Dungeon Provision Packs consumed solo give double the buff duration. Self-sufficiency in dungeons without needing a party Cookery provider. |
 | **Outpost Knowledge** | 79 | Gleaning 63 | Passive | In zones where Battlefield Gleaning is unlocked, Lone Wanderer gains a hidden cache spawn per active session — exclusive to this subclass. |
 | **Apex Predator** | 86 | Slaying 79 | Passive | After killing 10 enemies in a single active session without taking damage, all stats +8% for remainder of session. Rewards skillful dodge use. |
-| **Vanishing Act** | 93 | Shadowcraft 1* | Technique | Full stealth for 20 seconds — untargetable, coating procs continue on last targeted enemy during stealth. *Requires equipping Shadowblade Grimoire at least once — cross-path knowledge unlock. |
+| **Vanishing Act** | 93 | Shadowblade Grimoire owned* | Technique | Full stealth for 20 seconds — untargetable, coating procs continue on last targeted enemy during stealth. *Requires owning Shadowblade Grimoire (any level) — cross-path knowledge unlock. |
 | **Wanderer's Mastery** *(Level 100 capstone)* | 100 | — | Passive | All solo zone bonuses now apply even when in a party of 2 or fewer. Mastery — the Wanderer's self-reliance extends even to small group content. |
 
 ---

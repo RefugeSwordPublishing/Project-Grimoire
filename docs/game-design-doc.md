@@ -55,7 +55,7 @@ Primary stats: INT, WIL · Combat: Runic Constellation mechanic
 | **Runeweaver** | Base game | Elemental battlemage, counter-combinations, AoE control |
 | **Summoner** | Base game | Backline tactician — conjured constructs fight, user buffs/debuffs them |
 | **Lifebinder** | Base game | Essential raid healer, self-sustaining solo |
-| Warlock | DLC | Soul harvesting, Soulbinding exclusive, Black Ledger access |
+| Warlock | DLC | Soul harvesting, Soulbinding exclusive |
 
 ### ⚔️ The Vanguard Path
 Primary stats: STR, VIT · Combat: Melee combo system
@@ -63,7 +63,7 @@ Primary stats: STR, VIT · Combat: Melee combo system
 | Subclass | Status | Identity |
 |----------|--------|----------|
 | **Warlord** | Base game | Immovable tank, Zone Conquest, essential raid role |
-| **Shadowblade** | Base game | Burst assassin, heaviest Gleaning dependency, Black Ledger access |
+| **Shadowblade** | Base game | Burst assassin, heaviest Gleaning dependency, Shadow Step + Hemorrhage Mastery |
 | Kensei | DLC | Samurai discipline, Focus mechanic, Wardancing |
 
 ### Future Path (DLC, path TBD)
@@ -82,9 +82,23 @@ Class identity is determined by which Grimoire is equipped — no separate chara
 - **Swap cooldown:** ~24 hours
 - **Stats and inventory:** Shared across all Grimoires (full character sheet)
 - **Universal Talents** (carry across all Grimoires): all Gathering, all Processing, Slaying, Runelore, Enchanting, Inscription
-- **Grimoire-locked Talents**: Marksmanship (Warden), Spellcasting (Arcanist), Bulwark + Wardancing (Vanguard), Shadowcraft (Shadowblade), Soulbinding (Warlock DLC), Beastmastery (Beastbond DLC)
+- **Grimoire Combat Progression**: Each Grimoire has its own independent combat level (1–100). Warden Grimoires use Bowstring/Marksmanship mechanics, Arcanist Grimoires use the Runic Constellation, Vanguard Grimoires use the Strike/Guard/Surge Warfare system. These are NOT shared Talents — they live on the Grimoire itself.
 
 Full economy, listing types, and Grimoire pricing live in `docs/wayferers-exchange-and-grimoire-system.md`.
+
+**Grimoire Combat Progression:**
+Each Grimoire houses its own combat level (1–100) that tracks separately from other Grimoires. Switching Grimoires starts fresh on that Grimoire's combat progression. Universal Talents (gathering, processing) remain shared across all Grimoires.
+
+**Total Combat Level = Sum of all owned Grimoire combat levels**
+This is the zone unlock gate and a character-wide prestige stat displayed on the character page.
+
+| Total Combat Level | Zone Tier Unlocked |
+|------------------|-------------------|
+| 1–20 | Tier 1 |
+| 21–50 | Tier 2 |
+| 51–90 | Tier 3 |
+| 91–140 | Tier 4 |
+| 141+ | Tier 5 |
 
 ---
 
@@ -105,7 +119,9 @@ Full economy, listing types, and Grimoire pricing live in `docs/wayferers-exchan
 ### Talent List
 **Gathering:** Foraging, Felling, Delving, Trapping, Dredging, Gleaning, Cultivation, Tracking
 **Processing:** Tanning, Smelting, Timber Shaping, Runesmithing, Arcane Weaving, Alchemy, Cookery, Tailoring, Artificing, Inscription
-**Combat:** Marksmanship, Slaying, Beastmastery, Bulwark, Wardancing, Shadowcraft, Spellcasting
+**Combat (via Slaying Talent):** Slaying
+
+> Note: Marksmanship, Spellcasting, Warfare, Shadowcraft, Bulwark, Wardancing have been removed from the Talent system. Combat progression lives on each Grimoire independently. See Grimoire Combat Progression section.
 **Arcane:** Divination, Runelore, Soulbinding
 *(Enchanting merged into Inscription — no longer a separate Talent)*
 
@@ -159,7 +175,7 @@ Evasion comes from armor type + DEX. Block is a separate roll determined by armo
 Full zone tables, enemy rosters, drop tables, and bosses live in `docs/enemy-zone-tables.md`.
 
 - **10 zones across 5 tiers**, 2 branching options per tier — players choose biome/enemy focus
-- **Zone unlock** — highest single combat Talent across ALL equipped Grimoires
+- **Zone unlock** — Total Combat Level (sum of all owned Grimoire combat levels). See threshold table in Grimoire System section.
 - **Combat targeting** — players select both zone AND specific enemy type, each enemy has a spawn weight (common enemies spawn more, elites rarer)
 - **Zone bosses** — active play only, random spawn chance (~1 in 20 encounters), 10 minute despawn timer
 - **Enemy faction tags** (`[Outlaw]`, `[Beast]`, `[Undead]`, `[Arcane]`, `[Void]`, `[Nature]`, `[Elite]`, `[Boss]`, `[Legendary]`) applied to every enemy from day one for DLC faction bonus compatibility
@@ -188,11 +204,12 @@ Full market mechanics live in `docs/wayferers-exchange-and-grimoire-system.md`.
 
 ### The Wayfarer's Exchange
 Unified marketplace — minimum any Talent level 10 to access, no guild requirement. Three listing types:
-- **Auction** — starting bid, optional buyout, 1/7/15 day duration, all-or-nothing, 3% listing fee
-- **Store Listing** — fixed price, partial fills allowed, 2% listing fee
-- **Buy Order** — buyer fronts Marks in escrow, sellers can fulfill any portion, no listing fee
+- **Auction** — starting bid, optional buyout, 1/7/15 day duration, all-or-nothing
+- **Store Listing** — fixed price, partial fills allowed
+- **Buy Order** — buyer fronts Marks in escrow, no fee ever
+- **Fee:** Solo players pay 3% system tax (economy sink). Guild members pay 0–3% guild tax (goes to guild bank) replacing the system tax. Guild Merchant internal sales at half guild tax rate
 
-**Shadowblade-exclusive Black Ledger** — hidden Exchange section for untraceable hostile-zone Gleaning goods, no listing fee, but Faction NPC seizure risk once factions launch.
+**Shadowblade** — pure combat specialist. No exclusive Exchange access — economy served by standard Exchange and Guild Merchant. *(Black Ledger concept deferred to post-launch — may return as DLC content if warranted)*
 
 ---
 
@@ -321,7 +338,7 @@ Full handoff procedure and session log live in `docs/session-handoff-log.md` —
 
 | Phase | Scope |
 |-------|-------|
-| **Phase 1** | Warden (Sharpshot), Bowstring mechanic, core idle loop, Foraging/Trapping/Dredging/Cookery/Alchemy/Marksmanship/Slaying, Grimwood Fringe + Saltmarsh Shore zones, basic Wayfarer's Exchange |
+| **Phase 1** | Warden (Sharpshot), Bowstring mechanic, core idle loop, Foraging/Trapping/Dredging/Cookery/Alchemy/Slaying, Grimwood Fringe + Saltmarsh Shore zones, basic Wayfarer's Exchange |
 | **Phase 2** | Remaining base game Talents, Arcanist + Vanguard paths, full Wayfarer's Exchange, all base game subclasses |
 | **Phase 3** | Remaining Arcane Talents, full zone rollout, dungeon/raid systems |
 | **Phase 4** | Multiplayer — guilds, dungeons, raids, daily skirmishes, full subclass roster including Lifebinder group features |
@@ -341,7 +358,8 @@ Full handoff procedure and session log live in `docs/session-handoff-log.md` —
 - **Runesmithing** (not "Smithing")
 - **Soulbinding** (not "Prayer/Devotion")
 - **Wayfarer's Exchange** (not "Grand Exchange" — avoids RuneScape conflict)
-- **Marksmanship** (not "Ranged")
+- **Warfare** (Vanguard combat system — not "Melee" or "Combat")
+- **Grimoire Combat Level** (not "Marksmanship level" or "Spellcasting level")
 - **Bulwark** (not "Defence/Defense" or "Vanguarding" — avoids redundancy with class name)
 - **Bowstring** (not "Slingshot" — avoids Pokémon GO comparison in marketing)
 

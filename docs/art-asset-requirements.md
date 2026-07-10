@@ -1,7 +1,47 @@
 # ⚔️ Project Grimoire — Art Asset Requirements by Phase
-### Version 0.1
+### Version 0.2
 
-> Style target throughout: Kingdom Two Crowns-inspired pixel art — clean limited palettes, strong silhouettes, hard pixel edges, dark fantasy medieval tone with amber candlelight accents. Generated via Sprite AI, refined in Aseprite as needed.
+> Style target throughout: Kingdom Two Crowns-inspired pixel art — clean limited palettes, strong silhouettes, hard pixel edges, dark fantasy medieval tone with amber candlelight accents. Generated via Sprite AI MCP connector in Claude Code, refined in Aseprite as needed.
+
+---
+
+## 🖥️ Resolution Standards
+
+Project Grimoire targets both mobile and Steam/PC. All sprites are generated at higher resolution than classic pixel art games to ensure clarity on high-DPI mobile screens and PC monitors without muddiness.
+
+| Asset Type | Resolution | Notes |
+|-----------|-----------|-------|
+| Standard characters | **256x256** | Full detail for layered equipment layers |
+| Standard enemies | **256x256** | Consistent with character scale |
+| Elite enemies | **256x256** | Same as standard — visual distinction via design not size |
+| Zone bosses | **320x320** | Slightly larger silhouette than standard enemies |
+| Raid bosses | **512x512** | Screen-filling moment — worth full detail |
+| Item icons (inventory) | **64x64** | Examined closely in inventory — up from 32x32 |
+| Rare material icons | **64x64** | High-value items deserve extra detail |
+| Currency icons | **48x48** | SM and GM coins |
+| Quality tier badges | **32x32** | Small corner overlay — clean at this size |
+| Environment backdrops | **1920x1080** | Full HD, no change needed |
+| Dungeon tilesets | **32x32 per tile** | Standard tileset grid |
+| UI panel borders (9-slice) | **96x96** | Cleaner 9-slice at higher DPI |
+| UI nav icons | **48x48** | Bottom nav and HUD icons |
+| Grimoire icons | **96x96** | Featured items — deserve extra detail |
+| Onboarding panels | **1920x1080** | Full screen illustrated scenes |
+| App icon | **1024x1024** | App store requirement |
+| Loading screen / splash | **1920x1080** | First impression |
+
+### Unity Import Settings (apply to all sprites)
+- **Filter Mode:** Point (no filter) — critical, prevents blurring on upscale
+- **Compression:** None for characters/enemies, Lossless for backgrounds
+- **Pixels Per Unit:** 100 across all sprites — must be consistent or scale breaks
+- **Max Texture Size:** 2048 for standard sprites, 4096 for boss sprites
+- **Sprite Mode:** Multiple (for sprite sheets), Single (for individual icons)
+
+### Sprite Sheet Format
+Characters and enemies exported as uniform grid sprite sheets:
+- Each animation on its own row
+- All frames same size (matching resolution standard above)
+- Animations ordered: idle → walk → attack → hit → death
+- Equipment layers as separate sprite sheets matching frame count exactly
 
 ---
 
@@ -10,189 +50,187 @@
 This is what blocks Claude Code from having a playable build. Prioritize this list completely before touching Phase 2 art.
 
 ### Characters
-| Asset | Notes |
-|-------|-------|
-| Warden base character — idle, walk, draw bow, fire bow, hit reaction, death | Over-the-shoulder back view needed in addition to standard side-view for combat |
-| Sharpshot visual variant (cosmetic differences from base Warden) | Cloak/quiver detail differences if any planned |
-| Lone Wanderer visual variant | Same as above |
+| Asset | Resolution | Notes |
+|-------|-----------|-------|
+| Warden base body — idle, walk, draw bow, fire bow, hit reaction, death | 256x256 per frame | Side view — equipment layers composite on top |
+| Warden over-the-shoulder view — idle, draw, fire, hit | 256x256 per frame | Separate asset for combat screen |
+| Sharpshot cloak/hood layer | 256x256 per frame | Forest green — composites over base body |
+| Lone Wanderer cloak/hood layer | 256x256 per frame | Amber/brown ragged — composites over base body |
+| Quiver layer (back-worn) | 256x256 per frame | Separate layer, all animation frames |
+| Bow layer — Crude/Rough/Refined tiers | 256x256 per frame | Held in hand — separate layer per quality tier |
+| Leather Armor layer set — Crude/Rough/Refined | 256x256 per frame | Helm, chest, legs, boots, gloves each as separate layers |
+
+> Layered approach: Unity composites base body + cloak + quiver + bow + armor at runtime. Each layer is a separate sprite sheet with matching frame count.
 
 ### Enemies — Tier 1 Zones Only
-| Enemy | Zone | Animation needs |
-|-------|------|-----------------|
-| Grimwood Brigand | Grimwood Fringe | idle, walk, attack, hit, death |
-| Forest Wolf | Grimwood Fringe | idle, walk, attack, hit, death |
-| Poacher | Grimwood Fringe | idle, walk, attack, hit, death |
-| Grimwood Bear | Grimwood Fringe | idle, walk, attack, hit, death |
-| Bandit Scout (Elite) | Grimwood Fringe | idle, walk, attack, hit, death + elite visual distinction |
-| Aldric the Poacher King (Boss) | Grimwood Fringe | full boss animation set, larger/distinct silhouette |
-| Saltmarsh Smuggler | Saltmarsh Shore | idle, walk, attack, hit, death |
-| Shore Crab | Saltmarsh Shore | idle, walk, attack, hit, death |
-| Coastal Poacher | Saltmarsh Shore | idle, walk, attack, hit, death |
-| Saltmarsh Serpent | Saltmarsh Shore | idle, walk, attack, hit, death |
-| Tide Lurker (Elite) | Saltmarsh Shore | idle, walk, attack, hit, death + elite distinction |
-| Smuggler Captain (Elite) | Saltmarsh Shore | idle, walk, attack, hit, death + elite distinction |
-| The Saltmother (Boss) | Saltmarsh Shore | full boss animation set |
+| Enemy | Zone | Resolution | Notes |
+|-------|------|-----------|-------|
+| Grimwood Brigand | Grimwood Fringe | 256x256 | idle, walk, attack, hit, death |
+| Forest Wolf | Grimwood Fringe | 256x256 | idle, walk, attack, hit, death — quadruped |
+| Poacher | Grimwood Fringe | 256x256 | idle, walk, attack, hit, death |
+| Grimwood Bear | Grimwood Fringe | 256x256 | idle, walk, attack, hit, death — large build |
+| Bandit Scout (Elite) | Grimwood Fringe | 256x256 | idle, walk, attack, hit, death + elite visual distinction |
+| Aldric the Poacher King (Boss) | Grimwood Fringe | 320x320 | Full boss animation set — larger silhouette |
+| Saltmarsh Smuggler | Saltmarsh Shore | 256x256 | idle, walk, attack, hit, death |
+| Shore Crab | Saltmarsh Shore | 256x256 | idle, walk, attack, hit, death — low/wide stance |
+| Coastal Poacher | Saltmarsh Shore | 256x256 | idle, walk, attack, hit, death |
+| Saltmarsh Serpent | Saltmarsh Shore | 256x256 | idle, coil, strike, hit, death — sinuous body |
+| Tide Lurker (Elite) | Saltmarsh Shore | 256x256 | idle, walk, attack, hit, death + elite distinction |
+| Smuggler Captain (Elite) | Saltmarsh Shore | 256x256 | idle, walk, attack, hit, death + elite distinction |
+| The Saltmother (Boss) | Saltmarsh Shore | 320x320 | Full boss animation set — large serpent |
 
-> 13 enemies total for Phase 1 — this is the single largest art line item. Recommend batching all "idle/walk/attack/hit/death" as a standard 5-animation template applied per enemy to streamline Sprite AI generation.
+> 13 enemies total for Phase 1. Batch together in Sprite AI — same style prompt, different descriptions. Use Warden base body as style reference for all generations.
 
 ### Environments / Backgrounds
-| Asset | Notes |
-|-------|-------|
-| Grimwood Fringe — combat backdrop | Forest clearing, over-the-shoulder combat framing |
-| Grimwood Fringe — traversal/idle backdrop | Wider forest scene for zone selection screen |
-| Saltmarsh Shore — combat backdrop | Coastal cliffs/cove framing |
-| Saltmarsh Shore — traversal/idle backdrop | Wider coastal scene |
-| Aldric's Warren — dungeon interior tileset | Cave/camp hybrid based on dungeon theme |
-| Crestfall Cove — dungeon interior tileset | Coastal cave theme |
+| Asset | Resolution | Notes |
+|-------|-----------|-------|
+| Grimwood Fringe — combat backdrop | 1920x1080 | Forest clearing, over-the-shoulder framing |
+| Grimwood Fringe — traversal/idle backdrop | 1920x1080 | Wide forest, zone selection screen |
+| Saltmarsh Shore — combat backdrop | 1920x1080 | Coastal cliffs/cove |
+| Saltmarsh Shore — traversal/idle backdrop | 1920x1080 | Wide coastal scene |
+| Aldric's Warren — dungeon interior tileset | 32x32/tile | Cave/camp hybrid |
+| Crestfall Cove — dungeon interior tileset | 32x32/tile | Coastal cave theme |
 
 ### Items — Gathering Output (Phase 1 Talents)
-| Category | Items needed |
-|----------|-------------|
-| Foraging | Common Herb, Ironwort, Wild Berry Cluster, Thornroot icon set |
-| Trapping | Rabbit Pelt, Fox Pelt, Deer Hide, Boar Tusk, Wolf Pelt icon set |
-| Dredging | Perch, Carp, Pearl, Deep Net catch icon set |
-| Rare materials (Phase 1 tiers only) | Crude Amber, Crude Gemstone, Crude Phantom Pelt, Crude Abyssal Pearl, Crude Void Spore |
+| Category | Resolution | Items |
+|----------|-----------|-------|
+| Foraging | 64x64 | Common Herb, Ironwort, Wild Berry Cluster, Thornroot |
+| Trapping | 64x64 | Rabbit Pelt, Fox Pelt, Deer Hide, Boar Tusk, Wolf Pelt |
+| Dredging | 64x64 | Perch, Carp, Pearl, Deep Net catch |
+| Rare materials (Crude tier) | 64x64 | Crude Amber, Crude Gemstone, Crude Phantom Pelt, Crude Abyssal Pearl, Crude Void Spore |
 
 ### Items — Processing Output (Phase 1 Talents)
-| Category | Items needed |
-|----------|-------------|
-| Alchemy | Minor Healing Draught, Antidote Vial, Poison Coating bottle icon set |
-| Cookery | Roasted Rabbit, Herb Broth, Venison Stew icon set |
+| Category | Resolution | Items |
+|----------|-----------|-------|
+| Alchemy | 64x64 | Minor Healing Draught, Antidote Vial, Poison Coating |
+| Cookery | 64x64 | Roasted Rabbit, Herb Broth, Venison Stew |
 
 ### Items — Equipment (Phase 1)
-| Item | Notes |
-|------|-------|
-| Bronze/Iron/Steel Bow (Crude–Refined tiers) | Equipped on Warden character — needs to render in character's hands |
-| Standard Quiver (Crude–Refined tiers) | Worn on back — needs to render on character |
-| Crude/Rough/Refined Leather Armor pieces | Helm, chest, legs, boots, gloves — render on character |
-| Pine/Hardwood Grip components | Inventory icon only, doesn't need character render |
+| Item | Resolution | Notes |
+|------|-----------|-------|
+| Bow — Crude/Rough/Refined | 64x64 (icon) + 256x256 (equipped layer) | Inventory icon + character layer |
+| Quiver — Crude/Rough/Refined | 64x64 (icon) + 256x256 (equipped layer) | Inventory icon + character layer |
+| Leather Armor pieces — Crude/Rough/Refined | 64x64 (icon) + 256x256 (equipped layer) | Per piece: helm, chest, legs, boots, gloves |
+| Assembly components (grips, leather strips etc.) | 64x64 | Inventory icon only — no character render needed |
 
 ### UI Elements
-| Asset | Notes |
-|-------|-------|
-| Pixel icon set — already drafted in mockup (bow, sword, flask, book, scales, pick, leaf, axe) | Expand to cover all Phase 1 Talents fully |
-| Panel border tileset | 9-slice pixel border for consistent panel sizing |
-| Button states (default/hover/pressed/disabled) | For all interactive elements |
-| Grimoire visual — Sharpshot, Lone Wanderer | Book/tome icon, equipped visual |
-| Currency icons — Silver Mark, Gold Mark | Small inventory/UI icon |
-| Quality tier badges — Crude through Masterwork | Small corner badge overlay for item icons |
-| Loading screen / splash art | First impression — worth getting right |
-| App icon | Store listing requirement |
+| Asset | Resolution | Notes |
+|-------|-----------|-------|
+| Talent nav icons (all Phase 1 talents) | 48x48 | Bow, sword, flask, book, scales, pick, leaf, axe + all missing |
+| Panel border tileset (9-slice) | 96x96 | Dark Ages UI base + custom additions |
+| Button states (default/hover/pressed/disabled) | 96x32 | All interactive button states |
+| Grimoire visual — Sharpshot, Lone Wanderer | 96x96 | Book/tome icon with path color |
+| Currency icons — Silver Mark, Gold Mark | 48x48 | Coin icons for HUD and inventory |
+| Quality tier badges — Crude through Masterwork | 32x32 | Corner overlay — needs colorblind shape variants too |
+| Notice Board icon (HUD) | 48x48 | Parchment/scroll icon with unread badge |
+| Settings gear icon (HUD) | 48x48 | Gear/cog icon |
+| Loading screen / splash art | 1920x1080 | First impression |
+| App icon | 1024x1024 | App store requirement |
 
 ### Onboarding-Specific Art
-| Asset | Notes |
-|-------|-------|
-| World intro panel 1 — wide world shot | Step 1 of onboarding |
-| World intro panel 2 — Grimoires on a table | Step 1 of onboarding |
-| World intro panel 3 — Grimwood Fringe entrance | Step 1 of onboarding |
-| Grimoire selection room backdrop | Step 4 of onboarding — stone table, candlelight |
+| Asset | Resolution | Notes |
+|-------|-----------|-------|
+| World intro panel 1 — wide world shot | 1920x1080 | Step 1 of onboarding |
+| World intro panel 2 — Grimoires on a table | 1920x1080 | Step 1 of onboarding |
+| World intro panel 3 — Grimwood Fringe entrance | 1920x1080 | Step 1 of onboarding |
+| Grimoire selection room backdrop | 1920x1080 | Step 4 — stone table, candlelight |
+
+### Notice Board Art
+| Asset | Resolution | Notes |
+|-------|-----------|-------|
+| Notice Board background — wooden parchment board | 1920x1080 or panel size | Pixel art pinboard UI |
+| Parchment notice card | 512x256 | Individual notice card — tiled on board |
 
 ---
 
 ## 📦 Phase 2 — Full Base Game Classes
 
 ### Characters
-| Asset | Notes |
-|-------|-------|
-| Arcanist base character — idle, walk, rune-draw gesture, cast, hit reaction, death | Constellation drawing animation is unique — thumb/hand gesture needs visual feedback |
-| Runeweaver, Summoner, Lifebinder visual variants | Cosmetic differences per subclass |
-| Vanguard base character — idle, walk, melee attack combo (3-hit), block stance, hit reaction, death | |
-| Warlord, Shadowblade visual variants | Shadowblade likely needs a stealth/cloaked variant frame |
+| Asset | Resolution | Notes |
+|-------|-----------|-------|
+| Arcanist base character — idle, walk, rune-draw gesture, cast, hit reaction, death | 256x256 | Rune-draw gesture needs clear hand animation |
+| Runeweaver, Summoner, Lifebinder visual variants | 256x256 | Cosmetic layer differences |
+| Vanguard base character — idle, walk, melee combo (3-hit), block stance, hit reaction, death | 256x256 | |
+| Warlord, Shadowblade visual variants | 256x256 | Shadowblade needs stealth/cloaked variant |
 
 ### Combat-Specific
-| Asset | Notes |
-|-------|-------|
-| Rune Constellation UI — 8 node icons (Ignis, Glacius, Tempest, Terra, Ventus, Vita, Umbra, Lux) | Each needs a distinct glowing pixel icon |
-| Rune connection line/glow effect | Visual for drawing between nodes |
-| Summon creatures — Ember Sprite, Stone Golem, Frost Shard, Storm Wisp, Void Shade, Celestial Guardian | Each needs idle/attack/death at minimum |
-| Melee combo hit effects | Slash marks, impact bursts for Vanguard |
+| Asset | Resolution | Notes |
+|-------|-----------|-------|
+| Rune Constellation — 8 node icons | 64x64 each | Ignis, Glacius, Tempest, Terra, Ventus, Vita, Umbra, Lux |
+| Rune connection line/glow effect | Vector/scalable | Drawing line between nodes |
+| Summon creatures — 6 types | 256x256 | Ember Sprite, Stone Golem, Frost Shard, Storm Wisp, Void Shade, Celestial Guardian |
+| Melee combo hit effects | 128x128 | Slash marks, impact bursts for Vanguard |
 
 ### Enemies — Tier 2 Zones
-| Enemy | Zone |
-|-------|------|
-| Bogwalker Skeleton, Ashfen Treant, Mire Wraith, Bog Lurker, Barrow Revenant (Elite), Thornwood Ancient (Elite), The Ashfen Lich (Boss) | Ashfen Mire |
-| Ironspine Deserter, Mountain Golem, Warband Raider, Rune Construct, Ironspine Warlord (Elite), Awakened Stone Sentinel (Elite), The Ironspine Colossus (Boss) | Ironspine Reaches |
+| Enemy | Resolution |
+|-------|-----------|
+| All Ashfen Mire enemies (7 including boss) | 256x256 standard, 320x320 boss |
+| All Ironspine Reaches enemies (7 including boss) | 256x256 standard, 320x320 boss |
 
 ### Environments
-| Asset | Notes |
-|-------|-------|
-| Ashfen Mire — combat + traversal backdrops | Swamp/bog theme |
-| Ironspine Reaches — combat + traversal backdrops | Mountain pass theme |
-| Mirefall Barrow — dungeon tileset | |
-| Warden's Folly — dungeon tileset | |
-
-### Items
-| Category | Notes |
-|----------|-------|
-| Full Tier 2 rare material set | Rough tier of all 8 material types |
-| Mid-tier weapon set | Staff, Wand, Sword, Dagger, Axe across Crude–Refined |
-| Plate armor full set | Crude–Refined tiers |
-| Magical Vestments full set | Crude–Refined tiers |
-| Arcanist/Vanguard Grimoire visuals | Runeweaver, Summoner, Lifebinder, Warlord, Shadowblade |
+| Asset | Resolution |
+|-------|-----------|
+| Ashfen Mire — combat + traversal | 1920x1080 each |
+| Ironspine Reaches — combat + traversal | 1920x1080 each |
+| Mirefall Barrow dungeon tileset | 32x32/tile |
+| Warden's Folly dungeon tileset | 32x32/tile |
 
 ---
 
 ## 📦 Phase 3 — Remaining Zones & Endgame
 
 ### Enemies — Tier 3, 4, 5 Zones
-All enemies for Dreadhollow, Cinderpeak, Veilborn Wastes, Shattered Citadel, Ashenwold, Elder Reaches — roughly 35-40 additional enemy types following the same 5-animation template. This is the largest remaining content volume.
+~35–40 additional enemies across Dreadhollow, Cinderpeak, Veilborn Wastes, Shattered Citadel, Ashenwold, Elder Reaches — all at **256x256** standard, zone bosses at **320x320**.
 
 ### Environments
-6 additional zone backdrop sets (combat + traversal) + 6 additional dungeon tilesets
-
-### Items
-- Tier 3-5 rare material sets (Refined, Pristine, Masterwork)
-- High-tier weapon and armor sets across all types
-- Raid-exclusive visual variants for Masterwork gear
+6 additional zone backdrop sets + 6 dungeon tilesets — all at **1920x1080** / **32x32 per tile**.
 
 ### Guild Hub Art
-| Asset | Prestige Level |
-|-------|----------------|
-| Campfire Gathering | 0–4 |
-| Tent Camp | 5–9 |
-| Encampment | 10–19 |
+| Asset | Resolution | Prestige Level |
+|-------|-----------|----------------|
+| Campfire Gathering | 1920x1080 | 0–4 |
+| Tent Camp | 1920x1080 | 5–9 |
+| Encampment | 1920x1080 | 10–19 |
 
-> Later Guild Hub stages (Army Encampment through Stronghold Capital) can wait until Phase 4/5 since most guilds won't reach those Prestige levels until well post-launch.
+> Later Guild Hub stages (Fortress through Stronghold Capital) produced post-launch as guilds approach those Prestige levels.
 
 ---
 
 ## 📦 Phase 4 — Multiplayer
 
 ### UI/Social
-| Asset | Notes |
-|-------|-------|
-| Guild roster UI elements | |
-| Chat UI | Including name badge frame slots |
-| Party formation UI for dungeons/raids | Bottom-of-screen formation visual |
-| Raid boss intro/phase transition art | Larger illustrated moments for raid bosses specifically |
-
-### Lifebinder Group Features
-| Asset | Notes |
-|-------|-------|
-| Heal/buff visual effects (aura, restoration wave, revive pulse) | |
+| Asset | Resolution | Notes |
+|-------|-----------|-------|
+| Guild roster UI elements | Various | |
+| Chat UI elements | Various | Name badge frame slots |
+| Party formation UI | Various | Bottom-of-screen formation |
+| Raid boss intro/phase transition art | 1920x1080 | Larger illustrated moments |
 
 ---
 
 ## 📦 Phase 5 — Steam / PC
 
 ### UI Adaptations
-| Asset | Notes |
-|-------|-------|
-| Cursor/reticle for mouse-based Bowstring aiming | |
-| Larger UI scale variants for desktop resolution | Most pixel art should scale cleanly, but panel layouts may need adjustment |
-| Steam store page art — capsule images, header, screenshots | Marketing requirement, separate from in-game assets |
+| Asset | Resolution | Notes |
+|-------|-----------|-------|
+| Mouse cursor / Bowstring reticle | 64x64 | Point-filtered pixel cursor |
+| Steam store capsule image | 460x215 | Store listing requirement |
+| Steam store header | 3840x1240 | Store listing requirement |
+| Steam store screenshots | 1920x1080 | Min 5 required |
 
 ---
 
 ## 📦 DLC — Produce Only When Scheduled
 
-- Beastbond familiar creatures (multiple tamed creature types)
-- Warlock-specific visuals (soul effects, Black Ledger UI theme)
-- Kensei-specific visuals (Focus meter, ritual weapon variants)
-- Bard/Minstrel character and instrument visuals
-- Faction system — 5 faction emblem/banner sets, faction zone ownership visual overlays
-- Mythic tier item visual treatment (likely animated/glowing variant of Legendary)
-- Later Guild Hub stages — Fortress, Castle, Castle+Village, Stronghold Capital
+All DLC sprites follow same resolution standards as base game equivalents.
+
+- Beastbond familiar creatures — 256x256, multiple creature types
+- Warlock-specific visuals — soul effects, Black Ledger UI theme
+- Kensei-specific visuals — Focus meter, ritual weapon variants  
+- Bard/Minstrel character and instrument visuals — 256x256
+- Faction system — 5 faction emblem/banner sets (96x96 icons), faction zone visual overlays
+- Mythic tier item visual treatment — animated/glowing variant of Legendary tier
+- Later Guild Hub stages — Fortress, Castle, Castle+Village, Stronghold Capital — 1920x1080 each
 
 ---
 
@@ -200,15 +238,17 @@ All enemies for Dreadhollow, Cinderpeak, Veilborn Wastes, Shattered Citadel, Ash
 
 | Priority | What | Why |
 |----------|------|-----|
-| 1 | Warden character + 13 Tier 1 enemies | Nothing else matters if combat isn't playable |
-| 2 | Phase 1 UI icon set + panel system | Needed for any screen to look finished |
-| 3 | Phase 1 gathering/processing items | Needed for the idle loop to feel complete |
-| 4 | Onboarding panels | First impression, but can use placeholder pixel scenes initially |
-| 5 | Phase 2 characters and zones | Once Phase 1 is playable and validated |
+| 1 | Warden base body + equipment layers | Nothing renders without the character |
+| 2 | Test layering in Unity before proceeding | Verify 256x256 layers composite correctly |
+| 3 | 13 Tier 1 enemies | Combat isn't playable without enemies |
+| 4 | Phase 1 UI icon set + panel system | Needed for any screen to look finished |
+| 5 | Phase 1 item icons | Idle loop needs items to feel real |
+| 6 | Environment backdrops | Needed once character and enemies work in-engine |
+| 7 | Onboarding panels | Can use placeholders until everything else is solid |
 
-**Recommendation:** Get Phase 1 fully art-complete before starting Phase 2 art. A playable, fully-dressed Phase 1 build is more valuable for testing and feedback than a partially-dressed full game.
+**Recommendation:** Generate Warden base body first, verify Unity import settings (Point filter, PPU 100) and layering work correctly before generating any other character or enemy. One test asset done right saves regenerating everything later.
 
 ---
 
-*Document version 0.1 — Art Asset Requirements by Phase*
-*Update this doc as new systems are designed — every new enemy, item, or zone should get added here immediately so nothing is missed during sourcing*
+*Document version 0.2 — Art Asset Requirements by Phase*
+*Updated: Resolution standards raised to 256x256 for characters/enemies, 64x64 for item icons. Unity import settings added. Layered equipment format clarified.*

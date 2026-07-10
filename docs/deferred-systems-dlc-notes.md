@@ -27,7 +27,7 @@ Five factions tied to world zones and playstyle identity:
 - **Faction zones** — idle assignments in a faction's zone generates slow passive standing
 - **XP boosts** — higher standing grants XP bonuses in faction-relevant Talent areas
 - **Faction wars** — guild vs guild weekly territory competition for cosmetic and bonus rewards; resets weekly to prevent permanent dominance
-- **Black Ledger consequence** — Crown faction NPC seizure mechanic for Underworld/Shadowblade players with low Crown standing
+- **Black Ledger consequence** — Crown faction NPC seizure mechanic *(Black Ledger itself deferred — only relevant if Black Ledger returns as DLC content)*
 - **Switching primary faction** — possible but costs significant Gold Marks and drops standing by one tier
 
 ### Base Game Design Constraints
@@ -37,7 +37,7 @@ Five factions tied to world zones and playstyle identity:
 - **Inscription** Diplomatic Charter items already exist in Talent spec — these will feed faction standing gain when factions launch; don't remove or repurpose them
 - **CHA stat** already tied to faction reputation conceptually — keep CHA relevant in base game economy so the transition feels natural
 - **Guild system** (Phase 4) should be architected to support a standing contribution layer even if faction data isn't populated yet
-- **Wayfarer's Exchange** Black Ledger section for Shadowblade already noted — design this as a stub that expands with faction launch
+- **Wayfarer's Exchange** Black Ledger section fully removed from base game — if it returns it will be a clean DLC addition, no stub needed
 - **Weekly quest infrastructure** needed for factions — if daily/weekly quests are built for base game, architect the system to support faction-tagged quest types
 - **Enemy tagging** — outlaw-type enemies referenced in faction damage bonus design; tag enemy types in the combat system from the start (outlaw, beast, undead, arcane, elite, etc.) so faction damage bonuses can be applied cleanly later
 
@@ -157,7 +157,39 @@ Market quest CHA bonus (currently Silver/Gold Marks only in base game) will be a
 
 ---
 
-## 📋 Deferred Subclass: Warlock (Arcanist DLC)
+## 📋 Deferred Subclass: Bloodweaver (Arcanist DLC)
+
+**Planned Release:** DLC — Arcanist path
+**Design Status:** Concept locked, tree not designed
+
+### Core Concept
+The dark mirror of the Lifebinder. Where the Lifebinder sacrifices their own HP to heal others, the Bloodweaver drains enemy HP to sustain themselves. Selfish, predatory, morally ambiguous — the Arcanist who weaponizes life force rather than nurturing it.
+
+### Primary Stats: INT + VIT
+- INT: Drain potency and spell power
+- VIT: Larger HP pool to absorb incoming damage between drains
+
+### Combat Identity
+- Heavy Umbra rune usage — Umbra combinations drain enemy HP
+- No mana pool — HP is both the resource and the reward
+- Self-sufficient damage dealer — never needs a healer in group content
+- Moderate party utility — some drain effects can be redirected to allies
+- Morally grey — consuming enemy life force to sustain personal power
+
+### Thematic Position
+The Bloodweaver is the shadow counterpart to the Lifebinder — both manipulate life force, but in opposite directions. Lifebinder gives; Bloodweaver takes. Both are part of the same school of life magic, just applied differently.
+
+### Naming Convention
+Intentionally mirrors Runeweaver — both are Arcanists who weave a specific force (runes vs blood/life).
+
+### Base Game Constraints
+- Umbra rune drain mechanic must NOT be implemented for Lifebinder — reserved for Bloodweaver
+- Vita rune remains pure healing for Lifebinder; Umbra rune remains debuff/weaken for base game
+- `bloodweaver_drain` damage type tag should be reserved in the combat system from day one
+
+---
+
+
 
 **Planned Release:** DLC
 **Design Status:** Rune behavior defined, tree not designed
@@ -167,7 +199,7 @@ Soul harvesting and dark pact mechanics. Soulbinding is the primary exclusive Ta
 
 ### Base Game Constraints
 - Soulbinding Talent already in spec sheets — Grimoire-locked to Warlock
-- Black Ledger stub exists in Wayfarer's Exchange design
+- Black Ledger removed from base game design — see Bloodweaver DLC entry for drain/dark economy mechanics that may replace it
 - Runic Constellation Warlock column already defined
 
 ---
@@ -186,7 +218,36 @@ Samurai discipline and Focus mechanic. Wardancing is the primary exclusive Talen
 
 ---
 
-## 📋 Deferred System: Player Trade Agreement System
+## 📋 Deferred System: Guild Bounties
+
+**Planned Release:** Post-launch content update — not Phase 1, 2, or 3
+**Design Status:** Concept designed, UI placeholder reserved in Upgrades tab
+
+### Core Concept
+Guild-wide collaborative events funded from the guild bank. Officers activate a bounty by spending GM — all members contribute toward a collective goal within a time window. If the goal is met, all participating members receive a reward.
+
+### Example Bounty
+```
+THE ASHFEN BOUNTY
+Cost: 8,000 GM to activate
+Goal: Guild collectively slays 500 enemies in Ashfen Mire within 48 hours
+Reward if met: All participating members get 2x material drops in Ashfen Mire for one week
+Reward if 75%+ met: Partial reward — 1.5x for 3 days
+Reward if under 75%: Bounty fails, GM spent is not refunded
+```
+
+### Why Deferred
+Guilds need time to grow and establish active membership before bounty coordination becomes meaningful. Releasing too early means most guilds fail bounties due to low member counts — creates frustration rather than excitement. Better as a "Season 2" feature when active guilds exist.
+
+### UI Placement
+When released, bounty activation lives in the **Upgrades tab** of the Guild Hall UI. A dedicated section below permanent unlocks. Active bounty progress shows on the Guild Home screen as a banner.
+
+### Base Game Constraints
+- `guild_bounties` table stub should be created but left empty
+- Upgrades tab should have a placeholder section reserved for bounties
+- Guild bank spending infrastructure already supports bounty cost deduction
+
+---
 
 **Planned Release:** Phase 4 (Multiplayer expansion)
 **Design Status:** Concept only

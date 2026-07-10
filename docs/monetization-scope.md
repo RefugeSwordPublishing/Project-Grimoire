@@ -1,138 +1,167 @@
 # ⚔️ Project Grimoire — Monetization Scope
-### Version 0.1
+### Version 0.3
 
 ---
 
 ## 📐 Design Philosophy
 
-Nothing in Project Grimoire is exclusively pay-walled. Every item, unlock, and upgrade is earnable through normal play with Silver and Gold Marks. Real money purchases exist purely as a **convenience and time-savings option** for players who want to support development or accelerate their journey — never as the only path to power or content.
+Nothing in Project Grimoire is exclusively pay-walled. Every item, unlock, and upgrade is earnable through normal play with Silver and Gold Marks. Real money purchases exist purely as a **convenience and time-savings option** — never as the only path to power or content.
 
 **Hard rules:**
-- No XP boosts for sale, ever — protects the core progression curve and prevents whales from trivializing the leveling experience
-- No stat-affecting items real-money exclusive — cosmetics and convenience only when real money is the sole option
-- No guild power purchasable with real money — guild progression is GM and activity based only, protects competitive integrity
-- No pay-to-skip on quests, dungeons, or raids — these are earned through play
-- All pricing shown in both Gold Marks and real money side by side — full transparency, no obfuscation
+- No XP boosts for sale, ever — protects the core progression curve
+- No stat-affecting items real-money exclusive
+- No guild power purchasable with real money
+- No pay-to-skip on quests, dungeons, or raids
+- No direct Gold Mark purchases — prevents market flooding and economy manipulation
+- All pricing shown in both Gold Marks and real money side by side — full transparency
+- Tradeable tickets let the player market set the effective exchange rate organically
 
 ---
 
-## 💰 Currency Recap
+## 💰 Currency
 
 | Currency | Source | Role |
 |----------|--------|------|
 | Silver Marks (SM) | Combat, selling, quests, gathering | Day-to-day economy |
-| Gold Marks (GM) | Rare drops, weekly quests, high-value sales, real money purchase | Significant purchases — Grimoires, DLC, premium items |
+| Gold Marks (GM) | Rare drops, weekly quests, high-value sales, ticket sales on Exchange | Significant purchases |
 
-Conversion: 1,000 SM = 1 GM (informal reference, not a forced exchange mechanic)
+**No direct Gold Mark purchases.** Players who want Gold Marks earn them through gameplay or by purchasing tradeable tickets from the Royal Merchant and listing them on the Wayfarer's Exchange. The Exchange sets the real-money-to-marks rate organically based on supply and demand — not the developer.
 
 ---
 
-## 🛒 System Store Catalog
+## 🏪 The Royal Merchant
+
+All premium purchases are made through **The Royal Merchant** — a dedicated vendor tab inside the Wayfarer's Exchange. Feels like a natural part of the game world rather than a jarring external store screen.
+
+**Location:** Wayfarer's Exchange → Royal Merchant tab
+**Access:** Any player who can access the Exchange (any Talent level 10)
+
+---
+
+## 🎟️ Tradeable Tickets
+
+Convenience items sold by the Royal Merchant. Key distinction from other purchases:
+- **Tradeable** — can be listed on the Wayfarer's Exchange, sent to friends, or gifted to guild members
+- **Account-bound on use** — once redeemed, the benefit applies to that account permanently
+- **No expiry** — permanent until used
+- **Player-driven exchange rate** — players who want GM buy tickets from other players on the Exchange rather than from the developer directly
+
+| Ticket | Real Money | GM Price | Effect on Use | Tradeable |
+|--------|-----------|---------|--------------|-----------|
+| Inventory Slot Ticket | $1.99 | 300 GM | +10 personal inventory slots (permanent) | ✅ Yes |
+| Daily Quest Slot Ticket | $1.99 | 400 GM | Expands daily quests from 5→10 (permanent) | ✅ Yes |
+| Weekly Quest Slot Ticket | $1.99 | 400 GM | Expands weekly quests from 2→4 (permanent) | ✅ Yes |
+| Slaying Task Slot Ticket (6th) | $0.99 | 200 GM | Unlocks 6th task slot (permanent) | ✅ Yes |
+| Slaying Task Slot Ticket (7th) | $1.99 | 300 GM | Unlocks 7th task slot (permanent) | ✅ Yes |
+| Slaying Task Slot Ticket (8th) | $2.99 | 500 GM | Unlocks 8th task slot (permanent) | ✅ Yes |
+| Exchange Listing Slot Ticket | $1.99 | 300 GM | +5 Exchange listing slots (permanent, stackable) | ✅ Yes |
+| Guild Bank Slot Ticket | $1.99 | 300 GM | +10 guild bank slots (permanent, stackable) | ✅ Yes |
+
+> Note: Slaying task slots 4 and 5 are free milestone unlocks at Slaying level 25 and 50 — only slots 6, 7, and 8 require purchase.
+
+---
+
+## 🔒 Account-Bound Purchases
+
+These items are account-bound immediately on purchase — cannot be traded, sold on Exchange, or gifted. Prevents flipping for marks on items that would create gameplay advantage.
 
 ### Grimoires
 
-| Item | GM Price | Real Money | Notes |
-|------|---------|-----------|-------|
-| Additional base game Grimoire (any of the 7) | 500 GM | $2.99 | First Grimoire is free at game start |
-| DLC Grimoire — Beastbond, Warlock, Kensei | 2,500 GM | $4.99 | Higher tier — DLC exclusive content |
-| DLC Subclass — Bard/Minstrel (when released) | 2,500 GM | $4.99 | Same DLC tier pricing |
+| Item | Real Money | GM Price | Notes |
+|------|-----------|---------|-------|
+| Additional base game Grimoire (any of 7) | $2.99 | 500 GM | First Grimoire free at start |
+| DLC Grimoire — Beastbond, Warlock, Kensei | $4.99 | 2,500 GM | DLC exclusive |
+| DLC Subclass — Bard/Minstrel | $4.99 | 2,500 GM | DLC exclusive |
 
-### Content Packs (DLC)
+### DLC Content Packs
 
-| Item | GM Price | Real Money | Notes |
-|------|---------|-----------|-------|
-| Faction System Pack | 10,000 GM | $9.99 | Unlocks faction reputation, faction wars, level 120 cap |
-| New Game Plus / Hard Mode Pack | 6,000 GM | $6.99 | Hard mode dungeons, expanded talent cap to 120 |
-
-### Quest Board Expansions
-
-| Item | GM Price | Real Money | Notes |
-|------|---------|-----------|-------|
-| Daily Quest Slots — unlock all 10/10 | 400 GM | $2.99 | Permanent, one-time purchase |
-| Weekly Quest Slots — unlock all available | 400 GM | $2.99 | Permanent, one-time purchase |
-
-### Exchange Conveniences
-
-| Item | GM Price | Real Money | Notes |
-|------|---------|-----------|-------|
-| +5 Exchange listing slots | 300 GM | $1.99 | Permanent, stackable (can buy multiple times) |
-| +10 Buy Order slots | 300 GM | $1.99 | Permanent, stackable |
+| Item | Real Money | GM Price | Notes |
+|------|-----------|---------|-------|
+| Faction System Pack | $9.99 | 10,000 GM | Factions, faction wars, level 120 cap |
+| New Game Plus / Hard Mode Pack | $6.99 | 6,000 GM | Hard dungeons, expanded Talent cap |
 
 ### Cosmetics
+Account-bound — cosmetics should represent personal expression, not be commodities.
 
-| Item | GM Price | Real Money | Notes |
-|------|---------|-----------|-------|
-| Grimoire skin (per design) | 200 GM | $0.99 | Purely visual, no stat effect |
-| Character portrait frame | 150 GM | $0.99 | UI cosmetic around player portrait |
-| Name badge (non-supporter) | 150 GM | $0.99 | Displayed in chat/guild roster |
-| Early Supporter Badge | — | One-time, tied to early purchase | Cannot be bought after launch window closes — see below |
-| Guild banner color variant | 200 GM | $0.99 | Guild Master purchase, cosmetic only |
-| Guild emblem theme | 300 GM | $1.99 | Guild Master purchase, cosmetic only |
-
-### Gold Mark Packs (direct purchase, convenience only)
-
-| Pack Name | GM Granted | Price | Notes |
-|-----------|-----------|-------|-------|
-| Wanderer's Pouch | 100 GM | $0.99 | Base value |
-| Merchant's Satchel | 300 GM | $2.49 | Slight bonus over base rate |
-| Wayfarer's Chest | 600 GM | $3.99 | Better value |
-| Grimoire Vault | 1,500 GM | $7.99 | Best value — bulk purchase |
-
-GM Packs let players who want to accelerate convert real money into the existing economy rather than buying power directly — they still have to spend the GM on actual catalog items, keeping the earnable-everything philosophy intact.
+| Item | Real Money | GM Price | Notes |
+|------|-----------|---------|-------|
+| Grimoire skin (per design) | $0.99 | 200 GM | Purely visual |
+| Character portrait frame | $0.99 | 150 GM | UI cosmetic |
+| Name badge | $0.99 | 150 GM | Displayed in chat/guild/Exchange |
+| Early Supporter Badge | One-time, launch window only | — | Cannot be purchased after window closes |
+| Guild banner color variant | $0.99 | 200 GM | Guild Master purchase |
+| Guild emblem theme | $1.99 | 300 GM | Guild Master purchase |
 
 ---
 
-## 🏆 Early Supporter Badge
+## 🎟️ How Tradeable Tickets Create a Player-Driven Exchange
 
-A one-time-only cosmetic badge available exclusively during a limited launch window — likely the first 30–60 days post-launch, or tied to any purchase made during early access/soft launch. Cannot be purchased after the window closes, regardless of GM or real money offered.
+The flow for a player who wants Gold Marks but doesn't want to grind:
 
-**Purpose:** Rewards early community trust and creates a permanent, non-repeatable status symbol. No gameplay effect — purely a badge displayed next to player name in chat, guild roster, and Exchange listings.
+```
+Player buys Inventory Slot Tickets from Royal Merchant ($1.99 each)
+         ↓
+Lists tickets on Wayfarer's Exchange at market price
+         ↓
+Other players buy tickets with earned Gold Marks
+         ↓
+Buyer redeems ticket → gets inventory slots
+Seller gets Gold Marks → spends on Grimoires, rare materials etc.
+```
 
-**Design consideration:** Avoid any tiered version of this (no "Bronze/Silver/Gold supporter") — keep it as a single binary badge to avoid feeling like a spending leaderboard. Status should come from being early, not from spending more.
+This means:
+- Developer captures revenue through ticket sales
+- No fixed real-money → GM conversion rate — Exchange sets the rate
+- Players who grind can acquire premium convenience without spending real money
+- Spenders get a liquid market for their purchases
+- Economy cannot be flooded since tickets are consumed on use
 
 ---
 
 ## 🚫 What Will Never Be Sold
 
-Explicitly excluded from monetization, regardless of future pressure to add revenue streams:
+Explicitly excluded from monetization permanently:
 
 - XP boosts of any kind
+- Direct Gold Mark or Silver Mark purchases
 - Stat-boosting consumables exclusive to real money
 - Guild power, upgrades, or roster expansion via real money
 - Faction standing or faction war advantages
 - Raid or dungeon skip tickets
-- Rare material direct purchase (must be earned via gathering, combat, or Assembly)
+- Rare material direct purchase
 - Legendary or Mythic tier items direct purchase
-- Loot boxes or gacha-style randomized purchases of any kind
-
-This list should be revisited only with extreme caution — the core promise to players is that spending buys convenience and cosmetics, never power.
+- Loot boxes or gacha-style randomized purchases
 
 ---
 
-## 📊 Monetization Philosophy Summary
+## 📊 Monetization Summary
 
-| Category | Real Money Role |
-|----------|-----------------|
-| Grimoires | Convenience — skip the GM grind, same end result as earning |
-| DLC Content | Direct unlock — fair dollar pricing for genuinely new content |
-| Quest Slots | Convenience — quality of life for engaged players |
-| Exchange Slots | Convenience — quality of life for active traders |
-| Cosmetics | Pure vanity — no gameplay impact whatsoever |
-| GM Packs | Currency conversion — still must be spent in-game, no direct power purchase |
+| Category | Real Money Role | Tradeable |
+|----------|----------------|-----------|
+| Grimoires | Convenience — skip GM grind | No |
+| DLC Content | Direct unlock for new content | No |
+| Convenience Tickets | Buy and use, or sell on Exchange | Yes |
+| Cosmetics | Pure vanity, no gameplay impact | No |
+| Currency | No direct purchase — tickets only | Tickets yes |
 
-The guiding question for any future monetization addition should always be: **"Does this let a player buy an outcome they couldn't eventually earn through play?"** If yes, it doesn't belong in Project Grimoire.
+The guiding question for any future monetization addition: **"Does this let a player buy an outcome they couldn't eventually earn through play?"** If yes, it doesn't belong in Project Grimoire.
 
 ---
 
 ## 🔧 Technical Notes for Implementation
 
-- All System Store items require dual pricing display — GM cost AND real money cost shown simultaneously on every item card
-- Real money purchases process through Unity IAP — App Store, Google Play, and Steam each need their own product ID mapping but should resolve to the same internal item grant
-- Early Supporter Badge requires a server-side timestamp check against a fixed launch window end date — implement as a feature flag that can be toggled off after the window closes
-- GM Packs should NOT have a fixed in-game equivalent earn rate displayed — avoid implying GM purchased equals GM earned at any specific ratio, keeps regulatory and platform policy risk low
-- Guild cosmetic purchases (banner, emblem) should debit the purchasing player's personal GM balance, not the guild bank — keeps guild bank spend rules consistent with the Guild System doc
+- Royal Merchant is a tab within the Wayfarer's Exchange UI — not a separate screen
+- **RevenueCat SDK** handles all purchase validation across iOS, Android, and Steam — do not build custom receipt validation
+- RevenueCat validates purchases, grants entitlements, and sends webhook events to Supabase to update player account
+- All purchases process through Unity IAP, validated by RevenueCat, then recorded in Supabase
+- Tradeable tickets stored in inventory as normal items with `is_tradeable: true` flag
+- Account-bound items set `is_tradeable: false` and `is_account_bound: true` on purchase grant
+- Early Supporter Badge requires server-side timestamp check against launch window end date
+- Ticket redemption calls a server-side Edge Function to validate and apply the benefit
+- Exchange listing of tickets follows normal listing rules — solo players pay 3% system tax, guild members pay their guild tax rate (0–3%)
+- Guild Bank Slot Ticket redeemed by Guild Master or Officer only — server validates role before applying
 
 ---
 
-*Document version 0.1 — Monetization Scope*
-*Next: Main design doc cleanup pass*
+*Document version 0.3 — Monetization Scope*
+*Next: Session 3 handoff*

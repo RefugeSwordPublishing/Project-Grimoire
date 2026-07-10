@@ -122,7 +122,7 @@ All assembled weapons and tools have five quality tiers. Tier is determined at t
 | 24 | Quality Tier II yields possible on Attunement | Better reagent grade |
 | 29 | Field Notes: Thornroot | Poison Formulae in Alchemy |
 | 36 | Rare zone: Mirelands access | Unique reagents unavailable elsewhere |
-| 43 | Field Notes: Starbloom | Enchanting reagent; high sell value |
+| 43 | Field Notes: Starbloom | Inscription enchanting reagent; high sell value |
 | 51 | DEX passive +2 | Stat gain milestone |
 | 57 | Field Notes: Voidmoss | Soulbinding component (Warlock) |
 | 63 | Quality Tier III yields possible on Attunement | Requires Alchemy 50 to use |
@@ -133,7 +133,7 @@ All assembled weapons and tools have five quality tiers. Tier is determined at t
 | 87 | Quality Tier IV yields possible on Attunement | Master-grade reagents |
 | 88 | Field Notes: Soulflower | Rarest botanical; Warlock + Lifebinder use |
 | 91 | Rare zone: The Ashen Wastes | Post-game zone; unique flora |
-| 95 | Field Notes: Celestine Sprig | Highest-tier Enchanting reagent |
+| 95 | Field Notes: Celestine Sprig | Highest-tier Inscription enchanting reagent |
 | 100 | Guaranteed Tier III minimum yield on all harvests | Mastery — consistency over power |
 
 ---
@@ -180,19 +180,19 @@ All assembled weapons and tools have five quality tiers. Tier is determined at t
 | 1 | Copper Ore, Tin Ore | Basic Smelting input for Bronze |
 | 8 | Field Notes: Flint Fragment | Artificing early component |
 | 14 | Iron Ore | Requires Smelting 10 to process |
-| 21 | Gem nodes: Quartz, Jasper | Low-tier Enchanting stones |
+| 21 | Gem nodes: Quartz, Jasper | Low-tier Inscription enchanting stones |
 | 28 | VIT passive +2 | Stat milestone |
 | 33 | Silver Ore | Arcane Weaving component |
 | 37 | Coal nodes | Required fuel for advanced Smelting |
 | 44 | Field Notes: Fossil Shard | Feeds Runelore |
-| 49 | Gold Ore | High economy value; Enchanting |
-| 53 | Gem nodes: Ruby, Sapphire | Mid-tier Enchanting stones |
+| 49 | Gold Ore | High economy value; Inscription enchanting |
+| 53 | Gem nodes: Ruby, Sapphire | Mid-tier Inscription enchanting stones |
 | 59 | STR passive +2, VIT passive +2 | Stat milestone |
 | 64 | Mithril Ore | Requires Smelting 55 |
 | 67 | Deep Cave zone access | Richer nodes, higher danger |
 | 72 | Field Notes: Ancient Fossil | Full Runelore codex unlock |
 | 76 | Adamantine Ore | Requires Smelting 65 |
-| 81 | Gem nodes: Diamond, Voidstone | Enchanting endgame stones |
+| 81 | Gem nodes: Diamond, Voidstone | Inscription enchanting endgame stones |
 | 86 | Field Notes: Starstone Ore | Magical weapon base material |
 | 88 | Abyssal Cave zone access | Endgame zone |
 | 92 | Field Notes: Soulite Ore | Soulbinding and top-tier Runesmithing |
@@ -218,7 +218,7 @@ All assembled weapons and tools have five quality tiers. Tier is determined at t
 | 28 | DEX passive +1 | Stat milestone |
 | 34 | Field Notes: Scent Lure | Alchemy Formulae; rare catch rate up |
 | 39 | Wild Boar Trap | Boar Tusks (Artificing component) |
-| 46 | Live Capture unlocked | Required for Beastmastery pipeline |
+| 46 | Live Capture unlocked | *(Reserved for Beastbond DLC — unlock stub)* |
 | 53 | Field Notes: Beast Cage | Holds larger creatures; Artificing 40 required |
 | 61 | Wolf Trap | Wolf Pelt (Tanning tier 3) |
 | 67 | Field Notes: Shadow Snare | Catches nocturnal/rare creatures |
@@ -301,7 +301,7 @@ All assembled weapons and tools have five quality tiers. Tier is determined at t
 | 38 | WIL passive +2 | Stat milestone |
 | 44 | Field Notes: Alchemical Garden | Grows Alchemy-grade reagents |
 | 53 | Field Notes: Enchanted Soil | Rare plant growth unlocked |
-| 61 | Moonflower plots | Night-cycle only; Alchemy and Enchanting |
+| 61 | Moonflower plots | Night-cycle only; Alchemy and Inscription enchanting |
 | 69 | WIL passive +3 | Stat milestone |
 | 76 | Field Notes: Void Bloom Cultivation | Warlock reagent; very slow growth |
 | 84 | Field Notes: Worldseed | Legendary crop; one plot per account |
@@ -323,11 +323,11 @@ All assembled weapons and tools have five quality tiers. Tier is determined at t
 | 1 | Basic Animal Tracks | Reveals common creature zones |
 | 11 | Field Notes: Terrain Reading | Bonus node reveal in Foraging zones |
 | 22 | Rare Creature Trails | Feeds high-tier Trapping |
-| 33 | Field Notes: Monster Sign | Reveals elite enemy locations for Slaying |
+| 33 | Field Notes: Monster Sign | Builds elite encounter queue (max 3) — successful tracking attunement adds a guaranteed elite encounter to queue, pulled before random spawns. +20% drop rate on queued elites |
 | 44 | DEX passive +2, INT passive +1 | Stat milestone |
 | 53 | Field Notes: Ancient Trail | Reveals hidden Gleaning cache locations |
 | 63 | Void Creature Tracks | Endgame creature locations |
-| 74 | Field Notes: Legendary Spoor | Tracks legendary creatures for Beastmastery |
+| 74 | Field Notes: Legendary Spoor | Tracks legendary creatures *(Beastmastery taming reserved for Beastbond DLC)* |
 | 87 | INT passive +3 | Stat milestone |
 | 100 | All active rare nodes visible across current biome passively | Mastery — no active tracking needed in mastered biome |
 
@@ -358,7 +358,7 @@ All assembled weapons and tools have five quality tiers. Tier is determined at t
 | 51 | Strength Elixir | Ironbark Sap (Felling 14) | STR +5 for 10 min |
 | 57 | INT passive +3 | — | Stat milestone |
 | 63 | Frost Coating | Glacial Moss (Foraging 74) | Quiver buff — frost slow procs per hit |
-| 68 | Shadow Blend | Voidmoss (Foraging 57) | Stealth potion; Shadowcraft bonus |
+| 68 | Shadow Blend | Voidmoss (Foraging 57) | Stealth potion; bonus scales with Shadowblade Warfare level |
 | 74 | Leviathan Lure | Dragon Eel Oil (Dredging 73) | Rare fish encounter trigger |
 | 79 | Fortify Elixir | Adamantine Dust (Delving 76) | VIT +10 for dungeon duration |
 | 86 | Void Coating | Soulite Dust (Delving 92) + Voidmoss | Quiver buff — stacking void debuff procs |
@@ -430,7 +430,7 @@ All assembled weapons and tools have five quality tiers. Tier is determined at t
 | 1 | Bronze Bar | Copper + Tin Ore (Delving 1) | Basic Runesmithing input |
 | 11 | Iron Bar | Iron Ore (Delving 14) | Mid-tier gear base |
 | 22 | Steel Bar | Iron Bar + Coal (Delving 37) | Better weapons and armor |
-| 33 | Silver Bar | Silver Ore (Delving 33) | Enchanting foci; jewelry |
+| 33 | Silver Bar | Silver Ore (Delving 33) | Inscription enchanting foci; jewelry |
 | 43 | Gold Bar | Gold Ore (Delving 49) | High economy value |
 | 54 | Mithril Bar | Mithril Ore (Delving 64) | Endgame light armor |
 | 63 | STR passive +2 | — | Stat milestone |
@@ -486,7 +486,7 @@ All assembled weapons and tools have five quality tiers. Tier is determined at t
 | 27 | Steel Blade | Steel Bar (Smelting 22) | Better sword component |
 | 34 | Steel Limbs | Steel Bar | Mid-tier bow component |
 | 41 | Silver Tip | Silver Bar (Smelting 33) | Wand tip; Arcanist focus |
-| 48 | Schematic: Runed Blade | Steel Bar + Runelore 30 | Enchanting-ready slot |
+| 48 | Schematic: Runed Blade | Steel Bar + Runelore 30 | Inscription enchanting-ready slot |
 | 56 | Mithril Limbs | Mithril Bar (Smelting 54) | High-tier bow component |
 | 62 | STR passive +2 | — | Stat milestone |
 | 67 | Adamantine Plate components | Adamantine Bar (Smelting 68) | Heavy armor; Vanguard |
@@ -516,8 +516,8 @@ All assembled weapons and tools have five quality tiers. Tier is determined at t
 | 29 | DEX passive +1 | — | Stat milestone |
 | 36 | Warden's Cloak | Wolf Leather (Tanning 49) + Starbloom thread | DEX +3; Attunement window +5 sec |
 | 43 | Pattern: Reinforced Quiver | Hardened Leather (Tanning 37) | Better quiver; fire rate +5% |
-| 51 | Enchantment-Ready Garment | Masterwork Leather + Silver Thread | Enchanting base slot unlocked |
-| 58 | Pattern: Shadowweave Cloak | Voidmoss thread + Wolf Leather | Shadowcraft stealth bonus |
+| 51 | Enchantment-Ready Garment | Masterwork Leather + Silver Thread | Inscription enchanting slot unlocked |
+| 58 | Pattern: Shadowweave Cloak | Voidmoss thread + Wolf Leather | Stealth bonus scales with Shadowblade Warfare level |
 | 67 | Pattern: Elemental Quiver | Arcane Weaving 40 + Fine Leather | Passive elemental coating slot |
 | 74 | Pattern: Arcane Vestments | Arcane Weaving output + Fine Leather | Arcanist armor; INT +5 |
 | 83 | Pattern: Masterwork Quiver | Masterwork Leather + Magicwood frame | Fire rate +15%; 2 coating slots |
@@ -537,7 +537,7 @@ All assembled weapons and tools have five quality tiers. Tier is determined at t
 | Level | Pattern Unlock | Requires | Output |
 |-------|---------------|----------|--------|
 | 1 | Basic Wand Tip wrap | Softwood + Quartz (Delving 21) | Arcanist focus supplement |
-| 11 | Foci Orb | Silver Bar (Smelting 33) + Pearl (Dredging 17) | Spellcasting amplifier |
+| 11 | Foci Orb | Silver Bar (Smelting 33) + Pearl (Dredging 17) | Arcanist Grimoire combat amplifier — boosts constellation spell power |
 | 22 | Emberpetal Weave | Emberpetal (Foraging 68) + Fine Leather | Fire resistance armor component |
 | 34 | WIL passive +2 | — | Stat milestone |
 | 43 | Drake Scale Mantle | Drake Scales (Tanning 71) + Silver thread | High magic resist |
@@ -606,11 +606,22 @@ All assembled weapons and tools have five quality tiers. Tier is determined at t
 
 ---
 
-## ⚔️ COMBAT TALENTS
+## ⚔️ COMBAT TALENTS — REMOVED
+
+> **Combat Talents have been removed from the Talent system.**
+> Marksmanship, Spellcasting, and Warfare (Warden/Arcanist/Vanguard combat progressions) now live as **Grimoire Combat Progression** on each individual Grimoire — not as shared Talents.
+>
+> - Each Grimoire has its own combat level (1–100) tracked independently
+> - Switching Grimoires starts fresh on that Grimoire's combat progression
+> - Combat unlocks (Techniques, combos, rune combinations) live on the Grimoire's Combat Tab
+> - Zone unlock gate = Total Combat Level (sum of all owned Grimoire levels)
+> - Slaying XP feeds the currently equipped Grimoire's combat level
+>
+> See docs/wayferers-exchange-and-grimoire-system.md for full Grimoire combat progression spec.
 
 ---
 
-### 🏹 Marksmanship
+### 🏹 Marksmanship — REMOVED (moved to Grimoire)
 > Ranged combat proficiency — accuracy, draw speed, crit chance, and Bowstring mechanic depth. Warden primary combat Talent.
 
 **Primary Stats:** DEX, LCK
@@ -650,13 +661,11 @@ All assembled weapons and tools have five quality tiers. Tier is determined at t
 |-------|-----------------|-------|
 | 1 | Basic Combat | Zone 1 enemies |
 | 11 | Technique: Finishing Blow | Execute low-HP enemies for bonus XP |
-| 22 | Zone 2 enemies | Higher XP and drop tables |
-| 33 | Technique: Combat Awareness | Dodge window unlocked |
-| 46 | Zone 3 enemies | Elite enemy spawns begin |
-| 57 | Technique: Hunter's Mark | Mark target for +20% damage |
-| 68 | Zone 4 enemies | Boss encounters added |
-| 79 | Technique: Slayer's Focus | +20% XP from combat for 10 min cooldown |
-| 88 | Zone 5 enemies | Legendary enemy spawns; best drop tables |
+| 22 | Technique: Combat Awareness | Dodge window unlocked |
+| 33 | Technique: Hunter's Mark | Mark target for +20% damage |
+| 57 | Technique: Slayer's Focus | +20% XP from combat for 10 min cooldown |
+
+> Note: Zone access no longer gated by Slaying level — gated by Total Combat Level instead. Slaying governs task board content and spawn rate bonuses only.
 | 100 | Idle auto-combat never retreats from Zone 4 or lower | Mastery — reliable high-zone idle farming |
 
 ---
@@ -710,24 +719,10 @@ All assembled weapons and tools have five quality tiers. Tier is determined at t
 
 ---
 
-### 🔭 Divination
-> Predict resource node locations and reveal hidden drops across all zones.
-
-**Primary Stats:** INT, LCK
-**Unlock Term:** Codex Entry
-**Idle Action:** Passively reveals bonus nodes in active zone
-**Active Attunement:** Read the omen — interpret visual cues to identify which zone has the rarest active nodes
-
-| Level | Codex Entry Unlock | Effect |
-|-------|-------------------|--------|
-| 1 | Zone Reading | Reveals 1 bonus node in current zone |
-| 17 | LCK passive +2 | Stat milestone |
-| 29 | Deep Reading | Reveals hidden Gleaning caches |
-| 43 | Rare Node Sight | Highlights rare nodes before they spawn |
-| 58 | INT passive +2 | Stat milestone |
-| 73 | Multi-Zone Reading | Reveals nodes across 3 zones simultaneously |
-| 87 | LCK passive +3 | Stat milestone |
-| 100 | All active rare nodes in assigned zone always visible | Mastery — passive full zone awareness |
+### 🔭 Divination — DEFERRED
+> Divination has been removed from the base game Talent roster. Mechanically overlaps with Tracking's node-reveal functions. Reserved for a future Arcane or Faction DLC where "reading omens to predict faction movements, rare spawn windows, or future events" becomes a genuinely distinct mechanic.
+>
+> Do not implement in Phase 1 or Phase 2. Talent slot reserved on the Talents page with a "???" placeholder.
 
 ---
 
@@ -842,15 +837,17 @@ Same rune, same gesture — different effect based on subclass:
 | Mithril Gear Assembly | Smelting 54 + Timber Shaping 52 + Runesmithing 56 |
 | Warden's Focus Meal | Dredging 73 + Cultivation 61 |
 | Magical Creature Taming | Trapping 73 + Runelore 43 |
-| Poison Quiver Buff | Alchemy 19 + Tailoring 14 + Marksmanship 24 |
+| Poison Quiver Buff | Alchemy 19 + Tailoring 14 + Warden Grimoire combat level 24 |
 | Elemental Quiver | Tailoring 67 + Arcane Weaving 62 |
 | Void Gear Assembly | Smelting 84 + Delving 92 + Timber Shaping 74 + Runesmithing 84 |
 | Triple Enchant Slot | Inscription 88 (Masterwork gear enchantment unlock) |
 | Legendary Assembly | Assembler Talent 85+ + Legendary material + relevant components |
-| Full Constellation Spellcasting | Spellcasting 88 + Arcane Weaving 69 + Inscription 55 |
+| Full Constellation Casting | Arcanist Grimoire combat level 88 + Arcane Weaving 69 + Inscription 55 |
 
 ---
 
-*Document version 0.3 — Talent Spec Sheets*
+*Document version 0.5 — Talent Spec Sheets*
+*Key changes: Shadowcraft → Warfare, Enchanting → Inscription, Divination deferred, Beastmastery DLC stubs, combat cross-dependencies updated*
+*Key change: Combat Talents (Marksmanship, Spellcasting, Warfare) removed from Talent system — moved to Grimoire Combat Progression*
 *Key change: Enchanting merged into Inscription. Summoner's Tome moved to dungeon/raid drop. Zone Maps now consumable buffs with tier progression.*
 *Next: Enemy zone tables · Assembly material tables · Grand Exchange baseline item values · Subclass deep tree specs · Stat scaling formulas*

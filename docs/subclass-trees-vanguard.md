@@ -1,5 +1,5 @@
 # ⚔️ Project Grimoire — Vanguard Subclass Trees
-### Version 0.2
+### Version 0.4
 
 ---
 
@@ -10,6 +10,9 @@
 **Vanguard path passive bonus** (applies to ALL Vanguard Grimoires):
 - +2 STR baseline — reflects the Vanguard's natural melee affinity regardless of subclass
 - Carry weight bonus — all Vanguard Grimoires hold more materials in field inventory than other paths
+
+**Grimoire Combat Progression:**
+Combat no longer uses a shared Talent. Each Vanguard Grimoire has its own combat level (1–100) tracked independently. Purchasing a new Grimoire starts its combat progression at level 1. Combat XP from Slaying feeds the currently equipped Grimoire's combat level. Techniques and combat unlocks live on the Combat Tab of the Character Panel, not the Talents page.
 
 **Universal Vanguard mechanics** (apply to all Vanguard Grimoires):
 - Bulwark is the primary defensive Talent (Grimoire-locked to Vanguard)
@@ -30,7 +33,7 @@
 ---
 
 ### Hybrid Unlock Gates
-Warlord unlocks require **Bulwark level** (Grimoire-locked) and cross-Talent milestones focused on combat endurance and material mastery.
+Warlord unlocks require **Warfare level** (Grimoire-locked to Warlord Grimoire) and cross-Talent milestones focused on combat endurance and material mastery.
 
 ---
 
@@ -75,36 +78,36 @@ The Warlord is the **essential raid tank** and **guild anchor** — the player e
 *"They never see me coming. That's the point."*
 
 **Unlock:** Available as starting Grimoire or 500 GM
-**Playstyle:** Burst assassin and economy disruptor. The Shadowblade opens from stealth for devastating burst damage, applies poisons and debuffs, and has unique access to Gleaning deep trees and the Black Ledger in the Wayfarer's Exchange. Highest single-encounter damage potential of any Vanguard subclass but lowest survivability. Rewards aggressive, skillful play.
+**Playstyle:** Pure burst assassin. The Shadowblade opens from stealth for devastating burst damage, applies stacking poisons and hemorrhage DoTs, and has deep synergy with Gleaning for battlefield scavenging. Highest single-encounter damage potential of any Vanguard subclass but lowest survivability. Rewards aggressive, skillful play.
 **Idle behavior:** Stealth passive gives bonus drop chance on first enemy per idle session. Auto-combat at reduced damage — the Shadowblade's burst toolkit doesn't translate to sustained idle DPS. Gleaning passive continues during idle in unlocked zones.
-**Signature passive:** *Shadow's Edge* — first attack from stealth always crits. Always active.
+**Signature passive:** *Shadow's Edge* — first attack from stealth deals +150% damage. Displays as 'Critical!' visually — backend is a damage multiplier, not a true crit proc. Always active.
 
 ---
 
 ### Hybrid Unlock Gates
-Shadowblade unlocks require **Shadowcraft level** (Grimoire-locked) and cross-Talent milestones focused on stealth, poison, and scavenging.
+Shadowblade unlocks require **Warfare level** (Grimoire-locked to Shadowblade Grimoire) and cross-Talent milestones focused on stealth, poison, and scavenging.
 
 ---
 
 ### 🌿 Shadowblade Tree
 
-| Unlock | Shadowcraft Req | Cross-Talent Req | Type | Description |
+| Unlock | Warfare Req | Cross-Talent Req | Type | Description |
 |--------|----------------|-----------------|------|-------------|
-| **Shadow's Edge** | 1 | — | Signature Passive | First attack from stealth always crits. Always active. |
+| **Shadow's Edge** | 1 | — | Signature Passive | First attack from stealth deals +150% damage. Visual 'Critical!' label — backend damage multiplier, no crit system. Always active. |
 | **Vanish** | 9 | — | Technique | Enter stealth immediately — 10 second duration. 60 second cooldown. Core opener tool. |
 | **Poison Mastery** | 17 | Alchemy 19 | Passive | All poison effects applied by Shadowblade deal +30% damage and last +20% longer. Alchemy 19 knowledge of poison chemistry required. |
-| **Backstab** | 24 | Slaying 22 | Technique | Melee strike from stealth — 400% damage on first hit. Shadow's Edge guarantees crit. Combined with Poison Mastery creates devastating opener combo. |
+| **Backstab** | 24 | Slaying 22 | Technique | Melee strike from stealth — 400% damage on first hit. Shadow's Edge bonus applies on top. Combined with Poison Mastery creates devastating opener combo. |
 | **Pickpocket** | 31 | Gleaning 31 | Technique | Steal Silver Marks or a small item from a humanoid enemy during combat. Gleaning 31 scavenging knowledge required. |
 | **Shadow Step** | 38 | — | Technique | Teleport behind target enemy instantly — resets stealth opener window. 45 second cooldown. |
 | **Veil Walk** | 44 | Gleaning 47 | Passive | In Battlefield Gleaning zones, Shadowblade can move through enemy groups without triggering combat — choose specific engagement targets. Gleaning 47 dungeon knowledge required. |
 | **Hemorrhage** | 52 | Alchemy 57 | Technique | Apply a bleed effect — enemy loses HP over 30 seconds. Stacks with poison. Alchemy 57 Shadow Blend knowledge required for precise application. |
-| **Black Ledger Access** | 59 | Gleaning 54 | Passive | Unlocks the Black Ledger section of Wayfarer's Exchange — rare untraceable goods from hostile zone Gleaning listed here. No listing fee. Gleaning 54 battlefield scavenging knowledge required. |
+| **Shadowstep** | 59 | Gleaning 47 | Technique | Enter Shroud state — next enemy attack misses entirely, reappear with next Strike dealing +80% damage. Visually: player fades to near-invisible, enemy attack passes through, reappear flash on counter. 2D implementation via combat state — no physical repositioning needed. |
 | **Smoke Bomb** | 66 | Artificing 33 | Technique | Deploy smoke — all enemies in area lose target for 12 seconds. Resets combat engagement. Artificing 33 contraption knowledge required. |
-| **Shadow Economy** | 73 | Gleaning 63 | Passive | All items sold via Black Ledger sell for +20% above standard Exchange price. Gleaning 63 outpost knowledge deepens black market connections. |
+| **Hemorrhage Mastery** | 73 | Alchemy 67 | Passive | Bleed/hemorrhage DoTs applied by Shadowblade stack twice on the same enemy — double bleed running simultaneously creates the highest sustained DoT output in the game. Alchemy 67 advanced poison knowledge required. |
 | **Death Mark** | 79 | Slaying 79 | Technique | Mark target — if killed within 20 seconds, respawn timer is eliminated and a bonus rare drop guaranteed. Slaying 79 elite combat experience required. |
 | **Void Poison** | 86 | Alchemy 86 | Passive | Void Coating (Alchemy 86) applied by Shadowblade stacks twice on same enemy — stacking void debuff plus hemorrhage plus base poison creates devastating DoT combination. |
 | **Ghost** | 93 | Gleaning 79 | Passive | In any zone, Shadowblade can choose to be invisible to other players — cannot be targeted in PvP scenarios (Phase 4). Gleaning 79 assembly knowledge of camouflage required. |
-| **Phantom's Mastery** *(Level 100 capstone)* | 100 | — | Passive | Shadow's Edge now applies to the first attack of every combat encounter regardless of stealth — opener crit is guaranteed even when detected. Mastery — the Shadowblade's edge is permanent. |
+| **Phantom's Mastery** *(Level 100 capstone)* | 100 | — | Passive | Shadow's Edge now applies to the first attack of every combat encounter regardless of stealth — +150% damage opener guaranteed even when detected. Visual 'Critical!' displayed. Mastery — the Shadowblade's edge is permanent. |
 
 ---
 
@@ -112,7 +115,7 @@ Shadowblade unlocks require **Shadowcraft level** (Grimoire-locked) and cross-Ta
 The Shadowblade is the **burst assassin and market disruptor** — highest risk, highest reward:
 - Early game: Vanish + Backstab combo establishes the stealth opener identity
 - Mid game: Hemorrhage and Veil Walk add tactical flexibility and zone control
-- Late game: Black Ledger, Shadow Economy, and Death Mark create a unique economy + combat hybrid identity
+- Late game: Shadowstep, Hemorrhage Mastery, and Void Assassin create a pure burst assassin identity — no economy role needed
 - Idle: Weaker than other Vanguard subclasses — Shadowblade is designed to be played actively
 
 **Synergizes with:**
@@ -134,7 +137,7 @@ The Shadowblade is the **burst assassin and market disruptor** — highest risk,
 | **Solo viability** | Strong — nearly unkillable | Strong — high damage, careful play |
 | **Idle efficiency** | Excellent — full damage at capstone | Poor — burst toolkit doesn't translate |
 | **Skill ceiling** | Moderate — cooldown management | Very high — stealth timing + poison stacking |
-| **Economy role** | None specific | Black Ledger access — unique market role |
+| **Economy role** | None specific | None — pure combat specialist |
 | **Dungeon role** | Essential tank | Burst DPS / skip puller |
 | **Raid role** | Primary tank — required role | Burst DPS / off-tank in emergencies |
 

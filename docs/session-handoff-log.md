@@ -248,9 +248,183 @@ Confirm you have read all docs and understood the changes before writing any cod
 
 ---
 
-### Session 2 — [Date TBD]
-*Pending*
+### Session 2 — Phase 1 Implementation Begins
+**Date:** 2026-07-03
+**Implementation:** Claude Code
+**Status:** Active implementation — core systems being built
+
+**What was implemented:**
+- Unity Tools menu confirmed working (Supabase Config, Build Scene, Phase 1 Data Assets)
+- **Inventory UI** — complete redesign via CanvasBuilder:
+  - Category tabs: 2-row × 5-column grid at bottom (better mobile tap targets)
+  - Search bar above tab bar for mobile ergonomics
+  - Slot grid: 5 columns, 133px cells
+  - Header: SM/GM currency display with live labels
+  - Slot colors runtime-driven (empty/filled/locked states)
+  - RectMask2D used throughout (DX12 stencil fix — Mask breaks on DX12)
+- **Active Attunement System** — built from scratch:
+  - TalentActivity fields: hasAttunement, attunementCueLabel, attunementWindowAt, attunementWindowDuration, attunementXPBonus, attunementLootBonus
+  - IdleManager: OnAttunementWindowOpen/Close events, TapAttunement() method, XP multiplier and loot bonus on success
+  - AttunementUI.cs: pulsing tap button, success/miss feedback animations
+  - AttunementCompanionUI.cs: cycle bar fill, talent/activity labels, attunement description
+- **Desktop Split-View** — DesktopLayoutManager.cs:
+  - Landscape: inventory right half, AttunementCompanion left half
+  - Portrait/mobile: untouched single column
+  - Canvas RectTransform detection (not Screen.width) — avoids false portrait in editor
+  - ForceDesktopLayout flag + context menu for editor testing
+- LootToastUI updated for split-view positioning
+
+**Decisions made during implementation:**
+- Attunement system opt-in per activity (hasAttunement = false by default)
+- Slot colors runtime-driven not prefab default — allows dynamic locked state changes
+- AttunementCompanionPanel is dedicated panel (not resized CategoryTalentPanel)
+
+**Currently blocking / in progress:**
+- Attunement data empty — hasAttunement + cue labels need setting on TalentActivity ScriptableObjects per activity type
+- WYWA applies XP but not items — needs ItemData ScriptableObject assets + AddItemByName on InventoryManager
+- Guild bank UI not started
+- Bowstring combat not started
+- Firebase not started
+
+**Top 3 for next Claude Code session:**
+1. Wire attunement into TalentActivity ScriptableObjects (hasAttunement, cue labels, attunementWindowAt timing per activity)
+2. Guild bank UI
+3. WYWA item application (ItemData assets + InventoryManager.AddItemByName)
 
 ---
 
-*Document version 0.2 — Session Handoff Log*
+### Session 3 — Design Continuation (Complete)
+**Date:** 2026-07-04
+**Chat:** Claude.ai
+**Status:** Phase 1 design complete — ready for Claude Code handoff
+
+**What was designed this session:**
+- Slaying Talent full spec — dungeon mastery model, task board, XP sources (dungeon/elite/boss/task), level unlocks, spawn rate bonuses, raid access at Slaying 45, task slot milestones at level 25/50, Royal Merchant slots 6/7/8
+- Attunement window data spec v0.2 — all Phase 1 talents with tighter window durations (0.6–1.5s), assembly success % bonus for crafting talents (Runesmithing 25%, Tailoring/Arcane Weaving 20%, Artificing 15%)
+- Assembly ownership reworked — Timber Shaping (bow/tools), Runesmithing (metal weapons/armor), Tailoring (leather/vestments/quiver), Arcane Weaving (wand/staff), Artificing (tools/kits), Tanning (supplier only)
+- Bow component update — Timber limbs + Tanning leather handle guard + Runesmithing tips + Gemstone rare material
+- Trapping confirmed as primary non-combat hide/meat source for pure crafters
+- Enchanting merged into Inscription — gear enchanting gates on equipment tier ownership
+- Zone Maps reworked — consumable 1hr zone-specific buffs, 4 quality tiers by Inscription level
+- Summoner's Tome moved to dungeon/raid rare drop (Tier 3+)
+- Royal Merchant — premium store lives inside Wayfarer's Exchange as vendor tab
+- Tradeable ticket model — replaces direct Gold Mark purchases, tickets tradeable on Exchange
+- Player Account System — email + password, username moderation (3-layer), security questions, soft delete (30-day grace), full Supabase data schema
+- Inventory & Character Panel — 70 slots, 9 categories, custom sort, placeholders, item locking, guild bank (50 slots), buff HUD row
+- Audio direction — Moonlit Caravan, Battle, Silent Save Point confirmed. SNES chiptune. Notice Board replaces push for raid advance notice
+- Settings screen — Audio, Notifications, Account, Display, Accessibility, Privacy. Attunement window duration modifier removed. Guild chat deferred to Phase 4 chat UI
+- Push notification triggers — P1–P4 priority system, 3-notification/4hr cap, 30-min cooldown, FCM payload structure, deep links, Android channels, Notice Board spec
+- Exchange unlock flow — Talent level 10 gate, banner slide-in, one-time welcome panel, starter tooltip
+- Infrastructure & cost planning — Supabase ~$50–60/mo, Firebase FCM $0, RevenueCat added to stack
+- Revenue projections — 2–5% conversion, $2,720–$13,600/mo net at 20K MAU
+- RevenueCat confirmed — cross-platform purchase validation, conversion reporting, A/B testing
+- Admin/moderation backend — Retool at admin.refugeswordpublishing.com, free under 5 users
+
+**All files for this handoff:**
+
+| File | Repo Location | Status |
+|------|---------------|--------|
+| CLAUDE.md | `/CLAUDE.md` | Updated — RevenueCat added |
+| game-design-doc.md | `/docs/design-doc.md` | v1.0 |
+| talent-spec-sheets.md | `/docs/talent-spec-sheets.md` | v0.3 |
+| assembly-materials-crafting-system.md | `/docs/assembly-materials-crafting-system.md` | v0.4 |
+| subclass-trees-warden.md | `/docs/subclass-trees-warden.md` | v0.2 |
+| subclass-trees-arcanist.md | `/docs/subclass-trees-arcanist.md` | v0.2 |
+| subclass-trees-vanguard.md | `/docs/subclass-trees-vanguard.md` | v0.2 |
+| deferred-systems-dlc-notes.md | `/docs/deferred-systems-dlc-notes.md` | v0.3 |
+| monetization-scope.md | `/docs/monetization-scope.md` | v0.3 |
+| slaying-talent-spec.md | `/docs/slaying-talent-spec.md` | NEW |
+| attunement-data-spec.md | `/docs/attunement-data-spec.md` | NEW v0.2 |
+| inventory-character-system.md | `/docs/inventory-character-system.md` | NEW |
+| audio-sfx-direction.md | `/docs/audio-sfx-direction.md` | NEW |
+| player-account-system.md | `/docs/player-account-system.md` | NEW v0.2 |
+| settings-screen.md | `/docs/settings-screen.md` | NEW |
+| push-notification-triggers.md | `/docs/push-notification-triggers.md` | NEW |
+| exchange-unlock-flow.md | `/docs/exchange-unlock-flow.md` | NEW |
+| infrastructure-cost-planning.md | `/docs/infrastructure-cost-planning.md` | NEW |
+| session-handoff-log.md | `/docs/session-handoff-log.md` | This document |
+
+---
+
+### Session 4 — Phase 2 Design (Complete — Ready for Handoff)
+**Date:** 2026-07-10
+**Chat:** Claude.ai
+**Status:** Phase 2 design complete — ready for Claude Code handoff
+
+**What was designed this session:**
+- Runic Constellation full spec (v0.2) — 6-rune subclass layouts, targeting drag mechanic, counter pairs per subclass
+- Vanguard Melee Combo System — Strike/Guard/Surge, 1.5s auto-fire, combo streak, subclass libraries
+- Warfare spec — Vanguard Grimoire combat progression, permanent stat milestones, attunement data
+- Summoner spec — construct HP pool mechanic, 6 construct types, active engagement (specials + synergies), 50% idle vs 100% active gap
+- Lifebinder spec — HP as casting resource, HOT system, passive regen, no Umbra node
+- Bloodweaver added to deferred DLC — dark mirror of Lifebinder
+- Guild Hall UI full spec — discovery screen, Home (signpost MOTD, quest board, Guild Merchant), Roster, Bank, Upgrades, Settings tabs
+- Exchange fee restructure — solo players 3% system tax, guild members 0–3% guild tax replacing it, Guild Merchant at half guild tax rate
+- Phase 2 zone tables — Ashfen Mire [Undead][Nature] + Ironspine Reaches [Outlaw][Beast], full enemy rosters, elites, bosses, Mirefall Barrow + Warden's Folly dungeons
+- Spellcasting attunement data — speed + counter independent checks, no crit system for Arcanist
+- Grimoire Combat Progression (MAJOR PIVOT) — combat Talents removed from shared system, each Grimoire has own combat level 1–100
+- Total Combat Level = sum of all owned Grimoire levels — zone gate + prestige stat on character screen
+- Combat Tab on Character Panel — shows equipped Grimoire progression, unlocked techniques, all owned Grimoires
+- 6-rune subclass layouts — positions 1–4 shared, 5–6 unique (Runeweaver: Umbra/Lux, Summoner: Terra/Umbra, Lifebinder: Vita/Lux)
+- Targeting drag mechanic — universal Arcanist, draw then drag to target
+- Aggro hybrid model — passive rate + damage multiplier + taunt combos
+- Combat Engagement spec — zone (over-the-shoulder all classes), dungeon (top-to-bottom scrolling, randomized room pools), raid (grid turn-based map, dynamic encounter joining, Rush mechanic, floor objectives)
+- Shadowblade updated — Black Ledger removed, Shadow Step as Shroud state, Hemorrhage Mastery
+- Permanent stat bonuses from Grimoire milestones — cross-path accumulation (Warden=DEX/LCK, Arcanist=INT/WIL, Vanguard=STR/VIT)
+- Phase 2 attunement data — Gleaning contexts, Cultivation tiered windows, Tracking queue system (Monster Sign), Warfare attunement
+- Combat XP curve — accelerating, ~6 months to level 100 first Grimoire, ~3 years full mastery
+- Guild Bounties deferred to post-launch
+- Divination Talent removed and deferred
+- Beastmastery DLC stubs in Trapping/Tracking
+
+**Consistency sweep completed:**
+- Shadow's Edge etc: crit visual kept, backend is +150% damage multiplier
+- Shadowcraft → Warfare throughout all docs
+- Black Ledger fully removed from base game
+- 8-node → 6 active nodes in constellation spec
+- Enchanting → Inscription enchanting throughout talent spec
+- Foci Orb description updated
+- Divination removed and deferred
+- Beastmastery stubs added for DLC
+- Cross-path unlock requirements updated (Shadowcraft 1 → Shadowblade Grimoire owned)
+- Revive Pulse on Lifebinder Tempest corrected to Static Field
+- Dodge clarification note added to combo system
+- Runeweaver/Lifebinder/Summoner unlock table headers updated to Grimoire combat level
+
+**All files updated this session:**
+
+| File | Status |
+|------|--------|
+| runic-constellation-spec.md | NEW v0.2 |
+| vanguard-combo-system.md | NEW v0.1 |
+| warfare-spec.md | NEW v0.1 |
+| summoner-spec.md | NEW v0.1 |
+| lifebinder-spec.md | NEW v0.1 |
+| combat-engagement-spec.md | NEW v0.1 |
+| phase2-zone-tables.md | NEW v0.1 |
+| phase2-attunement-data-spec.md | NEW v0.4 |
+| combat-xp-curve.md | NEW v0.1 |
+| guild-hall-ui-spec.md | NEW v0.1 |
+| game-design-doc.md | Updated — combat talents removed, Black Ledger removed |
+| talent-spec-sheets.md | v0.5 — Divination deferred, Enchanting→Inscription, Beastmastery stubs |
+| subclass-trees-warden.md | v0.4 — Grimoire combat level language, Vanishing Act fixed |
+| subclass-trees-arcanist.md | v0.4 — Black Ledger removed, Spellcasting→Grimoire level, Tempest fixed |
+| subclass-trees-vanguard.md | v0.4 — Crit→damage multiplier, Shadowcraft→Warfare |
+| wayferers-exchange-and-grimoire-system.md | Updated — Grimoire Combat Progression, fee restructure |
+| stat-scaling-combat-formulas.md | v0.3 — Aggro system, Summoner HP, Lifebinder HP |
+| attunement-data-spec.md | v0.3 — Grimoire combat level references |
+| slaying-talent-spec.md | Updated — zone gating removed, task board only |
+| enemy-zone-tables.md | Updated — Total Combat Level thresholds added |
+| inventory-character-system.md | Updated — Combat Tab added |
+| guild-system.md | v0.3 — 30-day tax cooldown |
+| deferred-systems-dlc-notes.md | Updated — Bloodweaver, Guild Bounties, Black Ledger notes |
+| art-asset-requirements.md | v0.2 — 256x256 sprites, Unity import settings |
+| CLAUDE.md | Updated — Grimoire Combat Progression, no combat talents |
+| infrastructure-cost-planning.md | Updated — revenue projections, RevenueCat |
+| session-handoff-log.md | This document v0.5 |
+
+---
+
+*Document version 0.5 — Session Handoff Log*
+
+

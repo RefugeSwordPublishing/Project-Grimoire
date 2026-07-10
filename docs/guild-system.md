@@ -10,7 +10,7 @@ Guilds are the social and economic backbone of multiplayer Project Grimoire. The
 **Core principles:**
 - Guild bank funded by tax on member Exchange sales — ties guild health to trading activity
 - Tiered roster growth — guilds start small and earn their way to larger size
-- Leadership governance — tax changes require majority vote, 48hr delay before taking effect
+- Leadership governance — tax changes require majority vote, 48hr delay before taking effect, 30-day cooldown between changes
 - Guild buffs are economy/drop-rate only — never XP. Protects the carefully tuned Talent progression curve
 - Cross-guild access exists — guests for casual play, alliances for formal coordination
 - Infinite progression via Guild Prestige — never a point where there's nothing left to earn for
@@ -39,11 +39,16 @@ The 2,000 GM cost is a deliberate commitment barrier — prevents guild spam whi
 | **Member** | Contribute to bank, access guild perks, participate in guild quests and bounties |
 
 ### Tax Rate Governance
-- Tax rate range: **0% – 5%** on completed Exchange sales (Store Listings and Auctions only — not Buy Orders)
+- Tax rate range: **0% – 3%** on completed Exchange sales (Store Listings and Auctions only — not Buy Orders)
+- Guild tax **replaces** the system Exchange fee entirely — guild members never pay both
+- At 0% guild tax: members pay nothing on Exchange sales (better than solo player rate)
+- At 3% guild tax: members pay same rate as solo players but money goes to guild bank instead of system sink
+- Internal Guild Merchant rate: half the voted guild tax (e.g. 3% guild tax → 1.5% internal rate). If guild tax is 0%, internal rate is also 0%
 - Rate changes require a **majority vote** among Guild Master + Officers
-- Approved changes take effect **48 hours after vote passes** — gives members time to adjust expectations
+- Approved changes take effect **48 hours after vote passes** — gives members time to adjust
+- Tax rate can only be changed **once every 30 days** — prevents manipulation while allowing monthly correction if needed
 - All members receive a notification when a tax vote passes
-- Default tax rate at guild creation: 2%
+- Default tax rate at guild creation: 2% (members pay 2% to guild bank vs solo player 3% system tax)
 
 ---
 
@@ -248,5 +253,5 @@ Unlocked at Roster Tier 1 (first slot) and Tier 4 (second slot). Functions along
 
 ---
 
-*Document version 0.2 — Guild System*
+*Document version 0.3 — Guild System*
 *Next: Monetization scope (with guild upgrades included) · Main design doc cleanup*

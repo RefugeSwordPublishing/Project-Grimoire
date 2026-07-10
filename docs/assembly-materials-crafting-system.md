@@ -1,439 +1,442 @@
 # ⚔️ Project Grimoire — Assembly Materials & Crafting System
-### Version 0.1
+### Version 0.4
 
 ---
 
 ## 📐 Core Assembly Rules
 
+### Assembly Ownership
+Each weapon, armor piece, and tool has a designated **assembler Talent** — the Talent whose specialist would logically be the expert in that item. The assembler sources components from other Talents via trade or the Wayfarer's Exchange.
+
+**The assembler always:**
+- Provides at least one component themselves
+- Sources the rare material for Assembly
+- Performs the Assembly action and earns Assembly XP in their Talent
+- Benefits from attunement bonus during Assembly (% chance to save secondary component)
+
 ### Component Counts
 | Item Type | Components Required | Rare Material at Assembly |
 |-----------|-------------------|--------------------------|
-| Weapon | 2 (one per contributing Talent) | 1 rare material determines tier attempt |
-| Tool | 2 (one per contributing Talent) | 1 rare material determines tier attempt |
-| Quiver | 2 (Tailoring body + Timber Shaping frame) | 1 rare material determines tier attempt |
-| Armor piece | 3 (body + lining/padding + fastening/binding) | 1 rare material determines tier attempt |
-
-### Tools Are Permanent
-Tools do not degrade or require repair. Upgrading to a higher tier tool is the primary driver of tool progression — better tools unlock better Attunement windows, yield bonuses, and drop chances. A player's goal is always to eventually assemble the next tier up, not to maintain what they have.
+| Weapon (1H) | 2 (assembler component + secondary component) | 1 rare material |
+| Weapon (2H/heavy) | 2 (assembler component + secondary component) | 1 rare material |
+| Tool | 2 (assembler component + secondary component) | 1 rare material |
+| Quiver | 2 (Tailoring body + Timber frame) | 1 rare material |
+| Armor piece | 3 (primary body + lining/padding + fastening) | 1 rare material |
 
 ### Assembly XP
-- Component crafters receive XP in their respective Talent at time of crafting
-- **Assembly XP** goes to whoever performs the Workbench step
-- Assembly XP Talent is determined by armor/weapon type (see tables below)
-- Assembly is a meaningful economy role — high-level assemblers maximize rare tier success rates
+- Component crafters receive XP in their Talent at time of crafting
+- **Assembly XP** goes to the assembler Talent specifically
+- Assembly is a meaningful economy role — high-level assemblers get better attunement bonuses
+
+### Attunement Bonuses During Assembly
+Two distinct attunement moments per crafting Talent:
+
+**1. Assembly attunement** — when combining components at the Workbench:
+- Success adds +% to rare material tier success rate
+- Specific % determined by assembler Talent level (see Attunement Data Spec)
+
+**2. Component crafting attunement** — when making individual components:
+- Success gives XP boost
+- Small % chance to save secondary component (not consumed)
+
+### Resource Save Chance (Component Crafting Attunement)
+| Talent Level | Secondary Component Save Chance |
+|-------------|-------------------------------|
+| 1–20 | 1% |
+| 21–40 | 2% |
+| 41–60 | 4% |
+| 61–80 | 6% |
+| 81–100 | 8% |
 
 ### Fail Cascade
-All components AND rare materials are consumed on every attempt regardless of outcome.
+All components AND rare materials consumed on every attempt regardless of outcome.
 
 ```
-Legendary attempt
-    └─ Fail → Epic attempt auto-rolls
-         └─ Fail → Rare attempt auto-rolls
-              └─ Fail → Uncommon attempt auto-rolls
-                   └─ Fail → Common output (guaranteed floor — never a total loss)
+Masterwork attempt
+    └─ Fail → Pristine attempt auto-rolls
+         └─ Fail → Refined attempt auto-rolls
+              └─ Fail → Rough attempt auto-rolls
+                   └─ Fail → Crude output (guaranteed floor)
 ```
 
-Success rate at each tier scales with the assembler's relevant Talent level.
-Higher assembler level = better chance of holding the target tier.
-
-### Quality Tier Naming
+### Quality Tier Reference
 | Tier | Name | Color |
 |------|------|-------|
-| 1 | **Crude** | Grey |
-| 2 | **Rough** | White |
-| 3 | **Refined** | Green |
-| 4 | **Pristine** | Blue |
-| 5 | **Masterwork** | Purple |
-| 6 | **Legendary** | Gold |
-
-> Note: Standard crafting without rare materials produces Crude or Rough output depending on component quality. Rare materials are required to attempt Refined and above. Legendary tier is DLC/event content only and not obtainable in the base game.
-
----
-
-## 🪨 Rare Material Types & Sources
-
-### Cross-Talent Material Philosophy
-Gathering tools require combat-sourced rare materials.
-Combat weapons require gathering-sourced rare materials.
-This drives guild interdependence and market economy.
-
-### Rare Material Tiers
-Each material type has 5 tiers matching the quality system:
-
-| Tier | Name | Primary Source Gate |
-|------|------|-------------------|
-| T1 | Crude [Material] | Talent level 14–25 zone / Zone 1–2 combat |
-| T2 | Rough [Material] | Talent level 26–45 zone / Zone 2–3 combat |
-| T3 | Refined [Material] | Talent level 46–65 zone / Zone 3–4 combat |
-| T4 | Pristine [Material] | Talent level 66–85 zone / Zone 4–5 combat |
-| T5 | Masterwork [Material] | Talent level 86–100 zone / Raid drop only |
-
----
-
-### 💎 Gemstones *(from Delving)*
-Used for: Metal weapons, Plate armor, Pickaxe upgrades
-
-| Tier | Name | Source |
-|------|------|--------|
-| T1 | Crude Gemstone | Delving 21 — Quartz/Jasper nodes |
-| T2 | Rough Gemstone | Delving 45 — Ruby/Sapphire nodes |
-| T3 | Refined Gemstone | Delving 64 — Deep Cave zone |
-| T4 | Pristine Gemstone | Delving 81 — Diamond nodes |
-| T5 | Masterwork Gemstone | Delving 92 — Abyssal Cave / Raid drop |
-
-Combat drop equivalent: Zone 2+ enemies drop Crude, scaling up to Masterwork from raid bosses
-
----
-
-### 🌿 Amber *(from Felling)*
-Used for: Bows, Leather armor, Axe upgrades, Fishing Rod upgrades
-
-| Tier | Name | Source |
-|------|------|--------|
-| T1 | Crude Amber | Felling 14 — Oak/Elm trees |
-| T2 | Rough Amber | Felling 33 — Ashwood/Ironbark trees |
-| T3 | Refined Amber | Felling 52 — Enchanted Grove |
-| T4 | Pristine Amber | Felling 71 — Ancient Forest |
-| T5 | Masterwork Amber | Felling 84 — Voidtimber / Raid drop |
-
-Combat drop equivalent: Zone 2+ enemies drop Crude, scaling up to Masterwork from raid bosses
-
----
-
-### 🐚 Abyssal Pearl *(from Dredging)*
-Used for: Staves, Cloth armor, Fishing Rod upgrades, Arcane Weaving components
-
-| Tier | Name | Source |
-|------|------|--------|
-| T1 | Crude Abyssal Pearl | Dredging 17 — Pearl Dive nodes |
-| T2 | Rough Abyssal Pearl | Dredging 38 — Aquatic Reagent zones |
-| T3 | Refined Abyssal Pearl | Dredging 47 — Abyssal fishing zone |
-| T4 | Pristine Abyssal Pearl | Dredging 73 — Dragon Eel zone |
-| T5 | Masterwork Abyssal Pearl | Dredging 84 — Void Kraken encounter / Raid drop |
-
-Combat drop equivalent: Aquatic/coastal enemies drop Crude+, deep zone bosses drop Pristine+
-
----
-
-### 🍄 Void Spore *(from Foraging)*
-Used for: Magical Vestments, Wands, Alchemist Kit upgrades, Enchanting Focus
-
-| Tier | Name | Source |
-|------|------|--------|
-| T1 | Crude Void Spore | Foraging 29 — Mirelands zone |
-| T2 | Rough Void Spore | Foraging 57 — Voidmoss nodes |
-| T3 | Refined Void Spore | Foraging 68 — Highland Peaks zone |
-| T4 | Pristine Void Spore | Foraging 83 — Moonbloom night cycle |
-| T5 | Masterwork Void Spore | Foraging 91 — Ashen Wastes / Raid drop |
-
-Combat drop equivalent: Arcane/undead enemies drop Crude+, void creatures drop Pristine+
-
----
-
-### 👻 Phantom Pelt *(from Trapping)*
-Used for: Swords/Daggers, Leather armor lining, Tanning Frame upgrades
-
-| Tier | Name | Source |
-|------|------|--------|
-| T1 | Crude Phantom Pelt | Trapping 34 — Shadow Snare nocturnal catches |
-| T2 | Rough Phantom Pelt | Trapping 46 — Live Capture rare creatures |
-| T3 | Refined Phantom Pelt | Trapping 61 — Wolf/rare creature tier |
-| T4 | Pristine Phantom Pelt | Trapping 73 — Runed Trap magical creatures |
-| T5 | Masterwork Phantom Pelt | Trapping 82 — Drake/void creatures / Raid drop |
-
-Combat drop equivalent: Beast-type enemies drop Crude+, magical beasts drop Refined+, void beasts drop Masterwork
-
----
-
-### 🌱 Prismatic Seed *(from Cultivation)*
-Used for: Cookery Set upgrades, Cloth armor binding, Tailoring Kit upgrades
-
-| Tier | Name | Source |
-|------|------|--------|
-| T1 | Crude Prismatic Seed | Cultivation 32 — Orchard plots rare drop |
-| T2 | Rough Prismatic Seed | Cultivation 44 — Alchemical Garden plots |
-| T3 | Refined Prismatic Seed | Cultivation 53 — Enchanted Soil plots |
-| T4 | Pristine Prismatic Seed | Cultivation 61 — Moonflower plots |
-| T5 | Masterwork Prismatic Seed | Cultivation 84 — Worldseed plot rare drop |
-
-Combat drop equivalent: Nature/plant-type enemies; rare drop from elite nature bosses
-
----
-
-### 🧭 Ancient Sigil *(from Tracking)*
-Used for: Tracker's Compass upgrades, Divining Rod, Scholar's Tome
-
-| Tier | Name | Source |
-|------|------|--------|
-| T1 | Crude Ancient Sigil | Tracking 22 — Rare creature trails |
-| T2 | Rough Ancient Sigil | Tracking 33 — Monster Sign locations |
-| T3 | Refined Ancient Sigil | Tracking 53 — Ancient Trail finds |
-| T4 | Pristine Ancient Sigil | Tracking 63 — Void creature tracks |
-| T5 | Masterwork Ancient Sigil | Tracking 74 — Legendary Spoor / Raid drop |
-
-Combat drop equivalent: Elite enemies drop Crude+, legendary creatures drop Pristine+
-
----
-
-### 🔩 Runic Cog *(from Gleaning)*
-Used for: Artificing Tools, Carpenter's Tools, Smith's Hammer upgrades
-
-| Tier | Name | Source |
-|------|------|--------|
-| T1 | Crude Runic Cog | Gleaning 31 — Old Coin zone scavenging |
-| T2 | Rough Runic Cog | Gleaning 47 — Dungeon Gleaning |
-| T3 | Refined Runic Cog | Gleaning 54 — Battlefield Gleaning |
-| T4 | Pristine Runic Cog | Gleaning 79 — Assembly Rare Material drops |
-| T5 | Masterwork Runic Cog | Gleaning 92 — Vault Cache / Raid drop |
-
-Combat drop equivalent: Mechanical/construct enemies; dungeon room caches
-
----
-
-### ✨ Aetheric Filament *(from Foraging + Dredging combined)*
-Used for: Staves, Arcane Weaving upgrades, Weaving Loom, Enchanter's Focus
-
-> Unique dual-source material — requires both Foraging AND Dredging to produce.
-> Combines Starbloom (Foraging) + Abyssal Pearl extract (Dredging) via Alchemy.
-
-| Tier | Name | Foraging Req | Dredging Req | Alchemy Req |
-|------|------|-------------|-------------|------------|
-| T1 | Crude Aetheric Filament | 43 | 17 | 26 |
-| T2 | Rough Aetheric Filament | 57 | 38 | 44 |
-| T3 | Refined Aetheric Filament | 68 | 47 | 57 |
-| T4 | Pristine Aetheric Filament | 83 | 73 | 74 |
-| T5 | Masterwork Aetheric Filament | 91 | 84 | 86 |
-
-> Most complex material in the game — represents the premium Arcanist crafting path.
-> High value on the Wayfarer's Exchange due to multi-Talent requirement.
+| 1 | Crude | Grey |
+| 2 | Rough | White |
+| 3 | Refined | Green |
+| 4 | Pristine | Blue |
+| 5 | Masterwork | Purple |
+| 6 | Legendary | Gold | DLC / Events only |
 
 ---
 
 ## ⚔️ WEAPON ASSEMBLY TABLES
 
 ### 🏹 Bow (Warden primary weapon)
-**Assembly XP:** Runesmithing
-**Rare Material:** Amber (from Felling)
+**Assembler:** Timber Shaping
+**Assembly XP:** Timber Shaping
+**Rare Material:** Gemstone (from Delving) — forces cross-Talent purchase
 
-| Quality Target | Component 1 | Component 2 | Rare Material |
-|---------------|-------------|-------------|---------------|
-| Crude | Bronze Limbs (RS 6) | Pine Grip (TS 1) | None |
-| Rough | Iron Limbs (RS 13) | Hardwood Grip (TS 16) | Crude Amber |
-| Refined | Steel Limbs (RS 34) | Ashwood Grip (TS implied) | Rough Amber |
-| Pristine | Mithril Limbs (RS 56) | Ironbark Grip (TS 44) | Refined Amber |
-| Masterwork | Void Limbs (RS 84) | Voidtimber Grip (TS 74) | Pristine Amber |
-| Legendary | Grimoire Steel Limbs (RS 94) | Worldtree Grip (TS 89) | Masterwork Amber |
+| Quality Target | Timber Shaping Component | Runesmithing Component | Rare Material |
+|---------------|--------------------------|----------------------|---------------|
+| Crude | Pine Limbs + Grip | Bronze Tips | None |
+| Rough | Hardwood Limbs + Grip | Iron Tips | Crude Gemstone |
+| Refined | Ashwood Limbs + Grip | Steel Tips | Rough Gemstone |
+| Pristine | Ironbark Limbs + Grip | Mithril Tips | Refined Gemstone |
+| Masterwork | Voidtimber Limbs + Grip | Void Tips | Pristine Gemstone |
 
 ---
 
 ### ⚔️ Sword (Vanguard primary weapon)
+**Assembler:** Runesmithing
 **Assembly XP:** Runesmithing
-**Rare Material:** Phantom Pelt (from Trapping) — wrapped into grip binding
+**Rare Material:** Gemstone (from Delving)
 
-| Quality Target | Component 1 (Runesmithing) | Component 2 (Timber Shaping) | Rare Material |
-|---------------|---------------------------|------------------------------|---------------|
+| Quality Target | Runesmithing Component | Timber Shaping Component | Rare Material |
+|---------------|------------------------|--------------------------|---------------|
 | Crude | Bronze Blade | Pine Grip | None |
-| Rough | Iron Blade | Hardwood Grip | Crude Phantom Pelt |
-| Refined | Steel Blade | Ashwood Grip | Rough Phantom Pelt |
-| Pristine | Mithril Blade (implied) | Ironbark Grip | Refined Phantom Pelt |
-| Masterwork | Void Blade (RS 88) | Voidtimber Grip | Pristine Phantom Pelt |
-| Legendary | Grimoire Steel Blade | Worldtree Grip | Masterwork Phantom Pelt |
+| Rough | Iron Blade | Hardwood Grip | Crude Gemstone |
+| Refined | Steel Blade | Ashwood Grip | Rough Gemstone |
+| Pristine | Mithril Blade | Ironbark Grip | Refined Gemstone |
+| Masterwork | Void Blade | Voidtimber Grip | Pristine Gemstone |
+
+---
+
+### 🪓 Battle Axe (Vanguard weapon)
+**Assembler:** Runesmithing
+**Assembly XP:** Runesmithing
+**Rare Material:** Gemstone (from Delving)
+
+| Quality Target | Runesmithing Component | Timber Shaping Component | Rare Material |
+|---------------|------------------------|--------------------------|---------------|
+| Crude | Bronze Head | Pine Haft | None |
+| Rough | Iron Head | Hardwood Haft | Crude Gemstone |
+| Refined | Steel Head | Ashwood Haft | Rough Gemstone |
+| Pristine | Mithril Head | Ironbark Haft | Refined Gemstone |
+| Masterwork | Void Head | Voidtimber Haft | Pristine Gemstone |
 
 ---
 
 ### 🗡️ Dagger (Warden/Shadowblade secondary)
-**Assembly XP:** Tanning (leather wrap is primary component)
-**Rare Material:** Gemstones (from Delving) — set into pommel
+**Assembler:** Runesmithing
+**Assembly XP:** Runesmithing
+**Rare Material:** Gemstone (from Delving)
 
-| Quality Target | Component 1 (Runesmithing) | Component 2 (Tanning) | Rare Material |
-|---------------|---------------------------|----------------------|---------------|
+| Quality Target | Runesmithing Component | Tanning Component | Rare Material |
+|---------------|------------------------|-------------------|---------------|
 | Crude | Bronze Blade | Rough Leather Wrap | None |
 | Rough | Iron Blade | Cured Leather Wrap | Crude Gemstone |
 | Refined | Steel Blade | Fine Leather Wrap | Rough Gemstone |
 | Pristine | Mithril Blade | Wolf Leather Wrap | Refined Gemstone |
-| Masterwork | Void Blade | Pristine Leather Wrap | Pristine Gemstone |
-| Legendary | Grimoire Steel Blade | Void Hide Wrap | Masterwork Gemstone |
+| Masterwork | Void Blade | Masterwork Leather Wrap | Pristine Gemstone |
+
+---
+
+### 🔱 Spear (Vanguard weapon)
+**Assembler:** Runesmithing
+**Assembly XP:** Runesmithing
+**Rare Material:** Phantom Pelt (from Trapping)
+
+| Quality Target | Runesmithing Component | Timber Shaping Component | Rare Material |
+|---------------|------------------------|--------------------------|---------------|
+| Crude | Bronze Spearhead | Pine Pole | None |
+| Rough | Iron Spearhead | Hardwood Pole | Crude Phantom Pelt |
+| Refined | Steel Spearhead | Ashwood Pole | Rough Phantom Pelt |
+| Pristine | Mithril Spearhead | Ironbark Pole | Refined Phantom Pelt |
+| Masterwork | Void Spearhead | Voidtimber Pole | Pristine Phantom Pelt |
 
 ---
 
 ### 🔮 Staff (Arcanist primary weapon)
+**Assembler:** Arcane Weaving
 **Assembly XP:** Arcane Weaving
-**Rare Material:** Aetheric Filament (Foraging + Dredging + Alchemy)
+**Rare Material:** Abyssal Pearl (from Dredging)
 
-| Quality Target | Component 1 (Runesmithing) | Component 2 (Timber Shaping) | Rare Material |
-|---------------|---------------------------|------------------------------|---------------|
-| Crude | Bronze Core | Softwood Shaft | None |
-| Rough | Silver Tip | Hardwood Shaft | Crude Aetheric Filament |
-| Refined | Starstone Core (RS 78) | Magicwood Shaft | Rough Aetheric Filament |
-| Pristine | Starstone Core | Ironbark Heartwood Shaft | Refined Aetheric Filament |
-| Masterwork | Void Alloy Core (implied) | Voidtimber Shaft | Pristine Aetheric Filament |
-| Legendary | Grimoire Steel Core | Worldtree Shaft | Masterwork Aetheric Filament |
+| Quality Target | Timber Shaping Component | Runesmithing Component | Rare Material |
+|---------------|--------------------------|----------------------|---------------|
+| Crude | Softwood Shaft | Bronze Core | None |
+| Rough | Hardwood Shaft | Silver Core | Crude Abyssal Pearl |
+| Refined | Magicwood Shaft | Starstone Core | Rough Abyssal Pearl |
+| Pristine | Ironbark Heartwood Shaft | Starstone Core+ | Refined Abyssal Pearl |
+| Masterwork | Voidtimber Shaft | Void Core | Pristine Abyssal Pearl |
 
 ---
 
 ### 🪄 Wand (Arcanist secondary)
+**Assembler:** Arcane Weaving
 **Assembly XP:** Arcane Weaving
-**Rare Material:** Abyssal Pearl (from Dredging) — set into tip
+**Rare Material:** Void Spore (from Foraging)
 
-| Quality Target | Component 1 (Runesmithing) | Component 2 (Timber Shaping) | Rare Material |
-|---------------|---------------------------|------------------------------|---------------|
-| Crude | Bronze Tip | Pine Handle | None |
-| Rough | Silver Tip (RS 41) | Hardwood Handle | Crude Abyssal Pearl |
-| Refined | Starstone Tip (RS 73) | Magicwood Handle | Rough Abyssal Pearl |
-| Pristine | Starstone Tip | Ironbark Handle | Refined Abyssal Pearl |
-| Masterwork | Void Tip (implied) | Voidtimber Handle | Pristine Abyssal Pearl |
-| Legendary | Grimoire Steel Tip | Worldtree Handle | Masterwork Abyssal Pearl |
+| Quality Target | Timber Shaping Component | Runesmithing Component | Rare Material |
+|---------------|--------------------------|----------------------|---------------|
+| Crude | Pine Handle | Bronze Tip | None |
+| Rough | Hardwood Handle | Silver Tip | Crude Void Spore |
+| Refined | Magicwood Handle | Starstone Tip | Rough Void Spore |
+| Pristine | Ironbark Handle | Starstone Tip+ | Refined Void Spore |
+| Masterwork | Voidtimber Handle | Void Tip | Pristine Void Spore |
 
 ---
 
-### 🪓 Axe (Felling tool + combat)
-**Assembly XP:** Runesmithing
-**Rare Material:** Gemstones (from Delving) — cross-Talent requirement
+## 🛠️ TOOL ASSEMBLY TABLES
 
-| Quality Target | Component 1 (Runesmithing) | Component 2 (Timber Shaping) | Rare Material |
-|---------------|---------------------------|------------------------------|---------------|
+### 🪓 Felling Axe (Felling tool)
+**Assembler:** Timber Shaping
+**Assembly XP:** Timber Shaping
+**Rare Material:** Gemstone (from Delving) — cross-Talent purchase required
+
+| Quality Target | Runesmithing Component | Timber Shaping Component | Rare Material |
+|---------------|------------------------|--------------------------|---------------|
 | Crude | Bronze Head | Pine Haft | None |
 | Rough | Iron Head | Hardwood Haft | Crude Gemstone |
 | Refined | Steel Head | Ashwood Haft | Rough Gemstone |
-| Pristine | Mithril Head (implied) | Ironbark Haft | Refined Gemstone |
-| Masterwork | Void Head (implied) | Voidtimber Haft | Pristine Gemstone |
-| Legendary | Grimoire Steel Head | Worldtree Haft | Masterwork Gemstone |
+| Pristine | Mithril Head | Ironbark Haft | Refined Gemstone |
+| Masterwork | Void Head | Voidtimber Haft | Pristine Gemstone |
 
-> Higher tier Axes increase Felling Attunement window and bonus timber yield
+> Higher tier Felling Axes increase Attunement window and bonus timber yield
 
 ---
 
 ### ⛏️ Pickaxe (Delving tool)
+**Assembler:** Runesmithing
 **Assembly XP:** Runesmithing
-**Rare Material:** Amber (from Felling) — cross-Talent requirement
+**Rare Material:** Amber (from Felling) — cross-Talent purchase required
 
-| Quality Target | Component 1 (Runesmithing) | Component 2 (Timber Shaping) | Rare Material |
-|---------------|---------------------------|------------------------------|---------------|
+| Quality Target | Runesmithing Component | Timber Shaping Component | Rare Material |
+|---------------|------------------------|--------------------------|---------------|
 | Crude | Bronze Head | Pine Haft | None |
 | Rough | Iron Head | Hardwood Haft | Crude Amber |
 | Refined | Steel Head | Ironbark Haft | Rough Amber |
 | Pristine | Mithril Head | Ironbark Heartwood Haft | Refined Amber |
-| Masterwork | Adamantine Head (implied) | Voidtimber Haft | Pristine Amber |
-| Legendary | Grimoire Steel Head | Worldtree Haft | Masterwork Amber |
+| Masterwork | Adamantine Head | Voidtimber Haft | Pristine Amber |
 
 > Higher tier Pickaxes increase ore yield and gem drop chance in Delving
 
 ---
 
 ### 🎣 Fishing Rod (Dredging tool)
+**Assembler:** Timber Shaping
 **Assembly XP:** Timber Shaping
-**Rare Material:** Void Spore (from Foraging) — cross-Talent requirement
+**Rare Material:** Void Spore (from Foraging)
 
-| Quality Target | Component 1 (Timber Shaping) | Component 2 (Arcane Weaving) | Rare Material |
-|---------------|------------------------------|------------------------------|---------------|
+| Quality Target | Timber Shaping Component | Arcane Weaving Component | Rare Material |
+|---------------|--------------------------|--------------------------|---------------|
 | Crude | Pine Rod | Basic Line Wrap | None |
-| Rough | Hardwood Rod | Cured Leather Line | Crude Void Spore |
+| Rough | Hardwood Rod | Cured Thread Line | Crude Void Spore |
 | Refined | Ashwood Rod | Arcane Thread Line | Rough Void Spore |
 | Pristine | Magicwood Rod | Aetheric Line | Refined Void Spore |
 | Masterwork | Voidtimber Rod | Void Filament Line | Pristine Void Spore |
-| Legendary | Worldtree Rod | Masterwork Aetheric Line | Masterwork Void Spore |
-
-> Higher tier Fishing Rods increase rare fish catch rate and Attunement tension window
 
 ---
 
 ### 🪤 Trapper's Kit (Trapping tool)
+**Assembler:** Artificing
 **Assembly XP:** Artificing
-**Rare Material:** Ancient Sigil (from Tracking) — cross-Talent requirement
+**Rare Material:** Ancient Sigil (from Tracking)
 
-| Quality Target | Component 1 (Artificing) | Component 2 (Tanning) | Rare Material |
-|---------------|--------------------------|----------------------|---------------|
+| Quality Target | Artificing Component | Tanning Component | Rare Material |
+|---------------|----------------------|-------------------|---------------|
 | Crude | Iron Trap Frame | Rough Leather Pouch | None |
 | Rough | Steel Trap Frame | Cured Leather Pouch | Crude Ancient Sigil |
-| Refined | Steel Frame + Clockwork | Fine Leather Pouch | Rough Ancient Sigil |
-| Pristine | Mithril Frame + Clockwork | Wolf Leather Pouch | Refined Ancient Sigil |
-| Masterwork | Adamantine Frame | Pristine Leather Pouch | Pristine Ancient Sigil |
-| Legendary | Grimoire Steel Frame | Void Hide Pouch | Masterwork Ancient Sigil |
-
-> Higher tier Trapper's Kits increase catch rate, reduce reset time, and unlock additional trap slots
+| Refined | Steel Clockwork Frame | Fine Leather Pouch | Rough Ancient Sigil |
+| Pristine | Mithril Clockwork Frame | Wolf Leather Pouch | Refined Ancient Sigil |
+| Masterwork | Adamantine Frame | Masterwork Leather Pouch | Pristine Ancient Sigil |
 
 ---
 
 ### 🏹 Quiver (Warden core equipment)
+**Assembler:** Tailoring
 **Assembly XP:** Tailoring
-**Rare Material:** Void Spore (from Foraging) — cross-Talent requirement
+**Rare Material:** Void Spore (from Foraging)
 
-| Quality Target | Component 1 (Tailoring) | Component 2 (Timber Shaping) | Rare Material |
-|---------------|------------------------|------------------------------|---------------|
+| Quality Target | Tailoring Component | Timber Shaping Component | Rare Material |
+|---------------|---------------------|--------------------------|---------------|
 | Crude | Rough Leather Body | Pine Frame | None |
 | Rough | Cured Leather Body | Hardwood Frame | Crude Void Spore |
 | Refined | Fine Leather Body | Ashwood Frame | Rough Void Spore |
 | Pristine | Wolf Leather Body | Ironbark Frame | Refined Void Spore |
-| Masterwork | Pristine Leather Body | Magicwood Frame | Pristine Void Spore |
-| Legendary | Void Hide Body | Worldtree Frame | Masterwork Void Spore |
+| Masterwork | Masterwork Leather Body | Magicwood Frame | Pristine Void Spore |
 
 > Higher tier Quivers increase fire rate and extend coating duration
-> Crude Quiver = 1 coating slot, standard fire rate
-> Refined Quiver = 2 coating slots
-> Legendary Quiver = 3 coating slots, maximum fire rate cap raised
+> Crude: 1 coating slot | Refined: 2 slots | Masterwork: 3 slots, max fire rate cap raised
+
+---
+
+### 🔨 Smith's Hammer (Runesmithing tool)
+**Assembler:** Timber Shaping
+**Assembly XP:** Timber Shaping
+**Rare Material:** Runic Cog (from Gleaning)
+
+| Quality Target | Runesmithing Component | Timber Shaping Component | Rare Material |
+|---------------|------------------------|--------------------------|---------------|
+| Crude | Bronze Hammer Head | Pine Handle | None |
+| Rough | Iron Hammer Head | Hardwood Handle | Crude Runic Cog |
+| Refined | Steel Hammer Head | Ashwood Handle | Rough Runic Cog |
+| Pristine | Mithril Hammer Head | Ironbark Handle | Refined Runic Cog |
+| Masterwork | Adamantine Hammer Head | Voidtimber Handle | Pristine Runic Cog |
+
+---
+
+### 🖼️ Tanning Frame (Tanning tool)
+**Assembler:** Timber Shaping
+**Assembly XP:** Timber Shaping
+**Rare Material:** Runic Cog (from Gleaning)
+
+| Quality Target | Timber Shaping Component | Artificing Component | Rare Material |
+|---------------|--------------------------|----------------------|---------------|
+| Crude | Pine Frame | Iron Brackets | None |
+| Rough | Hardwood Frame | Steel Brackets | Crude Runic Cog |
+| Refined | Ashwood Frame | Steel Clockwork Brackets | Rough Runic Cog |
+| Pristine | Ironbark Frame | Mithril Brackets | Refined Runic Cog |
+| Masterwork | Voidtimber Frame | Adamantine Brackets | Pristine Runic Cog |
+
+---
+
+### 🧵 Weaving Loom (Arcane Weaving / Tailoring tool)
+**Assembler:** Timber Shaping
+**Assembly XP:** Timber Shaping
+**Rare Material:** Aetheric Filament (from Foraging + Dredging + Alchemy)
+
+| Quality Target | Timber Shaping Component | Artificing Component | Rare Material |
+|---------------|--------------------------|----------------------|---------------|
+| Crude | Pine Beams | Iron Heddle | None |
+| Rough | Hardwood Beams | Steel Heddle | Crude Aetheric Filament |
+| Refined | Ashwood Beams | Steel Clockwork Heddle | Rough Aetheric Filament |
+| Pristine | Ironbark Beams | Mithril Heddle | Refined Aetheric Filament |
+| Masterwork | Voidtimber Beams | Adamantine Heddle | Pristine Aetheric Filament |
+
+---
+
+### 🧪 Alchemy Kit (Alchemy tool)
+**Assembler:** Artificing
+**Assembly XP:** Artificing
+**Rare Material:** Aetheric Filament (from Foraging + Dredging + Alchemy)
+
+| Quality Target | Artificing Component | Inscription Component | Rare Material |
+|---------------|----------------------|-----------------------|---------------|
+| Crude | Iron Apparatus | Basic Formulae Book | None |
+| Rough | Steel Apparatus | Scroll-bound Formulae | Crude Aetheric Filament |
+| Refined | Steel Clockwork Apparatus | Spellbook Formulae | Rough Aetheric Filament |
+| Pristine | Mithril Apparatus | Ancient Text Formulae | Refined Aetheric Filament |
+| Masterwork | Adamantine Apparatus | Living Grimoire Formulae | Pristine Aetheric Filament |
+
+---
+
+### 🍳 Cookery Set (Cookery tool)
+**Assembler:** Artificing
+**Assembly XP:** Artificing
+**Rare Material:** Prismatic Seed (from Cultivation)
+
+| Quality Target | Artificing Component | Tailoring Component | Rare Material |
+|---------------|----------------------|---------------------|---------------|
+| Crude | Iron Implements | Rough Cloth Carry Bag | None |
+| Rough | Steel Implements | Linen Carry Bag | Crude Prismatic Seed |
+| Refined | Steel Fine Implements | Fine Cloth Carry Bag | Rough Prismatic Seed |
+| Pristine | Mithril Implements | Silk Carry Bag | Refined Prismatic Seed |
+| Masterwork | Adamantine Implements | Arcane Carry Bag | Pristine Prismatic Seed |
+
+---
+
+### 🔧 Carpenter's Kit (Timber Shaping tool)
+**Assembler:** Artificing
+**Assembly XP:** Artificing
+**Rare Material:** Runic Cog (from Gleaning)
+
+| Quality Target | Artificing Component | Runesmithing Component | Rare Material |
+|---------------|----------------------|------------------------|---------------|
+| Crude | Iron Tool Set | Bronze Blades | None |
+| Rough | Steel Tool Set | Iron Blades | Crude Runic Cog |
+| Refined | Steel Fine Tool Set | Steel Blades | Rough Runic Cog |
+| Pristine | Mithril Tool Set | Mithril Blades | Refined Runic Cog |
+| Masterwork | Adamantine Tool Set | Void Blades | Pristine Runic Cog |
+
+---
+
+### 📜 Inscription Set (Inscription tool)
+**Assembler:** Artificing
+**Assembly XP:** Artificing
+**Rare Material:** Ancient Sigil (from Tracking)
+
+| Quality Target | Tailoring Component | Timber Shaping Component | Rare Material |
+|---------------|---------------------|--------------------------|---------------|
+| Crude | Rough Cloth Case | Pine Writing Desk | None |
+| Rough | Linen Case | Hardwood Writing Desk | Crude Ancient Sigil |
+| Refined | Fine Cloth Case | Ashwood Writing Desk | Rough Ancient Sigil |
+| Pristine | Silk Case | Ironbark Writing Desk | Refined Ancient Sigil |
+| Masterwork | Arcane Case | Magicwood Writing Desk | Pristine Ancient Sigil |
 
 ---
 
 ## 🛡️ ARMOR ASSEMBLY TABLES
 
-### ⚔️ Plate Armor (Vanguard — per piece)
+### ⚔️ Plate/Metal Armor (Vanguard — per piece)
+**Assembler:** Runesmithing
 **Assembly XP:** Runesmithing
 **Components:** 3 + rare material
-**Rare Material:** Gemstones (from Delving)
+**Rare Material:** Gemstone (from Delving)
 
-| Quality Target | Component 1 (Runesmithing) | Component 2 (Tailoring) | Component 3 (Artificing) | Rare Material |
-|---------------|---------------------------|------------------------|--------------------------|---------------|
+| Quality Target | Runesmithing Component | Tailoring Component | Artificing Component | Rare Material |
+|---------------|------------------------|---------------------|----------------------|---------------|
 | Crude | Bronze Plate Body | Cloth Padding | Iron Fastenings | None |
 | Rough | Iron Plate Body | Leather Padding | Steel Fastenings | Crude Gemstone |
 | Refined | Steel Plate Body | Fine Leather Padding | Mithril Fastenings | Rough Gemstone |
 | Pristine | Mithril Plate Body | Wolf Leather Padding | Adamantine Fastenings | Refined Gemstone |
-| Masterwork | Adamantine Plate Body | Pristine Padding | Starstone Fastenings | Pristine Gemstone |
-| Legendary | Grimoire Steel Plate | Void Hide Padding | Grimoire Fastenings | Masterwork Gemstone |
+| Masterwork | Adamantine Plate Body | Masterwork Padding | Starstone Fastenings | Pristine Gemstone |
 
-> Plate armor pieces: Helm, Chest, Legs, Boots, Gauntlets — each assembled separately
-> Full Legendary Plate set requires 5 separate Legendary Assembly attempts
+> Pieces: Helm, Chest, Legs, Boots, Gauntlets — each assembled separately
+> Full Masterwork Plate set requires 5 separate Masterwork Assembly attempts
 
 ---
 
 ### 🏹 Leather Armor (Warden — per piece)
-**Assembly XP:** Tanning
+**Assembler:** Tailoring
+**Assembly XP:** Tailoring
 **Components:** 3 + rare material
 **Rare Material:** Amber (from Felling)
 
-| Quality Target | Component 1 (Tanning) | Component 2 (Tailoring) | Component 3 (Runesmithing) | Rare Material |
-|---------------|----------------------|------------------------|---------------------------|---------------|
+| Quality Target | Tanning Component | Tailoring Component | Runesmithing Component | Rare Material |
+|---------------|-------------------|---------------------|------------------------|---------------|
 | Crude | Rough Leather Body | Cloth Lining | Bronze Reinforcement | None |
 | Rough | Cured Leather Body | Linen Lining | Iron Reinforcement | Crude Amber |
 | Refined | Fine Leather Body | Fine Cloth Lining | Steel Reinforcement | Rough Amber |
 | Pristine | Wolf Leather Body | Silk Lining | Mithril Reinforcement | Refined Amber |
-| Masterwork | Pristine Leather Body | Arcane Lining | Starstone Reinforcement | Pristine Amber |
-| Legendary | Void Hide Body | Aetheric Lining | Grimoire Reinforcement | Masterwork Amber |
+| Masterwork | Masterwork Leather Body | Arcane Lining | Starstone Reinforcement | Pristine Amber |
 
 ---
 
 ### 🔮 Magical Vestments (Arcanist — per piece)
-**Assembly XP:** Arcane Weaving
+**Assembler:** Tailoring
+**Assembly XP:** Tailoring
 **Components:** 3 + rare material
 **Rare Material:** Aetheric Filament (Foraging + Dredging + Alchemy)
 
-| Quality Target | Component 1 (Arcane Weaving) | Component 2 (Inscription) | Component 3 (Tailoring) | Rare Material |
-|---------------|------------------------------|--------------------------|------------------------|---------------|
-| Crude | Basic Woven Body | Paper Binding | Rough Cloth Lining | None |
-| Rough | Arcane Thread Body | Scroll Binding | Linen Lining | Crude Aetheric Filament |
-| Refined | Emberpetal Weave Body | Spellbook Binding | Fine Cloth Lining | Rough Aetheric Filament |
-| Pristine | Drake Scale Weave Body | Ancient Text Binding | Silk Lining | Refined Aetheric Filament |
-| Masterwork | Celestine Weave Body | Grimoire Page Binding | Arcane Lining | Pristine Aetheric Filament |
-| Legendary | Void Silk Body | Living Grimoire Binding | Aetheric Lining | Masterwork Aetheric Filament |
+| Quality Target | Arcane Weaving Component | Tailoring Component | Inscription Component | Rare Material |
+|---------------|--------------------------|---------------------|-----------------------|---------------|
+| Crude | Basic Woven Body | Rough Cloth Lining | Paper Binding | None |
+| Rough | Arcane Thread Body | Linen Lining | Scroll Binding | Crude Aetheric Filament |
+| Refined | Emberpetal Weave Body | Fine Cloth Lining | Spellbook Binding | Rough Aetheric Filament |
+| Pristine | Drake Scale Weave Body | Silk Lining | Ancient Text Binding | Refined Aetheric Filament |
+| Masterwork | Celestine Weave Body | Arcane Lining | Grimoire Page Binding | Pristine Aetheric Filament |
 
-> Single armor type covering all Arcanist subclasses — starts at Crude like all other armor
-> Inscription handles the binding slot keeping vestments accessible to all Arcanist subclasses
 > Pieces: Cowl, Robe, Leggings, Boots, Gloves — each assembled separately
+
+---
+
+## 📊 Assembly Ownership Summary
+
+| Assembler Talent | Items Assembled | Primary Rare Material Needed |
+|-----------------|----------------|------------------------------|
+| **Timber Shaping** | Bow, Felling Axe, Fishing Rod, Tanning Frame, Weaving Loom, Smith's Hammer | Gemstone, Void Spore, Runic Cog, Aetheric Filament |
+| **Runesmithing** | Sword, Battle Axe, Dagger, Spear, Plate Armor, Pickaxe | Gemstone, Phantom Pelt, Amber |
+| **Tailoring** | Quiver, Leather Armor, Magical Vestments | Void Spore, Amber, Aetheric Filament |
+| **Arcane Weaving** | Wand, Staff | Void Spore, Abyssal Pearl |
+| **Artificing** | Trapper's Kit, Alchemy Kit, Cookery Set, Carpenter's Kit, Inscription Set | Ancient Sigil, Aetheric Filament, Prismatic Seed, Runic Cog |
 
 ---
 
 ## 🔍 Gleaning — Universal Rare Material Drop Bonus
 
-Gleaning level adds a bonus rare material drop chance that applies across ALL sources.
+Gleaning level adds a bonus rare material drop chance across ALL sources:
 
 | Gleaning Level | Rare Material Bonus |
 |---------------|-------------------|
@@ -456,35 +459,18 @@ Gleaning level adds a bonus rare material drop chance that applies across ALL so
 | Assembled Weapons | Refined – Pristine | Pre-assembled; ready to equip |
 | Assembled Armor pieces | Refined – Pristine | Pre-assembled; ready to equip |
 | Boss guaranteed drop | Rare Material T2–T4 | Always drops; tier scales with dungeon level |
+| Summoner's Tome | Rare drop — Tier 3+ dungeons and raids only | Unlocks Summoner deep subclass tree |
 
 ### Raid Drops
 | Drop Type | Quality Range | Notes |
 |-----------|-------------|-------|
 | Rare Materials | T3 – T5 (Masterwork) | Best source for Masterwork materials |
-| Assembled Weapons | Pristine – Legendary | Fully assembled endgame gear |
-| Assembled Armor sets | Pristine – Legendary | Full set drops are extremely rare |
+| Assembled Weapons | Pristine – Masterwork | Fully assembled endgame gear |
+| Assembled Armor sets | Pristine – Masterwork | Full set drops extremely rare |
 | Boss guaranteed drop | Rare Material T4–T5 | Always drops Pristine or Masterwork |
-| Legendary drop chance | 0.5% – 2% per boss | Scales with raid difficulty tier |
-
-> Pre-assembled dungeon/raid gear feeds the Wayfarer's Exchange — duplicate drops sold by players
-> Crafted gear remains competitive because players can target specific Assembly tiers and enchantments
+| Summoner's Tome | Rare drop from all raid bosses | |
 
 ---
 
-## 📊 Economy Balance Summary
-
-| Balance Lever | Effect |
-|--------------|--------|
-| All components consumed on fail | Drives continuous demand for base materials |
-| Fail cascade (never total loss) | Keeps players engaged rather than frustrated |
-| Cross-Talent rare materials | Forces guild cooperation or market purchases |
-| Gathering rare drop rates (0.1–0.5%) | Keeps gathering economy valuable without flooding |
-| Gleaning universal bonus | Rewards Gleaning investment across all playstyles |
-| Masterwork materials raid-gated | Gives endgame raiders exclusive supply role |
-| Dungeon pre-assembled drops | Gives non-crafters a gear path via combat |
-| Full armor = 5 separate Assemblies | Makes complete sets genuinely prestigious |
-
----
-
-*Document version 0.3 — Assembly Materials & Crafting System*
-*Next: Enemy zone tables · Subclass deep tree specs · Stat scaling formulas · Daily/weekly quest structure*
+*Document version 0.4 — Assembly Materials & Crafting System*
+*Next: Slaying Talent full spec · Attunement data spec updates · Session 3 handoff*

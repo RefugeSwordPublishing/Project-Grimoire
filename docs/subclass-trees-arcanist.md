@@ -1,5 +1,5 @@
 # ⚔️ Project Grimoire — Arcanist Subclass Trees
-### Version 0.2
+### Version 0.4
 
 ---
 
@@ -10,12 +10,37 @@
 **Arcanist path passive bonus** (applies to ALL Arcanist Grimoires):
 - +2 INT baseline — reflects the Arcanist's natural arcane affinity regardless of subclass
 
+**Permanent stat bonuses from Arcanist Grimoire combat milestones:**
+| Grimoire | Level 23 | Level 38 | Level 63 | Level 81 |
+|---------|---------|---------|---------|---------|
+| Runeweaver | INT +1 | WIL +1 | INT +2 | WIL +2 |
+| Summoner | INT +1 | WIL +1 | INT +2 | WIL +2 |
+| Lifebinder | INT +1 | WIL +1 | INT +2 | WIL +2 |
+| Warlock (DLC) | INT +1 | WIL +1 | INT +2 | WIL +2 |
+| Bloodweaver (DLC) | INT +1 | WIL +1 | INT +2 | WIL +2 |
+
+Stat bonuses are permanent to the character and accumulate across ALL owned Grimoires regardless of path. See docs/warfare-spec.md for full cross-path accumulation details.
+
+**Grimoire Combat Progression:**
+Combat no longer uses a shared Talent. Each Arcanist Grimoire has its own combat level (1–100) tracked independently. Purchasing a new Grimoire starts its combat progression at level 1. Combat XP from Slaying feeds the currently equipped Grimoire's combat level. Techniques and combat unlocks live on the Combat Tab of the Character Panel, not the Talents page.
+
 **Universal Arcanist mechanics** (apply to all Arcanist Grimoires):
-- Runic Constellation always active in combat
-- Single rune casts available from level 1 Spellcasting
-- 2-rune combinations unlock at Spellcasting 16
-- Subclass alters rune behavior — same gesture, different effect
+- Runic Constellation always active in combat — 6 active nodes per subclass (not all 8)
+- Single rune casts available from Grimoire combat level 1
+- 2-rune combinations unlock at Grimoire combat level 16
+- Subclass alters rune behavior AND which 6 nodes are active — different constellation per subclass
 - Idle fallback: auto-casts last queued single-rune spell at 60% potency
+- **Targeting mechanic (universal):** Draw constellation combination → drag thumb to target before releasing. Runeweaver drags to enemies, Summoner drags to specific constructs, Lifebinder drags to allies or self. Releasing without dragging uses subclass default target.
+
+**Subclass constellation layouts (positions 1-4 shared, 5-6 unique):**
+| Position | Runeweaver | Summoner | Lifebinder |
+|----------|-----------|---------|-----------|
+| 1 | Ignis | Ignis | Ignis |
+| 2 | Glacius | Glacius | Glacius |
+| 3 | Tempest | Tempest | Tempest |
+| 4 | Ventus | Ventus | Ventus |
+| 5 | **Umbra** | **Terra** | **Vita** |
+| 6 | **Lux** | **Umbra** | **Lux** |
 
 ---
 
@@ -30,13 +55,13 @@
 ---
 
 ### Hybrid Unlock Gates
-Runeweaver unlocks require **Spellcasting level** (Grimoire-locked) and cross-Talent milestones focused on arcane knowledge and material mastery.
+Runeweaver unlocks require **Grimoire combat level** (Runeweaver Grimoire-specific) and cross-Talent milestones focused on arcane knowledge and material mastery.
 
 ---
 
 ### 🌿 Runeweaver Tree
 
-| Unlock | Spellcasting Req | Cross-Talent Req | Type | Description |
+| Unlock | Grimoire Combat Level | Cross-Talent Req | Type | Description |
 |--------|-----------------|-----------------|------|-------------|
 | **Elemental Attunement** | 1 | — | Signature Passive | All elemental damage +10%. Always active. |
 | **Runic Inscription** | 9 | Inscription 11 | Passive | Spell scrolls crafted via Inscription give +1 charge when used by a Runeweaver. Inscription knowledge deepens rune understanding. |
@@ -97,7 +122,7 @@ The Summoner's core mechanic — conjured from arcane energy, not tamed from the
 
 ### 🌿 Summoner Tree
 
-| Unlock | Spellcasting Req | Cross-Talent Req | Type | Description |
+| Unlock | Grimoire Combat Level | Cross-Talent Req | Type | Description |
 |--------|-----------------|-----------------|------|-------------|
 | **Arcane Bond** | 1 | — | Signature Passive | Active summon +15% HP and damage. Always active. |
 | **Ember Sprite** | 9 | Alchemy 13 | Summon Unlock | Conjure an Ember Sprite — fast fire attacker. Alchemy knowledge of combustion required. |
@@ -152,7 +177,7 @@ The Lifebinder's rune constellation produces fundamentally different effects —
 | Umbra | Purge debuff from ally |
 | Ignis | Cauterize — stop bleed/poison on ally |
 | Glacius | Cryo-stasis — brief invincibility on ally |
-| Tempest | Revive pulse — resurrect downed ally (multiplayer) |
+| Tempest | Static Field — minor damage to enemy + party evasion +5% |
 | Terra | Ground ally — prevent knockback/stun |
 | Ventus | Haste — movement and attack speed buff on ally |
 
@@ -160,7 +185,7 @@ The Lifebinder's rune constellation produces fundamentally different effects —
 
 ### 🌿 Lifebinder Tree
 
-| Unlock | Spellcasting Req | Cross-Talent Req | Type | Description |
+| Unlock | Grimoire Combat Level | Cross-Talent Req | Type | Description |
 |--------|-----------------|-----------------|------|-------------|
 | **Healer's Resolve** | 1 | — | Signature Passive | Self-healing effects +20% potency. Always active. |
 | **Mending Pulse** | 9 | Cookery 14 | Technique | Instant heal on self or nearest ally for moderate HP. 30 second cooldown. Cookery knowledge of restorative ingredients deepens healing instinct. |
@@ -171,7 +196,7 @@ The Lifebinder's rune constellation produces fundamentally different effects —
 | **Restoration Wave** | 44 | Inscription 33 | Technique | Full party heal pulse — restores 40% HP to all party members simultaneously. Inscription knowledge of healing script required. |
 | **Aura of Swiftness** | 52 | — | Passive | All party members attack speed +8% while Lifebinder is in party. Stacks with other speed bonuses. |
 | **Cryo-Stasis** | 59 | — | Technique | Target ally becomes briefly invincible for 4 seconds. Cannot act during stasis. Critical raid cooldown for saving downed players. 90 second cooldown. |
-| **Soul Tether** | 66 | Soulbinding 1* | Passive | Tether self to one ally — 15% of damage they take is redirected to Lifebinder instead. *Requires having equipped Warlock Grimoire at least once — cross-path knowledge of soul mechanics. |
+| **Soul Tether** | 66 | Warlock Grimoire owned* | Passive | Tether self to one ally — 15% of damage they take is redirected to Lifebinder instead. *Requires owning Warlock Grimoire (any level) — cross-path knowledge of soul mechanics. |
 | **Revive Pulse** | 73 | Slaying 57 | Technique | Resurrect a downed party member with 50% HP. Combat experience (Slaying 57) required to understand the line between life and death. 5 minute cooldown. |
 | **Aura of Warding** | 79 | Inscription 38 | Passive | All party members gain +10% resistance to all damage types while Lifebinder is in party. Inscription knowledge of protective imbuing required. |
 | **Mass Restoration** | 86 | Inscription 64 | Technique | Full party — restores 80% HP, removes all debuffs, grants 8 seconds of damage immunity. The Lifebinder's ultimate group save. 10 minute cooldown. |
@@ -218,7 +243,9 @@ The Lifebinder is the **raid healer and party sustain engine** — indispensable
 - Soul harvesting and dark pact mechanics
 - Soulbinding is the primary exclusive Talent
 - Soul Reservoir passive idle loop
-- Unique Black Ledger market access
+- Soulbinding exclusive Talent
+- Soul harvesting mechanics
+- *(Black Ledger deferred — may return as post-launch DLC content)*
 - Full tree designed at DLC spec phase
 
 ---

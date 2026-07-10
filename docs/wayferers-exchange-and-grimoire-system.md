@@ -262,7 +262,7 @@ Each Grimoire has a visual appearance reflected on the character:
 - **CHA stat** affects listing fees and buy/sell margins in the Wayfarer's Exchange — making CHA investment valuable for dedicated trader builds
 - **Inscription** (Talent) produces Diplomatic Charters that grant Faction Reputation — Faction standing eventually unlocks System Store discounts (Phase 3)
 - **Beastmastery** level 75 unlocks creature listings in the Wayfarer's Exchange — players can sell tamed familiars
-- **Grimoire of the Shadowblade** grants access to a hidden **Black Ledger** section within the Exchange — rare untraceable goods from hostile zone Gleaning listed here at premium prices (no listing fee, but items can be seized by Faction NPCs if Faction standing is low)
+- **Grimoire of the Shadowblade** — no special Exchange access. Shadowblade is a pure combat specialist. Economy needs are served by the standard Wayfarer's Exchange and Guild Merchant.
 
 ---
 
