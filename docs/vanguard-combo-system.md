@@ -207,6 +207,39 @@ UI for player satisfaction. `critChance` remains 0.
 
 ---
 
+## Stamina Resource (Vanguard only)
+
+Stamina is a burst resource that limits how many high-cost combos can be chained during
+active play. It **never depletes during idle auto-combat** — idle always uses 1-input
+Strike which costs 0 stamina.
+
+```
+Max Stamina = 30 + (VIT × 1.5)
+Stamina Regen = 2/sec passive (always active in combat)
+             + 4/sec bonus when no combo input for 3+ seconds
+             + 4/sec additional out of combat entirely
+```
+
+### Stamina Costs per Combo Depth
+
+| Depth | Cost | Notes |
+|-------|------|-------|
+| 1-input (Strike/Guard/Surge alone) | 0 | Always free — idle fallback |
+| 2-input | 8 | Standard combo |
+| 3-input | 18 | Full combo |
+
+At 0 stamina: auto-fires single Strike — same behaviour as idle. Never hard-locked.
+
+At VIT 30 (mid game): ~75 max stamina → 4 three-input combos before needing to let
+singles regen. The natural burst-regen rhythm pairs well with the 1.5s auto-fire timer.
+
+**Stamina consumables** (see `docs/consumables-spec.md`):
+- Endurance Draught (Alchemy) — instant restore, hotbar slot 2, Vanguard only
+- Warrior's Ration (Cookery) — +Max Stamina buff 20 min, inventory only
+- Hearty Stew (Cookery) — +Stamina regen/sec buff 20 min, inventory only
+
+---
+
 ## Combo Interactions
 
 - Defense buffs: stack additively up to +60% cap
@@ -279,7 +312,29 @@ unlock_grimoire_level (int), idle_potency (float, default 0.70), animation_id (s
 Load only combos matching `GrimoireManager.currentSubclass`. Switching Grimoires reloads the
 dictionary — no cross-subclass bleed.
 
-**No-crit enforcement:**
+**Stamina check before combo execution:**
+```csharp
+bool TryExecuteCombo(ComboData combo) {
+    int cost = combo.inputCount == 1 ? 0
+             : combo.inputCount == 2 ? 8 : 18;
+    if (PlayerStats.currentStamina < cost) {
+        // Fall back to single Strike
+        ExecuteBaseAttack(currentSequence[0]);
+        return false;
+    }
+    PlayerStats.currentStamina -= cost;
+    Execute(combo);
+    return true;
+}
+```
+
+**Stamina — idle auto-combat always uses Strike (cost 0):**
+```csharp
+void AutoCombo() {
+    // Idle path — always single Strike, never costs stamina
+    ExecuteBaseAttack(ComboInput.Strike);
+}
+```
 ```csharp
 if (currentGrimoire.path == GrimoirePath.Vanguard) { critChance = 0f; weakPointEnabled = false; }
 // Shadow's Edge is implemented as: damage *= 1.8f; — not as a crit
