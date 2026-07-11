@@ -11,11 +11,15 @@ Claude Code is the **implementation** half. Our loop: you design → Code implem
 playtest and adjust → Code updates the docs → you read the adjustments and design the next
 layer.
 
-**At the start of every session, fetch the current state from the public repo (use raw URLs —
-GitHub folder pages fail to fetch):**
-1. `https://raw.githubusercontent.com/RefugeSwordPublishing/Project-Grimoire/main/docs/README.md` — the docs index (map of every spec + its raw URL)
-2. `https://raw.githubusercontent.com/RefugeSwordPublishing/Project-Grimoire/main/docs/implementation-status.md` — what is ACTUALLY built (source of truth)
-3. Then the specific spec(s) we're working on, by raw URL from the index.
+**Getting the current state:** you cannot reliably fetch repo URLs on your own — the fetch tool
+only allows URLs that Dustin pastes into a message or that come from a search result, and this repo
+isn't indexed. So at the start of a session:
+- Dustin will paste the current `implementation-status.md` (the as-built source of truth), and/or
+  paste the specific doc URLs into his message. Only then can you fetch them.
+- If he pastes a URL in-message, fetch it. If he pastes content, use it directly.
+- Do NOT assume you can pull the latest repo state autonomously — ask Dustin to paste it if you
+  don't have it. Index of every doc + its raw URL:
+  `https://raw.githubusercontent.com/RefugeSwordPublishing/Project-Grimoire/main/docs/README.md`
 
 **Rules:**
 - When a spec conflicts with `implementation-status.md`, the status doc wins — it reflects what

@@ -1,8 +1,10 @@
 # Project Grimoire — Docs Index
 
-**For Claude (Chat or Code): fetch files by the raw URLs below.** GitHub's folder pages
-(`/tree/main/docs`) are JavaScript-rendered and usually fail to fetch — use these direct
-`raw.githubusercontent.com` links instead, one file at a time.
+**Fetching note:** Claude Code (local) reads these files directly from disk. Claude Chat (claude.ai)
+can only fetch a URL that Dustin pasted into a message or that came from a search result — it cannot
+cold-fetch these raw URLs on its own, and this repo isn't indexed. So for Chat, Dustin pastes the
+relevant file's content or its URL in-message. GitHub folder pages (`/tree/main/docs`) are JS-rendered
+and fail to fetch regardless — use the direct `raw.githubusercontent.com` links below.
 
 **Read `implementation-status.md` FIRST.** It records what is actually built vs. design intent;
 when a spec and the code conflict, it wins.
