@@ -1,264 +1,178 @@
-# ⚔️ Project Grimoire — Guild System
-### Version 0.1
+---
+type: design-spec
+version: 0.4
+updated: 2026-07-11
+reconciled-to: implementation-status.md (2026-07-10) + shipped code (GuildBankUI.cs)
+---
+
+# Project Grimoire — Guild System
+### Version 0.4
+
+> **As-built note:** Reconciled against `implementation-status.md` and the shipped code
+> (`Assets/Scripts/UI/GuildBankUI.cs`, migrations 002/010–018). Where the original design and the
+> shipped code differ, the shipped behaviour is documented and marked **[as-built]**. Design intent
+> that hasn't shipped yet is marked **[pending]**.
 
 ---
 
 ## 📐 Design Philosophy
 
-Guilds are the social and economic backbone of multiplayer Project Grimoire. The system is built to give guilds permanent progression, ongoing reasons to earn, and meaningful leadership decisions — without ever touching Talent XP curves directly. Guild benefits live in economy, drop rate, and access — never in XP rate.
-
-**Core principles:**
-- Guild bank funded by tax on member Exchange sales — ties guild health to trading activity
-- Tiered roster growth — guilds start small and earn their way to larger size
-- Leadership governance — tax changes require majority vote, 48hr delay before taking effect, 30-day cooldown between changes
-- Guild buffs are economy/drop-rate only — never XP. Protects the carefully tuned Talent progression curve
-- Cross-guild access exists — guests for casual play, alliances for formal coordination
-- Infinite progression via Guild Prestige — never a point where there's nothing left to earn for
+Guilds are the social backbone of Project Grimoire's economy. They give players a reason to
+cooperate, pool resources, and invest in shared progression. Guild membership should always feel
+economically advantageous over going solo — through Exchange tax relief, internal trading at better
+rates, and shared consumable buffs that amplify everyone's idle gains.
 
 ---
 
 ## 🏰 Guild Creation
 
-| Requirement | Detail |
-|-------------|--------|
-| Cost | 2,000 Gold Marks |
-| Founder requirement | Any player level — no Talent gate |
-| Initial roster cap | 10 members |
-| Name requirements | Unique across all guilds, 3-20 characters |
-
-The 2,000 GM cost is a deliberate commitment barrier — prevents guild spam while remaining achievable for a dedicated player within a few weeks of normal play.
-
----
-
-## 👥 Roles & Governance
-
-| Role | Permissions |
-|------|------------|
-| **Guild Master** | Full control — invite/kick, set tax rate (subject to vote), spend bank, promote/demote, disband guild |
-| **Officer** | Invite/kick members, vote on tax changes, activate consumable buffs, manage applications |
-| **Member** | Contribute to bank, access guild perks, participate in guild quests and bounties |
-
-> **As-built:** parts of this spec have shipped with changes — see [`implementation-status.md`](implementation-status.md) for the current guild voting model and the dual-currency Guild Merchant.
-
-### Tax Rate Governance
-- Tax rate range: **0% – 3%** on completed Exchange sales (Store Listings and Auctions only — not Buy Orders)
-- Guild tax **replaces** the system Exchange fee entirely — guild members never pay both
-- At 0% guild tax: members pay nothing on Exchange sales (better than solo player rate)
-- At 3% guild tax: members pay same rate as solo players but money goes to guild bank instead of system sink
-- Internal Guild Merchant rate: half the voted guild tax (e.g. 3% guild tax → 1.5% internal rate). If guild tax is 0%, internal rate is also 0%
-- Rate changes require a **2/3 approval vote of the full roster** — see Voting below _(as-built: changed from the earlier "majority of GM + Officers" design)_
-- All members receive a notification when a tax vote passes
-
-#### Voting (as-built, 2026-07-10)
-Tax-rate and guild-name changes both use the same approval-vote model, applied server-side by the `cast_guild_vote` RPC (migration 015):
-- **Threshold:** `ceil(2/3 × member_count)` For-votes. One ballot per member (enforced by a `guild_vote_ballots` PK).
-- **Resolution:** the change applies the instant For-votes reach threshold. A vote stays open until threshold is met, all members vote, or **7 days** pass.
-- **7-day auto-close** for votes that never reach threshold still needs a scheduled Edge Function (not yet built).
-- Note: the earlier "48-hour delay before taking effect" is **not** implemented — passing applies immediately.
-- Default tax rate at guild creation: 2% (members pay 2% to guild bank vs solo player 3% system tax)
+- Costs **2,000 GM** — a meaningful but reachable barrier.
+- Creator becomes **Guild Master** by default (via the `create_guild` RPC).
+- Guild name: 3–30 characters, unique.
+- Join policy set at creation. **[as-built]** two policies ship: **Open** and **Invite Only**
+  (`open` / `invite_only`).
+- **[pending]** A **Closed** (undiscoverable, invite-direct-only) policy, an 80-char discovery
+  description, and a Casual/Serious guild-type filter tag are designed but not yet built.
 
 ---
 
-## 📈 Guild Roster Tiers
+## 👥 Roles
 
-Roster size grows through permanent upgrades purchased from the guild bank.
-
-| Tier | Roster Cap | Upgrade Cost | Unlocks |
-|------|-----------|-------------|---------|
-| Founding | 10 | — (starting size) | — |
-| Tier 1 | 20 | 5,000 GM | Shared guild quest slot |
-| Tier 2 | 30 | 15,000 GM | Raid access unlocked |
-| Tier 3 | 45 | 35,000 GM | Exchange fee discount (0.5%) |
-| Tier 4 | 60 | 75,000 GM | Second shared guild quest slot |
-| Tier 5 | 80 | 150,000 GM | Exchange fee discount increased (1%) |
-| Tier 6 | 100 | 300,000 GM | Alliance system unlocked |
-
-> Note: Raid access at Tier 2 means members of guilds below this tier can still join raids as **guests** in another guild's group — see Cross-Guild Access below. The guild's own raid roster organization simply isn't available until Tier 2.
+| Role | Key permissions |
+|------|----------------|
+| **Guild Master** | All permissions; transfer role; disband guild |
+| **Officer** | Invite/kick members, post material requests, activate buffs, initiate votes |
+| **Member** | Donate to bank, list on Guild Merchant, vote |
 
 ---
 
-## 💰 Guild Bank — Funding
+## 💰 Exchange Tax
 
-### Primary Source: Exchange Tax
-Automatically deducted from completed Store Listing and Auction sales at the guild's set tax rate (0–5%). Deposited directly to guild bank — no member action required.
-
-### Secondary Source: Direct Donation
-Members can donate Silver Marks, Gold Marks, or materials directly from inventory to the guild bank at any time. Voluntary, not taxed.
-
-### Why this works
-- Active traders fund the guild fastest — naturally rewards guilds with strong crafting/economy members
-- No tax on Buy Orders — purchasing doesn't get penalized, only selling
-- Members always see the current tax rate before joining and in the guild info panel — full transparency
-- A skilled trader who doesn't raid is just as valuable to a guild as a skilled raider
+- **Solo players** pay a **3% system tax** on Exchange sales (Store Listings + Auctions). Goes to an economy sink — removed from circulation.
+- **Guild members** pay a **0–3% guild tax** instead. This replaces the system tax entirely — never both.
+- Guild tax rate is set by vote (see Voting below). Default at creation: **2%**.
+- **Guild Merchant internal sales** are charged at **half the guild tax rate** (e.g. 3% guild tax → 1.5% internal). If guild tax is 0%, internal rate is also 0%.
+- Buy Orders are always 0% — no fee on purchases, only on sales.
 
 ---
 
-## 🎯 Guild Bank — Spending Categories
+## 🗳️ Voting — as-built
 
-To avoid the "maxed upgrades, no reason to earn" problem, guild spending is split into four categories — only one of which is permanent and finite.
+> **[as-built]** The shipped voting model (`cast_guild_vote` RPC, migration 015) differs from the
+> original design in two ways:
+> 1. Approval threshold is **2/3 of the full roster** (`ceil(2/3 × member_count)`), not "majority of GM + Officers".
+> 2. A vote **passes and applies immediately** when the threshold is reached — there is no 48-hour delay.
+>
+> A vote remains open until: threshold reached (immediate pass) / all members have voted / 7 days elapsed.
+> One ballot per member (enforced by a `guild_vote_ballots` primary key).
+> **[pending]** Scheduled Edge Function to auto-close votes that reach 7 days below threshold — not yet built.
 
-### 1. Permanent Upgrades (Finite)
-The roster tier table above. Eventually maxes out at Tier 6.
-
-### 2. Consumable Guild Buffs (Infinite — repeatable purchases)
-Temporary guild-wide buffs, **economy and drop-rate only, never XP**. Activated by Officers or Guild Master, duration-based.
-
-| Buff | Cost | Duration | Effect |
-|------|------|----------|--------|
-| Prospector's Fortune | 3,000 GM | 24 hrs | +15% rare material drop chance, guild-wide |
-| Merchant's Window | 2,000 GM | 24 hrs | Guild Exchange tax reduced to 0% temporarily |
-| Bountiful Harvest | 2,500 GM | 24 hrs | +20% gathering yield quantity, guild-wide |
-| Hunter's Providence | 3,500 GM | 24 hrs | +25% Silver/Gold Mark drops from combat, guild-wide |
-| Lucky Charm | 4,000 GM | 12 hrs | +10% LCK wild card trigger chance, guild-wide |
-
-> These never affect Talent XP gain rate — protects the core progression curve.
-
-### 3. Guild Bounties (Infinite — event-style spending)
-Larger one-time spends that create a special guild-wide event with a clear goal and reward.
-
-**Example bounty structure:**
-```
-THE ASHFEN BOUNTY
-Guild spends: 8,000 GM to activate
-Goal: Guild collectively slays 500 enemies in Ashfen Mire within 48 hours
-Reward if met: All participating members receive 2x material 
-drops in Ashfen Mire for the following week
-Reward if guild reaches 75%+: Partial reward — 1.5x for 3 days
-Reward if under 75%: Bounty fails, GM spent is not refunded
-```
-
-This creates a guild-wide collaborative push — exciting, time-limited, and gives leadership a reason to rally the guild. Officers can activate one bounty at a time.
-
-### 4. Guild Prestige (Infinite — never maxes)
-A separate infinite leveling track funded by spending directly from the **current guild bank balance**. Prestige competes with roster upgrades and consumable buffs for the same funds — leadership must choose how to allocate earnings rather than treating Prestige as a passive side-track.
-
-This creates a genuine strategic decision every week: save for the next roster tier, activate a bounty, or push toward the next Prestige milestone. Well-run guilds with strong income can pursue more than one path; smaller guilds must prioritize.
-
-| Prestige Level | Bank Spend Required | Reward |
-|----------------|---------------------|--------|
-| 1 | 10,000 GM | Guild Hub upgrades — Campfire Gathering |
-| 5 | 75,000 GM | Guild title — "Established" + Guild Hub upgrade — Tent Camp |
-| 10 | 250,000 GM | Guild emblem customization |
-| 20 | 750,000 GM | Guild title — "Renowned" + Guild Hub upgrade — Army Encampment |
-| 35 | 2,000,000 GM | Guild Hub upgrade — Fortress |
-| 50 | 5,000,000 GM | Guild title — "Legendary" + leaderboard placement + Guild Hub upgrade — Castle |
-| 75 | 15,000,000 GM | Guild Hub upgrade — Castle with surrounding Village |
-| 100 | 40,000,000 GM | Guild Hub upgrade — Stronghold Capital + permanent leaderboard banner |
-
-Prestige never caps — new tiers and Guild Hub stages can be added indefinitely as cosmetic and bragging-rights rewards. This is the long-term sink for guilds that have maxed roster tiers, since Prestige spending draws from the same pool as everything else and never runs out of reasons to exist.
+Votes are initiated by the Guild Master or any Officer. Votable decisions:
+- **Tax rate change** — 30-day cooldown between changes.
+- **Guild name change** — 3-month cooldown between changes.
 
 ---
 
-## 🏛️ Guild Hub Visual Progression
+## 🏪 Guild Merchant — as-built
 
-The Guild Hub is the idle background/home screen members see when viewing their guild. It evolves visually with Prestige level — making progression something every member sees passively, not just a number on a screen.
+> **[as-built]** Listings carry a **dual-currency price** — both `price_sm` and `price_gm` (either
+> may be 0), representing a combined-marks price (e.g. "3 GM 500 SM"). This superseded the original
+> SM-only design.
 
-| Prestige Level | Hub Visual | Mood |
-|----------------|-----------|------|
-| 0 (Founding) | A handful of people around a campfire | Humble beginnings |
-| 1–4 | Campfire Gathering — small camp, a few people, modest fire | Settling in |
-| 5–9 | Tent Camp — several tents pitched, more members visible | Growing community |
-| 10–19 | Encampment — organized camp, banners raised, supply carts | Established presence |
-| 20–34 | Army Encampment — large fortified camp, watchtowers, many figures | Renowned force |
-| 35–49 | Fortress — stone walls, gate, defensive structure | Serious power |
-| 50–74 | Castle — full castle structure, flags, guards | Legendary status |
-| 75–99 | Castle with Village — castle plus surrounding village, market stalls, NPCs | Thriving domain |
-| 100+ | Stronghold Capital — sprawling fortified capital, the guild's permanent legacy | Endgame prestige |
-
-**Design notes:**
-- Each stage is a single illustrated pixel art background — no functional change, purely atmospheric
-- Transitions between stages could include a brief celebratory animation when the guild hits the milestone
-- Background is visible on the Guild Home tab and could optionally be used as a loading screen backdrop for guild members
-- Long-term art pipeline item — early stages needed for launch, later stages (Fortress onward) can be produced post-launch as guilds approach those milestones
-- This single piece of art becomes one of the most repeated and recognizable visuals in the game for active guilds — worth investing real art quality here over time
+- **Members only** — listings are not visible to allied guilds or the public. Keeps it from making the Wayfarer's Exchange redundant.
+- **Listing fee** = half the guild tax rate, credited to the guild bank on sale (taken from each currency).
+- Items are **escrowed** out of the seller's inventory on posting and returned on cancel.
+- Buying is handled by the atomic `buy_guild_listing` RPC: charges buyer both currencies, pays seller minus fee, credits guild bank, deletes listing.
+- Listings expire after **7 days** if unsold. **[pending]** Scheduled Edge Function to sweep expired listings and return escrowed items — not yet built.
+- Uses `ItemListingComposer` (also used for material requests) — reusable for Wayfarer's Exchange later.
 
 ---
 
-## ⚔️ Cross-Guild Access
+## 🏦 Guild Bank
 
-Solves the small-guild content access problem — players shouldn't be locked out of raids/dungeons just because their guild hasn't hit Tier 2.
-
-### Guest System (available to everyone, no guild upgrade required)
-- Any player can join another guild's raid or dungeon group as a **Guest**
-- Guild leadership of the hosting guild approves guest requests
-- Guests do not receive that guild's permanent perks (Exchange discount etc.) — only participate in the specific activity
-- Guests are NOT taxed by the hosting guild — their Exchange sales remain taxed by their own guild only
-- No cooldown or penalty for guesting with multiple different guilds
-
-### Alliance System (Guild Tier 6 unlock)
-- Two guilds can formally ally
-- Allied guild members can freely join each other's raid/dungeon groups without per-instance approval
-- Alliances are mutual — both Guild Masters must agree
-- Either guild can dissolve the alliance at any time
-- Sets up the foundation for Faction War guild cooperation (DLC)
+- Funded by guild tax on Exchange sales, Guild Merchant listing fees, and direct member donations.
+- Officers and GM can withdraw. All members can view (transparency).
+- **[as-built]** 50 slots base; Officers/GM expand in **+10-slot** increments, paid from the guild bank.
+- Material requests posted by Officers/GM — any member can donate from inventory to fill them.
 
 ---
 
-## 🚪 Joining & Leaving
+## ⚔️ Guild Upgrades & Prestige
 
-### Join Policies (guild sets their own — configurable by Guild Master)
-| Policy | How it works |
-|--------|--------------|
-| **Open** | Anyone can join instantly, no approval needed |
-| **Apply** | Player requests to join, Officer or Guild Master approves/denies |
-| **Invite Only** | Player must be directly invited — cannot request to join |
+### Roster Tier Upgrades — [as-built]
+Increase the member cap. Purchased by GM from the guild bank. Seven tiers (tier 0 is the starting cap).
 
-### Leaving a Guild
-- No Gold Mark cost to leave
-- **72 hour cooldown** before joining another guild — prevents guild hopping to dodge tax rate changes or chase better perks
-- Leaving forfeits any unclaimed bounty rewards in progress
-- Guild Master leaving triggers automatic promotion of the senior-most Officer
+| Tier | Member cap | GM cost |
+|------|-----------|---------|
+| 0 | 10 | — (starting) |
+| 1 | 20 | 5,000 |
+| 2 | 30 | 15,000 |
+| 3 | 45 | 35,000 |
+| 4 | 60 | 75,000 |
+| 5 | 80 | 150,000 |
+| 6 | 100 | 300,000 |
 
----
+### Prestige & Hub Stages — [as-built]
+Guild Prestige is a separate progression driven by milestone GM spends from the bank.
+Each milestone unlocks a new Guild Hub background art stage.
 
-## 📋 Shared Guild Quest Slots
+| Prestige | Hub visual |
+|----------|-----------|
+| 0–4 | Campfire Gathering |
+| 5–9 | Tent Camp |
+| 10–19 | Encampment |
+| 20–34 | Army Encampment |
+| 35–49 | Fortress |
+| 50–74 | Castle |
+| 75–99 | Castle with Village |
+| 100+ | Stronghold Capital |
 
-Unlocked at Roster Tier 1 (first slot) and Tier 4 (second slot). Functions alongside the individual Daily/Weekly Quest System.
+Milestone thresholds: 1 / 5 / 10 / 20 / 35 / 50 / 75 / 100.
 
-- One shared quest appears on the guild's weekly board
-- Any member's contribution counts toward the shared goal
-- Example: "Guild Quest: Collectively gather 1,000 Iron Ore this week"
-- Reward is deposited directly to the guild bank, not individual players
-- Encourages collaboration without forcing it — solo players can ignore it, social players rally around it
+### Consumable Guild Buffs — [as-built]
+Purchased by Officers/GM from the bank — apply to all members for a fixed duration.
 
----
-
-## 🔗 Cross-System Notes
-
-- **Wayfarer's Exchange:** Guild tax is calculated and deducted automatically on sale completion — Exchange system needs a guild_id lookup on every transaction
-- **Raids:** Guild Tier 2 unlocks organized raid rosters; Guest system provides access below Tier 2
-- **Daily/Weekly Quests:** Shared guild quest slot is additive to the individual 5 daily / 2 weekly slots — does not replace them
-- **Monetization:** No real-money guild purchases planned — guild progression is GM/gameplay only, keeps guild standing skill and activity based rather than pay-to-win
-- **Faction Wars (DLC):** Alliance system architecture will extend to support faction-aligned guild cooperation
-- **Zone Conquest (Warlord subclass):** When a guild's Warlord clears a zone boss, priority resource access is granted to the guild — ties into this system's roster and bank structure
-
----
-
-## 📱 Guild UI Structure
-
-**Guild Home tab:**
-- Guild name, emblem, Prestige level, member count/cap
-- Current tax rate and pending vote status if applicable
-- Bank balance (visible to all members for transparency)
-- Active consumable buffs with time remaining
-
-**Roster tab:**
-- Member list with role, contribution total, last active
-- Invite/kick controls for appropriate roles
-
-**Bank tab:**
-- Donation interface
-- Upgrade purchase options (next roster tier)
-- Consumable buff activation (Officer/Guild Master only)
-- Bounty activation and progress tracking
-
-**Prestige tab:**
-- Current Prestige level and progress to next
-- Current Guild Hub visual stage displayed prominently
-- Reward history and cosmetic unlocks
-- Preview of next Guild Hub visual milestone to motivate saving
+| Buff | Cost | Effect | Duration |
+|------|------|--------|---------|
+| Prospector's Fortune | 3,000 GM | +15% rare material drop chance | 24 hours |
+| Merchant's Window | 2,000 GM | Guild Exchange tax reduced to 0% | 24 hours |
+| Bountiful Harvest | 2,500 GM | +20% gathering yield | 24 hours |
+| Hunter's Providence | 3,500 GM | +25% Silver/Gold Mark drops from combat | 24 hours |
+| Lucky Charm | 4,000 GM | +10% LCK wild-card trigger chance | 12 hours |
 
 ---
 
-*Document version 0.3 — Guild System*
-*Next: Monetization scope (with guild upgrades included) · Main design doc cleanup*
+## 📋 Guild Roster & Invitations
+
+- Discovery screen: search by name; shows Open and Invite-Only guilds.
+- **Open guilds**: any player can join directly (`join_guild` RPC).
+- **Invite Only**: players submit a join request; Officers/GM approve or decline from the Roster tab.
+- Roster shows each member's username, equipped Grimoire, and combat level.
+- Guild Master can transfer the GM role to any member; disbanding has a 7-day grace period.
+- **[pending]** 72-hour cooldown before joining another guild after leaving one (anti tax-hopping) — designed, not yet enforced in code.
+
+---
+
+## 🎵 Adaptive Audio (Guild Hall)
+
+The Guild Hall uses a layered stem system — one master composition with instrument stems that
+fade in/out based on which tab is active. **[pending]** Requires commissioned stems (Suno generates
+complete tracks, not stems). Phase 1/2 interim: single guild music track throughout all tabs.
+
+---
+
+## ⏳ Pending / Not Yet Built
+
+| Item | Notes |
+|------|-------|
+| Auto-close vote Edge Function | Closes votes at 7 days if threshold not reached |
+| Expired listing sweep Edge Function | Returns escrowed items from listings past `expires_at` |
+| Closed join policy + Casual/Serious type | Discovery filtering additions |
+| 72-hour re-join cooldown | Anti tax-hopping enforcement |
+| Guild Bounties | Deferred to post-launch content update |
+| Alliance system | Deferred — Tier 6 permanent unlock |
+| Adaptive audio stems | Deferred — requires commissioned multi-stem composition |
+
+---
+
+*Path: `docs/guild-system.md`*

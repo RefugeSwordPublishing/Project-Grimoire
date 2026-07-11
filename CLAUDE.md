@@ -1,97 +1,193 @@
 # Project Grimoire — Claude Code Briefing
+### Last updated: 2026-07-11
 
-## What this project is
-A semi-idle RPG mobile game with a planned Steam release.
-Built in Unity (2022.3 LTS or Unity 6) with C#.
-Supabase backend, Firebase Cloud Messaging, Unity IAP, GameAnalytics.
-GitHub: https://github.com/RefugeSwordPublishing/Project-Grimoire
+---
 
-## Read this first
-**`docs/implementation-status.md`** records what is ACTUALLY BUILT where it diverges from the specs.
-Read it before any design or implementation work — when a spec and the code conflict, the code (and
-that file) win. The specs below are design intent.
+## Repos
 
-## Design docs location
-All design documentation lives in /docs — read these before implementing anything:
+| Repo | Contents | Visibility |
+|------|---------|-----------|
+| **Project-Grimoire** | Design docs (`docs/`), Supabase SQL (`supabase/migrations/`), Unity as git submodule at `ProjectGrimoire/` | Public |
+| **ProjectGrimoire** | Unity/C# game | Private (Chat cannot read) |
 
-| File | Contents |
-|------|----------|
-| docs/design-doc.md | Core philosophy, tech stack, art direction, combat perspective |
-| docs/talent-spec-sheets.md | All 20+ talents with level unlocks, XP curve, cross-dependencies |
-| docs/assembly-materials-crafting-system.md | Crafting rules, quality tiers, weapon/armor assembly |
-| docs/enemy-zone-tables.md | 10 zones, enemies, drop tables, bosses, dungeons, raids |
-| docs/subclass-trees-warden.md | Sharpshot and Lone Wanderer full trees |
-| docs/subclass-trees-arcanist.md | Runeweaver, Summoner, Lifebinder full trees |
-| docs/subclass-trees-vanguard.md | Warlord and Shadowblade full trees |
-| docs/stat-scaling-combat-formulas.md | All combat math, stat formulas, hit/evasion/block system |
-| docs/wayferers-exchange-and-grimoire-system.md | Economy, currency, market listings, Grimoire binding |
-| docs/deferred-systems-dlc-notes.md | What NOT to build yet — DLC content and constraints |
+**Always read `docs/implementation-status.md` first.** It records what is actually built vs. design intent. When a spec and the code conflict, the code wins.
+
+---
+
+## Read order at session start
+
+1. `docs/README.md` — index of every spec with raw URLs
+2. `docs/implementation-status.md` — as-built source of truth
+3. The specific spec(s) relevant to current work
+
+Use raw URLs (`raw.githubusercontent.com/...`) — GitHub folder pages are JS-rendered and fail to fetch.
+
+---
 
 ## Tech stack
-- Engine: Unity (2022.3 LTS or Unity 6)
-- Language: C#
-- Backend: Supabase (REST API + Edge Functions for idle calculations)
-- Notifications: Firebase Cloud Messaging
-- Monetization: Unity IAP + RevenueCat (RevenueCat handles cross-platform purchase validation, entitlement grants, conversion reporting — do not build custom receipt validation)
-- Analytics: GameAnalytics
-- Art: Pixel art style — Sprite AI generated assets via MCP connector (connected directly to Claude Code)
-- Version control: GitHub
 
-## Core design decisions (locked)
-- **Semi-idle loop** — tasks run idle, active play triggers Attunement Surge (1.5x–3x XP/drops)
-- **Bowstring mechanic** — Warden combat: over-the-shoulder view, press/drag to aim, accuracy-based crits, weak points glow subtly per enemy type, idle = mid-draw baseline damage
-- **Runic Constellation** — Arcanist combat: draw lines between rune nodes on screen, combination determines spell, subclass alters rune behavior not layout
-- **Grimoire system** — class switching via equipped Grimoire, ~24hr cooldown, any of 7 base game Grimoires free at start, additional 500 GM or premium
-- **Wayfarer's Exchange** — unified market: auction listings, store listings, buy orders, 2–3% listing fees, Silver and Gold Marks only
-- **Currency** — Silver Marks (SM) and Gold Marks (GM) only. 1,000 SM = 1 GM
-- **Quality tiers** — Crude / Rough / Refined / Pristine / Masterwork / Legendary (DLC only)
-- **Assembly** — 2 components for weapons/tools, 3 for armor, rare material added at Workbench. All components consumed on fail. Fail cascade: Legendary→Epic→Rare→Uncommon→Common floor
-- **Zone unlock** — highest single combat Talent across ALL equipped Grimoires
-- **Combat resolution** — Hit Roll → Evasion → Block → Damage → LCK Wild Card → Debuff
-- **Stat gain** — hybrid: Talent milestone passives + equipment bonuses + Enchanting
-- **Tools** — permanent, no degradation. Upgrade motivation only
-- **Zone bosses** — active play only, random spawn chance, 10 min despawn timer
-- **Dungeons** — 2 active per month, rotate on 1st, not idle-able
-- **Raids** — 1 active per quarter, 25–45 min, 3-phase, active only, Masterwork material source
+| Tool | Purpose |
+|------|---------|
+| Unity 6 | Engine |
+| C# | Language |
+| Supabase | Database, Auth (JWT), Edge Functions, real-time |
+| Firebase Cloud Messaging | Push notifications |
+| Unity IAP + RevenueCat | Purchases — do NOT build custom receipt validation |
+| GameAnalytics | Player behaviour tracking |
+| Layer.ai (Sprite AI MCP) | Art asset generation |
+| Suno | Music generation |
 
-## Phase 1 scope (build this first)
-- Warden class with Sharpshot subclass
-- Bowstring combat mechanic (over-the-shoulder, accuracy-based)
-- Core idle loop with Grimoire Queue UI
-- Talents: Foraging, Trapping, Dredging, Cookery, Alchemy, Marksmanship, Slaying
-- Zones: Grimwood Fringe (1A) and Saltmarsh Shore (1B)
-- Basic Wayfarer's Exchange (store listings + buy orders)
-- Supabase backend — player data, idle calculations server-side
-- "While You Were Away" session return screen
-- Silver and Gold Mark currency system
+---
+
+## Critical design decisions
+
+### Grimoire Combat Progression (not shared Talents)
+Combat Talents (Marksmanship, Spellcasting, Warfare) do not exist as shared Talents.
+Each Grimoire has its own combat level (1–100) in `player_grimoire_levels`.
+
+```
+Total Combat Level = SUM of all owned Grimoire combat levels
+→ gates zone access AND is a character prestige stat
+```
+
+Zone thresholds: 1–20 = Tier 1 · 21–50 = Tier 2 · 51–90 = Tier 3 · 91–140 = Tier 4 · 141+ = Tier 5
+
+### No crit system for Arcanist or Vanguard
+```csharp
+if (path == Arcanist || path == Vanguard) { critChance = 0f; weakPointEnabled = false; }
+```
+Shadowblade's Shadow's Edge shows "Critical!" visually — backend is +150% damage multiplier.
+Marksmanship weak point (Bowstring) is Warden only.
+
+### Runic Constellation — 6 active nodes per subclass
+8 runes exist; each subclass uses 6. Inactive nodes not rendered.
+```
+Runeweaver: Ignis, Glacius, Tempest, Ventus, Umbra, Lux
+Summoner:   Ignis, Glacius, Tempest, Ventus, Terra, Umbra
+Lifebinder: Ignis, Glacius, Tempest, Ventus, Vita, Lux
+```
+
+### Summoner HP pool
+```csharp
+effectiveHP = (baseHP * 0.25f) + activeConstructs.Sum(c => c.currentHP);
+```
+Constructs are the primary HP pool. Enemies target highest-aggro construct.
+
+### Lifebinder — HP as casting resource
+No mana. Spell cost = Base × PowerMultiplier × (1 − WIL×0.003, max 30% reduction).
+Passive regen always active in combat. HOTs stack on top. Spell cannot reduce HP below 1.
+
+### Exchange fees (as-built)
+- Solo: 3% system tax on sales → economy sink
+- Guild member: 0–3% guild tax replacing system tax → guild bank
+- Guild Merchant internal: half guild tax rate
+- Buy Orders: always 0%
+- Dual-currency pricing on Guild Merchant listings (SM + GM, either may be 0)
+
+### Guild voting (as-built)
+- **2/3 of full roster** must approve (`ceil(2/3 × member_count)`)
+- Passes and applies **immediately** on reaching threshold — no 48-hour delay
+- Vote open until threshold / all voted / 7 days
+
+### Permanent stat bonuses from Grimoire milestones
+Bonuses persist regardless of equipped Grimoire, accumulate cross-path.
+
+| Path | Lv 23 | Lv 38/47 | Lv 63 | Lv 81 |
+|------|-------|----------|-------|-------|
+| Warden | DEX +1 | LCK +1 (38) | DEX +2 | LCK +2 |
+| Arcanist | INT +1 | WIL +1 (38) | INT +2 | WIL +2 |
+| Vanguard | STR +1 | VIT +1 (47) | STR +2 | VIT +2 |
+
+### Art direction — HD-2D Grimoire Variant
+- **Characters:** Full-body realistic pixel art (not chibi) — Blasphemous/Dead Cells proportions
+- **Camera:** Front-to-back — player moves into the screen
+- **Backgrounds:** Painterly pre-rendered, 3–5 parallax layers, per-zone colour grading
+- **Post-processing:** Heavy bloom, front-to-back depth of field, atmospheric particles, per-zone LUT
+- Sprites: Point filter / PPU 100. Backgrounds: Bilinear filter.
+- Full spec: `docs/art-asset-requirements.md`
+
+### Item icons — sprite atlas sheets
+All item icons are atlas sheets (4-wide grid, 64×64 cells, 256 px wide).
+Unity: Sprite Mode → Multiple → Sprite Editor → Slice → Grid 64×64.
+Full atlas list: `docs/art-asset-requirements.md` → Sprite Atlas Organization.
+
+### Aggro — hybrid model
+```
+Total Aggro = PassiveRate/sec + (DamageDealt × ClassMultiplier) + TauntComboValue
+```
+Warlord 15/sec ×1.5 · Bulwark 20/sec ×1.2 · Shadowblade 0/sec ×0.3
+Decays 5%/sec (2%/sec for tanks). Constructs generate independent aggro.
+
+---
+
+## Supabase — security rules
+
+RLS must be enabled on **every** table, immediately on creation. Never leave a table exposed.
+
+```sql
+ALTER TABLE foo ENABLE ROW LEVEL SECURITY;
+CREATE POLICY "own rows" ON foo FOR ALL USING (auth.uid() = player_id);
+```
+
+- Client calls (BackendManager.cs) → **anon key**
+- Edge Functions → **service role key** (bypasses RLS by design)
+- Guild RLS: use `SECURITY DEFINER` helpers `auth_guild_ids()` / `auth_officer_guild_ids()` to avoid recursion (already implemented)
+
+---
+
+## New Supabase tables still needed (Phase 2)
+
+```sql
+player_grimoire_levels (player_id, grimoire_id, combat_level, combat_xp, owned_at)
+player_stat_bonuses    (player_id, grimoire_id, stat_type, amount, granted_at)
+-- Guild tables already built (migrations 002, 010–018)
+-- Two Edge Functions pending: vote auto-close at 7 days, expired listing sweep
+```
+
+---
 
 ## Art generation workflow
-Sprite AI is connected via MCP — use it directly for Phase 1 sprite generation rather than asking Dustin to generate art manually in browser.
-- Prompt library lives at docs/phase1-sprite-prompts.md — use these prompts as-is or adapt them
-- Generate the Warden base body first, then use it as a style reference for all subsequent generations (enemies, items) to keep visual consistency
-- Standard style suffix to append to every prompt: "limited palette, dark pixel outline, HD-2D Grimoire Variant style, transparent background"
-- Save generated sprites to Assets/Sprites/ in the appropriate subfolder (Characters/, Enemies/, Items/, Environments/, UI/)
-- Layered equipment approach: generate base character body separate from equipment (bow, quiver, armor, cloak) as individual layers so gear can be swapped in Unity without regenerating the whole character
-- Follow the generation order in docs/phase1-sprite-prompts.md: Warden base + animations → bow/quiver layers (test layering works) → 13 Tier 1 enemies → item icons → environments → UI elements → onboarding panels
+
+Sprite AI connected via MCP — use it directly.
+- Prompt library: `docs/phase1-sprite-prompts.md`
+- Generate Warden base body first; use as style reference for all subsequent sprites
+- Standard suffix: `"limited palette, dark pixel outline, HD-2D pixel art, full-body realistic proportions, Octopath Traveler-inspired, transparent background"`
+- Animal enemies: add `"pixel art shading only — no realistic fur texture, no 3D rendering, same art style as [approved human sprite]"`
+- Save to `Assets/Sprites/[Characters|Enemies|Items|Environments|UI]/`
+- Item icons: generate as atlas sheets — see atlas format in art spec
+
+---
+
+## Do NOT implement
+
+See `docs/deferred-systems-dlc-notes.md` for full list. Hard stops:
+- Raids (Phase 4 — grid turn-based system not yet ready)
+- Faction system, Guild Bounties (post-launch)
+- Bloodweaver, Warlock, Kensei, Beastbond, Bard/Minstrel (DLC)
+- Divination Talent (show "???" placeholder on Talents page)
+- Black Ledger (removed from base game)
+- Legendary quality tier
+
+---
+
+## TaskBoard
+
+Read before starting. Update after each session.
+- GET: `https://lyychkqimdulfwdtcdly.supabase.co/rest/v1/taskboard?id=eq.1&select=data`
+- PATCH: full `{ "data": <JSON> }` — always read before writing
+- Headers: `apikey: <anon JWT>` + `Authorization: Bearer <anon JWT>`
+- Vercel frontend: taskboard-sepia-beta.vercel.app (PIN 2853)
+
+---
 
 ## Architecture guidelines
-- Keep idle calculations server-side via Supabase Edge Functions — prevents cheating
-- All Talent data should be data-driven via ScriptableObjects — never hardcode level unlocks
-- Separate managers: GameManager, TalentManager, CombatManager, MarketManager, GrimoireManager
-- Design for mobile first — touch input, battery efficiency, background processing
-- Follow Unity C# naming conventions — PascalCase classes, camelCase private fields, _prefix for serialized fields
-- Faction enemy tags ([Outlaw], [Beast], [Undead], [Arcane], [Void], [Nature]) must be on all enemies from day one — DLC faction bonuses will read these tags
-- CHA and WIL stat formula slots must remain open for DLC Bard/Minstrel subclass
-- Zone system must support faction ownership layers even if unused in base game
 
-## Do NOT implement yet
-Everything in docs/deferred-systems-dlc-notes.md:
-- Faction system and faction wars
-- Beastbond (Warden DLC), Warlock (Arcanist DLC), Kensei (Vanguard DLC)
-- Bard/Minstrel subclass
-- Lifebinder multiplayer healing features
-- Hard mode dungeons (New Game Plus)
-- Legendary quality tier items
-- Mythic quality tier
-- PvP / Dueling system
-- Guild Hall zone conquest
+- Idle calculations server-side via Edge Functions — never trust client-reported time
+- All Talent/Grimoire data: ScriptableObjects — never hardcode level unlocks
+- Managers: GameManager, TalentManager, CombatManager, GrimoireManager, CombatXPManager, AggroManager, ConstructManager, AudioManager
+- Mobile first: touch input, battery efficiency, background processing
+- Unity C#: PascalCase classes, camelCase private fields, `_prefix` for serialized fields
+- Faction enemy tags `[Outlaw][Beast][Undead][Arcane][Void][Nature]` on ALL enemies from day one
+- DX12 fix: use RectMask2D, never Mask component
+
+*Path: `CLAUDE.md` (repo root)*

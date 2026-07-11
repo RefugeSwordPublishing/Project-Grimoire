@@ -42,6 +42,13 @@ Tabs: **Home / Roster / Bank / Upgrades / Prestige / Merchant / Settings**.
 - Buying goes through the atomic `buy_guild_listing` RPC (migrations 016→018): charges the buyer both currencies, pays the seller minus the per-currency fee, credits the guild bank the fee, deletes the listing. Items escrow out of inventory on post, return on cancel.
 - **Not yet built:** scheduled Edge Function to sweep listings past `expires_at` (7 days) and return escrowed items.
 
+### Guild constants (as-built — do not re-derive from memory)
+- **Create cost:** 2,000 GM. Name 3–30 chars. Join policies: `open`, `invite_only` only (no "Closed" yet). Default tax 2%.
+- **Roster tiers** (cap → GM cost): 10→start, 20→5k, 30→15k, 45→35k, 60→75k, 80→150k, 100→300k (7 tiers).
+- **Prestige milestones:** 1/5/10/20/35/50/75/100 → hub stages Campfire Gathering → Tent Camp → Encampment → Army Encampment → Fortress → Castle → Castle with Village → Stronghold Capital.
+- **Consumable buffs** (5): Prospector's Fortune 3,000 (+15% rare, 24h) · Merchant's Window 2,000 (guild tax 0%, 24h) · Bountiful Harvest 2,500 (+20% gathering, 24h) · Hunter's Providence 3,500 (+25% SM/GM drops, 24h) · Lucky Charm 4,000 (+10% LCK, 12h).
+- **Bank:** 50 slots base; Officers/GM expand +10 at a time from the bank.
+
 ### Reusable ItemListingComposer
 `Assets/Scripts/UI/ItemListingComposer.cs` — a shared, domain-agnostic composer: searchable item
 picker (live-filter over the ItemRegistry, held-qty per row) + quantity + optional dual SM/GM price +
