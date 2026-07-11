@@ -90,7 +90,15 @@ buy orders / sell orders / auctions (buy orders → `requireOwnership:false`, es
 - **Player HP persists between fights** (no heal-on-kill). Defeat (HP→0) triggers a full-heal "retreat". Recovery is meant to come from consumables (active) / idle auto-eat (idle) — neither built (see below).
 - 7 starter Grimoires equippable from the Character page; equipped path selects the active mechanic (Warden Bowstring live; Arcanist/Vanguard fall back to idle).
 
-## Consumables / resources — DESIGN GAP (not built)
+## Consumables — Part A foundation BUILT (2026-07-11)
+Per `consumables-spec.md`. Done so far:
+- **`ItemData`:** `ConsumableEffectType` enum (None/InstantHP/InstantMana/InstantStamina/CureDebuff/TimedBuff/WeaponCoating/ZoneMap) + effect fields (effectValue, cooldownSeconds, inventoryOnly, requiredPath, buffStats/Values, duration, curedDebuffs, coatingCharges, dot*).
+- **`PlayerData` resources:** `CurrentHP/Mana/Stamina` pools with `GetMaxMana()` (50+WIL×2), `GetMaxStamina()` (30+VIT×1.5), `EnsureResourcesInit`, `RestoreHP/Mana/Stamina`, `DamageHP`, `FullHeal`. `GrimoirePath.None` added (path gate).
+- **Combat HP moved to `PlayerData.CurrentHP`** — persists between fights; consumables can heal it. `CombatManager.PlayerHP` reads it.
+- **`InventoryManager.UseConsumable`** now switches on `effectType`: InstantHP/Mana/Stamina (path-gated), ZoneMap; CureDebuff no-ops (no debuff system yet); TimedBuff/WeaponCoating gated + return false (pending BuffManager/WeaponManager); inventory-only items blocked during active combat.
+- **Still pending in Part A:** mana/stamina regen (out-of-combat + in-combat rules), the **combat hotbar UI** (3 slots), `BuffManager` (meals) + `WeaponManager` (coating), idle **auto-eat** (25% HP free tier), `player_settings.auto_eat_tier`, and **authored consumable item assets** (a CreateConsumables tool so items actually exist to use).
+
+## Consumables / resources — original design notes
 The combat hotbar + auto-eat the user wants are **blocked on design**:
 - **Resources:** only **HP** exists in code. Game-design doc says WIL → "mana pool" (intended, unbuilt); **Lifebinder uses HP as its resource, no mana** (contradiction to resolve). **Stamina** isn't a real concept anywhere. → a combat hotbar today is HP-only.
 - **`ItemData`** has only a bare `isConsumable` bool — no heal amount / buff / duration / effect-type. **`InventoryManager.UseConsumable` only routes zone maps**; food/potions/poisons have **no effect implementation**.
