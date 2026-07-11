@@ -38,16 +38,23 @@ The 2,000 GM cost is a deliberate commitment barrier — prevents guild spam whi
 | **Officer** | Invite/kick members, vote on tax changes, activate consumable buffs, manage applications |
 | **Member** | Contribute to bank, access guild perks, participate in guild quests and bounties |
 
+> **As-built:** parts of this spec have shipped with changes — see [`implementation-status.md`](implementation-status.md) for the current guild voting model and the dual-currency Guild Merchant.
+
 ### Tax Rate Governance
 - Tax rate range: **0% – 3%** on completed Exchange sales (Store Listings and Auctions only — not Buy Orders)
 - Guild tax **replaces** the system Exchange fee entirely — guild members never pay both
 - At 0% guild tax: members pay nothing on Exchange sales (better than solo player rate)
 - At 3% guild tax: members pay same rate as solo players but money goes to guild bank instead of system sink
 - Internal Guild Merchant rate: half the voted guild tax (e.g. 3% guild tax → 1.5% internal rate). If guild tax is 0%, internal rate is also 0%
-- Rate changes require a **majority vote** among Guild Master + Officers
-- Approved changes take effect **48 hours after vote passes** — gives members time to adjust
-- Tax rate can only be changed **once every 30 days** — prevents manipulation while allowing monthly correction if needed
+- Rate changes require a **2/3 approval vote of the full roster** — see Voting below _(as-built: changed from the earlier "majority of GM + Officers" design)_
 - All members receive a notification when a tax vote passes
+
+#### Voting (as-built, 2026-07-10)
+Tax-rate and guild-name changes both use the same approval-vote model, applied server-side by the `cast_guild_vote` RPC (migration 015):
+- **Threshold:** `ceil(2/3 × member_count)` For-votes. One ballot per member (enforced by a `guild_vote_ballots` PK).
+- **Resolution:** the change applies the instant For-votes reach threshold. A vote stays open until threshold is met, all members vote, or **7 days** pass.
+- **7-day auto-close** for votes that never reach threshold still needs a scheduled Edge Function (not yet built).
+- Note: the earlier "48-hour delay before taking effect" is **not** implemented — passing applies immediately.
 - Default tax rate at guild creation: 2% (members pay 2% to guild bank vs solo player 3% system tax)
 
 ---

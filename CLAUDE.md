@@ -6,6 +6,11 @@ Built in Unity (2022.3 LTS or Unity 6) with C#.
 Supabase backend, Firebase Cloud Messaging, Unity IAP, GameAnalytics.
 GitHub: https://github.com/RefugeSwordPublishing/Project-Grimoire
 
+## Read this first
+**`docs/implementation-status.md`** records what is ACTUALLY BUILT where it diverges from the specs.
+Read it before any design or implementation work — when a spec and the code conflict, the code (and
+that file) win. The specs below are design intent.
+
 ## Design docs location
 All design documentation lives in /docs — read these before implementing anything:
 
@@ -64,7 +69,7 @@ All design documentation lives in /docs — read these before implementing anyth
 Sprite AI is connected via MCP — use it directly for Phase 1 sprite generation rather than asking Dustin to generate art manually in browser.
 - Prompt library lives at docs/phase1-sprite-prompts.md — use these prompts as-is or adapt them
 - Generate the Warden base body first, then use it as a style reference for all subsequent generations (enemies, items) to keep visual consistency
-- Standard style suffix to append to every prompt: "limited palette, dark pixel outline, Kingdom Two Crowns pixel art style, transparent background"
+- Standard style suffix to append to every prompt: "limited palette, dark pixel outline, HD-2D Grimoire Variant style, transparent background"
 - Save generated sprites to Assets/Sprites/ in the appropriate subfolder (Characters/, Enemies/, Items/, Environments/, UI/)
 - Layered equipment approach: generate base character body separate from equipment (bow, quiver, armor, cloak) as individual layers so gear can be swapped in Unity without regenerating the whole character
 - Follow the generation order in docs/phase1-sprite-prompts.md: Warden base + animations → bow/quiver layers (test layering works) → 13 Tier 1 enemies → item icons → environments → UI elements → onboarding panels

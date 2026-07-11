@@ -1,0 +1,4 @@
+[submodule "ProjectGrimoire"]
+	path = ProjectGrimoire
+	url = https://github.com/RefugeSwordPublishing/ProjectGrimoire.git
+	branch = main
