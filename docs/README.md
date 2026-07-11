@@ -17,6 +17,8 @@ Raw base: `https://raw.githubusercontent.com/RefugeSwordPublishing/Project-Grimo
 ## Core design
 - game-design-doc.md — core philosophy, tech stack, art direction, combat perspective
 - art-asset-requirements.md — HD-2D art direction, resolutions, sprite/atlas specs
+- phase1-sprite-prompts.md — Layer.ai prompt library (characters, enemies, items, UI)
+- guild-hall-art-spec.md — Guild Hall background dimensions/safe-zones + 8 prestige-stage prompts
 - stat-scaling-combat-formulas.md — combat math, stat formulas, hit/evasion/block
 - talent-spec-sheets.md — all talents, level unlocks, XP curve
 - combat-xp-curve.md — Grimoire combat XP curve + milestone bonuses
