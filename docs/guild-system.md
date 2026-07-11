@@ -65,7 +65,7 @@ rates, and shared consumable buffs that amplify everyone's idle gains.
 >
 > A vote remains open until: threshold reached (immediate pass) / all members have voted / 7 days elapsed.
 > One ballot per member (enforced by a `guild_vote_ballots` primary key).
-> **[pending]** Scheduled Edge Function to auto-close votes that reach 7 days below threshold — not yet built.
+> **[as-built]** `close_expired_guild_votes()` (migration 019, hourly pg_cron) closes open votes once 7 days elapse or all members have voted.
 
 Votes are initiated by the Guild Master or any Officer. Votable decisions:
 - **Tax rate change** — 30-day cooldown between changes.
@@ -83,7 +83,7 @@ Votes are initiated by the Guild Master or any Officer. Votable decisions:
 - **Listing fee** = half the guild tax rate, credited to the guild bank on sale (taken from each currency).
 - Items are **escrowed** out of the seller's inventory on posting and returned on cancel.
 - Buying is handled by the atomic `buy_guild_listing` RPC: charges buyer both currencies, pays seller minus fee, credits guild bank, deletes listing.
-- Listings expire after **7 days** if unsold. **[pending]** Scheduled Edge Function to sweep expired listings and return escrowed items — not yet built.
+- Listings expire after **7 days** if unsold. **[as-built]** `sweep_expired_merchant_listings()` (migration 019, hourly pg_cron) returns escrowed items to the seller's inventory and deletes the listing.
 - Uses `ItemListingComposer` (also used for material requests) — reusable for Wayfarer's Exchange later.
 
 ---
@@ -165,8 +165,6 @@ complete tracks, not stems). Phase 1/2 interim: single guild music track through
 
 | Item | Notes |
 |------|-------|
-| Auto-close vote Edge Function | Closes votes at 7 days if threshold not reached |
-| Expired listing sweep Edge Function | Returns escrowed items from listings past `expires_at` |
 | Closed join policy + Casual/Serious type | Discovery filtering additions |
 | 72-hour re-join cooldown | Anti tax-hopping enforcement |
 | Guild Bounties | Deferred to post-launch content update |

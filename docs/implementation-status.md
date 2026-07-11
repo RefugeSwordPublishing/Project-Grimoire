@@ -34,13 +34,16 @@ Tabs: **Home / Roster / Bank / Upgrades / Prestige / Merchant / Settings**.
 - **2/3 approval of the full roster** (`ceil(2/3 × member_count)`), not "majority of GM + Officers".
 - Applied server-side by `cast_guild_vote` RPC (migration 015); one ballot per member.
 - Passes and applies **immediately** on reaching threshold (no 48-hour delay). Open until threshold / all voted / 7 days.
-- **Not yet built:** scheduled Edge Function to auto-close votes at 7 days below threshold.
+- **Auto-close (built, migration 019):** `close_expired_guild_votes()` SQL function, run hourly by pg_cron, closes open votes once 7 days elapse OR all members have voted.
 
 ### Guild Merchant — as-built
 - Members-only listings; fee = **half the guild tax**, credited to the guild bank on sale.
 - **Dual-currency price:** a listing carries both `price_sm` AND `price_gm` (either may be 0) — a combined-marks price, e.g. "3 GM 500 SM". (Superseded the original single-SM design, then a brief SM/GM toggle.)
 - Buying goes through the atomic `buy_guild_listing` RPC (migrations 016→018): charges the buyer both currencies, pays the seller minus the per-currency fee, credits the guild bank the fee, deletes the listing. Items escrow out of inventory on post, return on cancel.
-- **Not yet built:** scheduled Edge Function to sweep listings past `expires_at` (7 days) and return escrowed items.
+- **Expiry sweep (built, migration 019):** `sweep_expired_merchant_listings()` SQL function, run hourly by pg_cron, returns escrowed items from listings past `expires_at` (7 days) into the seller's `player_inventory` (loaded on next session) and deletes the listing.
+
+### Scheduled jobs (migration 019)
+Implemented as SECURITY DEFINER SQL functions run by **pg_cron** (hourly), not Deno Edge Functions — both are pure DB ops. Requires enabling the `pg_cron` extension in the Supabase dashboard. Jobs: `close-expired-guild-votes`, `sweep-expired-merchant-listings`.
 
 ### Guild constants (as-built — do not re-derive from memory)
 - **Create cost:** 2,000 GM. Name 3–30 chars. Join policies: `open`, `invite_only` only (no "Closed" yet). Default tax 2%.
