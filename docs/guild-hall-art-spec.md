@@ -1,6 +1,6 @@
 ---
 type: art-spec
-version: 0.1
+version: 0.2
 updated: 2026-07-11
 purpose: Dimensions, safe zones, and Layer.ai prompts for the Guild Hall background art
          (8 prestige stages) so MOTD signpost / quest board overlays never clip the props.
@@ -12,6 +12,12 @@ The Guild Hall uses one full-screen **portrait background** behind the UI (MOTD 
 quest board, buff row, guild stats). The background **swaps per prestige stage** (8 stages).
 The interactive props (signpost, quest board) are **painted into the art but stay in fixed
 screen positions across all 8 stages** so the UI hotspots overlaid on them always line up.
+
+> **Workflow:** these are **backgrounds** → use **Workflow A (painterly concept art)** from
+> `art-asset-requirements.md` v0.5 — a painterly/concept-art model (FLUX, Gemini 3.1 Flash Image,
+> etc.), **never the pixel sprite model**. Unlike the landscape combat backdrops (1920×1080,
+> multi-layer parallax), the guild hall background is a **single flat portrait image** — no parallax
+> layers needed, since UI sits on top of it, not a moving camera.
 
 ---
 
@@ -72,13 +78,13 @@ draws the text. Only the scenery and the focal structure change between stages.
 
 ## 🎨 Background style suffix
 
-Backgrounds are **painterly HD-2D** (not strict pixel art) — bilinear-filtered scenery, consistent
-with the Octopath-inspired direction. Append to every prompt:
+Painterly concept art (Workflow A) — **not** pixel art. Append to every stage prompt:
 
 ```
-painterly HD-2D background, Octopath Traveler-inspired atmospheric lighting, layered parallax depth,
-limited earthy palette (deep slate blue #15202f, honey gold #dcc47c, camel #C19149, charcoal #2E322A,
-warm tan #9f8873), soft bloom on light sources, dusk mood, portrait orientation 1080x2400,
+dark fantasy medieval RPG, painterly concept art style, cinematic lighting, dusk,
+warm honeyed torchlight against deep slate-blue shadows, earthy camel and tan tones,
+atmospheric depth, soft god rays, gentle bloom on fires and lanterns,
+high resolution game background, portrait composition 1080x2400,
 no characters, no text, no UI
 ```
 
