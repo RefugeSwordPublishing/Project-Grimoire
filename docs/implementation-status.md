@@ -62,7 +62,8 @@ buy orders / sell orders / auctions (buy orders → `requireOwnership:false`, es
 ## Combat progression — foundation BUILT (migration 009 + CombatXPManager)
 - Tables `player_grimoire_levels` (per-Grimoire combat_level + combat_xp) and `player_stat_bonuses` (milestone-keyed permanent stat grants), both RLS-owner-only. Helper `total_combat_level(player_id)` sums per-Grimoire levels. `players.combat_level` (migration 013) caches the total for other players to read (guild roster).
 - `CombatXPManager.cs`: loads both tables, creates rows for owned Grimoires, PATCHes level/XP on level-up, posts milestone stat bonuses, caches Total Combat Level, exposes `TotalCombatLevel`. `CombatTabUI` displays it.
-- **Not yet built:** zone-access **gating** by Total Combat Level thresholds (1–20 T1 · 21–50 T2 · 51–90 T3 · 91–140 T4 · 141+ T5). The Combat Tab shows the number but doesn't lock zones by it — needs zone Tier data + a gate check in the Combat Tab (client C#, no SQL).
+- **Zone gating logic BUILT:** `ZoneAccess.cs` is the single source of truth for the tier→level thresholds (T1≥1 · T2≥21 · T3≥51 · T4≥91 · T5≥141), with a per-zone `combatTalentLevelRequired` override. `CombatManager.EnterZone(zone)` now returns `bool` and refuses locked zones. `ZoneData` carries `tier` + `combatTalentLevelRequired`.
+- **Not yet built:** the visible zone-selection surface (list zones/dungeons/raids with lock state + required level) — lands with the Combat engagement hub (`pg-combat-hub`), which will call `CombatManager.EnterZone` / `ZoneAccess.IsUnlocked`.
 
 ## Other notable as-built facts
 - Inventory, gathering→live-inventory, talent tiles with live XP, Combat Tab under Character, Exchange lock gate: built.
