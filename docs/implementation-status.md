@@ -98,7 +98,10 @@ Per `consumables-spec.md`. Done so far:
 - **`InventoryManager.UseConsumable`** now switches on `effectType`: InstantHP/Mana/Stamina (path-gated), ZoneMap; CureDebuff no-ops (no debuff system yet); TimedBuff/WeaponCoating gated + return false (pending BuffManager/WeaponManager); inventory-only items blocked during active combat.
 - **Combat hotbar BUILT (`CombatHotbarUI`):** 3 slots at the bottom of the combat view — slot 1 best Healing Draught, slot 2 class resource (Mana Vial/Endurance Draught, else 2nd HP), slot 3 Antidote. Auto-fills from inventory (highest quality held), tap → `UseConsumable`, per-slot cooldown (button disables + countdown). Manual assignment + `player_settings` persistence still pending.
 - **Consumable items authored (`CreateConsumables` tool):** Healing Draughts (Crude/Refined/Masterwork), Refined Mana Vial (Arcanist), Refined Endurance Draught (Vanguard), Refined Antidote — registered in the ItemRegistry. Dev **+Consumables** button on the Combat Progression panel grants a test stock.
-- **Still pending in Part A:** mana/stamina **regen**, `BuffManager` (meals) + `WeaponManager` (coating), idle **auto-eat** (25% HP free tier), `player_settings.auto_eat_tier`.
+- **Regen BUILT:** `CombatManager.TickResources` — mana 1/sec out of combat (Arcanist), stamina 2/sec in combat (Vanguard); HP has no passive regen.
+- **Idle auto-eat BUILT (free tier):** at 25% HP, after a 2s delay, once per encounter, `CombatManager` auto-consumes the lowest-quality Healing Draught in stock. Royal-Merchant upgrade tiers + `player_settings.auto_eat_tier` still pending.
+- **Safe area:** `Editor/ApplySafeArea.cs` (Tools > Grimoire > Apply Safe Area To Panels) wraps every panel's HUD in the existing `SafeAreaFitter` so close buttons/headers clear the notch (background stays full-bleed). Idempotent.
+- **Still pending in Part A:** `BuffManager` (meals) + `WeaponManager` (poison coating), manual hotbar slot assignment + `player_settings` persistence.
 
 ## Consumables / resources — original design notes
 The combat hotbar + auto-eat the user wants are **blocked on design**:
