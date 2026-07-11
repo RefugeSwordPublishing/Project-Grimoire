@@ -96,7 +96,9 @@ Per `consumables-spec.md`. Done so far:
 - **`PlayerData` resources:** `CurrentHP/Mana/Stamina` pools with `GetMaxMana()` (50+WIL×2), `GetMaxStamina()` (30+VIT×1.5), `EnsureResourcesInit`, `RestoreHP/Mana/Stamina`, `DamageHP`, `FullHeal`. `GrimoirePath.None` added (path gate).
 - **Combat HP moved to `PlayerData.CurrentHP`** — persists between fights; consumables can heal it. `CombatManager.PlayerHP` reads it.
 - **`InventoryManager.UseConsumable`** now switches on `effectType`: InstantHP/Mana/Stamina (path-gated), ZoneMap; CureDebuff no-ops (no debuff system yet); TimedBuff/WeaponCoating gated + return false (pending BuffManager/WeaponManager); inventory-only items blocked during active combat.
-- **Still pending in Part A:** mana/stamina regen (out-of-combat + in-combat rules), the **combat hotbar UI** (3 slots), `BuffManager` (meals) + `WeaponManager` (coating), idle **auto-eat** (25% HP free tier), `player_settings.auto_eat_tier`, and **authored consumable item assets** (a CreateConsumables tool so items actually exist to use).
+- **Combat hotbar BUILT (`CombatHotbarUI`):** 3 slots at the bottom of the combat view — slot 1 best Healing Draught, slot 2 class resource (Mana Vial/Endurance Draught, else 2nd HP), slot 3 Antidote. Auto-fills from inventory (highest quality held), tap → `UseConsumable`, per-slot cooldown (button disables + countdown). Manual assignment + `player_settings` persistence still pending.
+- **Consumable items authored (`CreateConsumables` tool):** Healing Draughts (Crude/Refined/Masterwork), Refined Mana Vial (Arcanist), Refined Endurance Draught (Vanguard), Refined Antidote — registered in the ItemRegistry. Dev **+Consumables** button on the Combat Progression panel grants a test stock.
+- **Still pending in Part A:** mana/stamina **regen**, `BuffManager` (meals) + `WeaponManager` (coating), idle **auto-eat** (25% HP free tier), `player_settings.auto_eat_tier`.
 
 ## Consumables / resources — original design notes
 The combat hotbar + auto-eat the user wants are **blocked on design**:
