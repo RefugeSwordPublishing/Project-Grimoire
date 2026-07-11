@@ -1,40 +1,52 @@
-# ⚔️ Project Grimoire — Runic Constellation Mechanic
-### Version 0.1
+---
+type: design-spec
+version: 0.3
+updated: 2026-07-11
+reconciled-to: implementation-status.md (2026-07-10)
+---
+
+# Project Grimoire — Runic Constellation Mechanic
+### Version 0.3
+
+> **Changes from v0.2:** All references to "Spellcasting level" replaced with "Grimoire combat
+> level" (Spellcasting is not a shared Talent — combat progression lives on each Arcanist
+> Grimoire). Mana cost table now carries a Lifebinder carve-out. 4-rune library cross-checked
+> against per-subclass node layouts — conflicts removed (see notes inline).
 
 ---
 
-## 📐 Design Philosophy
+## Design Philosophy
 
-The Runic Constellation is the Arcanist's active combat identity — a skill-based spell casting system that rewards both knowledge (knowing which combinations do what) and execution (drawing quickly and accurately). It must work comfortably with a mobile thumb, feel magical and reactive, and never punish players who make mistakes — only reward those who play well.
+The Runic Constellation is the Arcanist's active combat identity — skill expression through drawing
+speed and combination knowledge. It must work comfortably with a mobile thumb, feel magical and
+reactive, and never punish mistakes — only reward mastery.
 
 **Core principles:**
 - Draw lines between nodes by dragging — connect the dots
 - Spell fires instantly on finger lift — no delay, immediate feedback
-- Incorrect or incomplete combinations fire a weak default spell — never a wasted action
+- Invalid combinations fire a weak default spell — never a wasted action
 - Drawing speed directly affects spell power — active skill expression
-- Idle fallback auto-casts the last used single-rune spell at 60% potency
-- Subclass alters what each rune does — not the layout
+- Idle fallback auto-casts the last used single-rune at 60% potency
+- No crit system for any Arcanist subclass — skill expression is speed + counter knowledge
 
 ---
 
-## 🌟 The Rune Nodes
+## The Rune Nodes
 
-Eight runes exist in the world of Project Grimoire, but each Arcanist subclass uses only 6 — their specific constellation layout. This means switching Grimoires requires relearning the constellation, adding genuine mastery depth to each subclass. Positions 5 and 6 are what distinguish each subclass's layout.
+Eight runes exist; each Arcanist subclass uses 6. Positions 5–6 distinguish each subclass.
 
 | Node | Element | Base Effect |
 |------|---------|------------|
 | **Ignis** | Fire | Burn damage over time |
 | **Glacius** | Ice | Slow + frost damage |
 | **Tempest** | Lightning | Chain damage, accuracy debuff |
-| **Ventus** | Wind | Push back, evasion boost |
+| **Ventus** | Wind | Pushback, evasion boost |
 | **Terra** | Earth | Stagger, armor break |
 | **Vita** | Life | Healing, regeneration |
 | **Umbra** | Shadow | Weaken, stealth proc |
 | **Lux** | Light | Blind, damage amplify |
 
 ### Subclass-Specific 6-Rune Layouts
-
-Each subclass has 6 active nodes from the 8 available. Same physical positions on screen — different runes active per subclass.
 
 | Position | Runeweaver | Summoner | Lifebinder |
 |----------|-----------|---------|-----------|
@@ -45,9 +57,9 @@ Each subclass has 6 active nodes from the 8 available. Same physical positions o
 | 5 | **Umbra** | **Terra** | **Vita** |
 | 6 | **Lux** | **Umbra** | **Lux** |
 
-Inactive nodes are visually dimmed on the constellation — players naturally learn which nodes belong to their subclass.
+Inactive nodes (2 per subclass) are not rendered on screen.
 
-**DLC subclass layouts (placeholder — full design at DLC phase):**
+**DLC placeholder layouts:**
 
 | Position | Warlock | Bloodweaver |
 |----------|---------|------------|
@@ -60,107 +72,105 @@ Inactive nodes are visually dimmed on the constellation — players naturally le
 
 ---
 
-## 📱 Screen Layout — Thumb-Reachable Arch
+## Screen Layout — Thumb-Reachable Arch
 
-The constellation appears as a **semi-circular arch** anchored at the bottom of the combat screen, curving upward around the player character. Designed for one-thumb mobile play — all 6 active nodes within natural thumb sweep range. (8 runes exist in the world but each subclass uses 6 — see layout table above.)
+Semi-circular arch anchored at bottom of combat screen — all 6 active nodes within natural thumb
+sweep range.
 
 ```
-        Tempest    Terra
+        Tempest    [pos5]
     Glacius            Ventus
-  Ignis                  Umbra
-      Vita          Lux
+  Ignis                  [pos6]
            [Player]
 ```
 
-**Layout specifics:**
-- Arch spans the bottom 40% of the screen
-- Nodes are large tap targets — 64x64 minimum touch area regardless of visual size
-- Center bottom anchored behind/around the player character silhouette
-- Enemy visible in the upper 60% of screen — player can see target while drawing
-- Combat log and HP bars sit at very top — never overlap the arch
-- On desktop (PC/Steam): constellation appears as a panel in the bottom-center, mouse drag to connect
+- Arch spans bottom 40% of screen
+- Nodes: 64×64 minimum touch target regardless of visual sprite
+- Enemy visible in upper 60% of screen at all times
+- HP bars / combat log at very top — never overlap the arch
+- PC/Steam: constellation panel at bottom-centre, mouse drag to connect
 
-**Node glow behavior:**
-- Default: nodes glow faintly in their element color
-- On touch: node brightens and pulses — confirms contact
-- On valid connection: line draws between nodes in element color with a brief spark
-- On invalid connection: line briefly flashes red then disappears — soft error feedback
+**Node glow behaviour:**
+- Default: faint element-colour glow
+- On touch: brightens + pulses (confirms contact)
+- Valid connection: coloured line + brief spark between nodes
+- Invalid connection: brief red flash, then disappears
 - Full combination ready: all connected nodes pulse together before firing
 
 ---
 
-## ✏️ Drawing Mechanic
+## Drawing Mechanic
 
 ### Input Flow
-1. Player places finger/mouse on a starting node — node activates
-2. Drag to next node — connection line draws in real-time
-3. Continue dragging to additional nodes (up to 4 total)
-4. Lift finger/release mouse — spell fires instantly based on combination drawn
+1. Place finger on starting node — activates
+2. Drag to next node — connection line draws in real time
+3. Continue to additional nodes (up to 4)
+4. Lift finger — spell fires instantly
 
 ### Connection Rules
-- Must start on a node — dragging from empty space does nothing
-- Nodes can be connected in any order — Ignis→Glacius is the same combination as Glacius→Ignis
-- Cannot connect the same node twice in one combination
+- Must start on a node — empty-space drag does nothing
+- Order-independent — Ignis→Glacius = Glacius→Ignis
+- Cannot connect the same node twice
 - Minimum 1 node (tap and release) — fires single-rune spell
 - Maximum 4 nodes — hard cap
 
 ### Speed Bonus
-Drawing speed is measured as time from first node contact to finger lift:
+Measured from first node contact to finger lift:
 
 | Draw Time | Speed Tier | Damage Modifier |
 |-----------|-----------|----------------|
-| Under 0.4s | Lightning | ×1.5 |
-| 0.4s – 0.8s | Swift | ×1.25 |
-| 0.8s – 1.5s | Standard | ×1.0 |
-| Over 1.5s | Slow | ×0.85 |
+| < 0.4s | Lightning | ×1.5 |
+| 0.4–0.8s | Swift | ×1.25 |
+| 0.8–1.5s | Standard | ×1.0 |
+| > 1.5s | Slow | ×0.85 |
 
-Speed bonus applies to all damage-dealing spells. Healing spells are not affected by speed — a hurried heal is the same as a careful one.
+Speed bonus applies to damage spells only. Healing spells (Lifebinder) are unaffected.
 
-### Invalid/Incomplete Combinations
-If the player draws a combination that doesn't match any known spell (wrong node order, unsupported combination for their subclass, or a combination not yet unlocked):
-- **Weak default spell fires** — single Ignis blast at 40% of base Magic Attack
-- No mana penalty beyond standard single-cast cost
-- Visual: brief "?" flash over the combination before the default fires
-- Player is never punished for trying — only rewarded for succeeding
+### Invalid Combinations
+- Fires weak default: single Ignis blast at 40% base Magic Attack
+- Visual: brief "?" flash before default fires
+- Resource cost: standard single-rune cost (never blocked entirely)
 
 ---
 
-### Targeting — Draw Then Drag (Universal Arcanist Mechanic)
+## Targeting — Draw Then Drag (Universal Arcanist)
 
-After completing a constellation combination, the player drags their thumb to the intended target before releasing:
+After completing a combination, drag thumb to intended target before releasing:
 
-1. Draw combination between nodes as normal
-2. **Drag to target** — golden tether line connects from last node to target
-3. Target glows to confirm selection
-4. Release — spell fires at that target
+1. Draw combination
+2. Drag to target — golden tether line from last node to target
+3. Target glows to confirm
+4. Release — spell fires
 
-| Subclass | Drag target | Effect |
-|----------|------------|--------|
-| **Runeweaver** | Enemy | Single target vs choosing not to drag (AoE) |
-| **Summoner** | Specific construct | Issue command to that construct precisely |
-| **Lifebinder** | Ally or self | Heal/HOT/buff that specific party member |
-
-Releasing without dragging to a target defaults to: nearest enemy (Runeweaver), most recently summoned construct (Summoner), self (Lifebinder).
+| Subclass | Default if no drag | Drag target |
+|----------|--------------------|-------------|
+| Runeweaver | Nearest enemy | Any enemy (single target vs AoE) |
+| Summoner | Most recently active construct | Specific construct (precise commands) |
+| Lifebinder | Self | Ally or self |
 
 ---
 
-| Spellcasting Level | Combination Depth Unlocked |
-|-------------------|--------------------------|
+## Combination Depth Unlocks
+
+Unlocks are gated by **Grimoire combat level** (the per-Grimoire level in
+`player_grimoire_levels`, managed by `CombatXPManager`).
+
+| Grimoire Combat Level | Depth Unlocked |
+|----------------------|---------------|
 | 1 | Single rune (1 node) |
 | 16 | 2-rune combinations |
-| 42 | 3-rune combinations |
-| 88 | 4-rune combinations (full constellation) |
-
-Each depth unlock is a significant milestone — reaching Spellcasting 88 and being able to draw 4-node combinations is a mastery moment.
+| 42 | 3-rune combinations (Runeweaver: 35 instead) |
+| 88 | 4-rune combinations |
 
 ---
 
-## 🔮 Combination Spell Library
+## Combination Spell Library
 
-### Single Rune Spells (Spellcasting 1+)
-| Node | Spell Name | Effect |
-|------|-----------|--------|
-| Ignis | Ember Shot | Small fire damage + 2s burn |
+### Single Rune (Combat Level 1+)
+
+| Node | Spell | Effect |
+|------|-------|--------|
+| Ignis | Ember Shot | Fire damage + 2s burn |
 | Glacius | Frost Bolt | Ice damage + minor slow |
 | Tempest | Spark | Lightning damage |
 | Terra | Stone Throw | Earth damage + minor stagger |
@@ -169,9 +179,13 @@ Each depth unlock is a significant milestone — reaching Spellcasting 88 and be
 | Umbra | Shadow Dart | Shadow damage + 10% weaken |
 | Lux | Flash | Light damage + 1s blind |
 
-### 2-Rune Combinations (Spellcasting 16+)
-| Combination | Spell Name | Effect | Element |
-|------------|-----------|--------|---------|
+> Subclasses only render their 6 active nodes. The spells above exist as SpellData
+> ScriptableObjects for all 8 runes; only the relevant 6 are loaded per subclass.
+
+### 2-Rune Combinations (Combat Level 16+)
+
+| Combination | Spell | Effect | Element |
+|------------|-------|--------|---------|
 | Ignis + Glacius | Steam Burst | AoE damage + blind | Fire/Ice |
 | Ignis + Tempest | Firestorm | Burn + chain lightning | Fire/Lightning |
 | Ignis + Terra | Magma Surge | Heavy damage + armor break | Fire/Earth |
@@ -200,9 +214,15 @@ Each depth unlock is a significant milestone — reaching Spellcasting 88 and be
 | Vita + Lux | Radiant Heal | Major heal + remove debuffs | Life/Light |
 | Umbra + Lux | Twilight Surge | Counter-element burst — highest 2-rune damage | Shadow/Light |
 
-### 3-Rune Combinations (Spellcasting 42+) — Selected Examples
-| Combination | Spell Name | Effect |
-|------------|-----------|--------|
+> Each subclass only loads the 2-rune combos that use their 6 active runes. Combos using
+> inactive nodes are simply absent from that subclass's lookup table.
+
+### 3-Rune Combinations (Combat Level 42+; Runeweaver: 35+)
+
+Examples establishing the pattern — full library to be expanded during Phase 2 implementation:
+
+| Combination | Spell | Effect |
+|------------|-------|--------|
 | Ignis + Tempest + Ventus | Inferno Cyclone | Massive fire AoE + burn field |
 | Glacius + Terra + Vita | Permafrost Ward | Freeze + stone skin + regeneration |
 | Umbra + Lux + Tempest | Eclipse Storm | Counter-element chain lightning + weaken |
@@ -210,171 +230,156 @@ Each depth unlock is a significant milestone — reaching Spellcasting 88 and be
 | Ignis + Glacius + Tempest | Elemental Triad | Three-element burst, heavy damage |
 | Terra + Ventus + Umbra | Phantom Earth | Trap + stealth + armor shred |
 
-> Full 3-rune library to be expanded during Phase 2 implementation — these are examples establishing the pattern.
+### 4-Rune Combinations (Combat Level 88+)
 
-### 4-Rune Combinations (Spellcasting 88+) — Signature Spells
-| Combination | Spell Name | Effect | Notes |
-|------------|-----------|--------|-------|
-| Ignis + Tempest + Ventus + Lux | Sundering Nova | Massive AoE, all nearby enemies | Highest damage combination in base game |
-| Glacius + Terra + Vita + Lux | Aegis of Dawn | Full heal + ice shield + defense | Premier survival combination |
-| Umbra + Lux + Glacius + Tempest | Void Eclipse | Counter-element ×2, massive single target | Shadowblade's peak combination |
-| Vita + Lux + Ventus + Ignis | Phoenix Wave | Revive from death if cast below 20% HP | Lifebinder signature — once per dungeon |
-| Terra + Umbra + Glacius + Tempest | Runic Collapse | Stagger + freeze + chain + weaken all | Runeweaver control signature |
-| Ignis + Glacius + Tempest + Ventus | Tempest of Four | Four-element cycling damage | Runeweaver endgame rotation |
+> Each spell below is cross-checked against the 6-node layout of its intended subclass.
+> Spells are only available to subclasses that have all four required runes active.
 
----
-
-## 🔄 Counter-Element System
-
-Counter pairs are subclass-specific — each subclass has their own opposing rune relationships based on their 6-node layout. Counter bonus stacks with speed bonus.
-
-### Runeweaver Counter Pairs
-| Counter Pair | Bonus | Lore |
-|-------------|-------|------|
-| Ignis ↔ Glacius | ×1.25 | Fire vs Ice |
-| Tempest ↔ Ventus | ×1.25 | Lightning vs Wind |
-| Umbra ↔ Lux | ×1.5 | Shadow vs Light — strongest, Runeweaver signature |
-
-### Summoner Counter Pairs
-| Counter Pair | Bonus | Notes |
-|-------------|-------|-------|
-| Ignis ↔ Glacius | ×1.25 | Fire vs Ice construct coordination |
-| Tempest ↔ Terra | ×1.25 | Storm Wisp vs Stone Golem — opposing constructs |
-| Umbra ↔ Terra | ×1.4 | Void Shade vs Golem — shadow vs earth |
-
-### Lifebinder Counter Pairs
-| Counter Pair | Bonus | Notes |
-|-------------|-------|-------|
-| Ignis ↔ Glacius | ×1.25 | Cauterize vs Ice Ward — opposing healing tools |
-| Tempest ↔ Ventus | ×1.25 | Disruption vs Evasion |
-| Vita + Lux | ×1.3 heal bonus | Not a counter — an amplifier. Both light-aspected, combining them enhances healing rather than creating tension |
-
-Counter bonus stacks with speed bonus — a fast counter-element combination is the highest damage output in active play.
+| Combination | Spell | Effect | Available to |
+|------------|-------|--------|-------------|
+| Ignis + Tempest + Ventus + Lux | Sundering Nova | Massive AoE, all nearby enemies | Runeweaver only (has all 4) |
+| Glacius + Vita + Lux + Ventus | Aegis of Dawn | Full heal + ice shield + defense | Lifebinder only (has all 4) |
+| Umbra + Lux + Glacius + Tempest | Void Eclipse | Counter-element ×2, massive single target | Runeweaver only |
+| Vita + Lux + Ventus + Ignis | Phoenix Wave | Revive from death if cast below 20% HP — once per dungeon | Lifebinder only |
+| Terra + Umbra + Glacius + Tempest | Runic Collapse | Stagger + freeze + chain + weaken all | Summoner only (has all 4) |
+| Ignis + Glacius + Tempest + Ventus | Tempest of Four | Four-element cycling damage | Runeweaver + Summoner (both have all 4) |
 
 ---
 
-## 🎭 Subclass Variations
+## Counter-Element System
 
-Each subclass has a unique 6-node constellation layout — same physical positions, different active runes. Subclass also alters what each shared rune does.
+Counter pairs are subclass-specific. Counter bonus stacks multiplicatively with speed bonus.
+
+### Runeweaver
+| Pair | Bonus |
+|------|-------|
+| Ignis ↔ Glacius | ×1.25 |
+| Tempest ↔ Ventus | ×1.25 |
+| Umbra ↔ Lux | ×1.5 (Runeweaver signature) |
+
+Runeweaver counter bonus is elevated: all pairs ×1.5, Umbra↔Lux ×1.75.
+
+### Summoner
+| Pair | Bonus |
+|------|-------|
+| Ignis ↔ Glacius | ×1.25 |
+| Tempest ↔ Terra | ×1.25 |
+| Umbra ↔ Terra | ×1.4 |
+
+### Lifebinder
+| Pair | Bonus |
+|------|-------|
+| Ignis ↔ Glacius | ×1.25 |
+| Tempest ↔ Ventus | ×1.25 |
+| Vita + Lux | ×1.3 heal bonus (amplifier, not counter — both light-aspected) |
+
+---
+
+## Subclass Variations
 
 ### Runeweaver (Ignis, Glacius, Tempest, Ventus, Umbra, Lux)
-Primary identity: elemental combinations, counter bonuses, AoE control
-- Full offensive rune set — all 6 runes deal damage or debuff
-- Counter bonus increased to ×1.5 on all counter pairs (×1.75 on Umbra↔Lux)
-- 3-rune combinations unlock at Spellcasting 35 (earlier than standard 42)
+- Full offensive set — all 6 deal damage or debuff
+- Counter bonuses elevated (see above)
+- 3-rune combos unlock at Grimoire combat level 35 (earlier than standard 42)
 - Signature idle: auto-rotates through last 3 used single-rune spells
-- Vita and Terra not available — pure offense, no healing
 
 ### Summoner (Ignis, Glacius, Tempest, Ventus, Terra, Umbra)
-Primary identity: backline tactician, constructs fight, user commands
-- Ignis = Ember Sprite command, Terra = Stone Golem command
-- Glacius = Frost Shard command, Tempest = Storm Wisp command
-- Umbra = Void Shade command, Ventus = recall all constructs
-- Combinations coordinate constructs rather than direct damage
-- No Vita (no healing) and no Lux (no party buffs) — pure construct control
-- Signature idle: constructs auto-attack, user auto-issues single-rune commands
+- Combinations issue commands to constructs — see `summoner-spec.md`
+- No Vita or Lux — no direct healing or party buffs
+- Signature idle: constructs auto-attack; user auto-issues single-rune commands
 
 ### Lifebinder (Ignis, Glacius, Tempest, Ventus, Vita, Lux)
-Primary identity: healer, self-sustaining solo, group support
-- Vita = primary heal resource, Lux = debuff cleanse and shield
-- No Umbra — blocked entirely, reserved for Bloodweaver DLC
+- No Umbra — node does not appear; no blocking logic needed
 - No Terra — no stagger or armor break
-- Vita + Lux = amplifier not counter — ×1.3 heal bonus
-- Damage combinations weakened by 40% — Lifebinder is not a damage dealer
-- Signature idle: auto-cycles Vita single-rune self-heal when below 60% HP
+- Damage combos weakened by 40% — not a damage dealer
+- HP is the casting resource (no mana) — see `lifebinder-spec.md`
+- Signature idle: auto-casts single Vita self-heal when below 60% HP
 
 ---
 
-## 💡 Attunement — Active Play Bonus
+## Attunement — Active Play Bonus
 
-The Runic Constellation's attunement moment:
+| Condition | Bonus |
+|-----------|-------|
+| Lightning speed draw (< 0.4s) | ×1.5 XP + speed damage modifier |
+| Counter-element combination | ×1.25 damage + 6% loot bonus |
+| 4-rune combination | ×2.0 XP (mastery reward — depth IS the bonus) |
+| Umbra↔Lux counter (Runeweaver) | ×1.75 damage + 15% loot bonus |
 
-| Condition | Attunement Type | Bonus |
-|-----------|----------------|-------|
-| Draw at Lightning speed (under 0.4s) | Speed attunement | ×1.5 XP + speed damage bonus |
-| Use counter-element combination | Counter attunement | ×1.25 damage + 10% loot bonus |
-| Land a 4-rune combination | Mastery attunement | ×2.0 XP + 20% loot bonus |
-| Land Umbra↔Lux counter | Peak attunement | ×1.75 damage + 15% loot bonus |
-
-Idle fallback attunement: auto-cast last single-rune at 60% potency — no speed bonus, no counter bonus possible.
+No crit system. No weak points. Skill expression = speed + counter knowledge.
 
 ---
 
-## 🎮 Idle Behavior
+## Idle Behaviour
 
-When Marksmanship idle combat is active (Warden) the game auto-fires. Arcanist idle works similarly:
+- Queued combination auto-casts at 60% potency
+- Interval scales with Grimoire combat level:
 
-- Player queues a spell combination in the Grimoire Queue UI
-- Idle auto-casts that combination at 60% potency on a fixed interval
-- Last manually drawn combination is what auto-casts — the game remembers it
-- Player can update the idle combination anytime by drawing a new one during active play
-- If no combination has been drawn yet: defaults to single Ignis auto-cast
+| Grimoire Combat Level | Cast Interval |
+|----------------------|--------------|
+| 1–20 | 5.0s |
+| 21–40 | 4.0s |
+| 41–60 | 3.5s |
+| 61–80 | 3.0s |
+| 81–100 | 2.5s |
 
-**Idle cast interval by Spellcasting level:**
-| Level | Cast Interval |
-|-------|-------------|
-| 1–20 | Every 5.0s |
-| 21–40 | Every 4.0s |
-| 41–60 | Every 3.5s |
-| 61–80 | Every 3.0s |
-| 81–100 | Every 2.5s |
+- Last manually drawn combination is what idles — updated whenever player draws a new one
+- If no combination drawn yet: defaults to single Ignis auto-cast
+- Speed bonus never fires during idle (can't measure draw time on automated cast)
+- Counter bonus DOES apply during idle if the queued combination uses a counter pair
 
 ---
 
-## 🔧 Technical Notes for Implementation
+## Technical Notes
 
 **Input handling:**
-- Use Unity's `IPointerDownHandler`, `IDragHandler`, `IPointerUpHandler` interfaces
-- On PointerDown: check if touch position overlaps a node collider — register as start node
-- On Drag: raycast each frame for node colliders — register new nodes as line is drawn
-- On PointerUp: fire spell based on registered node sequence, clear line
-- Track draw start time on PointerDown, calculate elapsed on PointerUp for speed tier
-
-**Node layout:**
-- 6 active nodes positioned on a semi-circle arc, radius ~35% of screen width
-- Inactive nodes (2 per subclass) not rendered — only the 6 subclass-specific nodes appear
-- Arc center at bottom-center of combat area
-- Store node positions as normalized screen coordinates — scale correctly on all devices
-- Minimum 64px touch target per node regardless of visual sprite size
+Use `IPointerDownHandler`, `IDragHandler`, `IPointerUpHandler`.
+- PointerDown: check node collider overlap → register start node, record `drawStartTime`
+- Drag: raycast each frame for node colliders → register newly entered nodes
+- PointerUp: resolve sequence → lookup → fire → clear
 
 **Combination lookup:**
-- Store all valid combinations as a Dictionary<HashSet<RuneType>, SpellData>
-- Order-independent lookup — sort the node set before lookup so Ignis+Glacius = Glacius+Ignis
-- If combination not found in dictionary → fire default weak spell
-- SpellData ScriptableObject per spell — name, description, damage formula, effect, mana cost, animation
-
-**Speed calculation:**
 ```csharp
-float drawTime = Time.time - drawStartTime;
-float speedMultiplier = drawTime < 0.4f ? 1.5f :
-                        drawTime < 0.8f ? 1.25f :
-                        drawTime < 1.5f ? 1.0f : 0.85f;
+// Order-independent — sort before lookup
+var key = new HashSet<RuneType>(sequence);
+SpellData spell = subclassSpellTable.TryGetValue(key, out var s) ? s : defaultSpell;
 ```
 
-**Mana costs:**
-| Combination depth | Mana cost |
-|------------------|-----------|
-| 1 rune | 5 mana |
-| 2 rune | 10 mana |
-| 3 rune | 18 mana |
-| 4 rune | 28 mana |
-| Default weak spell | 5 mana |
+**Speed multiplier:**
+```csharp
+float drawTime = Time.time - drawStartTime;
+float speedMult = drawTime < 0.4f ? 1.5f
+                : drawTime < 0.8f ? 1.25f
+                : drawTime < 1.5f ? 1.0f : 0.85f;
+```
 
-If player has insufficient mana: default weak spell fires at reduced cost (2 mana). Never blocked entirely.
+**Mana / resource costs:**
 
-**Subclass behavior:**
-- `SpellcastingSubclass` enum on GrimoireManager drives which SpellData lookup table is used
-- Same combination string, different SpellData ScriptableObject per subclass
-- Three lookup tables: RuneweaverSpells, SummonerSpells, LifebinderSpells
-- All use same node layout and input system — only output differs
+| Depth | Cost | Notes |
+|-------|------|-------|
+| 1 rune | 5 mana | Lifebinder: 8 HP instead (no mana pool) |
+| 2 rune | 10 mana | Lifebinder: 16 HP |
+| 3 rune | 18 mana | Lifebinder: 28 HP |
+| 4 rune | 28 mana | Lifebinder: see lifebinder-spec.md |
+| Default weak spell | 2 mana | Lifebinder: 4 HP |
 
-**PC/Steam input:**
-- Mouse drag replaces touch drag — identical logic
-- Optional keyboard shortcuts for single-rune casts (1–8 keys mapped to nodes) — quality of life for PC players
-- Mouse hover highlights node before click — visual affordance
+Lifebinder has `hasManaPool = false`; `GrimoireManager` routes resource deduction to HP.
+Spell is blocked (default fires instead) if Lifebinder HP would fall to ≤ 1.
+
+**Subclass lookup tables:**
+`SpellcastingSubclass` enum on `GrimoireManager` → three lookup tables:
+`RuneweaverSpells`, `SummonerSpells`, `LifebinderSpells`. Same input system, different output.
+
+**No-crit enforcement:**
+```csharp
+if (currentGrimoire.path == GrimoirePath.Arcanist) {
+    critChance = 0f;
+    weakPointEnabled = false;
+}
+```
+
+**PC/Steam:** Mouse drag replaces touch drag. Optional keyboard shortcuts 1–6 mapped to nodes.
 
 ---
 
-*Document version 0.2 — Runic Constellation Mechanic*
-*Key change: 8 runes compacted to 6 per subclass with unique layouts. Counter pairs now subclass-specific.*
-*Next: Melee combo system (Vanguard) · Summoner construct system · Lifebinder healing design · Guild Hall UI*
+*Path: `docs/runic-constellation-spec.md`*

@@ -1,3 +1,31 @@
+## 📋 Sprite Atlas Prompt Format
+
+All item icons are generated as **atlas sheets** — multiple icons in a uniform grid — not individual files. Use this format for all item icon generation:
+
+**Standard atlas prompt template:**
+```
+item icon sheet, 4x2 grid layout, [category] items:
+[item1], [item2], [item3], [item4],
+[item5], [item6], [item7], empty slot,
+each icon 64x64px in a uniform grid, small flat icons,
+limited palette, dark pixel outline,
+HD-2D pixel art style, Octopath Traveler-inspired,
+transparent background, total sheet 256x128
+```
+
+**Key rules:**
+- Always specify grid dimensions (4x2, 4x4 etc.) explicitly
+- Always specify individual cell size (64x64)
+- Always specify total sheet size (256x128 for 4x2)
+- Include "empty slot" for unused grid positions — reserves space for future items
+- Use "uniform grid" to ensure consistent cell alignment for Unity slicing
+- Reference an approved character sprite as style anchor for animal/creature icons
+
+**Unity import after generation:**
+Sprite Mode → Multiple → Sprite Editor → Slice → Grid by Cell Size 64x64 → Apply
+
+---
+
 # ⚔️ Project Grimoire — Phase 1 Sprite AI Prompt Library
 ### Version 0.2
 

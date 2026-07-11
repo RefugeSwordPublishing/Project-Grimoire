@@ -1,5 +1,5 @@
 # ⚔️ Project Grimoire — Art Asset Requirements by Phase
-### Version 0.3
+### Version 0.5
 
 > **Art Style: HD-2D (Grimoire Variant)**
 > Inspired by Octopath Traveler's cinematic HD-2D approach — painterly pre-rendered backgrounds with rich atmospheric depth, expressive lighting, and strong zone identity — but with two key distinctions: **full-body realistic-proportion pixel art characters** (not chibi) and a **front-to-back scrolling camera perspective** (not side-scrolling plane).
@@ -60,7 +60,129 @@ Characters depart from Octopath's chibi proportions. Grimoire characters are:
 
 ---
 
-## 🖥️ Resolution Standards
+## 🎨 Layer.ai — Two Separate Generation Workflows
+
+The HD-2D style means backgrounds and sprites are fundamentally different asset types. They use different Layer.ai models, different generation prompts, and different Unity import settings. **Never use the sprite workflow for backgrounds or vice versa.**
+
+---
+
+### Workflow A — Background Environments (Painterly / HD)
+
+Backgrounds are NOT pixel art. They are high-resolution painterly environments — essentially concept art pieces that sit behind the pixel art characters.
+
+**Layer.ai setup:**
+- Use a high-quality painterly/concept art model — FLUX, Gemini 3.1 Flash Image, or similar
+- Do NOT use pixel art models for backgrounds
+- Do NOT use the custom Grimoire sprite model for backgrounds
+
+**Generation approach:**
+- Generate at 1920×1080 (full HD)
+- Prompt for atmospheric environments, rich lighting, layered depth
+- Generate each parallax layer separately (3–5 layers per zone)
+- Layers from back to front: skybox → distant environment → midground scene → foreground detail → particle layer (Unity, not Layer.ai)
+
+**Example prompt structure:**
+```
+[zone name] environment, [mood/atmosphere descriptor], dark fantasy medieval RPG,
+painterly concept art style, cinematic lighting, [time of day],
+atmospheric depth, god rays, [zone-specific color grade],
+high resolution game background, no characters, no UI
+```
+
+**Example — Grimwood Fringe midground layer:**
+```
+Ancient forest clearing, dark fantasy medieval RPG, painterly concept art,
+dappled sunlight through forest canopy, cool greens and amber light,
+atmospheric fog in background, mossy ruins, cinematic depth of field,
+game environment art, no characters
+```
+
+**Unity import settings for backgrounds:**
+- Filter Mode: **Bilinear** (painterly — NOT point filter)
+- Max Texture Size: **4096**
+- Compression: **Lossless**
+- Each parallax layer on its own `SpriteRenderer` at a different Z depth
+- Post-processing (bloom, DOF, LUT) applies fully to background layers
+
+---
+
+### Workflow B — Characters, Enemies & Icons (Pixel Art)
+
+All characters, enemies, and item icons are pixel art. These are the crisp sprites that float in front of the painterly backgrounds — the contrast between them is what creates the HD-2D look.
+
+**Layer.ai setup — two stages:**
+
+**Stage 1 (now): Use a pre-built Layer model**
+Browse Layer's 40+ custom model library for the closest match to your style target. Look for: `dark fantasy pixel`, `pixel RPG`, `indie pixel art`, `retro game sprite`. Using a pre-built model immediately solves the style inconsistency problem (the bear issue) without needing training data.
+
+**Stage 2 (after 10–15 approved sprites): Train your custom Grimoire model**
+1. Generate Warden base body + 5–10 enemy sprites using the pre-built model
+2. Refine in Aseprite until approved
+3. In Layer: Models → Train Custom Model
+4. Upload 10–20 approved sprites as training data
+5. Name: `Grimoire-HD2D-v1`
+6. Training time: ~30–60 minutes
+7. All future prompts: append `using Grimoire-HD2D-v1 model`
+
+From this point forward every character, enemy, and icon shares the same visual DNA — outline thickness, shading approach, color palette, pixel density, proportional conventions — automatically enforced by the model.
+
+**Generation approach:**
+- Characters/enemies: 256×256 with transparent background
+- Item icons: generate as atlas sheets (4-wide grid, 64×64 cells, 256px wide total)
+- Always include a reference image of an approved sprite as style anchor
+- Use the approved Warden sprite as the style reference for all first-generation enemies
+
+**Example prompt structure:**
+```
+[subject description], dark fantasy medieval RPG enemy sprite,
+full-body pixel art, realistic proportions, transparent background,
+[pose], [size reference], limited palette, dark pixel outline,
+HD-2D pixel art style, [approved sprite] as style reference
+```
+
+**Style reference for animal enemies — critical addition:**
+```
+pixel art shading only — no realistic fur texture, no 3D rendering,
+same pixel art style as [approved human enemy sprite]
+```
+
+**Unity import settings for sprites:**
+- Filter Mode: **Point (no filter)** — hard pixel edges, no blur
+- Compression: **None**
+- Pixels Per Unit: **100** — must be consistent across ALL sprites
+- Max Texture Size: **2048** (characters), **4096** (bosses)
+- Sprite Mode: **Multiple** for sprite sheets, **Single** for individual sprites
+
+---
+
+### Why the contrast works
+
+When both layers render together in Unity with post-processing active:
+- The bloom from a torch in the background softly glows and bleeds into the scene
+- The depth of field softens foreground background trees as the player moves deeper
+- The Warden character stays **crisp and readable** in front of all of it — Point filter keeps hard pixel edges regardless of what the post-processing does to the layers behind
+
+The characters are exempt from depth-of-field blur because they sit on their own sprite layer with a Z value that keeps them outside the DOF blur range. This is the core technique that makes HD-2D work — the post-processing affects the world, not the characters.
+
+---
+
+### Generation Order (start here)
+
+```
+1. Choose a pre-built Layer model from the library (closest to dark fantasy pixel RPG)
+2. Generate Warden base body idle pose — 256×256
+3. Refine in Aseprite until approved — this is your style anchor
+4. Generate Grimwood Fringe midground background — 1920×1080 (painterly model)
+5. Test both in Unity — verify the contrast reads correctly before generating more
+6. Generate 5–10 enemies using Warden sprite as style reference
+7. Once 10–15 sprites approved → train Grimoire-HD2D-v1 custom model
+8. All subsequent sprites use Grimoire-HD2D-v1
+9. Backgrounds continue using painterly model (never the sprite model)
+```
+
+---
+
+*Path: `docs/art-asset-requirements.md`*
 
 Project Grimoire targets both mobile and Steam/PC. Character sprites use realistic proportions at sufficient resolution to support HD-2D visual fidelity.
 
@@ -113,6 +235,56 @@ Layer 6 — UI overlay
 ```
 Depth of field blurs Layer 4 as player moves deeper — gives the front-to-back parallax feel.
 
+
+### Sprite Atlas Organization — Item Icons
+
+All item icons use a **Sprite Atlas (sheet) approach** rather than individual files. This reduces draw calls dramatically — critical for mobile performance when the inventory displays 70+ slots simultaneously.
+
+**How it works in Unity:**
+1. Generate icon sheet as a single image with uniform grid layout
+2. Import as Sprite → Sprite Mode → Multiple
+3. Sprite Editor → Slice → Grid by Cell Size (64x64)
+4. Unity auto-slices into individually addressable sprites
+5. Rename sprites in editor to semantic names (icon_perch, icon_carp etc.)
+6. Adding new items: fill empty slots on existing sheet, re-import, re-slice — existing references don't break
+
+**Sheet grid format for generation prompts:**
+- Each cell: 64x64px
+- Sheet layout: 4-wide grid (256px wide) × as many rows as needed
+- Always include empty/blank slots at the end for future additions
+- Total sheet width: 256px (4 icons wide) — consistent across all sheets
+
+**Sprite Atlas Master List:**
+
+| Atlas File | Contents | Grid | Sheet Size |
+|-----------|---------|------|-----------|
+| `icons_gathering_foraging.png` | Common Herb, Ironwort, Wild Berry Cluster, Thornroot, Ashfen Spore, Mountain Herb, Frostbloom, empty | 4×2 | 256×128 |
+| `icons_gathering_dredging.png` | Perch, Carp, Pearl, Deep Net catch, Murk Eel, Bog Pearl, Swamp Carp, empty | 4×2 | 256×128 |
+| `icons_gathering_trapping.png` | Rabbit Pelt, Fox Pelt, Deer Hide, Boar Hide, Wolf Pelt, Mire Fox pelt, Snow Fox pelt, empty | 4×2 | 256×128 |
+| `icons_gathering_felling.png` | Pine Log, Hardwood Log, Ashwood Log, Ironbark Log, Blightbark, empty, empty, empty | 4×2 | 256×128 |
+| `icons_gathering_delving.png` | Iron Ore, Coal, Silver Ore, Gold Ore, Mithril Vein, Mountain Quartz, empty, empty | 4×2 | 256×128 |
+| `icons_gathering_gleaning.png` | Battlefield Scrap, Runic Fragment, Lost Cache, empty, empty, empty, empty, empty | 4×2 | 256×128 |
+| `icons_gathering_cultivation.png` | Wheat, Potato, Flax, Reed Paper, Moonflower, Worldseed, empty, empty | 4×2 | 256×128 |
+| `icons_gathering_tracking.png` | Monster Sign scroll, Ancient Trail scroll, empty, empty | 4×1 | 256×64 |
+| `icons_rare_materials_crude.png` | Crude Amber, Crude Gemstone, Crude Phantom Pelt, Crude Abyssal Pearl, Crude Void Spore, Crude Runic Cog, Crude Aetheric Filament, Crude Ancient Sigil | 4×2 | 256×128 |
+| `icons_rare_materials_rough.png` | Rough tier — same 8 types | 4×2 | 256×128 |
+| `icons_rare_materials_refined.png` | Refined tier — same 8 types | 4×2 | 256×128 |
+| `icons_rare_materials_pristine.png` | Pristine tier — same 8 types | 4×2 | 256×128 |
+| `icons_rare_materials_masterwork.png` | Masterwork tier — same 8 types | 4×2 | 256×128 |
+| `icons_consumables_alchemy.png` | Minor Healing Draught, Antidote Vial, Poison Coating, Shadow Blend, empty, empty, empty, empty | 4×2 | 256×128 |
+| `icons_consumables_cookery.png` | Roasted Rabbit, Herb Broth, Venison Stew, Hunter's Ration, empty, empty, empty, empty | 4×2 | 256×128 |
+| `icons_equipment_weapons.png` | Bow, Sword, Battle Axe, Dagger, Spear, Staff, Wand, Felling Axe (one icon per weapon type) | 4×2 | 256×128 |
+| `icons_equipment_armor_warden.png` | Leather Helm, Chest, Legs, Boots, Gloves (one icon per piece) | 4×2 | 256×128 |
+| `icons_equipment_armor_vanguard.png` | Plate Helm, Chest, Legs, Boots, Gloves | 4×2 | 256×128 |
+| `icons_equipment_armor_arcanist.png` | Vestment Cowl, Robe, Leggings, Boots, Gloves | 4×2 | 256×128 |
+| `icons_tools.png` | Pickaxe, Felling Axe, Fishing Rod, Trapper's Kit, Smith's Hammer, Tanning Frame, Weaving Loom, empty | 4×2 | 256×128 |
+| `icons_kits.png` | Inscription Set, Cookery Set, Alchemy Kit, Carpenter's Kit, empty, empty, empty, empty | 4×2 | 256×128 |
+| `icons_currency_ui.png` | Silver Mark coin, Gold Mark coin, Inventory Slot Ticket, Quest Slot Ticket, Slaying Task Ticket, Exchange Slot Ticket, empty, empty | 4×2 | 256×128 |
+| `icons_grimoires.png` | All 7 base game Grimoire book icons | 4×2 | 256×128 |
+| `icons_quality_badges.png` | Crude, Rough, Refined, Pristine, Masterwork, Legendary badges (+ colorblind variants on rows below) | 4×4 | 256×256 |
+
+> **Growth rule:** Each sheet has empty slots reserved for future items. When all slots fill, create a new sheet with the same naming convention (e.g. `icons_gathering_foraging_2.png`). Never expand sheet dimensions mid-project — keep all sheets at 256px wide for consistency.
+
 ---
 
 ## 📦 Phase 1 — Launch Critical
@@ -162,18 +334,20 @@ This is what blocks Claude Code from having a playable build. Prioritize this li
 | Crestfall Cove — dungeon interior tileset | 32x32/tile | Coastal cave theme |
 
 ### Items — Gathering Output (Phase 1 Talents)
-| Category | Resolution | Items |
-|----------|-----------|-------|
-| Foraging | 64x64 | Common Herb, Ironwort, Wild Berry Cluster, Thornroot |
-| Trapping | 64x64 | Rabbit Pelt, Fox Pelt, Deer Hide, Boar Tusk, Wolf Pelt |
-| Dredging | 64x64 | Perch, Carp, Pearl, Deep Net catch |
-| Rare materials (Crude tier) | 64x64 | Crude Amber, Crude Gemstone, Crude Phantom Pelt, Crude Abyssal Pearl, Crude Void Spore |
+All item icons generated as **sprite atlas sheets** — see Sprite Atlas Organization section above.
+
+| Atlas | Phase 1 items to populate | Notes |
+|-------|--------------------------|-------|
+| `icons_gathering_foraging.png` | Common Herb, Ironwort, Wild Berry Cluster, Thornroot | Leave 4 slots empty for Phase 2+ |
+| `icons_gathering_dredging.png` | Perch, Carp, Pearl, Deep Net catch | Leave 4 slots empty |
+| `icons_gathering_trapping.png` | Rabbit Pelt, Fox Pelt, Deer Hide, Boar Tusk, Wolf Pelt | Leave 3 slots empty |
+| `icons_rare_materials_crude.png` | All 8 crude rare materials | Full sheet — generate all at once |
 
 ### Items — Processing Output (Phase 1 Talents)
-| Category | Resolution | Items |
-|----------|-----------|-------|
-| Alchemy | 64x64 | Minor Healing Draught, Antidote Vial, Poison Coating |
-| Cookery | 64x64 | Roasted Rabbit, Herb Broth, Venison Stew |
+| Atlas | Phase 1 items to populate | Notes |
+|-------|--------------------------|-------|
+| `icons_consumables_alchemy.png` | Minor Healing Draught, Antidote Vial, Poison Coating | Leave 5 slots empty |
+| `icons_consumables_cookery.png` | Roasted Rabbit, Herb Broth, Venison Stew | Leave 5 slots empty |
 
 ### Items — Equipment (Phase 1)
 | Item | Resolution | Notes |
@@ -320,5 +494,6 @@ All DLC sprites follow same resolution standards as base game equivalents.
 
 ---
 
-*Document version 0.3 — Art Asset Requirements by Phase*
+*Document version 0.4 — Art Asset Requirements by Phase*
+*Added: Sprite Atlas organization system, sheet format standards, full atlas master list*
 *Updated: Full HD-2D art direction added (Grimoire Variant). Full-body realistic proportion characters, front-to-back camera, post-processing stack, per-zone color grading, parallax background layers. Replaces Kingdom Two Crowns reference.*
