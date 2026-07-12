@@ -1,6 +1,6 @@
 ---
 type: implementation-status
-updated: 2026-07-10
+updated: 2026-07-11
 purpose: Single source of truth for WHAT IS ACTUALLY BUILT vs. design intent in the specs.
 audience: Claude (Chat or Code) starting a session. Read this FIRST, then the relevant spec.
 ---
@@ -19,6 +19,14 @@ so it builds on the current state rather than the original design.
 ## Phase status
 - **Phase 1:** complete (managers, ScriptableObjects, Bowstring mechanic, idle loop, Supabase + FCM).
 - **Phase 2:** guild system + Guild Merchant complete (below). Remaining Phase 2: Runic Constellation, Summoner, Lifebinder, Vanguard combo, aggro, zone content, Exchange fees, sprite pass.
+
+## Session 2026-07-11 — persistence, consumables Part A, fixes
+- **Idle gathering fixed.** Root cause: category-panel Sheet background is a raycast target with no click handler, so taps on talent/activity tiles bubbled up to the full-screen panel-root Close button — the panel opened the detail view then instantly closed. Fix: new `ClickSwallow` (Assets/Scripts/UI/ClickSwallow.cs) on the Sheet consumes clicks; taps outside still close. Applies to Gathering/Processing/Crafting.
+- **Inventory fixes.** Grid now populates on open (`InventoryUI.OnEnable` refreshes — nav drawer shows via SetActive, not Open()). Quality border no longer renders as a white box behind transparent icons (item backdrop inset + opaque). Enemy sprite red tint fixed earlier (ZoneCombatView resets colour to white with a real icon).
+- **Inventory tabs consolidated 10 → 5:** All / Materials (Raw+Rare+Craftables) / Consumables (+Scrolls) / Equipment (+Grimoires) / Quests. Currency items surface under All only. `InventoryUI` uses a CategoryFilter group model; single width-independent row. `Tools > Grimoire > Rebuild Inventory Tabs` rebuilds in-scene without a full canvas rebuild.
+- **Enemy asset cleanup:** deleted 14 orphaned root `Data/Enemies/*.asset` duplicates (zones reference the `GrimwoodFringe/` + `SaltmarshShore/` subfolder copies).
+- **Local persistence (dev testing) — BUILT.** `Assets/Scripts/Core/LocalSave.cs` writes JSON to `persistentDataPath/grimoire_save.json`: currency, talent progress, inventory (exact slot layout), equipped Grimoire, per-Grimoire combat XP/levels. Loaded on boot in `GameManager.InitGame` before idle resume; throttled autosave (~4s) on inventory/talent/combat change; flushed on pause/quit (synchronous write, so editor Stop persists). Milestone stat bonuses replayed on load (talents + combat). `Tools > Grimoire > Delete Local Save` resets. **At alpha:** swap for the Supabase services (`InventorySyncService`, `PlayerDataService` — needs an upsert path for talents) behind the same call sites; server saves require login.
+- **Consumables Part A COMPLETE.** `BuffManager` (Assets/Scripts/Core/BuffManager.cs): `TimedBuff` meals apply buffStats/buffValues to `PlayerData.*Bonus` for `buffDurationSeconds`, reverse on expiry; one general + one Vanguard-stamina meal coexist, new meal replaces old in-category. `WeaponManager` (Assets/Scripts/Core/WeaponManager.cs): `WeaponCoating` stores charges; each landed hit spends a charge and applies a DoT (damage/tick × duration) to the enemy, ticked by `CombatManager.TickEnemyDot` (1s ticks, can land the kill, cleared on spawn). Both auto-created by GameManager (`.Buffs` / `.Weapon`); `UseConsumable` wires both branches. **Deferred:** regen-type meals need a `StatType` HP/stamina-regen member (skipped with a warning for now); manual hotbar slot assignment still pending.
 
 ## Guild system — DONE (2026-07-10)
 Unity: `Assets/Scripts/UI/GuildBankUI.cs` (+ `Editor/BuildGuildBankUI.cs`). SQL: migrations 002, 010–018.
@@ -101,7 +109,7 @@ Per `consumables-spec.md`. Done so far:
 - **Regen BUILT:** `CombatManager.TickResources` — mana 1/sec out of combat (Arcanist), stamina 2/sec in combat (Vanguard); HP has no passive regen.
 - **Idle auto-eat BUILT (free tier):** at 25% HP, after a 2s delay, once per encounter, `CombatManager` auto-consumes the lowest-quality Healing Draught in stock. Royal-Merchant upgrade tiers + `player_settings.auto_eat_tier` still pending.
 - **Safe area:** `Editor/ApplySafeArea.cs` (Tools > Grimoire > Apply Safe Area To Panels) wraps every panel's HUD in the existing `SafeAreaFitter` so close buttons/headers clear the notch (background stays full-bleed). Idempotent.
-- **Still pending in Part A:** `BuffManager` (meals) + `WeaponManager` (poison coating), manual hotbar slot assignment + `player_settings` persistence.
+- **Part A COMPLETE (2026-07-11):** `BuffManager` (meals) + `WeaponManager` (poison coating + enemy DoT) built — see Session 2026-07-11 above. Still pending: regen-type meals (need StatType HP/stamina-regen member), manual hotbar slot assignment + `player_settings` persistence.
 
 ## Consumables / resources — original design notes
 The combat hotbar + auto-eat the user wants are **blocked on design**:
