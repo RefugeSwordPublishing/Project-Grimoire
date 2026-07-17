@@ -20,6 +20,36 @@ so it builds on the current state rather than the original design.
 - **Phase 1:** complete (managers, ScriptableObjects, Bowstring mechanic, idle loop, Supabase + FCM).
 - **Phase 2:** guild system + Guild Merchant complete (below). Remaining Phase 2: Runic Constellation, Summoner, Lifebinder, Vanguard combo, aggro, zone content, Exchange fees, sprite pass.
 
+## Combat vertical slice + Warden bow — AS-BUILT (2026-07-11)
+The Warden Bowstring was **redesigned in-engine from playtesting** and **diverges from
+`warden-combat-spec` v0.1**. Full detail + open questions for re-spec: **`warden-archery-asbuilt.md`**.
+Summary of what actually ships:
+- **3D combat scene:** perspective camera (tilted ~10° down) → RenderTexture → full-screen RawImage
+  backdrop on the combat panel (overlay canvas draws HUD on top). World quads: player (launch), enemy
+  (SpriteRenderer + invisible MeshCollider sized to sprite), parallax bg. `CombatSceneController` owns it;
+  `Tools > Grimoire > Convert Combat Scene to 3D` builds/wires it (idempotent, dedupes).
+- **Bow mechanic:** aim = horizontal drag around a fixed screen-centre ref (`Aim Center X`); draw =
+  vertical pull → arc **loft** (more draw = higher arch). Arrow arc is **Linecast-traced vs the enemy
+  collider** → hit = arc passes through the body; **draw is effectively the vertical aim**. No draw-power
+  damage, no draw-%% bar; a live trajectory line previews the arc (`_trajectoryReveal` hides the end).
+- **Weak point** = hit UV vs `EnemyData.weakPointMask` (×2.0) with optional per-idle-frame `idleMasks[]`.
+  A landed active shot then rolls **accuracy vs Evasion/Block** (Evaded/Blocked); no RNG miss on a good
+  shot. Idle auto-attack keeps full-RNG accuracy. `AttackOutcome` = Hit/Miss/Evaded/Blocked.
+- **Enemy depth:** `EnemyData.combatRange` (Close/Medium/Far/VeryFar) → fixed world Z (constant per enemy).
+- **HP:** persists between fights; death = retreat to hub (no free heal); out-of-battle HP regen
+  (`_hpRegenFraction`); in combat recover via food / idle auto-eat.
+- **Enemy animation:** `EnemyData` idle/attack/death `Sprite[]` + `animFPS`, static `icon` fallback
+  (idle loops, attack once→idle, death once→hide).
+- **NOT built (Warden remainder):** the ability ring (Barbed Shot / Long Shot / Model C: Fade + Armor
+  Piercer), reveal talents, per-subclass tuning — pending Chat re-spec on top of the arc mechanic.
+
+## Persistence — Supabase wired behind login (2026-07-11)
+`GameManager` routes inventory/talents/currency **load+save to Supabase when signed in** (`ServerAuthed`),
+with the local JSON save as the offline fallback. Added `SupabaseManager.Upsert` (Prefer merge-duplicates)
+and `PlayerDataService.LoadTalents`/`SaveAllTalents` (upsert on PK player_id,talent_id). Combat XP
+self-persists server-side; **equipped Grimoire server-save is still a follow-on**. Auth session persists
+in PlayerPrefs (auto-refresh) so testing doesn't re-prompt login.
+
 ## Session 2026-07-11 — persistence, consumables Part A, fixes
 - **Idle gathering fixed.** Root cause: category-panel Sheet background is a raycast target with no click handler, so taps on talent/activity tiles bubbled up to the full-screen panel-root Close button — the panel opened the detail view then instantly closed. Fix: new `ClickSwallow` (Assets/Scripts/UI/ClickSwallow.cs) on the Sheet consumes clicks; taps outside still close. Applies to Gathering/Processing/Crafting.
 - **Inventory fixes.** Grid now populates on open (`InventoryUI.OnEnable` refreshes — nav drawer shows via SetActive, not Open()). Quality border no longer renders as a white box behind transparent icons (item backdrop inset + opaque). Enemy sprite red tint fixed earlier (ZoneCombatView resets colour to white with a real icon).
