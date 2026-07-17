@@ -1,5 +1,24 @@
 # ⚔️ Project Grimoire — Phase 2 Attunement Data Spec
-### Version 0.1 — Spellcasting Talent
+### Version 0.5
+
+---
+
+## ⚠️ Core Attunement Rule — Always Additive, Never Gated
+
+**Attunement windows NEVER gate content.** Idle players always receive the base
+yield, base drop rate, base result. Active players who hit the attunement window
+receive a bonus ON TOP of the base.
+
+```
+Idle player:   base yield
+Active player: base yield + attunement bonus
+```
+
+This is non-negotiable. Any attunement that says "requires active play to get X"
+contradicts the semi-idle design and will push players to feel punished for idling.
+When reviewing attunement specs: if the idle result is "nothing", that's wrong.
+
+---
 
 ---
 
@@ -323,8 +342,12 @@ Small indicator near the combat input area. Empty brackets = queue slots availab
 | Outcome | What happens |
 |---------|-------------|
 | **Hit attunement** | +1 elite added to queue (up to 3) + 20% drop rate bonus on that queued encounter |
-| **Miss attunement** | No queue addition — trail goes cold |
-| **Idle Tracking** | No queue addition — requires active tracking to find elites |
+| **Miss attunement** | No queue addition — trail goes cold this cycle |
+| **Idle Tracking** | +2% elite spawn chance bonus (passive, always active during idle) — no queue addition |
+
+**Idle players still benefit** — the +2% passive elite bonus applies during idle
+without any input. Active attunement builds the queue for guaranteed elites.
+Active play is better, idle is not penalised.
 
 ```csharp
 void OnMonsterSignAttunement(bool success) {
@@ -359,12 +382,17 @@ Reveals hidden Gleaning cache locations. Works differently from standard trail f
 - No taps → cache NOT revealed (idle Tracking does not reveal Ancient caches)
 
 ```
-ancientTrailAttunement_cueLabel = "Ancient cache — follow the trail!"
+ancientTrailAttunement_cueLabel      = "Ancient cache — follow the trail!"
 ancientTrailAttunement_waypointCount = 2-3 (random per occurrence)
-ancientTrailAttunement_fullBonus = 0.45
-ancientTrailAttunement_partialBonus = 0.45 - (0.15 × missedWaypoints)
-ancientTrailAttunement_idleResult = "Cache not revealed — requires active tracking"
+ancientTrailAttunement_fullBonus     = 0.45   (all waypoints hit)
+ancientTrailAttunement_partialBonus  = 0.45 - (0.15 × missedWaypoints)
+ancientTrailAttunement_idleResult    = "Cache revealed at base rate — no loot bonus"
 ```
+
+**Idle players still find caches** — Ancient Trail always reveals the cache.
+Active play adds a loot bonus (up to +45%) on top of the base reveal.
+Missing the window = cache found, no bonus. Idle = cache found, no bonus.
+This is the consistent attunement model: idle gets base, active gets more.
 
 **Synergy note:** Ancient Trail + Gleaning 63 (Void Cache) together reveal dungeon caches AND zone caches — a high-level player with both has the best possible scavenging output in any content type.
 
@@ -590,3 +618,209 @@ if (currentGrimoire.path == GrimoirePath.Vanguard) {
 *Key change: Spellcasting removed as shared Talent — attunement data now lives on each Arcanist Grimoire's Combat Progression*
 *Added: Warfare attunement (all Vanguard Grimoires), Gleaning Phase 2 contexts, Cultivation tiered attunement, Tracking tiered attunement*
 *Next: Combat XP curve · Phase 2 handoff*
+
+---
+
+## 🪓 Phase 2 Additions — Felling Talent
+
+Base Felling attunement (Phase 1) remains unchanged — bark crack timing cue,
+tap window, bonus timber on hit. Phase 2 adds tiered attunement behavior as
+higher-value tree types unlock.
+
+### Felling — Tiered Attunement by Tree Type
+
+The attunement window tightens and rewards increase as tree type rarity increases.
+Higher wood types are harder to chop cleanly — precision is more valuable.
+
+| Tree Type | Unlock Level | Window Duration | Yield Bonus | Rare Drop Bonus | Cue Label |
+|-----------|-------------|----------------|------------|----------------|----------|
+| Softwood (Pine, Birch) | 1 | 1.5s | +2 timber | — | "Tap now!" |
+| Hardwood (Oak, Elm) | 14 | 1.2s | +2 timber | +5% bark | "Steady tap!" |
+| Ancient Trees (Ironbark, Ashwood) | 33 | 1.0s | +2 timber | +8% heartwood | "Clean cut!" |
+| Magicwood | 58 | 0.8s | +1 timber | +12% rare | "Feel the grain!" |
+| Voidtimber | 84 | 0.6s | +1 void timber | +18% rare | "Void resonates!" |
+| Worldtree Shard | 89 | 0.4s | +1 shard | — | "Once in a lifetime!" |
+
+**Worldtree Shard note:** Tightest window in Felling — matches Worldseed Cultivation
+for rarest gathering attunement. One Worldtree Shard per session maximum regardless
+of attunement hits. Hitting the 0.4s window guarantees the shard that session.
+Missing it means no shard that session — next session resets.
+
+### Felling — Enchanted Grove Context (unlocks at Felling 52)
+
+Enchanted Grove trees behave differently — they pulse with magical energy
+that interferes with normal chopping rhythm. The bark crack cue fires in
+irregular intervals rather than a predictable rhythm.
+
+```
+enchantedGrove_irregularCycle = true
+enchantedGrove_cycleVariance  = ±0.4s (cue fires within a 0.8s random window)
+enchantedGrove_windowDuration = 0.8s
+enchantedGrove_yieldBonus     = +1 Magicwood
+enchantedGrove_rareBonus      = +15% Arcane Weaving component drop
+enchantedGrove_cueLabel       = "Now — the pulse!"
+```
+
+The irregular cycle means players cannot rely on muscle memory — must watch
+for each individual cue. Rewards attention over reflex.
+
+### Felling — Level 100 Capstone Interaction
+
+At Felling level 100: "Bonus timber on every chop regardless of Attunement."
+This means the idle yield floor rises to match the previous attunement yield.
+Attunement still fires but the gap between hit and miss narrows significantly.
+
+```csharp
+// In FellingManager:
+float baseYield = felling100Unlocked ? attunementYield : standardYield;
+float bonusYield = attunementHit ? attunementBonus : 0;
+```
+
+---
+
+## ⛏️ Phase 2 Additions — Delving Talent
+
+Base Delving attunement (Phase 1) remains unchanged — glowing vein highlights
+appear at cycle position 0.40, tap before they fade, bonus ore and gem drop.
+Phase 2 adds tiered behavior as ore grades escalate.
+
+### Delving — Tiered Attunement by Ore Grade
+
+| Ore Grade | Key Unlock Level | Window Duration | Ore Yield Bonus | Gem Bonus | Cue Label |
+|-----------|-----------------|----------------|----------------|----------|----------|
+| Copper/Tin | 1 | 1.5s | +2 ore | — | "Tap the vein!" |
+| Iron | 14 | 1.3s | +2 ore | +5% gem | "Strike it!" |
+| Silver/Coal | 33 | 1.1s | +2 ore | +8% gem | "Hit the seam!" |
+| Gold | 49 | 0.9s | +1 ore | +10% gem | "Rich vein!" |
+| Mithril | 64 | 0.7s | +1 ore | +12% gem | "Careful — Mithril!" |
+| Adamantine | 76 | 0.5s | +1 ore | +15% gem | "Adamantine holds!" |
+| Starstone | 86 | 0.4s | +1 starstone | +20% rare | "Starstone pulse!" |
+| Soulite | 92 | 0.3s | +1 soulite | — | "Soul resonates!" |
+
+**Soulite note:** Tightest gathering window in the entire game at 0.3s. Matches
+the reflex skill required of top Warden players. Soulite is endgame Runesmithing
+material — the difficulty gate is intentional.
+
+### Delving — Deep Cave Zone (unlocks at Delving 67)
+
+Deep Cave nodes use the same tiered attunement as standard nodes — glowing vein
+highlight, tap before it fades, bonus ore and gem. No additional hazard mechanic
+in zone combat context.
+
+> **Deferred:** Cave collapse warning mechanic (ceiling cracks, tap to brace,
+> damage on miss) is reserved as a dungeon/raid environmental hazard where
+> active play is expected. Not appropriate for zone gathering where idle players
+> should still be able to mine normally.
+
+### Delving — Level 100 Capstone Interaction
+
+At Delving 100: "Gem drop guaranteed on every Attunement hit."
+Attunement hits now always include a gem — not a chance roll.
+
+```csharp
+// In DelvingManager:
+bool gemDrops = attunementHit
+    ? (delving100Unlocked ? true : Random.value < gemDropChance)
+    : false;
+```
+
+---
+
+## 🪤 Phase 2 Additions — Trapping Talent
+
+Base Trapping attunement (Phase 1) — placement-based, player sees optimal terrain
+positions briefly then must place trap accurately. Better placement = higher catch rate.
+Phase 2 adds tiered behavior as trap types escalate in complexity.
+
+### Trapping — Tiered Attunement by Trap Type
+
+Trapping attunement is fundamentally different from timing-based talents —
+it rewards **accurate spatial placement** rather than timed taps.
+
+| Trap Type | Unlock Level | Placement Window | Catch Rate Bonus | Quality Bonus | Cue Label |
+|-----------|-------------|-----------------|-----------------|--------------|----------|
+| Rabbit Snare | 1 | 3.0s | +15% catch rate | — | "Place here!" |
+| Fox Trap | 9 | 2.5s | +18% catch rate | — | "Set the trap!" |
+| Deer Cage | 22 | 2.0s | +20% catch rate | +1 quality tier | "Bait the cage!" |
+| Reinforced Snare | 16 | 2.0s | +22% catch rate | — | "Reinforce here!" |
+| Wild Boar Trap | 39 | 1.5s | +25% catch rate | +1 quality tier | "Brace it!" |
+| Beast Cage | 53 | 1.5s | +25% catch rate | +1 quality tier | "Secure the cage!" |
+| Wolf Trap | 61 | 1.2s | +28% catch rate | +1 quality tier | "Steady now!" |
+| Shadow Snare | 67 | 1.0s | +30% catch rate | +1 quality tier | "Feel the shadow!" |
+| Runed Trap | 73 | 0.8s | +30% catch rate | +rare creature chance | "Bind the rune!" |
+| Drake Trap | 82 | 0.6s | +35% catch rate | +Drake Scale chance | "Drake holds!" |
+| Void Snare | 89 | 0.4s | +35% catch rate | +void creature chance | "Void binds!" |
+
+### How Trapping Placement Attunement Works
+
+Trapping attunement is always **additive** — idle traps still catch creatures
+at the base catch rate. The placement indicator gives active players a bonus.
+
+Unlike other talents where the player taps a cue, Trapping shows an **optimal
+placement indicator** — a glowing zone on the terrain — for a brief window.
+Player drags their trap icon to land within the zone for a bonus.
+Missing the window or idling: trap is placed at standard position, base catch rate.
+
+```
+Accuracy tiers:
+  Perfect placement (within inner 25% of zone): full catch rate bonus + quality bonus
+  Good placement (within zone): catch rate bonus only
+  Outside zone (missed window): base catch rate, no bonus
+```
+
+**Distance from optimal scales the bonus:**
+```csharp
+float distanceFromOptimal = Vector2.Distance(placementPos, optimalPos);
+float optimalRadius = 50f; // pixels
+float placementScore = Mathf.Clamp01(1f - (distanceFromOptimal / optimalRadius));
+float catchBonus = maxCatchBonus * placementScore;
+bool qualityUpgrade = placementScore > 0.75f; // top 25% gets quality tier
+```
+
+### Trapping — Shadow Snare Special (unlocks at Trapping 67)
+
+Shadow Snares catch nocturnal and rare creatures. They only activate during
+the simulated night cycle (same window as Moonflower Cultivation — midnight to 6am).
+
+```
+shadowSnare_nightOnly = true
+shadowSnare_activeHours = "00:00 - 06:00 local"
+shadowSnare_dayBehavior = "Trap visible but inactive — catches nothing during day"
+shadowSnare_nightBonus  = +15% catch chance on top of placement bonus
+```
+
+Push notification available: "Your Shadow Snares are active!" (fires at midnight,
+P4 priority — low urgency, opt-in).
+
+### Trapping — Runed Trap (unlocks at Trapping 73, requires Runelore 40)
+
+Runed Traps catch magical creatures (Mire Foxes, Rune-touched animals, etc.).
+The placement indicator shows in a RUNIC pattern rather than a simple circle —
+player must place within a specific rune-shaped zone.
+
+```
+runedTrap_patternType    = "RunicCircle"  (versus standard "Circle")
+runedTrap_windowDuration = 0.8s           (tight — rune pattern is complex)
+runedTrap_cueLabel       = "Bind the rune!"
+runedTrap_missEffect     = "Trap set but mundane creatures only — magical catch
+                            rate 0% until reset"
+```
+
+The Runed Trap is the most complex Trapping attunement — player must match a
+rune shape overlay rather than just landing within a circle. Rewards Trapping
+mastery and cross-talent Runelore investment.
+
+### Trapping — Level 100 Capstone Interaction
+
+At Trapping 100: "Traps auto-reset without manual check."
+Idle trap loop becomes fully autonomous — no active check needed to collect
+and reset. Attunement still fires during the reset animation if player is active,
+but the idle loop functions without any player input.
+
+---
+
+*Document version 0.5 — Phase 2 Attunement Data Spec*
+*Added: Felling tiered attunement, Delving tiered attunement (Deep Cave collapse removed — deferred to raids),
+Trapping placement attunement + Shadow Snare + Runed Trap*
+*Fixed: All attunement windows are now additive bonuses — idle always gets base yield/result.
+Ancient Trail, Legendary Spoor, Monster Sign all confirmed additive not gated.*

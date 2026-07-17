@@ -3,6 +3,15 @@
 
 ---
 
+## ⚠️ Core Attunement Rule — Always Additive, Never Gated
+
+**Attunement windows NEVER gate content.** Idle players always receive the base
+yield, base drop rate, base result. Active players who hit the attunement window
+receive a bonus ON TOP of the base. Any attunement that requires active play to
+get ANY result contradicts the semi-idle design.
+
+---
+
 ## 📐 Design Principles
 
 - **Window position (attunementWindowAt):** Opens after the action is clearly telegraphed — never before the player has visual context

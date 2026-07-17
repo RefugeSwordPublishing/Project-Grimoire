@@ -49,50 +49,96 @@ Combat no longer uses a shared Talent. Each Arcanist Grimoire has its own combat
 
 **Unlock:** Available as starting Grimoire or 500 GM
 **Playstyle:** Elemental offense and battlefield control. The Runeweaver is the most straightforward Arcanist — powerful elemental combinations, crowd control, and area damage. High skill ceiling through constellation mastery but approachable for new Arcanist players.
-**Idle behavior:** Auto-casts last queued single-rune spell. At level 100 upgrades to 2-rune auto-cast.
-**Signature passive:** *Elemental Attunement* — all elemental damage +10% from the moment the Grimoire is equipped
+**Idle behaviour:** Auto-casts last queued single-rune spell. At Grimoire level 100 upgrades to 2-rune auto-cast at 75% potency.
+**Signature passive:** *Elemental Attunement* — all elemental damage +10% from the moment the Grimoire is equipped.
+**Active nodes:** Ignis, Glacius, Tempest, Ventus, Umbra, Lux
+**No crit system** — skill expression is draw speed + counter knowledge + Technique timing.
 
 ---
 
 ### Hybrid Unlock Gates
-Runeweaver unlocks require **Grimoire combat level** (Runeweaver Grimoire-specific) and cross-Talent milestones focused on arcane knowledge and material mastery.
+> **Constellation Spell Unlocks:** In addition to the Technique unlocks below,
+> new constellation spells unlock as Grimoire combat level increases. Shared spells
+> unlock at levels 16 (2-rune) and 42 (3-rune, Runeweaver: 35). Subclass-specific
+> spells unlock at levels 16, 24, 44, 55, 70, and 85. See `docs/runic-constellation-spec.md`
+> for the full unlock schedule. 4-rune spells unlock at level 88 for all subclasses.
+
+Runeweaver unlocks require **Grimoire combat level** (Runeweaver Grimoire-specific, not Total Combat Level) and cross-Talent milestones focused on arcane knowledge and material mastery.
 
 ---
 
 ### 🌿 Runeweaver Tree
 
-| Unlock | Grimoire Combat Level | Cross-Talent Req | Type | Description |
-|--------|-----------------|-----------------|------|-------------|
-| **Elemental Attunement** | 1 | — | Signature Passive | All elemental damage +10%. Always active. |
+| Unlock | Grimoire Level | Cross-Talent Req | Type | Description |
+|--------|---------------|-----------------|------|-------------|
+| **Elemental Attunement** | 1 | — | Signature Passive | All elemental damage +10%. Always active from equip. |
 | **Runic Inscription** | 9 | Inscription 11 | Passive | Spell scrolls crafted via Inscription give +1 charge when used by a Runeweaver. Inscription knowledge deepens rune understanding. |
-| **Elemental Surge** | 17 | — | Technique | Next cast deals +50% damage. 45 second cooldown. The Runeweaver's bread and butter burst tool. |
-| **Counter-Element Mastery** | 24 | Runelore 18 | Passive | Counter-element combinations (Ignis+Glacius etc.) deal +25% bonus damage. Runelore 18 required to understand elemental opposition theory. |
+| **Elemental Surge** | 17 | — | Technique | Draw Ignis+Ventus to activate — applies a 12-second self-buff. All casts during the window deal +50% damage. Appears as a buff icon with shading cooldown timer near the HP bar. Recast to refresh. 45-second cooldown after the buff expires. |
+| **Counter-Element Mastery** | 24 | Runelore 18 | Passive | Runeweaver counter-element bonuses are elevated — replaces the base counter bonus rather than stacking on top. Counter pairs: Ignis↔Glacius ×1.5, Tempest↔Ventus ×1.5, Umbra↔Lux ×1.75 (Runeweaver signature). Runelore 18 required to understand elemental opposition theory. |
 | **Runeforging** | 31 | Runesmithing 27 | Passive | Runeweaver can engrave weapons and armor with elemental bonuses at the Workbench — adds elemental damage type to any assembled weapon. Requires Steel-tier Runesmithing knowledge. |
-| **Arcane Shield** | 38 | Arcane Weaving 22 | Technique | Absorb next incoming hit entirely. 90 second cooldown. Requires Arcane Weaving 22 to understand magical barrier construction. |
-| **Constellation Flow** | 44 | — | Passive | Drawing rune combinations 20% faster without accuracy penalty. Rewards practiced active play. |
-| **Terra Mastery** | 52 | Delving 44 | Passive | Terra rune combinations deal +30% damage and have a chance to stun enemies. Delving knowledge of earth and stone deepens Terra rune potency. |
-| **Tempest Surge** | 59 | — | Technique | Chain lightning from Tempest rune jumps to 2 additional enemies. Crowd control tool for multi-enemy encounters. |
-| **Runic Resonance** | 66 | Runelore 58 | Passive | Same-rune combinations (Ignis+Ignis etc.) amplify instead of cancel — +40% potency on resonance casts. Runelore 58 unlocks resonance theory. |
+| **Arcane Shield** | 38 | Arcane Weaving 22 | Technique | Draw Lux+Ventus → drag to target (self or ally) to apply a flat HP shield (absorbs damage before HP is reduced). One shield per target — recasting replaces existing shield. Shield HP scales with Runeweaver Grimoire level: Lv38=80HP · Lv55=140HP · Lv75=220HP · Lv100=320HP. 60-second cooldown. Appears as a shield buff icon with shading timer on target's frame. |
+| **Constellation Flow** | 44 | — | Passive | Drawing rune combinations 20% faster without accuracy penalty. Rewards practiced active play — speed tier bonuses easier to hit. |
+| **Terra Mastery** | 52 | Delving 44 | Passive | Terra rune combinations deal +30% damage and have a chance to stagger enemies. Delving knowledge of earth and stone deepens Terra rune potency. |
+| **Tempest Surge** | 59 | — | Passive | All Tempest-based casts chain to 2 additional enemies automatically. No extra input needed — fires on any combination containing Tempest. Crowd control tool for multi-enemy encounters. |
+| **Runic Resonance** | 66 | Runelore 58 | Passive | Cast 3 different elemental combinations in a row without repeating — the next cast deals +60% damage. Streak resets after the bonus fires or if a combination is repeated. Constellation arch pulses gold when the bonus is ready. Rewards deep spell library knowledge and intentional combo cycling. |
 | **Elemental Weave** | 73 | Arcane Weaving 62 | Passive | Magical Vestments assembled while Runeweaver Grimoire is equipped gain a passive elemental resistance matching the Runeweaver's last cast element. |
-| **Storm Caller** | 79 | — | Technique | 4-rune combination cast — Tempest+Ventus+Tempest+Ignis creates a sustained storm field dealing ongoing damage to all enemies in zone for 15 seconds. |
-| **Ancient Inscription** | 86 | Runelore 84 | Passive | Elder Tongue knowledge (Runelore 84) unlocks two hidden rune combinations exclusive to Runeweaver — Solaris (light+fire) and Permafrost (frost+earth). |
+| **Storm Caller** | 79 | — | Technique | Draw all 4 runes in sequence: Tempest→Ventus→Tempest→Ignis. Creates a sustained storm field dealing ongoing elemental damage to all enemies in zone for 15 seconds. Requires Grimoire combat level 79 and 4-rune depth unlock (Grimoire level 88). Heavy active play skill expression — all 4 runes must be drawn manually. 90-second cooldown. |
+| **Ancient Inscription** | 86 | Runelore 84 | Passive | Elder Tongue knowledge (Runelore 84) permanently unlocks two Runeweaver-exclusive elemental modifiers: **Solaris** — all Ignis-based casts apply a fire DoT to the enemy (burn ticks 3 damage/sec for 8 seconds). **Permafrost** — all Glacius-based casts apply a slow to the enemy (enemy attack speed −25% for 5 seconds). Both modifiers are always active once unlocked — no trigger required. |
 | **Runic Mastery** | 93 | Inscription 72 | Passive | All Inscription scrolls produced while Runeweaver is equipped have maximum charges automatically. Cross-Talent mastery reward. |
-| **The Living Constellation** *(Level 100 capstone)* | 100 | — | Passive | Idle auto-cast upgrades to 2-rune combinations at 75% potency. Mastery — the Runeweaver's constellation knowledge is now instinctive. |
+| **The Living Constellation** *(Level 100 capstone)* | 100 | — | Passive | Idle auto-cast upgrades to 2-rune combinations at 75% potency. The constellation moves at a thought — runes that once required focus now flow naturally. This is the beginning of true mastery, not its end. The deeper patterns of the Elder Tongue remain beyond current reach. |
+
+---
+
+### Technique Summary — Implementation Reference
+
+| Technique | Trigger | Duration | Cooldown | Target |
+|-----------|---------|---------|---------|--------|
+| Elemental Surge | Draw Ignis+Ventus | 12s buff | 45s after expiry | Self only |
+| Arcane Shield | Draw Lux+Ventus → drag to target | Until absorbed or 30s | 60s | Self or ally |
+| Storm Caller | Draw Tempest→Ventus→Tempest→Ignis | 15s field | 90s | All enemies in zone |
+
+**Buff display** — all three Techniques show as icons with shading cooldown timers in the buff row near the HP bar. Same pattern as meal buffs. Elemental Surge = flame icon, Arcane Shield = shield icon on target's frame, Storm Caller = storm cloud icon.
+
+---
+
+### Passive Chain — Solaris + Permafrost Interaction
+
+At level 86 the Runeweaver becomes significantly more dangerous in sustained combat:
+- Ignis cast → immediate damage + fire DoT ticking afterward
+- Glacius cast → immediate damage + slow applied
+- Ignis+Glacius counter combo → counter bonus damage + both DoT AND slow simultaneously
+
+The counter-element system and Solaris/Permafrost stack naturally — the best
+Runeweaver play at endgame cycles Ignis and Glacius combinations to apply both
+DoT and slow while benefiting from the elevated counter bonus.
 
 ---
 
 ### Runeweaver Build Identity
 The Runeweaver is the **elemental battlemage** — powerful, versatile, and rewarding to master:
 - Early game: Single element mastery, learning counter-combinations
-- Mid game: Runeforging adds crafting value; Terra and Tempest Mastery add tactical depth
-- Late game: Storm Caller and Ancient Inscription open up devastating multi-target plays
-- Idle: Consistent single-element damage with gradual upgrade to 2-rune idle at capstone
+- Mid game: Elemental Surge and Arcane Shield add active Technique management; Runeforging adds crafting value
+- Late game: Runic Resonance rewards deep spell variety; Storm Caller enables AoE dominance; Solaris+Permafrost make every cast compound
+- Idle: Consistent single-element damage with upgrade to 2-rune idle at capstone
 
 **Synergizes with:**
-- Runelore — Counter-Element Mastery, Runic Resonance, and Ancient Inscription all gate on Runelore
+- Runelore — Counter-Element Mastery, Runic Resonance, Ancient Inscription all gate on Runelore
 - Arcane Weaving — Elemental Weave gives vestments passive resistance tied to combat
 - Inscription — Runic Inscription and Runic Mastery reward crafting investment
 - Runesmithing — Runeforging makes the Runeweaver valuable to the crafting economy
+
+---
+
+### Permanent Stat Bonuses (from Grimoire combat level milestones)
+| Level | Bonus |
+|-------|-------|
+| 23 | INT +1 (permanent, character-wide) |
+| 38 | WIL +1 (permanent, character-wide) |
+| 63 | INT +2 (permanent, character-wide) |
+| 81 | WIL +2 (permanent, character-wide) |
+
+Bonuses accumulate across all owned Grimoires regardless of path.
+See `docs/warfare-spec.md` for full cross-path accumulation details.
 
 ---
 
@@ -100,60 +146,103 @@ The Runeweaver is the **elemental battlemage** — powerful, versatile, and rewa
 *"Why fight when you can delegate?"*
 
 **Unlock:** Available as starting Grimoire or 500 GM
-**Playstyle:** Backline tactician. The Summoner conjures temporary magical constructs and spirits to fight for them. Primary combat is managing summon positioning, buffing and debuffing summons, and chaining summon abilities. The Summoner rarely takes direct damage — their summons absorb it. High complexity, very rewarding for strategic players.
-**Idle behavior:** Whichever summon was active before going idle persists and auto-attacks at reduced effectiveness. Summon choice before idle is a strategic decision — tanky Earth Golem for survivability, fast Spirit for XP rate.
-**Signature passive:** *Arcane Bond* — active summon has +15% HP and damage from the moment the Grimoire is equipped
+**Playstyle:** Backline tactician whose constructs ARE the HP pool. The Summoner fights through constructs — managing their deployment, issuing commands via the constellation, and chaining synergy combos for devastating coordinated output. The largest idle-to-active output gap of any class. Strategic depth extends into session planning — construct choice before going idle determines survivability.
+**Idle behaviour:** Auto-issues single-rune commands on a 4-second rotation. Constructs auto-attack at base level (~50% of active output). No specials or synergies during idle — active commands only. Construct persists until destroyed; no queue system.
+**Signature passive:** *Arcane Bond* — all active constructs gain +15% HP and +15% damage from equip. Always active.
+**Active nodes:** Ignis, Glacius, Tempest, Ventus, Terra, Umbra
+**No crit system** — skill expression is construct coordination, synergy timing, and command knowledge.
 
 ---
 
-### Summon Types
-The Summoner's core mechanic — conjured from arcane energy, not tamed from the world. Each summon type is unlocked through the tree and has distinct combat behavior.
+### Hybrid Unlock Gates
+> **Constellation Spell Unlocks:** In addition to the Technique unlocks below,
+> new constellation spells unlock as Grimoire combat level increases. Shared spells
+> unlock at levels 16 (2-rune) and 42 (3-rune, Runeweaver: 35). Subclass-specific
+> spells unlock at levels 16, 24, 44, 55, 70, and 85. See `docs/runic-constellation-spec.md`
+> for the full unlock schedule. 4-rune spells unlock at level 88 for all subclasses.
 
-| Summon | Element | Role | Idle Behavior |
-|--------|---------|------|---------------|
-| **Ember Sprite** | Ignis | Fast attacker, low HP | High XP rate idle — attacks rapidly |
-| **Frost Shard** | Glacius | Slowing attacker, medium HP | Slows enemies — reduces incoming idle hits |
-| **Stone Golem** | Terra | Tank, high HP, slow attack | Absorbs damage — best idle survivability |
-| **Storm Wisp** | Tempest | Chain attacker, targets multiple | Good for multi-enemy idle zones |
-| **Void Shade** | Umbra | Debuffer, reduces enemy damage | Reduces idle damage taken |
-| **Celestial Guardian** | Lux | Hybrid tank/attacker | Balanced idle performance |
+Summoner unlocks require **Grimoire combat level** (Summoner Grimoire-specific, not Total Combat Level) and cross-Talent milestones focused on arcane construction and material knowledge.
 
 ---
 
 ### 🌿 Summoner Tree
 
-| Unlock | Grimoire Combat Level | Cross-Talent Req | Type | Description |
-|--------|-----------------|-----------------|------|-------------|
-| **Arcane Bond** | 1 | — | Signature Passive | Active summon +15% HP and damage. Always active. |
-| **Ember Sprite** | 9 | Alchemy 13 | Summon Unlock | Conjure an Ember Sprite — fast fire attacker. Alchemy knowledge of combustion required. |
-| **Stone Golem** | 17 | Delving 21 | Summon Unlock | Conjure a Stone Golem — tank summon. Delving knowledge of earth and stone required. |
-| **Summon Fortify** | 24 | — | Technique | Buff active summon — +30% damage for 20 seconds. Primary buff tool. |
-| **Frost Shard** | 31 | Dredging 17 | Summon Unlock | Conjure a Frost Shard — slowing attacker. Dredging knowledge of aquatic cold environments required. |
-| **Dual Summon** | 38 | Slaying 33 | Passive | Maintain 2 summons simultaneously. Combat experience (Slaying 33) required to coordinate multiple combatants. |
-| **Storm Wisp** | 44 | Delving 49 | Summon Unlock | Conjure a Storm Wisp — chain lightning attacker. Deep ore knowledge (Delving 49) of conductive minerals required. |
-| **Summon Debilitate** | 52 | — | Technique | Debuff target enemy through active summon — enemy damage -25% for 15 seconds. Core defensive tool. |
-| **Void Shade** | 59 | Foraging 57 | Summon Unlock | Conjure a Void Shade — debuffer summon. Voidmoss (Foraging 57) knowledge of void essence required. |
-| **Arcane Surge** | 66 | — | Technique | All active summons deal +50% damage for 10 seconds. Major burst tool for boss encounters. |
-| **Summon Resilience** | 73 | Arcane Weaving 43 | Passive | All summons +25% HP permanently. Arcane Weaving knowledge of magical construction deepens summon durability. |
-| **Celestial Guardian** | 79 | Inscription 56 | Summon Unlock | Conjure a Celestial Guardian — hybrid tank/attacker. Inscription 56 required to weave light magic into construct form. |
-| **Triple Summon** | 86 | Slaying 79 | Passive | Maintain 3 summons simultaneously. Deep combat experience required to coordinate three entities. |
-| **Summon Ascendancy** | 93 | Runelore 71 | Passive | All summons inherit the elemental bonus from the Runeweaver's last cast — cross-subclass knowledge. Runelore 71 required to understand elemental transference. |
-| **Eternal Construct** *(Level 100 capstone)* | 100 | — | Passive | Active summon during idle never despawns between sessions — persists indefinitely until combat is engaged. Mastery — the Summoner's constructs have achieved semi-permanent form. |
+| Unlock | Grimoire Level | Cross-Talent Req | Type | Description |
+|--------|---------------|-----------------|------|-------------|
+| **Arcane Bond** | 1 | — | Signature Passive | All active constructs +15% HP and +15% damage. Always active from equip. |
+| **Ember Sprite** | 9 | Alchemy 13 | Construct Unlock | Conjure an Ember Sprite — high damage, low HP fire attacker. Triggered by drawing Ignis → drag to empty field position. Alchemy 13 combustion knowledge required to shape fire into construct form. |
+| **Stone Golem** | 17 | Delving 21 | Construct Unlock | Conjure a Stone Golem — primary tank, highest HP, highest aggro generation. Triggered by drawing Terra → drag to field position. Delving 21 earth and stone knowledge required. |
+| **Construct Surge** | 24 | — | Technique | Draw Ignis→Terra — command all active constructs to focus the same target simultaneously. All constructs deal +40% damage for 8 seconds. Buff appears as a shared construct icon with shading timer. Reusable on 30-second cooldown. |
+| **Frost Shard** | 31 | Runelore 18 | Construct Unlock | Conjure a Frost Shard — utility attacker that slows enemies. Triggered by drawing Glacius → drag to field position. Runelore 18 knowledge of elemental shaping required to maintain ice form. |
+| **Dual Summon** | 38 | Slaying 33 | Passive | Maintain 2 constructs simultaneously. Slaying 33 combat experience required to coordinate multiple entities in combat. |
+| **Storm Wisp** | 44 | Delving 49 | Construct Unlock | Conjure a Storm Wisp — chain lightning attacker, spreads damage across multiple enemies. Triggered by drawing Tempest → drag to field position. Delving 49 deep conductive mineral knowledge required. |
+| **Construct Shield** | 52 | Arcane Weaving 43 | Technique | Draw Terra→Ventus — grants all active constructs a temporary HP shield absorbing the next hit each. Shield amount scales with Grimoire level. Arcane Weaving 43 magical barrier knowledge required. 45-second cooldown. |
+| **Void Shade** | 59 | Foraging 57 | Construct Unlock | Conjure a Void Shade — debuffer with near-zero aggro. Reduces enemy accuracy and drains life. Triggered by drawing Umbra → drag to field position. Foraging 57 Voidmoss knowledge of void essence required. |
+| **Arcane Surge** | 66 | — | Technique | Draw Ignis→Tempest→Terra — the Summoner's major burst command. All active constructs fire their special abilities simultaneously. Uses each construct's special cooldown. Constellation 3-rune depth required (Grimoire level 42+). 60-second cooldown between uses. |
+| **Summon Resilience** | 73 | Arcane Weaving 62 | Passive | All constructs permanently +25% max HP. Arcane Weaving 62 deep magical construction knowledge deepens construct durability. Stacks with Arcane Bond. |
+| **Celestial Guardian** | 79 | Inscription 56 | Construct Unlock | Conjure a Celestial Guardian — support construct that heals the weakest active construct each tick and buffs Summoner INT. Triggered by drawing Lux→Terra (note: Lux is NOT in Summoner's constellation — this unlocks via the 4-rune system at Grimoire level 88, using a special Inscription-granted pattern). Inscription 56 light magic weaving required. |
+| **Triple Summon** | 86 | Slaying 79 | Passive | Maintain 3 constructs simultaneously. Deep combat experience required to coordinate three entities. Enables Trinity Formation synergy from the summoner-spec command table. |
+| **Construct Mastery** | 93 | Runelore 71 | Passive | All construct special ability cooldowns reduced by 25%. Active command loops run tighter — specials available more frequently. Runelore 71 understanding of elemental cycle theory required. |
+| **Eternal Bond** *(Level 100 capstone)* | 100 | — | Passive | Arcane Bond bonus increases from +15% to +30% HP and damage for all active constructs. The bond between Summoner and construct deepens — constructs respond faster, hit harder, endure longer. The connection is strong. The ancient arts of construct binding speak of bonds stronger still, locked behind knowledge not yet recovered. |
+
+---
+
+### Technique Trigger Summary — Implementation Reference
+
+| Technique | Rune Draw | Cooldown | Effect |
+|-----------|----------|---------|--------|
+| Construct Surge | Ignis→Terra | 30s | All constructs +40% damage 8s |
+| Construct Shield | Terra→Ventus | 45s | All constructs absorb next hit |
+| Arcane Surge | Ignis→Tempest→Terra | 60s | All construct specials fire simultaneously |
+
+**Celestial Guardian special note:** Lux is not in the Summoner's 6-node constellation. The Celestial Guardian unlock at level 79 uses a 4-rune pattern unlocked through Inscription knowledge — available only after Grimoire level 88 (4-rune depth) and Inscription 56 are both met. Until then the Guardian cannot be summoned. This is intentional — the Celestial Guardian is the Summoner's most powerful and hardest-to-access construct.
+
+**Idle command rotation:** Ventus (Recall if any construct at critical HP) → Terra (Golem advance) → Ignis (Sprite focus fire) → repeat.
+
+---
+
+### Construct Command System — Rune Draws
+
+Each construct responds to its element rune as a command:
+
+| Draw | Command |
+|------|---------|
+| Ignis | Command Ember Sprite — focus fire on primary target |
+| Glacius | Command Frost Shard — slow priority target |
+| Tempest | Command Storm Wisp — chain attack |
+| Ventus | Recall all constructs — defensive repositioning |
+| Terra | Command Stone Golem — charge/advance |
+| Umbra | Command Void Shade — apply debuffs |
+
+2-rune and 3-rune command combinations activate synergy effects — see `summoner-spec.md` for the full synergy combo table.
 
 ---
 
 ### Summoner Build Identity
-The Summoner is the **tactical backline commander** — never in direct danger, always in control:
-- Early game: Single summon mastery, learning Fortify and Debilitate timing
-- Mid game: Dual Summon opens up combinations — Stone Golem tanks while Storm Wisp chains
-- Late game: Triple Summon with Arcane Surge creates devastating coordinated burst windows
-- Idle: Summon choice before logging off determines idle performance — strategic depth extends into session planning
+The Summoner is the **tactical backline commander** — the highest skill ceiling of any base game class:
+- Early game: Single construct mastery — learn each construct's strengths, use Construct Surge timing
+- Mid game: Dual Summon opens Stone Golem + Storm Wisp combinations — tank + chain damage
+- Late game: Triple Summon + Arcane Surge + Construct Mastery enables devastating synchronized burst windows
+- Idle: Construct choice before logging off determines survivability — strategic depth extends into session planning
 
 **Synergizes with:**
-- Alchemy — Ember Sprite requires Alchemy knowledge; potions buff summon duration indirectly
-- Enchanting — Celestial Guardian gates on Inscription 56
-- Arcane Weaving — Summon Resilience gates on Arcane Weaving 43
-- Runelore — Summon Ascendancy gates on Runelore 71 — rewards cross-system investment
+- Alchemy — Ember Sprite requires Alchemy knowledge
+- Inscription — Celestial Guardian gates on Inscription 56; the hardest construct to unlock
+- Arcane Weaving — Construct Shield and Summon Resilience gate on Arcane Weaving
+- Runelore — Frost Shard and Construct Mastery reward Runelore investment
+
+---
+
+### Permanent Stat Bonuses (from Grimoire combat level milestones)
+| Level | Bonus |
+|-------|-------|
+| 23 | INT +1 (permanent, character-wide) |
+| 38 | WIL +1 (permanent, character-wide) |
+| 63 | INT +2 (permanent, character-wide) |
+| 81 | WIL +2 (permanent, character-wide) |
+
+Bonuses accumulate across all owned Grimoires regardless of path.
+See `docs/warfare-spec.md` for full cross-path accumulation details.
 
 ---
 
@@ -161,61 +250,118 @@ The Summoner is the **tactical backline commander** — never in direct danger, 
 *"They fight. I make sure they can keep fighting."*
 
 **Unlock:** Available as starting Grimoire or 500 GM
-**Playstyle:** Support and sustain. The Lifebinder keeps parties alive in dungeons and raids through healing pulses, protective auras, and debuff cleansing. In solo play the Lifebinder is a self-sustaining survivor — harder to kill than any other subclass, just slower to kill enemies. A critical role for base game dungeon content.
-**Idle behavior:** Auto-casts Vita rune (self-heal) periodically during idle combat — effectively reduces idle HP loss significantly. Best idle survivability of any Arcanist subclass.
-**Signature passive:** *Healer's Resolve* — self-healing effects +20% potency. Always active.
+**Playstyle:** Support and sustain built on a unique risk/reward foundation — the Lifebinder spends their own HP to heal. Passive regen and HOTs maintain sustainability; aggressive healing depletes HP; self-management IS the skill. In solo play the Lifebinder is nearly unkillable through regen. In group content they are the indispensable healer — the difference between a party surviving Tier 3+ content or not.
+**Idle behaviour:** Auto-applies Mending Touch HOT to self every 8 seconds. Auto-casts Vita→self when below 50% HP. Passive HP regen always active. Best idle survivability of any Arcanist subclass.
+**Signature passive:** *Life's Cost* — WIL reduces spell HP cost by 0.3% per point (max 30% at WIL 100). The Lifebinder's mastery of life magic makes healing cheaper over time. Always active from equip.
+**Active nodes:** Ignis, Glacius, Tempest, Ventus, Vita, Lux (no Umbra, no Terra)
+**No crit system** — skill expression is HOT management, HP resource discipline, and target prioritisation.
 
 ---
 
-### Lifebinder Rune Behavior
-The Lifebinder's rune constellation produces fundamentally different effects — same gestures, support outcomes:
+### Hybrid Unlock Gates
+> **Constellation Spell Unlocks:** In addition to the Technique unlocks below,
+> new constellation spells unlock as Grimoire combat level increases. Shared spells
+> unlock at levels 16 (2-rune) and 42 (3-rune, Runeweaver: 35). Subclass-specific
+> spells unlock at levels 16, 24, 44, 55, 70, and 85. See `docs/runic-constellation-spec.md`
+> for the full unlock schedule. 4-rune spells unlock at level 88 for all subclasses.
 
-| Rune | Lifebinder Effect |
-|------|-----------------|
-| Vita | Heal ally (multiplayer) / self-heal (solo) |
-| Lux | Major heal + damage shield on target |
-| Umbra | Purge debuff from ally |
-| Ignis | Cauterize — stop bleed/poison on ally |
-| Glacius | Cryo-stasis — brief invincibility on ally |
-| Tempest | Static Field — minor damage to enemy + party evasion +5% |
-| Terra | Ground ally — prevent knockback/stun |
-| Ventus | Haste — movement and attack speed buff on ally |
+Lifebinder unlocks require **Grimoire combat level** (Lifebinder Grimoire-specific, not Total Combat Level) and cross-Talent milestones focused on life magic and restorative knowledge.
 
 ---
 
 ### 🌿 Lifebinder Tree
 
-| Unlock | Grimoire Combat Level | Cross-Talent Req | Type | Description |
-|--------|-----------------|-----------------|------|-------------|
-| **Healer's Resolve** | 1 | — | Signature Passive | Self-healing effects +20% potency. Always active. |
-| **Mending Pulse** | 9 | Cookery 14 | Technique | Instant heal on self or nearest ally for moderate HP. 30 second cooldown. Cookery knowledge of restorative ingredients deepens healing instinct. |
-| **Aura of Vitality** | 17 | — | Passive | Passive HP regen +5/min for self and all party members in range. Core group sustain tool. |
-| **Debuff Cleanse** | 24 | Alchemy 26 | Technique | Remove all negative status effects from target ally. Alchemy knowledge of antidotes and cures required. |
-| **Fortifying Ward** | 31 | Arcane Weaving 22 | Technique | Place a protective ward on ally — absorbs next hit entirely. 60 second cooldown per target. |
-| **Empathic Link** | 38 | — | Passive | When any party member takes a killing blow, Lifebinder intercepts 50% of that damage — ally survives with 1 HP. 3 minute cooldown. |
-| **Restoration Wave** | 44 | Inscription 33 | Technique | Full party heal pulse — restores 40% HP to all party members simultaneously. Inscription knowledge of healing script required. |
-| **Aura of Swiftness** | 52 | — | Passive | All party members attack speed +8% while Lifebinder is in party. Stacks with other speed bonuses. |
-| **Cryo-Stasis** | 59 | — | Technique | Target ally becomes briefly invincible for 4 seconds. Cannot act during stasis. Critical raid cooldown for saving downed players. 90 second cooldown. |
-| **Soul Tether** | 66 | Warlock Grimoire owned* | Passive | Tether self to one ally — 15% of damage they take is redirected to Lifebinder instead. *Requires owning Warlock Grimoire (any level) — cross-path knowledge of soul mechanics. |
-| **Revive Pulse** | 73 | Slaying 57 | Technique | Resurrect a downed party member with 50% HP. Combat experience (Slaying 57) required to understand the line between life and death. 5 minute cooldown. |
-| **Aura of Warding** | 79 | Inscription 38 | Passive | All party members gain +10% resistance to all damage types while Lifebinder is in party. Inscription knowledge of protective imbuing required. |
-| **Mass Restoration** | 86 | Inscription 64 | Technique | Full party — restores 80% HP, removes all debuffs, grants 8 seconds of damage immunity. The Lifebinder's ultimate group save. 10 minute cooldown. |
-| **Undying Aura** | 93 | Cookery 54 | Passive | Party members in Dungeon Provision Pack range never drop below 1 HP from a single hit. Cookery provisioning knowledge required. |
-| **Eternal Vigil** *(Level 100 capstone)* | 100 | — | Passive | Aura of Vitality now applies during idle sessions — party members assigned to the same dungeon queue as a Lifebinder receive passive HP regen even while offline. Mastery — the Lifebinder's care extends beyond active play. |
+| Unlock | Grimoire Level | Cross-Talent Req | Type | Description |
+|--------|---------------|-----------------|------|-------------|
+| **Life's Cost** | 1 | — | Signature Passive | WIL reduces all spell HP costs by 0.3% per point (max 30% at WIL 100). Passive regen 3 HP/sec + VIT×0.08 + WIL×0.05 always active in combat. Always active from equip. |
+| **Mending Touch** | 9 | Cookery 14 | Technique | Draw Vita → self — applies Mending Touch HOT (+5 HP/sec for 8s). First HOT unlock. Costs 8 HP. Cookery 14 restorative ingredient knowledge deepens healing instinct. |
+| **Cauterize** | 17 | Alchemy 19 | Technique | Draw Ignis → drag to target — removes all bleed and burn DoTs immediately. Costs 8 HP. Alchemy 19 knowledge of wound cauterisation required. The Lifebinder's primary debuff counter in early play. |
+| **Glacial Shield** | 24 | Arcane Weaving 22 | Technique | Draw Glacius→Vita → drag to target — restores 15% HP and absorbs the target's next 2 hits. Costs 18 HP. Arcane Weaving 22 barrier knowledge required. Lifebinder's first ally-protective Technique. |
+| **Rejuvenation** | 31 | — | Technique | Draw Vita→Ventus → drag to target — applies Rejuvenation HOT (+10 HP/sec for 12s). Costs 14 HP. Upgrades from Mending Touch — stronger regen, longer duration. |
+| **Empathic Link** | 38 | Runelore 29 | Passive | While the Lifebinder has a HOT active on an ally, 10% of damage that ally takes is redirected to the Lifebinder instead. Passive — no trigger. Lifebinder must maintain their own regen to sustain the link. Runelore 29 life-magic theory required. |
+| **Radiant Heal** | 44 | Inscription 33 | Technique | Draw Vita→Lux → drag to target — restores 20% HP and removes all debuffs from target. Costs 18 HP. Inscription 33 healing script knowledge required. Best single-target emergency heal. |
+| **Lifebloom** | 52 | — | Technique | Draw Ventus→Vita → self only — applies Lifebloom HOT (+18 HP/sec for 10s). Costs 20 HP. Self-only, highest regen HOT available at this level. Enables aggressive healing without HP depletion. |
+| **Divine Wind** | 59 | Inscription 44 | Technique | Draw Lux→Ventus — AoE debuff cleanse — removes all negative effects from ALL party members simultaneously. Costs 22 HP. Inscription 44 protective imbuing knowledge required. Raid essential for AoE debuff encounters. |
+| **Soul Tether** | 66 | Warlock Grimoire owned* | Passive | Tether self to one ally — 15% of all damage they take is redirected to Lifebinder. Passive — always active when tethered. Reapply by reequipping the Grimoire. *Requires owning Warlock Grimoire (any level) — cross-path knowledge of soul mechanics. |
+| **Sacred Renewal** | 73 | — | Technique | Draw Vita→Lux→Ventus — applies Sacred Renewal HOT (+30 HP/sec for 15s) to self. Costs 28 HP. Requires 3-rune depth (Grimoire level 42+). The Lifebinder's peak self-sustain — at maximum HOT stack enables indefinite aggressive healing. |
+| **Holy Aegis** | 79 | Inscription 56 | Technique | Draw Lux→Lux→Vita — party-wide shield absorbing 20% of each member's max HP in damage. Costs 38 HP. Requires 3-rune depth. Inscription 56 required. Raid phase cooldown — use before known heavy AoE. |
+| **Phoenix Wave** | 86 | — | Technique | Draw Vita→Lux→Ventus→Ignis — if cast while Lifebinder's own HP is below 20%, revives from defeat once per dungeon run with 30% HP. Costs 58 HP. Requires 4-rune depth (Grimoire level 88+). The Lifebinder's panic button — a skilled player uses it intentionally, not desperately. |
+| **Mass Miracle** | 93 | Inscription 64 | Technique | Draw Vita→Vita→Lux→Lux — restores 40% HP to ALL party members and removes all debuffs simultaneously. Costs 65 HP. Requires 4-rune depth. Inscription 64 mastery required. The Lifebinder's most powerful group save. 10-minute cooldown enforced in code — not the rune system. |
+| **Eternal Vigil** *(Level 100 capstone)* | 100 | — | Passive | Passive HP regen increases to 5 HP/sec base (from 3 HP/sec). VIT and WIL contributions unchanged. The regen floor rises permanently — life magic flows through the Lifebinder without effort now. A solid foundation. The deeper expressions of life and renewal, the kind that old texts only hint at, lie beyond what current study can reach. |
+
+---
+
+### Technique Trigger Summary — Implementation Reference
+
+| Technique | Rune Draw | Cost | Cooldown | Notes |
+|-----------|----------|------|---------|-------|
+| Mending Touch | Vita→self | 8 HP | None | HOT +5/sec 8s |
+| Cauterize | Ignis→target | 8 HP | None | Remove bleed/burn |
+| Glacial Shield | Glacius→Vita→target | 18 HP | None | Heal 15% + absorb 2 hits |
+| Rejuvenation | Vita→Ventus→target | 14 HP | None | HOT +10/sec 12s |
+| Radiant Heal | Vita→Lux→target | 18 HP | None | Heal 20% + remove all debuffs |
+| Lifebloom | Ventus→Vita→self | 20 HP | None | HOT +18/sec 10s |
+| Divine Wind | Lux→Ventus→all | 22 HP | None | AoE debuff cleanse |
+| Sacred Renewal | Vita→Lux→Ventus→self | 28 HP | None | HOT +30/sec 15s |
+| Holy Aegis | Lux→Lux→Vita→all | 38 HP | None | Party shield 20% max HP |
+| Phoenix Wave | Vita→Lux→Ventus→Ignis | 58 HP | Once/dungeon | Revive from defeat at <20% HP |
+| Mass Miracle | Vita→Vita→Lux→Lux | 65 HP | 10 min | Party 40% heal + all debuffs |
+
+**No cooldowns on most Techniques** — the HP cost IS the limiting resource. Casting too aggressively depletes the Lifebinder's HP pool. Mass Miracle and Phoenix Wave are the only code-enforced cooldowns due to their outsized impact.
+
+**All draws use only Lifebinder's 6 active nodes:** Ignis, Glacius, Tempest, Ventus, Vita, Lux. No Umbra, no Terra — those nodes do not appear on the Lifebinder's constellation arch.
+
+---
+
+### HOT Stack — Peak Regen Calculation
+
+A fully active Lifebinder with all HOTs running simultaneously:
+
+```
+Passive base (VIT 75, WIL 60):    11 HP/sec
++ Mending Touch:                   +5 HP/sec
++ Rejuvenation:                   +10 HP/sec
++ Lifebloom:                      +18 HP/sec
++ Sacred Renewal:                 +30 HP/sec
+─────────────────────────────────────────────
+Peak total regen:                  74 HP/sec
+```
+
+At this regen rate a Lifebinder can sustain aggressive 2-rune healing (16 HP cost)
+every 0.2 seconds indefinitely — theoretical maximum of active Lifebinder performance.
+In practice Sacred Renewal costs 28 HP to cast and requires 3-rune depth — getting
+all four HOTs active simultaneously is a high-skill accomplishment.
 
 ---
 
 ### Lifebinder Build Identity
-The Lifebinder is the **raid healer and party sustain engine** — indispensable in group content, self-sufficient in solo:
-- Early game: Mending Pulse and Aura of Vitality establish the support identity
-- Mid game: Empathic Link and Restoration Wave make the Lifebinder an essential dungeon role
-- Late game: Mass Restoration and Undying Aura define the raid experience
-- Solo: Self-heal passives and Healer's Resolve make the Lifebinder nearly unkillable — just slow
+The Lifebinder is the **raid healer and party sustain engine** — self-sufficient solo, indispensable in groups:
+- Early game: Mending Touch + passive regen establish the HP-as-resource loop immediately
+- Mid game: Empathic Link and Radiant Heal make the Lifebinder an essential dungeon role — parties push higher tiers with one present
+- Late game: Sacred Renewal + Holy Aegis + Phoenix Wave define the raid experience
+- Solo: HOT stacking makes the Lifebinder nearly unkillable at appropriate zone tier — just slow to kill enemies
 
 **Synergizes with:**
-- Cookery — Mending Pulse and Undying Aura both gate on Cookery — provisioning and healing are linked
-- Inscription — Restoration Wave and Mass Restoration gate on Inscription levels
-- Alchemy — Debuff Cleanse gates on Alchemy knowledge of antidotes
+- Cookery — Mending Touch gates on Cookery; meals that boost VIT and WIL directly improve HP pool and regen
+- Inscription — Radiant Heal, Divine Wind, Holy Aegis, and Mass Miracle all gate on Inscription levels
+- Alchemy — Cauterize gates on Alchemy; Antidotes extend the Lifebinder's debuff management
+- Arcane Weaving — Glacial Shield gates on Arcane Weaving
+- Warlord (cross-path) — natural raid pairing; Warlord tanks, Lifebinder heals
+
+---
+
+### Permanent Stat Bonuses (from Grimoire combat level milestones)
+| Level | Bonus |
+|-------|-------|
+| 23 | INT +1 (permanent, character-wide) |
+| 38 | WIL +1 (permanent, character-wide) |
+| 63 | INT +2 (permanent, character-wide) |
+| 81 | WIL +2 (permanent, character-wide) |
+
+Bonuses accumulate across all owned Grimoires regardless of path.
+See `docs/warfare-spec.md` for full cross-path accumulation details.
+
+---
 - Enchanting — Aura of Warding gates on Inscription 38
 
 ---

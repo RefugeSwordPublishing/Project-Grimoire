@@ -135,15 +135,14 @@ CREATE POLICY "own rows" ON foo FOR ALL USING (auth.uid() = player_id);
 
 ---
 
-## Supabase — build state (see docs/implementation-status.md for detail)
+## New Supabase tables still needed (Phase 2)
 
+```sql
+player_grimoire_levels (player_id, grimoire_id, combat_level, combat_xp, owned_at)
+player_stat_bonuses    (player_id, grimoire_id, stat_type, amount, granted_at)
+-- Guild tables already built (migrations 002, 010–018)
+-- Two Edge Functions pending: vote auto-close at 7 days, expired listing sweep
 ```
-player_grimoire_levels, player_stat_bonuses, total_combat_level()  — BUILT (migration 009)
-guild tables + votes + merchant + dual-price                       — BUILT (002, 010–018)
-guild scheduled jobs (vote auto-close, listing expiry sweep)       — BUILT (migration 019, pg_cron)
-```
-No known Supabase tables outstanding for the guild/combat-progression tracks. New
-systems (Exchange fees, zone content, etc.) add their own as they're designed.
 
 ---
 

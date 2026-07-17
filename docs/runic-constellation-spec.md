@@ -6,7 +6,7 @@ reconciled-to: implementation-status.md (2026-07-10)
 ---
 
 # Project Grimoire — Runic Constellation Mechanic
-### Version 0.3
+### Version 0.4
 
 > **Changes from v0.2:** All references to "Spellcasting level" replaced with "Grimoire combat
 > level" (Spellcasting is not a shared Talent — combat progression lives on each Arcanist
@@ -102,17 +102,66 @@ sweep range.
 ## Drawing Mechanic
 
 ### Input Flow
-1. Place finger on starting node — activates
-2. Drag to next node — connection line draws in real time
-3. Continue to additional nodes (up to 4)
-4. Lift finger — spell fires instantly
+1. Place finger on starting node — activates, records as first in sequence
+2. Drag to next node — connection line draws in real time, node added to sequence
+3. Continue to additional nodes (up to 4) — nodes can be revisited for Technique sequences
+4. Lift finger — spell fires instantly based on exact draw order
+
+### Order-Dependent — All Spells
+
+Every spell and Technique has one canonical draw pattern. Order matters for all combinations — `Ignis→Glacius` and `Glacius→Ignis` are two different spells. Players learn specific patterns; muscle memory and speed bonuses reward mastery.
+
+**Why order-dependent:**
+- Consistent rules — one system applies everywhere, no "it depends"
+- Doubles the spell library — same rune pair drawn in opposite directions produces different effects
+- Enables Technique sequences that revisit nodes (e.g. Storm Caller: Tempest→Ventus→Tempest→Ignis)
+- Speed bonuses reward players who have internalized patterns
 
 ### Connection Rules
 - Must start on a node — empty-space drag does nothing
-- Order-independent — Ignis→Glacius = Glacius→Ignis
-- Cannot connect the same node twice
+- Drag must reach a node to register it — hover doesn't count
+- Nodes CAN be revisited — drag back through a previously connected node to add it again
 - Minimum 1 node (tap and release) — fires single-rune spell
 - Maximum 4 nodes — hard cap
+- Lifting finger at any point fires whatever sequence has been built
+
+### Canonical Draw Patterns
+
+Each spell has one correct draw order. Spells are defined as ordered sequences in `SpellData`:
+
+```csharp
+public class SpellData : ScriptableObject {
+    public RuneType[] sequence;  // ordered — [Ignis, Glacius] ≠ [Glacius, Ignis]
+    public string lookupKey;     // "IGN-GLA" — generated from sequence on import
+}
+```
+
+**Lookup key generation:**
+```csharp
+string GetLookupKey(List<RuneType> sequence) =>
+    string.Join("-", sequence.Select(r => r.ToString().Substring(0, 3).ToUpper()));
+// [Ignis, Glacius]         → "IGN-GLA"
+// [Glacius, Ignis]         → "GLA-IGN"  (different spell)
+// [Tempest, Ventus, Tempest, Ignis] → "TMP-VNT-TMP-IGN"  (Storm Caller)
+```
+
+**Lookup on finger lift:**
+```csharp
+void OnFingerLifted() {
+    string key = GetLookupKey(currentSequence);
+    SpellData spell = subclassSpellTable.TryGetValue(key, out var s)
+                    ? s
+                    : defaultWeakSpell; // unknown pattern → weak Ignis blast
+    FireSpell(spell);
+    lastUsedSequence = new List<RuneType>(currentSequence);
+    currentSequence.Clear();
+}
+```
+
+### Invalid Patterns
+- Unrecognised draw order → fires default weak spell (40% potency Ignis blast)
+- Visual: brief "?" flash before default fires
+- Resource cost: standard single-rune cost — never hard-blocked
 
 ### Speed Bonus
 Measured from first node contact to finger lift:
@@ -124,12 +173,9 @@ Measured from first node contact to finger lift:
 | 0.8–1.5s | Standard | ×1.0 |
 | > 1.5s | Slow | ×0.85 |
 
-Speed bonus applies to damage spells only. Healing spells (Lifebinder) are unaffected.
-
-### Invalid Combinations
-- Fires weak default: single Ignis blast at 40% base Magic Attack
-- Visual: brief "?" flash before default fires
-- Resource cost: standard single-rune cost (never blocked entirely)
+Speed bonus applies to damage spells only. Healing spells (Lifebinder) unaffected.
+Knowing the canonical order lets players draw faster — order-dependency directly
+rewards pattern mastery through the speed bonus system.
 
 ---
 
@@ -166,83 +212,167 @@ Unlocks are gated by **Grimoire combat level** (the per-Grimoire level in
 
 ## Combination Spell Library
 
-### Single Rune (Combat Level 1+)
+> **Order matters for all spells.** Every entry has one canonical draw pattern.
+> The same runes drawn in a different order are a different spell.
+> Target: ~20–24 spells per subclass — learnable, not encyclopedic.
 
-| Node | Spell | Effect |
+---
+
+### Design Model — Shared + Subclass-Specific
+
+All Arcanist subclasses share a **common spell foundation** — spells unlocked at
+the same Grimoire combat levels regardless of subclass. On top of that foundation,
+each subclass has **4–6 unique spells** that unlock at key levels and reflect
+that subclass's identity.
+
+```
+Shared foundation (all subclasses):
+  - All 8 single-rune spells
+  - 5 shared 2-rune spells
+  - 4 shared 3-rune spells
+
+Subclass-specific (replaces/supplements at key levels):
+  - 3 subclass 2-rune spells
+  - 4 subclass 3-rune spells
+  - 4-rune mastery spells (subclass-only)
+
+Total per subclass: ~24 spells
+```
+
+---
+
+### Single Rune (Grimoire Combat Level 1 — all subclasses)
+
+Every Arcanist subclass gets all 8 single-rune spells from day one.
+Only the 6 nodes active in that subclass render — the other 2 simply don't appear.
+
+| Draw | Spell | Effect |
 |------|-------|--------|
-| Ignis | Ember Shot | Fire damage + 2s burn |
+| Ignis | Ember Shot | Fire damage + 2s burn DoT |
 | Glacius | Frost Bolt | Ice damage + minor slow |
 | Tempest | Spark | Lightning damage |
 | Terra | Stone Throw | Earth damage + minor stagger |
-| Ventus | Gust | Wind damage + tiny pushback |
+| Ventus | Gust | Wind damage + small pushback |
 | Vita | Mend | Restore 8% max HP |
 | Umbra | Shadow Dart | Shadow damage + 10% weaken |
 | Lux | Flash | Light damage + 1s blind |
 
-> Subclasses only render their 6 active nodes. The spells above exist as SpellData
-> ScriptableObjects for all 8 runes; only the relevant 6 are loaded per subclass.
+---
 
-### 2-Rune Combinations (Combat Level 16+)
+### 2-Rune Combinations
 
-| Combination | Spell | Effect | Element |
-|------------|-------|--------|---------|
-| Ignis + Glacius | Steam Burst | AoE damage + blind | Fire/Ice |
-| Ignis + Tempest | Firestorm | Burn + chain lightning | Fire/Lightning |
-| Ignis + Terra | Magma Surge | Heavy damage + armor break | Fire/Earth |
-| Ignis + Ventus | Flame Vortex | Spin damage + burn spread | Fire/Wind |
-| Ignis + Umbra | Soulfire | Magic damage + life drain | Fire/Shadow |
-| Ignis + Lux | Solar Flare | Massive damage + blind | Fire/Light |
-| Glacius + Tempest | Blizzard Strike | Ice + shock, accuracy down | Ice/Lightning |
-| Glacius + Terra | Permafrost | Freeze + defense shred | Ice/Earth |
-| Glacius + Ventus | Hailstorm | AoE ice + slow field | Ice/Wind |
-| Glacius + Vita | Glacial Mend | Heal + ice shield | Ice/Life |
-| Glacius + Umbra | Hypothermia | Freeze + weaken | Ice/Shadow |
-| Glacius + Lux | Prism Ice | Refract damage to nearby enemies | Ice/Light |
-| Tempest + Terra | Thunderclap | Stun + armor break | Lightning/Earth |
-| Tempest + Ventus | Cyclone | Chain lightning + pushback | Lightning/Wind |
-| Tempest + Vita | Static Pulse | Heal + shock aura | Lightning/Life |
-| Tempest + Umbra | Shadow Bolt | Heavy damage + accuracy down | Lightning/Shadow |
-| Tempest + Lux | Holy Storm | Light + lightning, massive damage | Lightning/Light |
-| Terra + Ventus | Sandstorm | AoE blind + evasion buff | Earth/Wind |
-| Terra + Vita | Stone Skin | Defense buff + minor heal | Earth/Life |
-| Terra + Umbra | Earthen Grave | Trap enemy, reduce speed | Earth/Shadow |
-| Terra + Lux | Sacred Ground | AoE light damage + defense | Earth/Light |
-| Ventus + Vita | Tailwind | Self evasion + regen | Wind/Life |
-| Ventus + Umbra | Phantom Gust | Invisible + dodge buff | Wind/Shadow |
-| Ventus + Lux | Divine Wind | Pushback + light damage AoE | Wind/Light |
-| Vita + Umbra | Blood Pact | Drain life, sacrifice HP for power | Life/Shadow |
-| Vita + Lux | Radiant Heal | Major heal + remove debuffs | Life/Light |
-| Umbra + Lux | Twilight Surge | Counter-element burst — highest 2-rune damage | Shadow/Light |
+#### Shared 2-Rune Spells (all subclasses, Grimoire Combat Level 16)
 
-> Each subclass only loads the 2-rune combos that use their 6 active runes. Combos using
-> inactive nodes are simply absent from that subclass's lookup table.
+Five spells every Arcanist subclass learns at level 16 — the core toolkit.
 
-### 3-Rune Combinations (Combat Level 42+; Runeweaver: 35+)
+| Draw Order | Spell | Effect | Notes |
+|-----------|-------|--------|-------|
+| Ignis → Glacius | Steam Burst | AoE fire+ice damage + blind | Introduces counter system |
+| Umbra → Lux | Twilight Surge | Counter-element burst — highest base 2-rune damage | Runeweaver ×1.75 bonus |
+| Tempest → Ventus | Cyclone | Chain lightning + pushback | Crowd control |
+| Glacius → Tempest | Blizzard Strike | Ice + shock + accuracy down | Debuff tool |
+| Ignis → Ventus | Flame Vortex | Spin damage + burn spread | DoT tool |
 
-Examples establishing the pattern — full library to be expanded during Phase 2 implementation:
+#### Runeweaver 2-Rune Spells
 
-| Combination | Spell | Effect |
-|------------|-------|--------|
-| Ignis + Tempest + Ventus | Inferno Cyclone | Massive fire AoE + burn field |
-| Glacius + Terra + Vita | Permafrost Ward | Freeze + stone skin + regeneration |
-| Umbra + Lux + Tempest | Eclipse Storm | Counter-element chain lightning + weaken |
-| Vita + Lux + Ventus | Ascendant Wind | Major heal + evasion + light shield |
-| Ignis + Glacius + Tempest | Elemental Triad | Three-element burst, heavy damage |
-| Terra + Ventus + Umbra | Phantom Earth | Trap + stealth + armor shred |
+| Draw Order | Spell | Unlocks | Effect |
+|-----------|-------|---------|--------|
+| Glacius → Ignis | Frostfire | Level 16 | Single target — heavy damage + burn + chill simultaneously |
+| Tempest → Umbra | Shadow Bolt | Level 24 | Heavy damage + accuracy down |
+| Lux → Umbra | Eclipse Strike | Level 44 | Counter-element — blind + massive weaken (reverse Twilight Surge) |
 
-### 4-Rune Combinations (Combat Level 88+)
+#### Summoner 2-Rune Spells (command-based)
 
-> Each spell below is cross-checked against the 6-node layout of its intended subclass.
-> Spells are only available to subclasses that have all four required runes active.
+| Draw Order | Spell | Unlocks | Effect |
+|-----------|-------|---------|--------|
+| Terra → Ignis | Siege Formation | Level 16 | Golem advances + Sprite follows — focused assault command |
+| Umbra → Tempest | Void Chain | Level 24 | Void Shade + Storm Wisp — debuff + chain all targets |
+| Terra → Glacius | Frozen Vanguard | Level 44 | Golem taunts + Frost Shard slows all targeting it |
 
-| Combination | Spell | Effect | Available to |
-|------------|-------|--------|-------------|
-| Ignis + Tempest + Ventus + Lux | Sundering Nova | Massive AoE, all nearby enemies | Runeweaver only (has all 4) |
-| Glacius + Vita + Lux + Ventus | Aegis of Dawn | Full heal + ice shield + defense | Lifebinder only (has all 4) |
-| Umbra + Lux + Glacius + Tempest | Void Eclipse | Counter-element ×2, massive single target | Runeweaver only |
-| Vita + Lux + Ventus + Ignis | Phoenix Wave | Revive from death if cast below 20% HP — once per dungeon | Lifebinder only |
-| Terra + Umbra + Glacius + Tempest | Runic Collapse | Stagger + freeze + chain + weaken all | Summoner only (has all 4) |
-| Ignis + Glacius + Tempest + Ventus | Tempest of Four | Four-element cycling damage | Runeweaver + Summoner (both have all 4) |
+#### Lifebinder 2-Rune Spells (healing-based)
+
+| Draw Order | Spell | Unlocks | Effect | HP Cost |
+|-----------|-------|---------|--------|---------|
+| Vita → Lux | Radiant Heal | Level 16 | Restore 20% HP + remove all debuffs | 18 HP |
+| Vita → Ventus | Mending Wind | Level 24 | Apply Rejuvenation HOT (+10 HP/sec, 12s) | 14 HP |
+| Glacius → Vita | Glacial Shield | Level 44 | 15% HP restore + absorb next 2 hits | 18 HP |
+
+---
+
+### 3-Rune Combinations
+
+**Runeweaver:** unlocks at Grimoire combat level 35 (earlier than standard 42)
+**Summoner + Lifebinder:** unlocks at Grimoire combat level 42
+
+#### Shared 3-Rune Spells (all subclasses, Combat Level 42; Runeweaver: 35)
+
+Four spells every Arcanist subclass learns — the foundation of 3-rune mastery.
+
+| Draw Order | Spell | Effect |
+|-----------|-------|--------|
+| Ignis → Tempest → Ventus | Inferno Cyclone | Massive fire AoE + burn field 8s |
+| Umbra → Lux → Tempest | Eclipse Storm | Counter-element chain — Umbra↔Lux bonus + chain lightning |
+| Glacius → Tempest → Lux | Frozen Arc | Freeze + chain + blind — triple control |
+| Tempest → Ventus → Ignis | Storm Surge | Pushback all enemies + ignites them on landing |
+
+#### Runeweaver 3-Rune Spells
+
+| Draw Order | Spell | Unlocks | Effect |
+|-----------|-------|---------|--------|
+| Ignis → Glacius → Tempest | Elemental Triad | Level 35 | Three-element burst — heavy single-target + all three DoTs |
+| Glacius → Ignis → Lux | Frostfire Nova | Level 55 | Counter-element burst — fire/ice + light explosion, peak damage |
+| Umbra → Ignis → Ventus | Darkfire Gale | Level 70 | Shadow DoT + burn + scatter — weaken, burn, push all at once |
+| Lux → Umbra → Tempest | Twilight Thunder | Level 85 | Counter-element into chain — eclipse then chain all targets |
+
+#### Summoner 3-Rune Spells (construct commands)
+
+| Draw Order | Spell | Unlocks | Effect |
+|-----------|-------|---------|--------|
+| Ignis → Tempest → Terra | Trinity Assault | Level 42 | Sprite + Wisp + Golem burst single target simultaneously |
+| Umbra → Glacius → Tempest | Total Debilitation | Level 55 | Accuracy down + slow + chain — maximum control command |
+| Terra → Ignis → Umbra | Siege of Shadows | Level 70 | Golem tanks, Sprite damages, Shade debuffs — full synergy |
+| Ignis → Tempest → Glacius | Elemental Triad | Level 85 | Three-element construct burst command |
+
+#### Lifebinder 3-Rune Spells
+
+| Draw Order | Spell | Unlocks | Effect | HP Cost |
+|-----------|-------|---------|--------|---------|
+| Vita → Lux → Ventus | Sacred Renewal | Level 42 | HOT +30 HP/sec for 15s — peak self-sustain | 28 HP |
+| Lux → Lux → Vita | Holy Aegis | Level 55 | Party-wide shield absorbing 20% max HP each | 38 HP |
+| Vita → Vita → Vita | Life Surge | Level 70 | Restore 50% max HP to single target | 40 HP |
+| Lux → Ventus → Ignis | Cleansing Flame | Level 85 | Remove all DoTs all allies + party regen +15/sec 10s | 42 HP |
+
+---
+
+### 4-Rune Combinations (Grimoire Combat Level 88 — all subclasses)
+
+The mastery tier. All four runes must be drawn manually in sequence.
+Each subclass has 1–2 unique 4-rune spells.
+
+| Draw Order | Spell | Subclass | Effect |
+|-----------|-------|---------|--------|
+| Tempest → Ventus → Tempest → Ignis | Storm Caller | Runeweaver | Sustained storm field 15s — AoE damage all enemies |
+| Ignis → Glacius → Umbra → Lux | Void Sundering | Runeweaver | Counter-chain — fire/ice into shadow/light, peak single-target |
+| Terra → Umbra → Glacius → Tempest | Runic Collapse | Summoner | Stagger + freeze + chain + weaken all — construct AoE command |
+| Ignis → Tempest → Ventus → Umbra | Phantom Inferno | Summoner | Fire + chain + scatter + void — all constructs AoE burst |
+| Vita → Lux → Ventus → Ignis | Phoenix Wave | Lifebinder | Revive from defeat if cast below 20% HP — once per dungeon |
+| Vita → Vita → Lux → Lux | Mass Miracle | Lifebinder | 40% HP all party + remove all debuffs — 10min cooldown |
+
+---
+
+### Spell Count Summary
+
+| Depth | Shared | Runeweaver | Summoner | Lifebinder |
+|-------|--------|-----------|---------|-----------|
+| 1-rune | 8 | 8 | 8 | 8 |
+| 2-rune | 5 | 5+3=8 | 5+3=8 | 5+3=8 |
+| 3-rune | 4 | 4+4=8 | 4+4=8 | 4+4=8 |
+| 4-rune | 0 | 2 | 2 | 2 |
+| **Total** | — | **26** | **26** | **26** |
+
+26 spells per subclass — all learnable, all meaningful, no filler.
+
+---
 
 ---
 
@@ -338,11 +468,17 @@ Use `IPointerDownHandler`, `IDragHandler`, `IPointerUpHandler`.
 - Drag: raycast each frame for node colliders → register newly entered nodes
 - PointerUp: resolve sequence → lookup → fire → clear
 
-**Combination lookup:**
+**Combination lookup — order-dependent string key:**
 ```csharp
-// Order-independent — sort before lookup
-var key = new HashSet<RuneType>(sequence);
-SpellData spell = subclassSpellTable.TryGetValue(key, out var s) ? s : defaultSpell;
+// Build key from ordered sequence
+string key = string.Join("-",
+    currentSequence.Select(r => r.ToString().Substring(0, 3).ToUpper()));
+// [Ignis, Glacius]                    → "IGN-GLA"
+// [Glacius, Ignis]                    → "GLA-IGN"  (different spell)
+// [Tempest, Ventus, Tempest, Ignis]  → "TMP-VNT-TMP-IGN"  (Storm Caller)
+
+SpellData spell = subclassSpellTable.TryGetValue(key, out var s)
+                ? s : defaultWeakSpell;
 ```
 
 **Speed multiplier:**

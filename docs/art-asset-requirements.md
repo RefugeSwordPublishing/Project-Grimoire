@@ -281,6 +281,7 @@ All item icons use a **Sprite Atlas (sheet) approach** rather than individual fi
 | `icons_kits.png` | Inscription Set, Cookery Set, Alchemy Kit, Carpenter's Kit, empty, empty, empty, empty | 4×2 | 256×128 |
 | `icons_currency_ui.png` | Silver Mark coin, Gold Mark coin, Inventory Slot Ticket, Quest Slot Ticket, Slaying Task Ticket, Exchange Slot Ticket, empty, empty | 4×2 | 256×128 |
 | `icons_grimoires.png` | All 7 base game Grimoire book icons | 4×2 | 256×128 |
+| `icons_debuffs.png` | Poison (coating DoTs), Barbed Bleed (arrow/thorn — Sharpshot), Hemorrhage Bleed (blood drop — Shadowblade) | 4×1 | 256×64 |
 | `icons_quality_badges.png` | Crude, Rough, Refined, Pristine, Masterwork, Legendary badges (+ colorblind variants on rows below) | 4×4 | 256×256 |
 
 > **Growth rule:** Each sheet has empty slots reserved for future items. When all slots fill, create a new sheet with the same naming convention (e.g. `icons_gathering_foraging_2.png`). Never expand sheet dimensions mid-project — keep all sheets at 256px wide for consistency.

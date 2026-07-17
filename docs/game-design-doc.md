@@ -11,6 +11,15 @@
 
 **Attunement Surge:** When a player manually triggers or interacts with a task (tapping a node, drawing a bow, drawing a rune combination), they receive a boost to XP and quality/drop chance for that action. Full mechanic detail per Talent lives in `docs/talent-spec-sheets.md`.
 
+**Pickup and Play — Not an MMO:** Project Grimoire is a fun pickup-and-play game with friends, or an idle craft experience — not a full MMO skill rotation game. Skill expression is path-specific and input-based, not buff management:
+- **Warden** — draw timing, ring threshold knowledge, weak point targeting
+- **Arcanist** — rune order memory, draw speed, counter-element knowledge
+- **Vanguard** — combo sequence knowledge, stamina rhythm, Technique timing
+
+Skilled players look better because their inputs are cleaner and faster — not because they're managing more buff timers. When in doubt: remove complexity, not add it. Playtesting can always add back what's genuinely missed.
+
+**Debuff display rule:** Maximum 3 visible debuff icons on any enemy (Poison, Barbed Bleed, Hemorrhage Bleed). Status effects that don't require player action (Slow, Freeze, Stagger, Blind) use visual feedback on the enemy sprite only — no persistent icons.
+
 ---
 
 ## 📊 Core Character Stats
@@ -125,7 +134,7 @@ This is the zone unlock gate and a character-wide prestige stat displayed on the
 **Arcane:** Divination, Runelore, Soulbinding
 *(Enchanting merged into Inscription — no longer a separate Talent)*
 
-**Level cap:** 100 base, expandable to 120 then 150 via DLC Tome of Mastery purchases. Level 100 capstones are designed around **mastery and consistency, not power spikes** — rare materials and powerful unlocks live at levels 82–92, preserving expansion headroom.
+**Level cap:** 100 base, expandable to 120 then 150 via DLC Tome of Mastery purchases. Level 100 capstones are designed around **foundation and consolidation, not completion** — they should feel like a plateau that makes the player stronger and more consistent, while hinting that deeper mastery exists beyond current reach. Rare materials and powerful unlocks live at levels 82–92, preserving expansion headroom. DLC unlocks fill levels 101–120, then 121–150. Capstone language should never say "mastery achieved" — it should say "the foundation is complete."
 
 ---
 
