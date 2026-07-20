@@ -1,55 +1,57 @@
-# ⚔️ Project Grimoire — Grimoire Combat XP Curve
-### Version 0.1
+### Version 0.2 — Rebalanced (2026-07-19)
+
+> **Playtesting found:** idle XP was far too fast — level 20 reachable in a single
+> overnight session. Two fixes applied: (1) XP per level increased ~3× across the
+> board, (2) XP model changed to **damage-based** — 0.3 XP per damage point dealt,
+> every hit, both idle and active. Active players deal more damage per hit and
+> naturally progress faster. No separate tick rate — one mechanism, always on.
+> See `docs/progression-rebalance-brief.md`.
 
 ---
 
 ## 📐 Design Philosophy
 
-The Grimoire combat progression curve is **accelerating** — early levels unlock quickly to get players into interesting mechanics fast, while later levels require sustained investment. The curve is designed around a casual player (1–2 hours/day of combined active and idle play).
+The Grimoire combat progression curve is **accelerating** — early levels unlock
+quickly to get players into interesting mechanics, while later levels require
+sustained investment. The curve is designed around a casual player
+(1–2 hours/day combined active and idle play).
 
-**Target milestones:**
-- Level 15 (2-input combos): ~1 week first Grimoire
-- Level 20 (stat milestone + zone 2 contribution): ~1–2 weeks
-- Level 35 (3-input combos): ~1 month
-- Level 55 (full combo depth): ~2–3 months
-- Level 100 (mastery): ~4–6 months per Grimoire
-- Full mastery (all 7 base Grimoires + all Talents to 100): ~3 years
-
-**Second and subsequent Grimoires** level ~20–30% faster because:
-- Player is in higher-tier zones earning more XP per kill
-- Player knows the combat system — more active attunement hits
-- No relearning curve — pure XP investment
+**Target milestones (revised):**
+- Level 15 (2-input combos): ~2–3 weeks first Grimoire
+- Level 20 (stat milestone): ~1 month
+- Level 35 (3-input combos): ~3 months
+- Level 55 (full combo depth): ~6 months
+- Level 100 (mastery): ~18 months per Grimoire
+- Full mastery (all 7 Grimoires + Talents to 100): ~5+ years
 
 ---
 
 ## 📊 XP Required Per Level
 
-Accelerating curve — gap between levels grows steadily throughout.
-
 | Level Range | XP per level | Cumulative XP to reach |
 |------------|-------------|----------------------|
-| 1–5 | 100 | 500 |
-| 6–10 | 200 | 1,500 |
-| 11–15 | 350 | 3,250 |
-| 16–20 | 550 | 6,000 |
-| 21–25 | 800 | 10,000 |
-| 26–30 | 1,100 | 15,500 |
-| 31–35 | 1,500 | 23,000 |
-| 36–40 | 2,000 | 33,000 |
-| 41–45 | 2,700 | 46,500 |
-| 46–50 | 3,500 | 64,000 |
-| 51–55 | 4,500 | 86,500 |
-| 56–60 | 5,800 | 115,500 |
-| 61–65 | 7,200 | 151,500 |
-| 66–70 | 8,800 | 195,500 |
-| 71–75 | 10,500 | 248,000 |
-| 76–80 | 12,500 | 310,500 |
-| 81–85 | 15,000 | 385,500 |
-| 86–90 | 18,000 | 475,500 |
-| 91–95 | 21,500 | 583,000 |
-| 96–100 | 25,000 | 708,000 |
+| 1–5 | 300 | 1,500 |
+| 6–10 | 600 | 4,500 |
+| 11–15 | 1,100 | 10,000 |
+| 16–20 | 1,800 | 19,000 |
+| 21–25 | 2,800 | 33,000 |
+| 26–30 | 4,000 | 53,000 |
+| 31–35 | 5,500 | 80,500 |
+| 36–40 | 7,500 | 118,000 |
+| 41–45 | 10,500 | 170,500 |
+| 46–50 | 14,000 | 240,500 |
+| 51–55 | 18,500 | 333,000 |
+| 56–60 | 24,000 | 453,000 |
+| 61–65 | 31,000 | 608,000 |
+| 66–70 | 39,000 | 803,000 |
+| 71–75 | 49,000 | 1,048,000 |
+| 76–80 | 61,000 | 1,353,000 |
+| 81–85 | 76,000 | 1,733,000 |
+| 86–90 | 94,000 | 2,203,000 |
+| 91–95 | 115,000 | 2,778,000 |
+| 96–100 | 140,000 | 3,478,000 |
 
-**Total XP to level 100:** ~708,000
+**Total XP to level 100: ~3,478,000**
 
 ---
 
@@ -179,26 +181,62 @@ Total: ~2.5–3.5 years for a dedicated player
 
 ## 🔧 Implementation Notes for Claude Code
 
-**XP storage:**
+**XP storage — unchanged (already built):**
 ```sql
--- player_grimoire_levels table (already defined)
-combat_xp    INTEGER DEFAULT 0  -- current XP toward next level
+-- player_grimoire_levels table (already exists)
+combat_xp    INTEGER DEFAULT 0
 combat_level INTEGER DEFAULT 1
 ```
 
-**Level up check:**
+**XP award — damage-based, every hit:**
 ```csharp
+// In CombatManager, on every hit that deals damage:
+void OnDamageDealt(float damage, bool isPlayerAttack) {
+    if (!isPlayerAttack) return;
+
+    float xp = damage * 0.3f; // 0.3 XP per damage point
+    CombatXPManager.AwardXP(equippedGrimoire, xp);
+}
+```
+
+No separate tick rate. No per-enemy xpValue needed for combat XP.
+Idle and active both use the same path — active players deal more damage
+per hit (combos, weak points, attunement bonuses) and earn more XP naturally.
+
+**Attunement XP bonus still applies:**
+```csharp
+// Active attunement hit (weak point, speed bonus, counter etc.):
+float xp = damage * 0.3f * 1.5f; // ×1.5 on attunement success
+```
+
+**Updated xpPerLevel array:**
+```csharp
+// Replace old array entirely:
 int[] xpPerLevel = {
-    0,    // level 0 placeholder
-    100, 100, 100, 100, 100,     // levels 1-5
-    200, 200, 200, 200, 200,     // levels 6-10
-    350, 350, 350, 350, 350,     // levels 11-15
-    550, 550, 550, 550, 550,     // levels 16-20
-    800, 800, 800, 800, 800,     // levels 21-25
-    // ... continue pattern
+    0,                                           // level 0 placeholder
+    300, 300, 300, 300, 300,                    // levels 1–5
+    600, 600, 600, 600, 600,                    // levels 6–10
+    1100, 1100, 1100, 1100, 1100,              // levels 11–15
+    1800, 1800, 1800, 1800, 1800,              // levels 16–20
+    2800, 2800, 2800, 2800, 2800,              // levels 21–25
+    4000, 4000, 4000, 4000, 4000,              // levels 26–30
+    5500, 5500, 5500, 5500, 5500,              // levels 31–35
+    7500, 7500, 7500, 7500, 7500,              // levels 36–40
+    10500, 10500, 10500, 10500, 10500,         // levels 41–45
+    14000, 14000, 14000, 14000, 14000,         // levels 46–50
+    18500, 18500, 18500, 18500, 18500,         // levels 51–55
+    24000, 24000, 24000, 24000, 24000,         // levels 56–60
+    31000, 31000, 31000, 31000, 31000,         // levels 61–65
+    39000, 39000, 39000, 39000, 39000,         // levels 66–70
+    49000, 49000, 49000, 49000, 49000,         // levels 71–75
+    61000, 61000, 61000, 61000, 61000,         // levels 76–80
+    76000, 76000, 76000, 76000, 76000,         // levels 81–85
+    94000, 94000, 94000, 94000, 94000,         // levels 86–90
+    115000, 115000, 115000, 115000, 115000,    // levels 91–95
+    140000, 140000, 140000, 140000, 140000,    // levels 96–100
 };
 
-void AddCombatXP(int amount) {
+void AddCombatXP(float amount) {
     currentXP += amount;
     while (currentXP >= xpPerLevel[currentLevel] && currentLevel < 100) {
         currentXP -= xpPerLevel[currentLevel];
@@ -211,42 +249,16 @@ void AddCombatXP(int amount) {
 }
 ```
 
-**XP award on kill:**
+Note: `xpValue` on `EnemyData` ScriptableObjects is no longer used for combat
+Grimoire XP — remove that field or repurpose it for Slaying Talent XP only
+(which remains flat per-kill, not damage-based).
+
+**Total Combat Level calculation — unchanged:**
 ```csharp
-void OnEnemyKilled(EnemyData enemy, bool attunementSuccess) {
-    int baseXP = enemy.xpValue; // Set per enemy in EnemyData ScriptableObject
-    float multiplier = attunementSuccess ? 1.5f : 1.0f;
-    int totalXP = Mathf.RoundToInt(baseXP * multiplier);
-    
-    // Award to currently equipped Grimoire only
-    GrimoireManager.equippedGrimoire.AddCombatXP(totalXP);
-    
-    // Update Total Combat Level display
-    CharacterPanel.UpdateTotalCombatLevel();
-}
+int GetTotalCombatLevel() =>
+    playerGrimoireLevels.Where(g => g.isOwned).Sum(g => g.combatLevel);
 ```
-
-**EnemyData XP values:**
-Set on each EnemyData ScriptableObject — use zone tier to determine base value:
-```
-Tier 1 standard: xpValue = 8
-Tier 1 elite: xpValue = 40
-Tier 1 boss: xpValue = 160
-// etc. per zone tier table above
-```
-
-**Total Combat Level calculation:**
-```csharp
-int GetTotalCombatLevel() {
-    return playerGrimoireLevels
-        .Where(g => g.isOwned)
-        .Sum(g => g.combatLevel);
-}
-```
-
-Called on every level-up to check zone unlock thresholds.
 
 ---
 
-*Document version 0.1 — Grimoire Combat XP Curve*
-*Next: Phase 2 handoff*
+*Document version 0.2 — Grimoire Combat XP Curve (damage-based model)*

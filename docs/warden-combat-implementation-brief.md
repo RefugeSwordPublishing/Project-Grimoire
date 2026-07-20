@@ -1,423 +1,377 @@
 ---
 type: implementation-brief
-spec: warden-combat-spec.md (v0.1), subclass-trees-warden.md (v0.4)
+spec: warden-combat-spec.md (v0.2)
 updated: 2026-07-11
-purpose: Wire the Warden ability ring system, per-subclass draw thresholds,
-         Barbed Shot, Rapid Fire, Long Shot, and Model C abilities into the
-         existing WardenBowstringMechanic. Read alongside warden-combat-spec.md.
+reconciled-to: warden-archery-asbuilt.md
+purpose: Build the Warden ability layer on top of the as-built arc mechanic.
+         Everything in the as-built doc is already done — do NOT rebuild it.
+         This brief covers only what is NOT yet built.
 ---
 
-# Warden Combat — Implementation Brief
+# Warden Combat — Ability Layer Implementation Brief
 
-## What's Already Built
+## What's Already Built — Do Not Rebuild
 
-Per `implementation-status.md`:
-- `WardenBowstringMechanic` — press/drag/release, draw power, weak point targeting
-- `BowstringMechanic` — charge meter, DRAW %, aim arrow, attack cadence bar
-- Combat hotbar (left, vertical) — 3 consumable slots already built
-- Enemy HP bar already positioned below enemy sprite
-- `ActiveCombatMechanic` seam — `Configure(subclass)`, `SetEngaged(bool)`, `OnAttackFired(multiplier)`
+Per `warden-archery-asbuilt.md` and `implementation-status.md`:
+
+- ✅ Arc aim (horizontal = steer, vertical = loft)
+- ✅ Trajectory LineRenderer preview with `_trajectoryReveal`
+- ✅ Physics.Linecast against enemy MeshCollider for hit detection
+- ✅ `hit.textureCoord` → `weakPointMask` → ×2.0 multiplier
+- ✅ `AttackOutcome` (Hit/Miss/Evaded/Blocked)
+- ✅ Accuracy vs Evasion/Block roll (active shots only)
+- ✅ `EnemyData.combatRange` → world Z
+- ✅ `idleFrames/attackFrames/deathFrames` animation
+- ✅ `idleMasks[]` per-frame weak point masks
+- ✅ `WeakPointTier` enum + `HasWeakPointRevealTalent()` stub
+- ✅ 3D combat scene (perspective camera, RenderTexture, quads)
 
 ---
 
-## Step 1 — Draw Curve (exponential)
+## What This Brief Covers (not yet built)
 
-Replace linear draw fill with exponential curve:
+1. Ability row UI (above hotbar)
+2. Prime/charge state system
+3. Each ability implementation
+4. Reveal talent wiring
+5. Stat formula update
+6. Loft indicator UI (right side)
+
+---
+
+## Step 1 — Icon Stack UI (Right Side)
+
+Vertical stack of ability tier icons on the RIGHT side of the combat screen.
+Icons light up sequentially as hold time crosses each threshold.
+No ring loader — icons simply activate instantly at each threshold.
 
 ```csharp
-// In BowstringMechanic — replace current linear drawPower calculation:
-float drawPower = Mathf.Pow(holdTime / maxDrawTime, 1.6f);
-// maxDrawTime = 1.5f for standard full draw
-// Result: harder to reach full charge, last 30% requires deliberate commitment
+public class WardenAbilityIconStack : MonoBehaviour {
+    [SerializeField] AbilityIconSlot standardSlot;
+    [SerializeField] AbilityIconSlot barbedSlot;     // Sharpshot only
+    [SerializeField] AbilityIconSlot rapidFireSlot;  // Lone Wanderer only
+    [SerializeField] AbilityIconSlot fullDrawSlot;
+    [SerializeField] AbilityIconSlot longShotSlot;   // Sharpshot only
+
+    public void UpdateForHoldTime(float holdTime, string subclass) {
+        AbilityType active = GetActiveTier(holdTime, subclass);
+        // Light up active, dim all others
+        foreach (var slot in allSlots)
+            slot.SetActive(slot.abilityType == active);
+    }
+
+    AbilityType GetActiveTier(float holdTime, string subclass) {
+        if (subclass == "Sharpshot") {
+            if (holdTime >= 4.0f && longShotReady) return AbilityType.LongShot;
+            if (holdTime >= 2.5f) return AbilityType.FullDraw;
+            if (holdTime >= 1.5f && barbedUnlocked) return AbilityType.BarbedShot;
+            if (holdTime >= 0.3f) return AbilityType.Standard;
+        }
+        else if (subclass == "LoneWanderer") {
+            if (holdTime >= 2.5f) return AbilityType.FullDraw;
+            if (holdTime >= 1.5f) return AbilityType.Standard;
+            if (holdTime >= 0.3f && rapidFireReady) return AbilityType.RapidFire;
+            if (holdTime >= 0.3f) return AbilityType.Standard; // RF on cooldown
+        }
+        return AbilityType.None;
+    }
+}
+```
+
+Only show slots for unlocked abilities. Long Shot on cooldown: greyed + shading timer.
+Rapid Fire on cooldown: slot skips to Standard at 0.3s instead.
+
+## Step 1b — Ability Row UI (Bottom, One Button Per Subclass)
+
+Minimal row above hotbar — only abilities that don't fit the hold model:
+
+```
+[Player HP bar]
+────────────────────────────────────────────
+[Armor Piercer]                        ← Sharpshot (tap, 45s CD)
+[Fade/Vanishing Act]                   ← Lone Wanderer (tap, 60s CD)
+[HP]        [Stamina]   [Antidote]     ← existing hotbar
 ```
 
 ---
 
-## Step 2 — Bow Arc Visualisation (remove DRAW % text)
+## Step 2 — Hold Timer + Active Tier Resolution
 
-Replace `drawPercentText` with bow arc fill:
+Add to `WardenBowstringMechanic`:
 
 ```csharp
-// In ZoneCombatView / BowstringMechanic:
-bowArcRenderer.fillAmount = drawPower;
-bowArcRenderer.color = Color.Lerp(Color.white, fullDrawColor, drawPower);
-// fullDrawColor = warm amber/orange
+private float _holdTime = 0f;
+private AbilityType _activeTier = AbilityType.None;
 
-// Remove: drawPercentText.text = $"{drawPower * 100:0}%";
-// Remove: drawPercentText gameObject entirely
+// Called every frame while finger is held down:
+void OnDrawHeld(float holdTime) {
+    _holdTime = holdTime;
+    _activeTier = iconStack.UpdateForHoldTime(holdTime, currentSubclass);
+}
+
+// On release — fire the active tier:
+void OnRelease() {
+    var tier = _activeTier;
+    _holdTime = 0f;
+    _activeTier = AbilityType.None;
+    iconStack.UpdateForHoldTime(0f, currentSubclass); // reset icons
+
+    if (tier == AbilityType.None) return; // sub-0.3s — nothing fires
+    OnShotFired(tier);
+}
 ```
 
-Brief screen pulse + arc glow when drawPower reaches 1.0 to confirm full charge.
+Thresholds are checked in `iconStack.GetActiveTier()` (Step 1).
+No separate prime/expiry state needed — the tier is live while holding.
 
 ---
 
-## Step 3 — Ability Ring UI
-
-New UI component: `WardenAbilityRingUI.cs`
-
-**Layout:** Vertical stack of icon slots on the RIGHT side of the combat screen.
-Each slot contains:
-- Ability icon sprite
-- Circular ring that fills clockwise as draw progresses
-- Gold border pulse when ring completes (ability lit)
-- Greyed + shading timer when on cooldown (Long Shot only)
-
-**Slot visibility:** Only render slots for unlocked abilities.
-Check `CombatXPManager.GetGrimoireLevel(equippedGrimoireId)` against unlock levels.
+## Step 3 — Shot Resolution by Tier
 
 ```csharp
-public class WardenAbilityRingUI : MonoBehaviour {
-    [SerializeField] AbilitySlot standardSlot;
-    [SerializeField] AbilitySlot barbedSlot;    // Sharpshot only
-    [SerializeField] AbilitySlot rapidFireSlot; // Lone Wanderer only
-    [SerializeField] AbilitySlot fullDrawSlot;
-    [SerializeField] AbilitySlot longShotSlot;  // Sharpshot only
+void OnShotFired(AbilityType tier) {
+    // Perform the arc linecast (existing system)
+    var (hit, isWeakPoint) = PerformArcLinecast();
 
-    void UpdateRings(float holdTime, string subclass) {
-        // Get thresholds for current subclass
-        var thresholds = GetThresholds(subclass);
+    float damage = CalculateBaseDamage(); // DEX × 1.5 + BowDamage
+    bool ignoreArmor = false;
+    bool allCoatingsProc = false;
+    bool guaranteedWeakPoint = false;
 
-        // Light up icons sequentially as hold time passes each threshold
-        foreach (var (slot, threshold) in thresholds) {
-            float progress = Mathf.Clamp01(
-                (holdTime - prevThreshold) / (threshold - prevThreshold));
-            slot.SetRingFill(progress);
-            slot.SetLit(holdTime >= threshold);
+    switch (tier) {
+        case AbilityType.Standard:
+            break; // base damage, no modifiers
+
+        case AbilityType.BarbedShot:
+            TryApplyBarbedBleed();
+            break;
+
+        case AbilityType.RapidFire:
+            FireRapidBurst(); // fires 3 shots, returns early
+            return;
+
+        case AbilityType.FullDraw:
+            damage *= GetHuntersPatienceBonus(_holdTime);    // +8%/0.5s, max +24%
+            damage *= snipersVantageUnlocked ? 1.15f : 1.0f; // +15%
+            if (piercingShotUnlocked) _nextEnemyTakesDamage = damage * 0.60f;
+            break;
+
+        case AbilityType.LongShot:
+            if (_longShotCooldown > 0) { tier = AbilityType.FullDraw; break; }
+            damage *= 8.0f;
+            ignoreArmor = true;
+            guaranteedWeakPoint = true;
+            allCoatingsProc = true;
+            if (currentEnemy == markedEnemy) damage *= 1.5f;
+            StartCooldown(AbilityType.LongShot, 90f);
+            break;
+    }
+
+    // Weak point
+    float weakMult = (isWeakPoint || guaranteedWeakPoint) ? 2.0f : 1.0f;
+    damage *= weakMult;
+
+    // Armor piercer from ability row
+    if (_armorPiercerActive) { ignoreArmor = true; _armorPiercerActive = false; }
+
+    damage = ApplyOutcome(damage, ignoreArmor);
+
+    if (allCoatingsProc) ForceAllCoatingProcs();
+    else TryCoatingProc();
+
+    OnAttackFired(damage);
+}
+```
+
+Note: Long Shot while on cooldown silently falls back to Full Draw tier.
+Player sees the Long Shot icon greyed — they know it's not available.
+
+---
+
+## Step 4 — Each Ability
+
+### Barbed Shot
+
+```csharp
+void TryApplyBarbedBleed() {
+    if (!currentEnemy.HasBleed(BleedType.Barbed) && Random.value < 0.20f) {
+        float tickDmg = GetBarbedBleedTick(); // from quiver tier
+        currentEnemy.ApplyBleed(BleedType.Barbed, tickDmg, bleedDuration);
+    }
+    // If already bleeding: do nothing — no stack, no refresh
+    // No cooldown — limited by 20% proc and no-stack rule
+}
+```
+
+### Long Shot (hold to arm)
+
+```csharp
+void ArmLongShot() {
+    if (_longShotCooldown > 0) return;
+    _longShotArmed = true;
+    trajectoryLine.color = goldColor; // gold trajectory when armed
+    abilityRow.SetArmed(AbilityType.LongShot, true);
+}
+```
+
+Fires in `OnShotFired()` above when `_longShotArmed == true`.
+
+### Rapid Fire
+
+```csharp
+void FireRapidBurst() {
+    // Called from OnShotFired when tier == RapidFire
+    float lockedAimX = _currentAimX; // locked at release moment
+    float lockedLoft = _currentLoft;
+
+    for (int i = 0; i < 3; i++) {
+        float loftSpread = Random.Range(-0.05f, 0.05f);
+        float shotDamage = CalculateBaseDamage() * 0.65f;
+
+        bool procRoll = Random.value < 0.88f; // -12% proc hit chance
+        var (hit, isWeakPoint) = PerformArcLinecast(lockedAimX,
+                                    lockedLoft + loftSpread);
+        if (hit) {
+            float weakMult = isWeakPoint ? 2.0f : 1.0f;
+            float damage = ApplyOutcome(shotDamage * weakMult, false);
+            if (procRoll) TryCoatingProc();
+            OnAttackFired(damage);
         }
     }
+    StartCooldown(AbilityType.RapidFire, 8f);
 }
 ```
 
----
+Rapid Fire fires on release at the 0.3s tier — same gesture as any other shot,
+just a shorter hold. Three shots at the release aim position with slight loft spread.
 
-## Step 4 — Per-Subclass Thresholds
+### Armor Piercer
+
+Applied in `OnShotFired()` above. Simple — next shot ignores armor.
+
+### Fade / Vanishing Act
 
 ```csharp
-// In WardenBowstringMechanic.Configure(subclass):
-
-if (subclass == "Sharpshot") {
-    _thresholds = new[] {
-        (0.30f, WardShot.Standard),
-        (1.00f, WardShot.Barbed),     // unlocks at Grimoire level 31
-        (1.50f, WardShot.FullDraw),
-        (3.00f, WardShot.LongShot),   // unlocks at Grimoire level 86
-    };
-}
-else if (subclass == "LoneWanderer") {
-    _thresholds = new[] {
-        (0.30f, WardShot.RapidFire),  // unlocks at Grimoire level 44
-        (1.00f, WardShot.Standard),
-        (1.50f, WardShot.FullDraw),
-    };
-}
-
-// Only include unlocked thresholds — check Grimoire level before adding
-```
-
-**Minimum hold:** 0.30s before any shot fires. Release before 0.30s = nothing.
-
-**Active shot type:** Always the last threshold that was reached.
-
-```csharp
-WardShot GetActiveShotType(float holdTime) {
-    WardShot active = WardShot.None;
-    foreach (var (threshold, shotType) in _thresholds) {
-        if (holdTime >= threshold) active = shotType;
-    }
-    return active;
-}
-```
-
----
-
-## Step 5 — Shot Resolution on Release
-
-```csharp
-void OnRelease(float holdTime, Vector2 aimDirection) {
-    WardShot shotType = GetActiveShotType(holdTime);
-
-    switch (shotType) {
-        case WardShot.None:
-            return; // sub-0.3s — nothing fires
-
-        case WardShot.Standard:
-            FireStandardShot(holdTime, aimDirection);
-            break;
-
-        case WardShot.Barbed:     // Sharpshot only
-            FireBarbedShot(holdTime, aimDirection);
-            break;
-
-        case WardShot.RapidFire:  // Lone Wanderer only
-            FireRapidFire(aimDirection);
-            break;
-
-        case WardShot.FullDraw:
-            FireFullDraw(holdTime, aimDirection);
-            break;
-
-        case WardShot.LongShot:   // Sharpshot only
-            FireLongShot(aimDirection);
-            break;
-    }
-}
-```
-
----
-
-## Step 6 — Shot Implementations
-
-### Standard Shot
-```csharp
-void FireStandardShot(float holdTime, Vector2 aim) {
-    float drawPower = Mathf.Pow(holdTime / maxDrawTime, 1.6f);
-    float weakPointMult = GetWeakPointMultiplier(aim);
-    float damage = baseDamage * drawPower * weakPointMult;
-    OnAttackFired(damage);
-    TryCoatingProc(damage);
-}
-```
-
-### Barbed Shot (Sharpshot, unlocks Grimoire level 31)
-```csharp
-void FireBarbedShot(float holdTime, Vector2 aim) {
-    // Same as Standard Shot
-    float drawPower = Mathf.Pow(holdTime / maxDrawTime, 1.6f);
-    float weakPointMult = GetWeakPointMultiplier(aim);
-    float damage = baseDamage * drawPower * weakPointMult;
-    OnAttackFired(damage);
-    TryCoatingProc(damage);
-
-    // Barbed bleed proc — 20% chance, only if no active Barbed bleed
-    if (!currentEnemy.HasBleed(BleedType.Barbed) && Random.value < 0.20f) {
-        float tickDamage = GetBarbedBleedTick(); // scales with quiver tier
-        currentEnemy.ApplyBleed(BleedType.Barbed, tickDamage, bleedDuration);
-    }
-    // No stack, no refresh — if bleed already active, proc does nothing
-}
-```
-
-### Rapid Fire (Lone Wanderer, unlocks Grimoire level 44)
-```csharp
-void FireRapidFire(Vector2 aim) {
-    // Fixed aim direction — slight spread between shots
-    for (int i = 0; i < 3; i++) {
-        Vector2 spread = aim + Random.insideUnitCircle * 0.05f;
-        float damage = baseDamage * 0.65f;
-        OnAttackFired(damage);
-
-        // Reduced proc chance — 12% less likely to trigger coating proc roll
-        if (Random.value < 0.88f)
-            TryCoatingProc(damage);
-    }
-    // No cooldown on Rapid Fire — gated by 0.3–1.0s window
-}
-```
-
-### Full Draw (all Wardens, always available at 1.5s)
-```csharp
-void FireFullDraw(float holdTime, Vector2 aim) {
-    float drawPower = 1.0f; // at full draw
-    float weakPointMult = GetWeakPointMultiplier(aim);
-
-    // Hunter's Patience bonus (Sharpshot, Grimoire level 17)
-    float patienceBonus = 1.0f;
-    if (huntersPatienceUnlocked) {
-        float extraHold = Mathf.Clamp(holdTime - 1.5f, 0f, 1.5f);
-        patienceBonus = 1.0f + (extraHold / 0.5f) * 0.08f; // +8% per 0.5s, max +24%
-        patienceBonus = Mathf.Min(patienceBonus, 1.24f);
-    }
-
-    // Sniper's Vantage bonus (Sharpshot, Grimoire level 44)
-    float vantageBonus = snipersVantageUnlocked ? 1.15f : 1.0f;
-
-    float damage = baseDamage * drawPower * weakPointMult
-                 * patienceBonus * vantageBonus;
-
-    // Piercing Shot (Sharpshot, Grimoire level 9)
-    if (piercingShotUnlocked)
-        _nextEnemyTakesDamage = damage * 0.60f;
-
-    // Sharpshot's Resolve — guaranteed weak point on next shot
-    if (_nextShotGuaranteedWeakPoint) {
-        damage *= GetWeakPointMultiplier(perfectAim);
-        _nextShotGuaranteedWeakPoint = false;
-    }
-
-    OnAttackFired(damage);
-    TryCoatingProc(damage);
-
-    // Sharpshot's Resolve (level 79) — weak point hit chains
-    if (weakPointMult > 1.0f && sharpshotResolveUnlocked)
-        _nextShotGuaranteedWeakPoint = true;
-
-    // Mark of the Hunt proc (level 24)
-    if (weakPointMult > 1.0f && markOfHuntUnlocked)
-        SetMark(currentEnemy, duration: 15f, damageBonus: 1.20f);
-
-    // Barbed Shot bleed proc on Full Draw too (if unlocked)
-    if (barbedShotUnlocked && !currentEnemy.HasBleed(BleedType.Barbed)
-        && Random.value < 0.20f)
-        currentEnemy.ApplyBleed(BleedType.Barbed,
-            GetBarbedBleedTick(), bleedDuration);
-}
-```
-
-### Long Shot (Sharpshot only, Grimoire level 86)
-```csharp
-void FireLongShot(Vector2 aim) {
-    if (_longShotCooldown > 0) return;
-
-    float damage = baseDamage * 8.0f; // 800% base damage
-
-    // Mark of the Hunt bonus
-    if (currentEnemy == markedEnemy) damage *= 1.5f;
-
-    // All coatings proc simultaneously — guaranteed
-    ForceAllCoatingProcs();
-
-    // Guaranteed weak point regardless of aim
-    damage *= GetWeakPointMultiplier(perfectAim);
-
-    // Ignore armor and resistances
-    OnAttackFired(damage, ignoreArmor: true, ignoreResistances: true);
-
-    _longShotCooldown = 90f;
-    abilityRingUI.StartCooldownDisplay(longShotSlot, 90f);
-}
-```
-
----
-
-## Step 7 — Killshot (Sharpshot passive, Grimoire level 52)
-
-Check on every Full Draw release:
-
-```csharp
-void FireFullDraw(float holdTime, Vector2 aim) {
-    // ... existing damage calc ...
-
-    // Killshot — execute below 20% HP (30s cooldown)
-    if (killshotUnlocked && _killshotCooldown <= 0
-        && currentEnemy.HPPercent < 0.20f) {
-        damage = currentEnemy.currentHP * 10f; // guaranteed kill
-        _killshotCooldown = 30f;
-    }
-
-    OnAttackFired(damage);
-}
-```
-
----
-
-## Step 8 — Model C Ability Row
-
-**New UI row** below the HP bar. Two slots for Sharpshot, one for Lone Wanderer.
-
-```
-  [Player HP bar]
-  ───────────────────────────────
-  [ Fade ]  [ Armor Piercer ]    ← Sharpshot
-  [ Fade ]                       ← Lone Wanderer (Vanishing Act replaces at level 93)
-```
-
-### Fade / Vanishing Act (Lone Wanderer)
-```csharp
-void OnFadeTap() {
+void ActivateFade() {
     if (_fadeCooldown > 0) return;
 
     float duration = vanishingActUnlocked ? 20f : 8f;
     EnterShroud(duration);
     _comingFromShroud = true;
-    _fadeCooldown = 60f;
-}
-
-// On next shot release while _comingFromShroud:
-// In FireStandardShot / FireFullDraw:
-if (_comingFromShroud) {
-    damage *= 2.5f; // +150% — same as Shadow's Edge
-    ShowCriticalLabel();
-    _comingFromShroud = false;
 
     // Vanishing Act: coating DoTs continue during stealth
-    // handled in CombatManager.TickEnemyDot — not interrupted by stealth
-}
-```
+    // Handled by CombatManager.TickEnemyDot — not interrupted by shroud state
 
-### Armor Piercer (Sharpshot, Grimoire level 73)
-```csharp
-void OnArmorPiercerTap() {
-    if (_armorPiercerCooldown > 0) return;
-    _armorPiercerActive = true;
-    armorPiercerSlot.SetActive(true); // glow border
-    _armorPiercerCooldown = 45f;
+    StartCooldown(AbilityType.Fade, 60f);
 }
 
-// On next shot release:
-if (_armorPiercerActive) {
-    ignoreArmor = true;
-    _armorPiercerActive = false;
-    armorPiercerSlot.SetActive(false);
+// In OnShotFired(), apply Shadow's Edge if from Shroud:
+if (_comingFromShroud) {
+    damage *= 2.5f; // +150% — same as Shadowblade's Shadow's Edge
+    ShowCriticalLabel();
+    _comingFromShroud = false;
+    ExitShroud();
 }
 ```
 
 ---
 
-## Step 9 — Bleed System
+## Step 5 — Reveal Talent Wiring
 
-Two independent bleed types — never share a pool:
+Wire the existing stub:
 
 ```csharp
-public enum BleedType {
-    Barbed,      // Sharpshot source — scales with quiver tier
-    Hemorrhage   // Shadowblade source — scales with Alchemy level
+// In ZoneCombatView:
+public bool HasWeakPointRevealTalent() =>
+    TalentManager.GetTalentLevel("Tracking") >= 33
+    || CombatXPManager.GetGrimoireLevel("LoneWanderer") >= 38
+    || CombatXPManager.GetGrimoireLevel("Sharpshot") >= 59;
+```
+
+`UpdateWeakPointGlow()` already calls this — no further changes needed once wired.
+
+---
+
+## Step 6 — Stat Formula Update
+
+Update `stat-scaling-combat-formulas.md`:
+
+```
+WARDEN ACTIVE COMBAT DAMAGE (replaces draw-power model):
+  BaseDamage = (DEX × 1.5) + BowDamage + DEXEquipmentBonus
+  ShotDamage = BaseDamage × WeakPointMultiplier × OutcomeModifier
+  WeakPointMultiplier = 2.0 (hit UV inside weakPointMask) or 1.0
+  OutcomeModifier: Hit=1.0, Blocked=0.3, Evaded/Miss=0.0
+```
+
+---
+
+## Step 7 — Loft Indicator UI (Right Side)
+
+Passive visual guide — three labelled zones on the right side of the combat screen:
+
+```
+[ ↑ HEAD  ]   ← high loft region
+[ → CHEST ]   ← medium loft region
+[ ↓ BODY  ]   ← low loft region
+```
+
+These map the loft range (`_arcPeakMin` to `_arcPeakMax`) to body regions.
+Not interactive — purely educational. A horizontal line moves up/down as the
+player draws to show current loft position within the zones.
+
+Hidden condition: Grimoire level 50+ OR player toggles off in settings.
+
+```csharp
+loftIndicator.SetActive(
+    GrimoireManager.GetCurrentGrimoireLevel() < 50
+    && PlayerSettings.showLoftIndicator
+);
+```
+
+---
+
+## Step 8 — Subclass Tuning
+
+Set in inspector on `WardenBowstringMechanic` per subclass (configured in
+`WardenBowstringMechanic.Configure(subclass)`):
+
+```csharp
+if (subclass == "Sharpshot") {
+    _arcPeakMax     = 6.0f;   // higher loft ceiling
+    _trajectoryReveal = 0.55f; // more hidden — read by feel
+    _steerResponse  = 0.4f;   // slower steering — precision
+    _drawResponse   = 0.4f;   // slower draw — deliberate
 }
-
-// On enemy:
-Dictionary<BleedType, BleedEffect> activeBleedsByType;
-
-bool HasBleed(BleedType type) =>
-    activeBleedsByType.ContainsKey(type) && activeBleedsByType[type].IsActive;
-
-void ApplyBleed(BleedType type, float tickDamage, float duration) {
-    // No stack within same type — replace only if not active
-    if (!HasBleed(type))
-        activeBleedsByType[type] = new BleedEffect(tickDamage, duration);
-    // If already active: do nothing (no reset, no stack)
+else if (subclass == "LoneWanderer") {
+    _arcPeakMax     = 4.0f;   // flatter arcs
+    _trajectoryReveal = 0.80f; // more visible line — reactive play
+    _steerResponse  = 0.7f;   // faster steering — agility
+    _drawResponse   = 0.7f;   // faster draw — aggressive
 }
 ```
 
-Shadowblade's Hemorrhage Mastery (stack twice) uses `BleedType.Hemorrhage` with
-a max stack count of 2 — independent of `BleedType.Barbed` entirely.
+Tune these values during playtesting — the spec sets intent, numbers are final
+only after feel testing.
 
 ---
 
-## Step 10 — Idle Behaviour (unchanged seam)
+## Implementation Order
 
-Warden idle fires via the existing `ActiveCombatMechanic` fallback — auto-fires
-when the player isn't drawing. No changes needed to idle path.
-
-Sharpshot idle: fires Standard Shot at reduced rate, targeting highest HP enemy.
-Lone Wanderer idle: fires Standard Shot at standard fire rate, coating active if applied.
-
----
-
-## Phase 1 Goal
-
-1. Exponential draw curve replacing linear
-2. Bow arc fill replacing DRAW % text
-3. Ability ring UI rendering correct slots per subclass
-4. Per-subclass thresholds routing release to correct shot type
-5. Barbed Shot (Sharpshot, 1.0s, 20% bleed proc, no stack)
-6. Rapid Fire (Lone Wanderer, 0.3s, 3 shots, reduced proc)
-7. Full Draw with Hunter's Patience + Sniper's Vantage
-8. Long Shot (3.0s, 800%, all coatings, 90s cooldown)
-9. Fade / Vanishing Act tap button
-10. Armor Piercer tap button
-11. Bleed system with two independent BleedTypes
-
-Passive wiring (Mark of the Hunt, Killshot, Sharpshot's Resolve, Piercing Shot)
-layers on top once shot resolution is confirmed working.
+1. `WardenAbilityIconStack` component — right side, per-subclass slots, threshold lighting
+2. Hold timer fed into `iconStack.UpdateForHoldTime()` each frame while drawing
+3. `OnRelease()` reads active tier → routes to `OnShotFired(tier)`
+4. `OnShotFired(tier)` switch — Standard, Barbed, FullDraw, LongShot, RapidFire
+5. Barbed Shot bleed proc (20%, no stack/refresh)
+6. Rapid Fire burst (3 shots in `FireRapidBurst()`)
+7. Full Draw Hunter's Patience + Sniper's Vantage bonuses
+8. Long Shot (×8.0, armor ignore, guaranteed weak point, 90s CD + greyed icon)
+9. Ability row panel (one button per subclass — Armor Piercer / Fade)
+10. Armor Piercer `_armorPiercerActive` flag checked in `OnShotFired()`
+11. Fade/Vanishing Act stealth + shroud opener
+12. Reveal talent `HasWeakPointRevealTalent()` wired
+13. Stat formula update in `stat-scaling-combat-formulas.md`
+14. Subclass tuning in `Configure(subclass)` — tune in playtesting
 
 ---
 

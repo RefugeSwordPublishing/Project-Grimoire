@@ -1,5 +1,5 @@
 # ⚔️ Project Grimoire — Assembly Materials & Crafting System
-### Version 0.4
+### Version 0.5
 
 ---
 
@@ -48,16 +48,25 @@ Two distinct attunement moments per crafting Talent:
 | 61–80 | 6% |
 | 81–100 | 8% |
 
-### Fail Cascade
-All components AND rare materials consumed on every attempt regardless of outcome.
+### Upgrade Failure Behaviour
+
+**Old model (v0.4) is retired.** The fail cascade (components consumed, auto-rolls down a tier) is replaced by the upgrade model.
 
 ```
-Masterwork attempt
-    └─ Fail → Pristine attempt auto-rolls
-         └─ Fail → Refined attempt auto-rolls
-              └─ Fail → Rough attempt auto-rolls
-                   └─ Fail → Crude output (guaranteed floor)
+Attempt to upgrade Rough Axe → Refined Axe
+  → SUCCESS: Rough Axe becomes Refined Axe. Components + rare material consumed.
+  → FAIL:    Rough Axe returned unchanged. Components + rare material consumed.
+             No downgrade. No cascade. No output below current tier.
 ```
+
+**Rules:**
+- The existing tool is NEVER destroyed or downgraded on fail
+- Only the upgrade components and rare material are consumed on fail
+- There is no guaranteed floor output — if you attempt and fail, you keep what you had
+- Crude items are always built fresh (no previous tier required)
+- Every tier above Crude requires the previous tier tool as an ingredient
+
+This applies to ALL tools and weapons. The old fail cascade is removed entirely.
 
 ### Quality Tier Reference
 | Tier | Name | Color |
@@ -71,7 +80,43 @@ Masterwork attempt
 
 ---
 
-## ⚔️ WEAPON ASSEMBLY TABLES
+## 🔧 Tool & Weapon Upgrade Model
+
+### Core Rules
+
+All tools and weapons above Crude quality require the previous tier as an
+ingredient. Crude is always built fresh from components. This eliminates
+market flooding — lower tier items are consumed in the upgrade chain.
+
+```
+Crude  → built fresh from components
+Rough  → Crude + tier-2 components + rare material
+Refined → Rough + tier-3 components + rare material
+Pristine → Refined + tier-4 components + rare material
+Masterwork → Pristine + tier-5 components + rare material
+```
+
+**On success:** Previous tier tool transforms to new quality tier.
+**On fail:** Previous tier tool returned unchanged. Components and rare material consumed.
+**No downgrade on fail — ever.**
+
+The attunement bonus during assembly improves success chance.
+High-level assemblers offering upgrade services charge for their
+attunement skill — a genuine economy role.
+
+### Base Success Rates
+
+| Target Quality | Base Success | With max attunement bonus |
+|---------------|-------------|--------------------------|
+| Crude | 100% | 100% |
+| Rough | 70% | 85% |
+| Refined | 55% | 72% |
+| Pristine | 35% | 55% |
+| Masterwork | 20% | 38% |
+
+Attunement bonus = assembler Talent level × 0.18% (max +18% at level 100).
+
+---
 
 ### 🏹 Bow (Warden primary weapon)
 **Assembler:** Timber Shaping
