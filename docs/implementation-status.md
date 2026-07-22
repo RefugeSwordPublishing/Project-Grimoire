@@ -1,6 +1,6 @@
 ---
 type: implementation-status
-updated: 2026-07-11
+updated: 2026-07-22
 purpose: Single source of truth for WHAT IS ACTUALLY BUILT vs. design intent in the specs.
 audience: Claude (Chat or Code) starting a session. Read this FIRST, then the relevant spec.
 ---
@@ -18,7 +18,71 @@ so it builds on the current state rather than the original design.
 
 ## Phase status
 - **Phase 1:** complete (managers, ScriptableObjects, Bowstring mechanic, idle loop, Supabase + FCM).
-- **Phase 2:** guild system + Guild Merchant complete (below). Remaining Phase 2: Runic Constellation, Summoner, Lifebinder, Vanguard combo, aggro, zone content, Exchange fees, sprite pass.
+- **Phase 2:** guild system + Guild Merchant complete (below). Remaining Phase 2: Vanguard combo panel into combat (verify), Exchange buy orders/auctions, zone content, sprite pass. Arcanist trio (Runeweaver, Summoner, Lifebinder), aggro, and the progression rebalance are done.
+
+## Session 2026-07-21/22, Arcanist trio complete + quality/tier correction
+
+### Character page rebuilt as a paper doll
+Class body sprite centred with 8 equipment slots flanking it, zone-buff row, tool slots (3-3-2
+centred), and collapsible Stats + Advanced sections. The class body comes from a new
+`GrimoireData.bodySprite`, so each Grimoire supplies its own. The Grimoire slot taps to the equip
+picker and long-presses to the Grimoire Book. Tools auto-apply (best owned quality wins, no equip
+step). Built by `Tools > Grimoire > Build Character Paper Doll`.
+
+### Arcanist path complete (all three subclasses)
+- **Constellation live in combat.** `Add Constellation UI` builds the rune arch and wires
+  `ZoneCombatView`; press-drag-release across nodes casts. Per-rune sprite slots (`_runeSprites`).
+  A 1s cast cooldown lives in the mechanic, so throttled casts no longer waste mana.
+- **Progressive rune unlock** (runic-constellation-spec v0.5): `NodeLayout(subclass, level)` returns
+  only unlocked runes (2 at Lv1, all 6 by Lv13). `IsSpellAvailable` / `SpellUnlockLevel` gate on
+  BOTH rune unlock and combo depth; the Grimoire Book shows the combined "unlocks Lv X".
+- **Summoner Phase 1 + 2.** Constructs auto-summon at combat start (free, the baseline board), then
+  single-rune draws are construct commands: summon, focus if already out, or recall on Ventus.
+  Enforces the active cap (1 / 2 at Lv25 / 3 at Lv50), per-construct unlock level, a real mana cost
+  (25-40), and a resummon lockout (20s on death, 12s on dismiss). Construct HP/damage scale off the
+  Summoner's VIT/INT/WIL. HUD: segmented HP bar (constructs ARE the pool), construct row with
+  per-construct attack-timer bars, and attack projectiles that launch from the construct.
+- **Lifebinder.** HP as the casting resource with the WIL cost reduction and a hard block at 1 HP,
+  x1.6 HP pool, always-on combat regen (3 + VIT*0.08 + WIL*0.05), heal-aggro (x0.4), and HOTs that
+  stack additively on top of passive regen: Mending Wind +10/s 12s, Sacred Renewal +30/s 15s,
+  Cleansing Flame +15/s 10s. Still deferred: shields, cleanse, revive, drag-to-ally targeting.
+
+### Quality vs Tier corrected (breaking rename, data preserved)
+Code had two parallel enums and used "tier" for what is actually quality. Now:
+- One ladder: `ItemQuality { Crude, Rough, Refined, Pristine, Masterwork, Legendary }` on
+  `ItemData.quality`. `EquipmentTier` and `ItemQualityTier` are gone.
+- **Quality** is rarity: drives idle-action times, damage/HP bonuses, and the quality badge.
+  **Tier** means level-gated progression only (zone bands, material tiers, unlock levels).
+- Values are index-aligned and `FormerlySerializedAs` carries existing item data across.
+  ~140 references over 19 files; `TierForLevel`, `ToolTierMultiplier`, `CanEnchantTier`,
+  `hpByTier`, `damageByTier` and `Construct.tier` renamed to their quality equivalents.
+- Bug the merge exposed: `CreateTools` assigned quality twice, stamping Masterwork tools as Epic.
+- The 17 spec docs still use the old language (quality tier, Common/Uncommon/Rare/Epic). Chat pass
+  pending; CLAUDE.md now carries the authoritative definition.
+
+### Combat HUD
+Subclass-aware resource bar (mana for Arcanist casters, stamina for Vanguard, hidden for Warden and
+Lifebinder since HP is their resource). Active-effects buff bar listing HOTs and meal buffs with
+countdowns, hidden when nothing is running. Enemy HP/attack-timer bars now track the base of the
+enemy sprite, narrowed to 320px and floored so they cannot cover the player HUD. Quality badges on
+inventory slots (distinct shapes, not colour alone, top-right of the icon). In-combat mana regen
+added (3 + WIL*0.03 per sec); previously mana only regenerated out of combat, so the bar just drained.
+
+### Fixes
+- Equipped Grimoire persists across sessions on the server-auth path (LocalSave only covered local dev).
+- Combat exit (X) was being swallowed by the full-screen constellation input surface; the build
+  tools now re-raise the Hotbar and Back button above it.
+- `CharacterPanelManager.GetStatBreakdown` / `GetMaxHP` NREs were aborting the entire Character
+  refresh before tools and buffs ran.
+- Inventory wipe on load and unclickable slots.
+
+### Cleanup
+Deduped the Sharpshot Grimoire (two assets shared `subclassName`, so equip/restore could match
+either). Pruned superseded and one-off editor tools: the Tools menu went from ~45 items to 31.
+
+### Editor tools added
+`Build Character Paper Doll`, `Add Combat Resource Bar`, `Add Construct Bar`, `Add Combat Buff Bar`,
+`Add Quality Badges`, `Reset Swap Cooldown (dev)`, `Set Grimoire Lv 13/25/50 (dev)`.
 
 ## Session 2026-07-20, active mechanics + content + fixes
 This session shipped (all wired, several verified on-device):
