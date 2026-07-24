@@ -6,12 +6,12 @@ purpose: Implement zone boss spawning, pre-boss lobby, and boss-only zone co-op
          into the existing CombatManager and combat view infrastructure.
 ---
 
-# Zone Boss — Implementation Brief
+# Zone Boss, Implementation Brief
 
 ## What's Already Built
 
 Per `implementation-status.md`:
-- `CombatManager` real-time loop — weighted spawn, elite roll, respawn delay
+- `CombatManager` real-time loop, weighted spawn, elite roll, respawn delay
 - `EnemyData.isBoss` flag on authored enemy assets
 - `ZoneCombatView` with HP bars and attack cadence bars
 - Push notification system (FCM) wired
@@ -19,7 +19,7 @@ Per `implementation-status.md`:
 
 ---
 
-## Boss Spawn — Zone Event (not next fight)
+## Boss Spawn, Zone Event (not next fight)
 
 Boss spawning is a **zone event separate from current combat.**
 The player's current fight continues uninterrupted. Boss appears
@@ -29,13 +29,13 @@ in the zone alongside it, waiting.
 void OnEnemyKilled(EnemyData enemy) {
     // ... existing XP/loot/respawn logic ...
 
-    // Boss roll — active sessions only, one boss at a time
+    // Boss roll, active sessions only, one boss at a time
     if (!enemy.isBoss && !enemy.isElite
         && CombatManager.IsActiveSession
         && !_bossActive) {
         if (Random.value < _bossSpawnChance) { // 0.05f flat
             TriggerBossSpawnEvent();
-            // Do NOT replace next spawn — normal combat continues
+            // Do NOT replace next spawn, normal combat continues
         }
     }
 }
@@ -45,16 +45,16 @@ void TriggerBossSpawnEvent() {
     _bossSpawnTime = Time.time;
     _bossDespawnAt = Time.time + 600f; // 10 minutes from spawn
 
-    // Show in-zone banner (non-blocking — floats over combat view)
+    // Show in-zone banner (non-blocking, floats over combat view)
     ZoneCombatView.ShowBossBanner(
-        $"⚠ {currentBoss.enemyName} has appeared!",
+        $"{currentBoss.enemyName} has appeared!",
         onTap: OpenPreBossLobby
     );
 
-    // Push notification (P1 — fires even if app is backgrounded)
+    // Push notification (P1, fires even if app is backgrounded)
     NotificationManager.Send(
-        title: $"⚠ {currentBoss.enemyName} has appeared!",
-        body: $"{currentZone.zoneName} — 10 minutes to engage",
+        title: $"{currentBoss.enemyName} has appeared!",
+        body: $"{currentZone.zoneName}, 10 minutes to engage",
         priority: NotificationPriority.P1,
         deepLink: "grimoire://boss-lobby/" + currentZone.zoneId
     );
@@ -101,7 +101,7 @@ IEnumerator BossDespawnCountdown() {
 ### Opening the lobby
 
 Tapping the boss banner or deep-link notification opens `PreBossLobbyUI`.
-If the player is currently in combat when they tap, that combat is forfeited —
+If the player is currently in combat when they tap, that combat is forfeited, 
 same as pressing the back/X button. Enemy does not die; no XP or loot awarded.
 
 ```csharp
@@ -113,17 +113,17 @@ void OpenPreBossLobby() {
 }
 ```
 
-### Lobby UI — `PreBossLobbyUI.cs`
+### Lobby UI, `PreBossLobbyUI.cs`
 
 ```
 ┌─────────────────────────────────────┐
-│  ⚔ [Boss Name]                      │
+│  [Boss Name]                      │
 │  [Zone Name]                        │
 │  Retreats in: 07:42                 │
 │                                     │
-│  [HOST]  DustinSW         ✓ Ready  │
-│  [SLOT]  PlayerName       ✓ Ready  │
-│  [SLOT]  — Empty —        [Invite] │
+│  [HOST]  DustinSW         Ready  │
+│  [SLOT]  PlayerName       Ready  │
+│  [SLOT], Empty, [Invite] │
 │                                     │
 │  [ Kick ] (host only, on members)  │
 │                                     │
@@ -134,12 +134,12 @@ void OpenPreBossLobby() {
 **Lobby rules:**
 - Host is the player who opened the lobby (spawned the boss)
 - Maximum 3 players total (host + 2 guests)
-- Host can invite guild members only — shows online guild roster
+- Host can invite guild members only, shows online guild roster
 - Host can kick any non-ready member
 - START FIGHT only enabled when ALL players in lobby are marked ready
 - If countdown hits 0 while lobby is open → "Boss has retreated" screen → lobby closes → all players returned to main hub
 
-### Supabase table — `boss_lobby`
+### Supabase table, `boss_lobby`
 ```sql
 CREATE TABLE boss_lobby (
     id            UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -155,7 +155,7 @@ CREATE TABLE boss_lobby (
 -- RLS: readable by participants only
 ```
 
-Use Supabase real-time to sync lobby state — host writes, guests read.
+Use Supabase real-time to sync lobby state, host writes, guests read.
 When host taps Start, set `status = 'active'` → all clients transition to boss fight.
 
 ---
@@ -168,14 +168,14 @@ From the lobby, host taps [Invite] on an empty slot:
 
 **Invite notification (P1):**
 ```
-⚔ DustinSW invited you to fight [Boss Name]!
-[Zone Name] — 06:30 remaining
+DustinSW invited you to fight [Boss Name]!
+[Zone Name], 06:30 remaining
 [ Join Lobby ]
 ```
 
 **Invited player receiving invite mid-combat:**
 - Notification banner appears over their combat view
-- Tapping it forfeits their current fight (no XP/loot — enemy not killed)
+- Tapping it forfeits their current fight (no XP/loot, enemy not killed)
 - They enter the lobby as a guest
 
 **Invited player accepting:**
@@ -192,9 +192,9 @@ Each additional player adds 60% of base HP:
 
 ```csharp
 float GetScaledBossHP(int playerCount, float baseHP) {
-    // 1 player: 100% — base HP
-    // 2 players: 160% — base + 60%
-    // 3 players: 220% — base + 120%
+    // 1 player: 100%, base HP
+    // 2 players: 160%, base + 60%
+    // 3 players: 220%, base + 120%
     return baseHP * (1f + (playerCount - 1) * 0.60f);
 }
 ```
@@ -206,26 +206,26 @@ float GetScaledBossHP(int playerCount, float baseHP) {
 | 3 players | ×2.2 | 5,280 HP |
 
 HP scaling set on lobby start, not on boss spawn. A solo player who fights
-the boss alone gets the base HP — scaling only applies if others join.
+the boss alone gets the base HP, scaling only applies if others join.
 
 ---
 
-## Boss Fight — Multi-Player Combat
+## Boss Fight, Multi-Player Combat
 
 When host taps Start:
 1. All lobby players transition to boss fight view simultaneously
 2. Each player sees their own over-the-shoulder combat view
 3. Party frames show all participants' HP at screen top (same as dungeon/raid party frames)
 4. Quick-Comm available: "Need help!" / "I'm fine!" / "Focus boss!"
-5. Boss has scaled HP shared across all players — damage from any player reduces the shared pool
+5. Boss has scaled HP shared across all players, damage from any player reduces the shared pool
 6. If a player is defeated (HP → 0): they retreat, removed from the fight. Remaining players continue
 7. If all players defeated: boss survives, returns to zone event state briefly before despawning
 8. Boss defeated: fight ends for all participants simultaneously
 
-**Shared boss HP — Supabase real-time:**
+**Shared boss HP, Supabase real-time:**
 Boss HP is authoritative on the server. Each player's damage is sent to Supabase,
 server reduces the shared HP pool, broadcasts current HP to all participants via
-real-time channel. Same pattern as guild voting real-time sync — already proven.
+real-time channel. Same pattern as guild voting real-time sync, already proven.
 
 ```sql
 -- boss_lobby.boss_current_hp updated by each hit
@@ -234,7 +234,7 @@ real-time channel. Same pattern as guild voting real-time sync — already prove
 
 ---
 
-## Loot & XP — Independent Per Player
+## Loot & XP, Independent Per Player
 
 Each player gets their own loot roll and XP award on boss defeat:
 
@@ -258,13 +258,13 @@ After boss defeated OR all players defeated:
 
 ```
 Results screen shown to all participants
-  — Boss defeated: loot items, XP gained, "Victory" header
-  — All defeated: "Defeated" header, no loot, no XP
+, Boss defeated: loot items, XP gained, "Victory" header
+, All defeated: "Defeated" header, no loot, no XP
          ↓
 [ Return to Hub ] button
          ↓
 All players return to main hub / inventory
-NOT returned to zone idle — zone combat does not resume automatically
+NOT returned to zone idle, zone combat does not resume automatically
 ```
 
 ```csharp
@@ -278,13 +278,13 @@ void OnBossFightEnded(bool victory) {
         xpGained: localPlayerXP,
         onClose: () => NavigationManager.GoTo(Screen.Hub)
     );
-    // NavigationManager.GoTo(Screen.Hub) — NOT zone combat
+    // NavigationManager.GoTo(Screen.Hub), NOT zone combat
 }
 ```
 
 ---
 
-## Boss vs Elite — Reference Table
+## Boss vs Elite, Reference Table
 
 | Property | Standard | Elite | Zone Boss |
 |----------|---------|-------|----------|
@@ -294,9 +294,9 @@ void OnBossFightEnded(bool victory) {
 | Chance | Base pool | 6%+scaling | Flat 5% |
 | Active only | No | No | **Yes** |
 | Despawn | None | None | 10 min from spawn |
-| Multiplayer | No | No | **Yes — up to 3** |
-| HP scales | No | No | **Yes — +60% per extra player** |
-| Post-fight | Resume idle | Resume idle | **Hub — no auto-resume** |
+| Multiplayer | No | No | **Yes, up to 3** |
+| HP scales | No | No | **Yes, +60% per extra player** |
+| Post-fight | Resume idle | Resume idle | **Hub, no auto-resume** |
 
 ---
 

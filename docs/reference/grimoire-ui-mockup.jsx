@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 
 // ============================================================
-// PIXEL ART UI — Project Grimoire
+// PIXEL ART UI, Project Grimoire
 // Dark fantasy medieval palette, hard edges, dithered depth
 // ============================================================
 
@@ -32,7 +32,7 @@ const C = {
   groundMid:  "#1e1608",
 };
 
-// Pixel font simulation — all caps, monospace feel
+// Pixel font simulation, all caps, monospace feel
 const PX = {
   fontFamily: "'Courier New', Courier, monospace",
   fontDisplay: "'Georgia', serif",
@@ -78,7 +78,7 @@ function PixelBar({ pct, color, height = 6, bg = C.boneFaint }) {
   );
 }
 
-// Pixel icon — 8x8 grid drawn with divs
+// Pixel icon, 8x8 grid drawn with divs
 function PixelIcon({ type, size = 16 }) {
   const px = size / 8;
   const icons = {
@@ -436,7 +436,7 @@ function CombatScreen() {
     const clientY = e.touches ? e.touches[0].clientY : e.clientY;
     const relX = ((clientX - rect.left) / rect.width) * 100;
     const relY = ((clientY - rect.top) / rect.height) * 100;
-    // Invert for bowstring — drag back = aim opposite
+    // Invert for bowstring, drag back = aim opposite
     const dx = drawStartRef.current.x - clientX;
     const dy = drawStartRef.current.y - clientY;
     setAimX(Math.max(10, Math.min(90, 50 + dx * 0.3)));
@@ -461,7 +461,7 @@ function CombatScreen() {
 
     if (isCrit) {
       dmg = Math.floor((22 + Math.random()*15) * drawBonus * 1.8);
-      resultMsg = `⚡ CRIT! ${dmg} dmg — Attunement!`;
+      resultMsg = `⚡ CRIT! ${dmg} dmg, Attunement!`;
       resultColor = C.goldLight;
       setHitResult({ x: wp.x, y: wp.y, crit: true, dmg });
     } else if (isHit) {
@@ -572,7 +572,7 @@ function CombatScreen() {
         </PixelBorder>
       </div>
 
-      {/* COMBAT ARENA — over shoulder view */}
+      {/* COMBAT ARENA, over shoulder view */}
       <PixelBorder
         ref={combatRef}
         color={C.border}
@@ -592,7 +592,7 @@ function CombatScreen() {
         onTouchMove={handlePointerMove}
         onTouchEnd={handlePointerUp}
       >
-        {/* Sky gradient — pixel dithered */}
+        {/* Sky gradient, pixel dithered */}
         <div style={{ position:"absolute", inset:0, background:`linear-gradient(180deg, ${C.sky} 0%, ${C.skyMid} 50%, ${C.ground} 70%, ${C.groundMid} 100%)` }} />
 
         {/* Dither layer */}
@@ -619,7 +619,7 @@ function CombatScreen() {
           <PixelEnemy type={selectedEnemy} glowWeak={glowWeak} weakPct={weakPct} />
         </div>
 
-        {/* Weak point indicator — subtle pixel glow */}
+        {/* Weak point indicator, subtle pixel glow */}
         {glowWeak && enemy.weakZone && (
           <div style={{
             position:"absolute",
@@ -635,7 +635,7 @@ function CombatScreen() {
           }} />
         )}
 
-        {/* Aim arc — fades into distance */}
+        {/* Aim arc, fades into distance */}
         {drawing && (
           <svg style={{ position:"absolute", inset:0, width:"100%", height:"100%", pointerEvents:"none" }}>
             <defs>
@@ -694,7 +694,7 @@ function CombatScreen() {
           </div>
         )}
 
-        {/* Archer silhouette — over shoulder */}
+        {/* Archer silhouette, over shoulder */}
         <div style={{ position:"absolute", bottom:0, left:"50%", transform:"translateX(-50%)" }}>
           {/* Back of archer */}
           <div style={{ position:"relative", width:36, height:52, imageRendering:"pixelated" }}>
@@ -736,8 +736,8 @@ function CombatScreen() {
           pointerEvents:"none",
         }}>
           {drawing
-            ? drawPct > 80 ? "▸ FULL DRAW — RELEASE" : "▸ HOLD TO CHARGE"
-            : "▸ PRESS & DRAG TO AIM — RELEASE TO FIRE"}
+            ? drawPct > 80 ? "▸ FULL DRAW, RELEASE" : "▸ HOLD TO CHARGE"
+            : "▸ PRESS & DRAG TO AIM, RELEASE TO FIRE"}
         </div>
       </PixelBorder>
 
@@ -823,7 +823,7 @@ function MarketScreen() {
           <div style={{ color:C.boneDim, fontSize:9, fontFamily:PX.fontFamily, textAlign:"center", padding:"16px 0" }}>
             SELECT ITEM FROM INVENTORY TO LIST
           </div>
-          {["STORE LISTING — 2% FEE · PARTIAL FILLS","AUCTION — 3% FEE · 1/7/15 DAY DURATION"].map(t => (
+          {["STORE LISTING, 2% FEE · PARTIAL FILLS","AUCTION, 3% FEE · 1/7/15 DAY DURATION"].map(t => (
             <PixelBorder key={t} style={{ padding:"10px 12px" }}>
               <div style={{ color:C.bone, fontSize:9, fontFamily:PX.fontFamily }}>{t}</div>
             </PixelBorder>
@@ -833,7 +833,7 @@ function MarketScreen() {
 
       {tab==="orders" && (
         <div style={{ display:"flex", flexDirection:"column", gap:6 }}>
-          <div style={{ color:C.boneDim, fontSize:8, fontFamily:PX.fontFamily, textTransform:"uppercase", letterSpacing:1 }}>Active Buy Orders — Marks in Escrow</div>
+          <div style={{ color:C.boneDim, fontSize:8, fontFamily:PX.fontFamily, textTransform:"uppercase", letterSpacing:1 }}>Active Buy Orders, Marks in Escrow</div>
           {[{name:"Wolf Pelt",qty:20,price:"320 SM",filled:8},{name:"Iron Bar",qty:100,price:"38 SM",filled:45}].map((o,i) => (
             <PixelBorder key={i} style={{ padding:"8px 10px" }}>
               <div style={{ display:"flex", justifyContent:"space-between" }}>
@@ -856,9 +856,9 @@ function MarketScreen() {
 // GRIMOIRE SCREEN
 // ============================================================
 const GRIMS = [
-  { name:"Sharpshot",  path:"Warden",   icon:"bow",   color:C.green,       equipped:true,  sig:"Steady Hand — Draw dmg +30%, speed -20%" },
-  { name:"Runeweaver", path:"Arcanist", icon:"book",  color:C.purpleLight, equipped:false, sig:"Elemental Attunement — All elemental dmg +10%" },
-  { name:"Warlord",    path:"Vanguard", icon:"sword", color:C.red,         equipped:false, sig:"Iron Resolve — Dmg taken -10%, Max HP +5%" },
+  { name:"Sharpshot",  path:"Warden",   icon:"bow",   color:C.green,       equipped:true,  sig:"Steady Hand, Draw dmg +30%, speed -20%" },
+  { name:"Runeweaver", path:"Arcanist", icon:"book",  color:C.purpleLight, equipped:false, sig:"Elemental Attunement, All elemental dmg +10%" },
+  { name:"Warlord",    path:"Vanguard", icon:"sword", color:C.red,         equipped:false, sig:"Iron Resolve, Dmg taken -10%, Max HP +5%" },
 ];
 
 function GrimoireScreen() {

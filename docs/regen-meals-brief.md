@@ -7,7 +7,7 @@ purpose: Add StatType regen members and wire regen-type meals into BuffManager.
          which were skipped with a warning during Consumables Part A.
 ---
 
-# Regen-Type Meals — Implementation Brief
+# Regen-Type Meals, Implementation Brief
 
 ## The Gap
 
@@ -25,11 +25,11 @@ has no concept of per-second regen bonuses. Two meals need this:
 
 ---
 
-## Step 1 — Add Regen Members to StatType Enum
+## Step 1, Add Regen Members to StatType Enum
 
 ```csharp
 public enum StatType {
-    // Existing stat members — do not change
+    // Existing stat members, do not change
     STR, VIT, DEX, INT, WIL, LCK, CHA,
 
     // Add these:
@@ -41,25 +41,25 @@ public enum StatType {
 
 ---
 
-## Step 2 — BuffManager Handles Regen Stats
+## Step 2, BuffManager Handles Regen Stats
 
 `BuffManager` currently applies flat stat bonuses via `PlayerData.*Bonus`.
 Regen buffs need to feed into `CombatManager.TickResources` instead.
 
 ```csharp
-// In BuffManager — extend ApplyBuff to handle regen types:
+// In BuffManager, extend ApplyBuff to handle regen types:
 void ApplyBuff(TimedBuff buff) {
     for (int i = 0; i < buff.buffStats.Length; i++) {
         float value = buff.buffValues[i];
 
         switch (buff.buffStats[i]) {
-            // Existing flat stat bonuses — unchanged
+            // Existing flat stat bonuses, unchanged
             case StatType.STR: PlayerData.STRBonus += value; break;
             case StatType.VIT: PlayerData.VITBonus += value; break;
             case StatType.WIL: PlayerData.WILBonus += value; break;
             // ... other flat stats
 
-            // New regen bonuses — stored separately
+            // New regen bonuses, stored separately
             case StatType.HPRegen:
                 PlayerData.BonusHPRegen += value; break;
             case StatType.StaminaRegen:
@@ -70,7 +70,7 @@ void ApplyBuff(TimedBuff buff) {
     }
 }
 
-// On buff expiry — reverse regen bonuses same as flat stats:
+// On buff expiry, reverse regen bonuses same as flat stats:
 void RemoveBuff(TimedBuff buff) {
     for (int i = 0; i < buff.buffStats.Length; i++) {
         float value = buff.buffValues[i];
@@ -89,10 +89,10 @@ void RemoveBuff(TimedBuff buff) {
 
 ---
 
-## Step 3 — Add Bonus Regen Fields to PlayerData
+## Step 3, Add Bonus Regen Fields to PlayerData
 
 ```csharp
-// In PlayerData — add alongside existing resource pools:
+// In PlayerData, add alongside existing resource pools:
 public float BonusHPRegen      = 0f; // from meals, cleared on buff expiry
 public float BonusStaminaRegen = 0f;
 public float BonusManaRegen    = 0f;
@@ -100,7 +100,7 @@ public float BonusManaRegen    = 0f;
 
 ---
 
-## Step 4 — Wire Into CombatManager.TickResources
+## Step 4, Wire Into CombatManager.TickResources
 
 `TickResources` already handles mana and stamina regen. Extend it:
 
@@ -120,7 +120,7 @@ void TickResources(float deltaTime) {
             PlayerData.CurrentStamina
             + (2.0f + PlayerData.BonusStaminaRegen) * deltaTime);
 
-    // NEW — HP regen from meals (all classes, in combat):
+    // NEW, HP regen from meals (all classes, in combat):
     if (PlayerData.BonusHPRegen > 0)
         PlayerData.CurrentHP = Mathf.Min(
             PlayerData.GetMaxHP(),
@@ -128,18 +128,18 @@ void TickResources(float deltaTime) {
             + PlayerData.BonusHPRegen * deltaTime);
 
     // Note: Lifebinder passive HP regen is handled separately
-    // in LifebinderCombat — not here. BonusHPRegen is meal bonus only.
+    // in LifebinderCombat, not here. BonusHPRegen is meal bonus only.
 }
 ```
 
 **Lifebinder note:** Lifebinder has its own passive regen (`3 HP/sec + VIT×0.08
 + WIL×0.05`) handled in `LifebinderCombat`. `BonusHPRegen` from Roasted Rabbit
-stacks ON TOP of that — they are additive. Lifebinder eating a Roasted Rabbit
+stacks ON TOP of that, they are additive. Lifebinder eating a Roasted Rabbit
 gets both their passive regen AND the meal's +3/sec.
 
 ---
 
-## Step 5 — Author the Regen Meal ItemData Assets
+## Step 5, Author the Regen Meal ItemData Assets
 
 Update `CreateConsumables` editor tool to include regen meals:
 
@@ -151,7 +151,7 @@ roastedRabbit.buffStats = new[] { StatType.HPRegen };
 roastedRabbit.buffValues = new[] { 3.0f };     // +3 HP/sec (Refined baseline)
 roastedRabbit.durationSeconds = 900f;           // 15 minutes
 roastedRabbit.inventoryOnly = true;
-roastedRabbit.quality = ItemQuality.Refined;    // baseline — scale by quality
+roastedRabbit.quality = ItemQuality.Refined;    // baseline, scale by quality
 
 // Hearty Stew (Vanguard only)
 var heartyStew = CreateItem("Hearty Stew");
@@ -164,7 +164,7 @@ heartyStew.requiredPath = GrimoirePath.Vanguard;
 heartyStew.quality = ItemQuality.Refined;
 ```
 
-**Quality scaling for regen meals** — same multiplier table as other meals:
+**Quality scaling for regen meals**, same multiplier table as other meals:
 
 | Quality | HPRegen potency | Duration multiplier |
 |---------|----------------|-------------------|
@@ -180,14 +180,14 @@ Same pattern applies to Hearty Stew stamina regen values.
 
 ## What Changes in UseConsumable
 
-Nothing — `TimedBuff` path in `UseConsumable` already calls
+Nothing, `TimedBuff` path in `UseConsumable` already calls
 `BuffManager.ApplyMealBuff(item)`. Once `BuffManager` handles
 `StatType.HPRegen` and `StatType.StaminaRegen`, regen meals
 flow through automatically.
 
 ---
 
-## Summary — Files to Touch
+## Summary, Files to Touch
 
 | File | Change |
 |------|--------|
@@ -197,7 +197,7 @@ flow through automatically.
 | `CombatManager.cs` | Wire `BonusHPRegen` into `TickResources` |
 | `CreateConsumables.cs` | Author Roasted Rabbit + Hearty Stew assets |
 
-Five files, all small changes. No new systems — purely extending what's built.
+Five files, all small changes. No new systems, purely extending what's built.
 
 ---
 

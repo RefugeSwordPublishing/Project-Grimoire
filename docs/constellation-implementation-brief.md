@@ -3,11 +3,11 @@ type: implementation-brief
 spec: runic-constellation-spec.md (v0.3)
 updated: 2026-07-11
 purpose: Wire ArcanistConstellationMechanic into the existing ActiveCombatMechanic seam.
-         Read this alongside runic-constellation-spec.md — this brief covers the seam
+         Read this alongside runic-constellation-spec.md, this brief covers the seam
          integration only, not the full spell/combo library.
 ---
 
-# Arcanist Constellation — Implementation Brief
+# Arcanist Constellation, Implementation Brief
 
 ## The Seam Contract
 
@@ -34,7 +34,7 @@ public override float OnAttackFired(float baseDamage) {
 
 ---
 
-## Active vs Idle Arbitration — mirrors Bowstring exactly
+## Active vs Idle Arbitration, mirrors Bowstring exactly
 
 ```
 Player touches first node
@@ -49,7 +49,7 @@ Player lifts finger
     → Start 1.5s idle-return timer
 
 If player touches a node again before 1.5s expires
-    → Cancel timer, begin new draw — still in active mode
+    → Cancel timer, begin new draw, still in active mode
 
 If 1.5s elapses with no new touch
     → SetEngaged(false)
@@ -58,7 +58,7 @@ If 1.5s elapses with no new touch
 ```
 
 This is identical to the Bowstring's 1.5s grace period (`_bowGracePeriod`).
-Reuse the same pattern from `WardenBowstringMechanic` — just swap draw events
+Reuse the same pattern from `WardenBowstringMechanic`, just swap draw events
 for node-touch events.
 
 ```csharp
@@ -81,7 +81,7 @@ void OnNodeTouched() {
 
 ---
 
-## Damage Multiplier — what OnAttackFired receives
+## Damage Multiplier, what OnAttackFired receives
 
 ```csharp
 float depthMultiplier = sequence.Count switch {
@@ -120,7 +120,7 @@ void OnFingerLifted() {
 
     if (currentSequence.Count == 0) return;
 
-    // Order-independent lookup — sort before key
+    // Order-independent lookup, sort before key
     var key = new HashSet<RuneType>(currentSequence);
     SpellData spell = subclassSpellTable.TryGetValue(key, out var s)
                     ? s
@@ -149,14 +149,14 @@ void IdleCast() {
                         new HashSet<RuneType>(idleSequence), out var s)
                     ? s : defaultWeakSpell;
 
-    // Fire at 60% potency — no speed or counter bonus
+    // Fire at 60% potency, no speed or counter bonus
     float idleMultiplier = GetDepthMultiplier(idleSequence.Count) * 0.6f;
     OnAttackFired(idleMultiplier);
 }
 ```
 
 Idle cast interval: same 2s `_playerAttackInterval` already in `CombatManager`.
-Counter bonus DOES apply during idle if `lastUsedSequence` is a counter pair —
+Counter bonus DOES apply during idle if `lastUsedSequence` is a counter pair, 
 it was a deliberate knowledge choice. Speed bonus does NOT apply.
 
 ---
@@ -183,7 +183,7 @@ subclassSpellTable = subclass switch {
 };
 ```
 
-Inactive nodes (2 per subclass) are not rendered — just don't instantiate buttons
+Inactive nodes (2 per subclass) are not rendered, just don't instantiate buttons
 for nodes not in `activeNodes`. No blocking logic needed.
 
 ---
@@ -202,7 +202,7 @@ maxSequenceLength = combatLevel switch {
 };
 ```
 
-On reaching max length, fire immediately — don't wait for finger lift.
+On reaching max length, fire immediately, don't wait for finger lift.
 
 ---
 
@@ -242,7 +242,7 @@ Lifebinder: skip this block entirely (`hasManaPool = false`).
 ## What's NOT in this brief
 
 Full spell library, counter pair tables, Summoner construct commands, Lifebinder
-HOT system — all in `runic-constellation-spec.md`, `summoner-spec.md`,
+HOT system, all in `runic-constellation-spec.md`, `summoner-spec.md`,
 `lifebinder-spec.md`. Phase 1 of implementation: get the seam wired, single-rune
 spells firing, idle return working. Spell library and subclass-specific behaviour
 layer on top once the seam is confirmed working.

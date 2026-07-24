@@ -3,21 +3,21 @@ type: implementation-brief
 spec: combat-engagement-spec.md (v0.2), warden-combat-spec.md (v0.1)
 updated: 2026-07-11
 purpose: Convert ZoneCombatView from 2D to a true HD-2D 3D scene before the sprite
-         pass begins. Do this FIRST — retrofitting after sprites are placed is costly.
+         pass begins. Do this FIRST, retrofitting after sprites are placed is costly.
 ---
 
-# Combat Scene — 3D Architecture Brief
+# Combat Scene, 3D Architecture Brief
 
 ## Why Now
 
 The Bowstring weak point system requires knowing WHERE on an enemy's body an arrow
-hit. In a flat 2D scene, vertical aim has no meaning — the arrow always hits the
+hit. In a flat 2D scene, vertical aim has no meaning, the arrow always hits the
 front face of the sprite. In a 3D scene the arrow travels along the Z axis; the
 intersection point on the enemy's sprite plane maps to a UV coordinate that can
 be checked against a weak point mask.
 
 This also delivers the front-to-back depth feel that defines the HD-2D art direction.
-Do this before the sprite pass — not after.
+Do this before the sprite pass, not after.
 
 ---
 
@@ -29,7 +29,7 @@ Change: Orthographic → Perspective
 FOV: 60°
 Near clip: 0.1
 Far clip: 100
-Position: (0, 1.5, -10) — slightly elevated, looking forward into scene
+Position: (0, 1.5, -10), slightly elevated, looking forward into scene
 ```
 
 ### Z-Depth Planes (all in world space)
@@ -52,7 +52,7 @@ Unity's `Billboard` or simply `transform.LookAt(camera)` keeps sprites camera-fa
 // Player quad at Z=0, always faces camera
 playerQuad.transform.position = new Vector3(0, 0, 0);
 playerQuad.GetComponent<SpriteRenderer>().sprite = playerSprite;
-// Point filter, PPU 100 — same as all sprites
+// Point filter, PPU 100, same as all sprites
 ```
 
 ### Enemy Sprite
@@ -75,7 +75,7 @@ backgroundLayers[2].transform.position = new Vector3(0, 0, 50); // far/sky
 
 ---
 
-## Bowstring — 3D Ray on Release
+## Bowstring, 3D Ray on Release
 
 Replace 2D aim with a 3D ray cast from camera through the aim point:
 
@@ -106,7 +106,7 @@ void OnBowRelease(Vector2 screenAimPosition) {
         if (isWeakPoint) TriggerWeakPointGlow(hit.point);
     }
     else {
-        // Miss — arrow passes by enemy
+        // Miss, arrow passes by enemy
         OnAttackFired(0);
         PlayMissEffect();
     }
@@ -120,7 +120,7 @@ void OnBowRelease(Vector2 screenAimPosition) {
 
 ---
 
-## Arrow Visual — 3D Projectile
+## Arrow Visual, 3D Projectile
 
 Arrow is a simple 3D object traveling from player to enemy along the Z axis:
 
@@ -132,7 +132,7 @@ void FireArrowVisual(Vector3 targetPoint, bool isHit) {
     Vector3 direction = (targetPoint - arrow.transform.position).normalized;
     arrow.transform.rotation = Quaternion.LookRotation(direction);
 
-    // Travel time: 0.15s — fast enough to feel instant, visible enough to read
+    // Travel time: 0.15s, fast enough to feel instant, visible enough to read
     StartCoroutine(MoveArrow(arrow, targetPoint, 0.15f, isHit));
 }
 
@@ -156,7 +156,7 @@ IEnumerator MoveArrow(GameObject arrow, Vector3 target,
 ```
 
 Arrow prefab: a thin elongated quad sprite (the arrow sprite), no physics,
-no Rigidbody — purely visual. Hit detection already resolved at release via raycast.
+no Rigidbody, purely visual. Hit detection already resolved at release via raycast.
 
 ---
 
@@ -166,12 +166,12 @@ no Rigidbody — purely visual. Hit detection already resolved at release via ra
 
 Each enemy has a corresponding mask texture:
 - Same dimensions as the enemy sprite
-- Greyscale — white pixels = weak point zone, black = body
+- Greyscale, white pixels = weak point zone, black = body
 - `Read/Write Enabled` in Unity import settings
 - Stored as `EnemyData.weakPointMask` (Texture2D reference)
 
 ```csharp
-// In EnemyData ScriptableObject — add:
+// In EnemyData ScriptableObject, add:
 public Texture2D weakPointMask;       // white = weak point region
 public float weakPointMultiplier = 2.0f; // fixed ×2.0 across all enemies
 public WeakPointTier weakPointTier;   // visibility tier (see below)
@@ -180,7 +180,7 @@ public WeakPointTier weakPointTier;   // visibility tier (see below)
 ### Mask Authoring
 
 For each enemy sprite, author a corresponding mask texture:
-- Can be created in any image editor — paint white over the weak point region
+- Can be created in any image editor, paint white over the weak point region
 - Save as a separate PNG alongside the enemy sprite
 - Example: wolf sprite → wolf head is top ~20% of sprite → white region in top 20%
 
@@ -197,27 +197,27 @@ DLC may introduce enemies with ×1.5 (armored) or ×2.5 (exposed vital) variatio
 
 ```csharp
 public enum WeakPointTier {
-    Obvious,   // Always visible — glowing core, exposed crystal etc.
-    Subtle,    // Brief pulse/shimmer on attack or damage — observant players notice
-    Hidden     // No tell — pure pattern recognition. Lone Wolf's Eye reveals these.
+    Obvious,   // Always visible, glowing core, exposed crystal etc.
+    Subtle,    // Brief pulse/shimmer on attack or damage, observant players notice
+    Hidden     // No tell, pure pattern recognition. Lone Wolf's Eye reveals these.
 }
 ```
 
-### Tier 1 — Obvious
+### Tier 1, Obvious
 Weak point glow is always rendered as a subtle pulse on the mask region.
 Enemy sprites for these types should have a natural glowing element (core, crystal).
 
-### Tier 2 — Subtle
+### Tier 2, Subtle
 Glow fires briefly (0.5s pulse) when:
 - Enemy attacks
 - Enemy takes any damage
 
 Otherwise invisible. Players who watch the enemy learn the pattern over time.
 
-### Tier 3 — Hidden
+### Tier 3, Hidden
 No glow at all unless the player has Lone Wolf's Eye (Lone Wanderer level 38)
 or Deadeye (Sharpshot level 59) unlocked. With those talents active,
-a subtle glow appears — same as Tier 2 behaviour.
+a subtle glow appears, same as Tier 2 behaviour.
 
 ```csharp
 void UpdateWeakPointGlow() {
@@ -233,9 +233,9 @@ void UpdateWeakPointGlow() {
 
 ---
 
-## Post-Processing — Unchanged
+## Post-Processing, Unchanged
 
-URP post-processing works in 3D — no changes needed.
+URP post-processing works in 3D, no changes needed.
 Bloom, depth-of-field, color grading, atmospheric particles all continue
 to apply via Volume components placed in the 3D scene.
 
@@ -246,7 +246,7 @@ Focal Length: 50mm
 Aperture: f/2.8
 ```
 This naturally blurs foreground elements slightly and background layers more
-aggressively — the front-to-back depth feel.
+aggressively, the front-to-back depth feel.
 
 ---
 
@@ -262,17 +262,17 @@ aggressively — the front-to-back depth feel.
 8. Add arrow prefab traveling Z axis visually
 9. Update depth-of-field Volume to focus at Z=10
 10. Verify all existing combat events still fire correctly
-    (HP bars, attack cadence bars, hit markers — all UI, unaffected by 3D change)
+    (HP bars, attack cadence bars, hit markers, all UI, unaffected by 3D change)
 
 ---
 
 ## What Stays the Same
 
 - All combat events: `OnPlayerAttack`, `OnEnemyAttack`, `OnPlayerHit`, `OnCombatLog`
-- HP bars, attack cadence bars, hotbar — all UI overlay, unaffected
-- `CombatManager` loop — no changes, still drives damage/XP/loot
-- `ActiveCombatMechanic` seam — Constellation and Vanguard Combo unaffected
-- Idle auto-attack — fires without raycast, just applies base damage
+- HP bars, attack cadence bars, hotbar, all UI overlay, unaffected
+- `CombatManager` loop, no changes, still drives damage/XP/loot
+- `ActiveCombatMechanic` seam, Constellation and Vanguard Combo unaffected
+- Idle auto-attack, fires without raycast, just applies base damage
 
 ---
 

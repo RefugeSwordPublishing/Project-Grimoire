@@ -39,7 +39,7 @@ function containsBlockedTerm(username: string): boolean {
 }
 
 // ── Username format validation ──────────────────────────────────────────────
-// 3–20 chars, alphanumeric + underscores only
+// 3-20 chars, alphanumeric + underscores only
 const VALID_USERNAME = /^[a-zA-Z0-9_]{3,20}$/;
 
 serve(async (req) => {
@@ -55,7 +55,7 @@ serve(async (req) => {
     }
 
     if (!VALID_USERNAME.test(username)) {
-      return json({ available: false, reason: "Username must be 3–20 characters (letters, numbers, underscores only)." });
+      return json({ available: false, reason: "Username must be 3-20 characters (letters, numbers, underscores only)." });
     }
 
     if (containsBlockedTerm(username)) {

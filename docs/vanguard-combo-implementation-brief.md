@@ -3,11 +3,11 @@ type: implementation-brief
 spec: vanguard-combo-system.md (v0.2)
 updated: 2026-07-11
 purpose: Wire VanguardComboMechanic into the existing ActiveCombatMechanic seam.
-         Read alongside vanguard-combo-system.md — this brief covers seam integration,
+         Read alongside vanguard-combo-system.md, this brief covers seam integration,
          stamina wiring, cooldown model, and idle behaviour only.
 ---
 
-# Vanguard Combo System — Implementation Brief
+# Vanguard Combo System, Implementation Brief
 
 ## The Seam Contract
 
@@ -33,9 +33,9 @@ public override float OnAttackFired(float baseDamage) {
 
 ---
 
-## Input Model — Instant Fire, Per-Combo Cooldown
+## Input Model, Instant Fire, Per-Combo Cooldown
 
-Combos fire **immediately** when the sequence is complete — no waiting.
+Combos fire **immediately** when the sequence is complete, no waiting.
 After firing, a **per-combo cooldown** prevents entering another combo until
 it expires. The player can still tap during cooldown but inputs are ignored.
 
@@ -54,16 +54,16 @@ Cooldown expires
 **No 1.5s wait. No auto-fire timer. Sequence complete = fire immediately.**
 
 Sequence is "complete" when:
-- Player taps `maxSequenceLength` inputs — fires at max depth
-- Player taps a valid known sequence shorter than max — fires immediately on recognition
-- Player taps an unrecognised sequence — fires base attack for the first input, clears
+- Player taps `maxSequenceLength` inputs, fires at max depth
+- Player taps a valid known sequence shorter than max, fires immediately on recognition
+- Player taps an unrecognised sequence, fires base attack for the first input, clears
 
 ---
 
 ## Cooldown Model
 
 Bigger combos deal more damage so they have **longer** cooldowns. Skill expression
-is knowing which combo to use — not chaining hard-hitting attacks as fast as possible.
+is knowing which combo to use, not chaining hard-hitting attacks as fast as possible.
 
 ### Base cooldown by depth
 
@@ -79,11 +79,11 @@ High-impact combos have their own cooldown regardless of depth:
 
 | Combo | Override | Reason |
 |-------|---------|--------|
-| U→U (Warcry — AoE taunt) | 6.0s | Too powerful to spam |
+| U→U (Warcry, AoE taunt) | 6.0s | Too powerful to spam |
 | U→U→S (Legendary Strike, +200%) | 8.0s | Highest damage in game |
-| U→U→G (Indomitable — full tank CD) | 10.0s | Raid survival cooldown |
-| G→G→G (Immovable — Bulwark) | 8.0s | Full defensive stance |
-| U→U (Void Step — Shadowblade stealth) | 8.0s | Stealth entry gated |
+| U→U→G (Indomitable, full tank CD) | 10.0s | Raid survival cooldown |
+| G→G→G (Immovable, Bulwark) | 8.0s | Full defensive stance |
+| U→U (Void Step, Shadowblade stealth) | 8.0s | Stealth entry gated |
 
 ```csharp
 float GetCooldown(ComboData combo) {
@@ -99,10 +99,10 @@ float GetCooldown(ComboData combo) {
 
 ---
 
-## Cooldown UI — Shading Overlay
+## Cooldown UI, Shading Overlay
 
 Each Strike/Guard/Surge button shows a **shading overlay that empties downward**
-as the cooldown counts down — standard MMO cooldown style.
+as the cooldown counts down, standard MMO cooldown style.
 
 ```csharp
 // On combo fire:
@@ -113,14 +113,14 @@ void StartCooldown(float duration) {
     _cooldownActive = true;
     _cooldownTotal = duration;
     _cooldownRemaining = duration;
-    // All three buttons enter cooldown state — one combo at a time
+    // All three buttons enter cooldown state, one combo at a time
 }
 
 void Update() {
     if (_cooldownActive) {
         _cooldownRemaining -= Time.deltaTime;
         float fillAmount = _cooldownRemaining / _cooldownTotal;
-        // fillAmount drives the overlay — 1.0 = fully shaded, 0.0 = clear
+        // fillAmount drives the overlay, 1.0 = fully shaded, 0.0 = clear
         cooldownOverlay.fillAmount = fillAmount;
 
         if (_cooldownRemaining <= 0) {
@@ -144,7 +144,7 @@ cooldownOverlay.color = combo.tauntValue > 0 ? tauntColor : defaultColor;
 
 ---
 
-## Stamina — Active and Idle
+## Stamina, Active and Idle
 
 ### Active play
 ```csharp
@@ -157,7 +157,7 @@ void FireCombo(ComboData combo) {
     };
 
     if (staminaCost > 0 && PlayerData.CurrentStamina < staminaCost) {
-        // Insufficient stamina — fire base Strike instead, no cooldown
+        // Insufficient stamina, fire base Strike instead, no cooldown
         ExecuteBaseAttack(ComboInput.Strike);
         return;
     }
@@ -168,10 +168,10 @@ void FireCombo(ComboData combo) {
 }
 ```
 
-### Idle play — stamina IS used, random selection
+### Idle play, stamina IS used, random selection
 
 Idle Vanguard runs the same "do this until done or out of resources" loop as
-every other idle talent. No queue, no player preferences — just the idle loop.
+every other idle talent. No queue, no player preferences, just the idle loop.
 
 ```csharp
 void IdleCast() {
@@ -181,12 +181,12 @@ void IdleCast() {
         .ToList();
 
     if (affordable.Count == 0) {
-        // No stamina for any combo — fire free Strike
+        // No stamina for any combo, fire free Strike
         ExecuteBaseAttack(ComboInput.Strike);
         return;
     }
 
-    // Weighted random — cheaper combos fire more often (stamina-weighted)
+    // Weighted random, cheaper combos fire more often (stamina-weighted)
     // This naturally biases toward shorter combos, lower output than active
     ComboData selected = WeightedRandom(affordable,
         c => 1f / Mathf.Max(1, GetStaminaCost(c)));
@@ -198,14 +198,14 @@ void IdleCast() {
     float idleMultiplier = selected.damageMultiplier * 0.7f;
     OnAttackFired(idleMultiplier);
 
-    // Idle respects cooldown too — next idle cast delayed by combo cooldown
+    // Idle respects cooldown too, next idle cast delayed by combo cooldown
     StartCooldown(GetCooldown(selected));
 }
 ```
 
 Stamina regens at 2/sec during combat (already in `CombatManager.TickResources`).
 When stamina runs low idle naturally shifts to cheaper combos and eventually single
-Strike until it regens — no special-case logic needed.
+Strike until it regens, no special-case logic needed.
 
 **Idle output is lower than active because:**
 - Random selection is suboptimal (player would pick better combos)
@@ -258,7 +258,7 @@ void Update() {
 }
 ```
 
-The 1.5s here is the **idle return after cooldown expires** — not a combo fire delay.
+The 1.5s here is the **idle return after cooldown expires**, not a combo fire delay.
 Player has 1.5s after their cooldown clears to tap again before idle resumes.
 
 ---
@@ -276,18 +276,18 @@ maxSequenceLength = combatLevel switch {
 
 ---
 
-## Shadow's Edge — Shadowblade passive
+## Shadow's Edge, Shadowblade passive
 
 ```csharp
 if (currentSubclass == "Shadowblade" && _comingFromShroud) {
-    multiplier *= 1.8f;       // flat multiplier — NOT a crit
+    multiplier *= 1.8f;       // flat multiplier, NOT a crit
     ShowCriticalLabel();       // "Critical!" UI only
     _comingFromShroud = false;
 }
 ```
 
 `U→U` (Void Step) sets `_comingFromShroud = true`. Next Strike clears it.
-`critChance` remains 0 — never a crit proc.
+`critChance` remains 0, never a crit proc.
 
 ---
 

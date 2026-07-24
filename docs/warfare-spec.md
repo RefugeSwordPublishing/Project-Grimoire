@@ -1,67 +1,67 @@
-# ⚔️ Project Grimoire — Warfare: Vanguard Grimoire Combat Progression
+# Project Grimoire, Warfare: Vanguard Grimoire Combat Progression
 ### Version 0.1
 
 ---
 
-## 📐 Design Philosophy
+## Design Philosophy
 
-Warfare is the combat progression system housed on each Vanguard Grimoire — not a shared Talent. Each Vanguard Grimoire (Warlord, Shadowblade, Kensei DLC) levels independently from 1–100. Purchasing a new Grimoire starts its Warfare progression at level 1 regardless of other Grimoire levels.
+Warfare is the combat progression system housed on each Vanguard Grimoire, not a shared Talent. Each Vanguard Grimoire (Warlord, Shadowblade, Kensei DLC) levels independently from 1-100. Purchasing a new Grimoire starts its Warfare progression at level 1 regardless of other Grimoire levels.
 
 **Core principles:**
-- Combo depth unlocks are per-Grimoire — a level 55 Warlord does NOT give 3-input combos to a fresh Shadowblade
-- Permanent stat bonuses from Warfare milestones apply to the character permanently — persist regardless of equipped Grimoire
-- Stat bonuses accumulate across ALL paths — leveling Warlord gives STR even to an Arcanist character
+- Combo depth unlocks are per-Grimoire, a level 55 Warlord does NOT give 3-input combos to a fresh Shadowblade
+- Permanent stat bonuses from Warfare milestones apply to the character permanently, persist regardless of equipped Grimoire
+- Stat bonuses accumulate across ALL paths, leveling Warlord gives STR even to an Arcanist character
 - Combat XP from Slaying feeds the currently equipped Grimoire's Warfare level
 - Idle auto-combat behavior improves with Warfare level
 - Warfare progression displayed on the Combat Tab of the Character Panel
 
 ---
 
-## 📊 Shared Warfare Unlock Table (All Vanguard Grimoires)
+## Shared Warfare Unlock Table (All Vanguard Grimoires)
 
 | Level | Unlock | Type | Notes |
 |-------|--------|------|-------|
 | 1 | Basic Strike | Combat | Single Strike input, base melee damage |
 | 8 | Guard input unlocked | Combat | Defensive combos now possible |
-| 15 | **2-input combos unlock** | Combat | Core combo system activates — all 2-input sequences available |
+| 15 | **2-input combos unlock** | Combat | Core combo system activates, all 2-input sequences available |
 | 23 | STR passive +1 | **Permanent stat** | Added to character permanently |
-| 31 | Surge input unlocked | Combat | Power combos now possible — all 3 inputs active |
+| 31 | Surge input unlocked | Combat | Power combos now possible, all 3 inputs active |
 | 38 | Combo Streak system activates | Combat | 3+ unique combos in a row grants streak bonus |
 | 47 | VIT passive +1 | **Permanent stat** | Added to character permanently |
 | 55 | **3-input combos unlock** | Combat | Full base game combo depth |
 | 63 | STR passive +2 | **Permanent stat** | Added to character permanently |
 | 72 | Idle auto-combo upgrade | Combat | Auto-uses last used 2-input combo at 70% potency (was single Strike) |
 | 81 | VIT passive +2 | **Permanent stat** | Added to character permanently |
-| 88 | Passive aggro rate +50% | Combat | Endgame tank identity solidifies — raids benefit significantly |
+| 88 | Passive aggro rate +50% | Combat | Endgame tank identity solidifies, raids benefit significantly |
 | 100 | Idle never retreats from Tier 3 zones or lower | **Mastery** | Reliable high-zone idle farming |
 
 > **Permanent stat bonuses stack across all owned Grimoires.** A player with Warlord and Shadowblade both at level 23 gains +2 STR total. All three Vanguard Grimoires at 23 = +3 STR. These bonuses persist even when an Arcanist or Warden Grimoire is equipped.
 
 ---
 
-## ⚔️ Warlord-Specific Technique Unlocks
+## Warlord-Specific Technique Unlocks
 
 | Level | Technique | Effect |
 |-------|-----------|--------|
-| 19 | **Shield Bash** | Interrupt enemy attack — stagger for 2s, moderate damage. Unlocks G→S combo variant with guaranteed stagger |
-| 42 | **Warcry** | AoE taunt — all nearby enemies target Warlord for 6s. Unlocks U→U combo. Raid essential |
+| 19 | **Shield Bash** | Interrupt enemy attack, stagger for 2s, moderate damage. Unlocks G→S combo variant with guaranteed stagger |
+| 42 | **Warcry** | AoE taunt, all nearby enemies target Warlord for 6s. Unlocks U→U combo. Raid essential |
 | 67 | **Titan's Blow** | Maximum single-target damage + maximum taunt spike. Unlocks G→U→S at full power |
-| 85 | **Indomitable** | Full tank cooldown — +50% defense + HP regen + stagger immunity for 10s. Unlocks U→U→G at full power. Raid phase survival cooldown |
+| 85 | **Indomitable** | Full tank cooldown, +50% defense + HP regen + stagger immunity for 10s. Unlocks U→U→G at full power. Raid phase survival cooldown |
 
 ---
 
-## 🗡️ Shadowblade-Specific Technique Unlocks
+## Shadowblade-Specific Technique Unlocks
 
 | Level | Technique | Effect |
 |-------|-----------|--------|
-| 19 | **Feint** | Dodge next attack + counter window — +60% damage on immediate counter. Unlocks S→G combo with guaranteed dodge |
-| 42 | **Void Step** | Enter stealth from combat — 3s stealth window. Unlocks U→U combo. Setup for Void Assassin |
-| 67 | **Flurry** | Triple rapid hit — S→S→S at +70% each hit. Shadowblade's sustained burst signature |
-| 85 | **Void Assassin** | Stealth opener — +250% damage from stealth. Requires Void Step entry. Unlocks U→U→S at full power |
+| 19 | **Feint** | Dodge next attack + counter window, +60% damage on immediate counter. Unlocks S→G combo with guaranteed dodge |
+| 42 | **Void Step** | Enter stealth from combat, 3s stealth window. Unlocks U→U combo. Setup for Void Assassin |
+| 67 | **Flurry** | Triple rapid hit, S→S→S at +70% each hit. Shadowblade's sustained burst signature |
+| 85 | **Void Assassin** | Stealth opener, +250% damage from stealth. Requires Void Step entry. Unlocks U→U→S at full power |
 
 ---
 
-## 📈 Permanent Stat Bonus Summary — All Paths
+## Permanent Stat Bonus Summary, All Paths
 
 Stat milestones from Warfare progression are permanent character bonuses. They accumulate across all owned Grimoires regardless of which is currently equipped.
 
@@ -99,22 +99,22 @@ Stat milestones from Warfare progression are permanent character bonuses. They a
 ### Cross-Path Accumulation
 A player who levels Grimoires across all three paths accumulates stats in every attribute:
 
-**Example — Completionist player with all base game Grimoires past level 23:**
+**Example, Completionist player with all base game Grimoires past level 23:**
 ```
 From Warden Grimoires (×2):   DEX +2, LCK +2
 From Arcanist Grimoires (×3): INT +3, WIL +3
 From Vanguard Grimoires (×2): STR +2, VIT +2
 ```
 
-This rewards breadth of play without making cross-path grinding mandatory — it's always optional but always meaningful.
+This rewards breadth of play without making cross-path grinding mandatory, it's always optional but always meaningful.
 
-> LCK and CHA are not tied to Grimoire stat milestones — they come from Talent milestones (Gleaning for LCK, Inscription diplomatic items for CHA). This keeps those stats tied to the crafting/gathering economy rather than combat investment.
+> LCK and CHA are not tied to Grimoire stat milestones, they come from Talent milestones (Gleaning for LCK, Inscription diplomatic items for CHA). This keeps those stats tied to the crafting/gathering economy rather than combat investment.
 
 ---
 
-## 🎯 Warfare Attunement Data
+## Warfare Attunement Data
 
-Warfare attunement uses two independent checks at combo resolution — same philosophy as Spellcasting attunement.
+Warfare attunement uses two independent checks at combo resolution, same philosophy as Spellcasting attunement.
 
 ### Attunement Fields
 ```
@@ -122,14 +122,14 @@ hasAttunement              true
 isPlayerDriven             true (combo-based, not cycle-based)
 cycleLength                N/A
 
-// Speed Attunement — all 3 inputs entered under 1.0s
+// Speed Attunement, all 3 inputs entered under 1.0s
 speedAttunement_enabled    true
 speedAttunement_threshold  1.0s (all inputs completed)
 speedAttunement_xpBonus    1.5 (+50% XP)
 speedAttunement_damageBonus 0.25 (+25% damage on that combo)
 speedAttunement_cueLabel   "Fast combo!"
 
-// Streak Attunement — active from Warfare level 38
+// Streak Attunement, active from Warfare level 38
 streakAttunement_enabled   true (unlocks at level 38)
 streakAttunement_threshold 3 (3 unique combos in a row)
 streakAttunement_lootBonus 0.10 (+10% drop chance while streak active)
@@ -140,10 +140,10 @@ streakAttunement_cueLabel  "Combo streak!"
 | Speed | All inputs completed in | Damage Modifier |
 |-------|------------------------|----------------|
 | Lightning | Under 1.0s | +25% damage |
-| Standard | 1.0s – 2.5s | Base damage |
+| Standard | 1.0s - 2.5s | Base damage |
 | Slow | Over 2.5s (or waited for auto-fire) | Base damage |
 
-No damage penalty for slow inputs — idle auto-fire always deals standard damage. Speed bonus rewards active fast play.
+No damage penalty for slow inputs, idle auto-fire always deals standard damage. Speed bonus rewards active fast play.
 
 ### Combo Streak Bonus
 Active after Warfare level 38. Requires 3 different unique combo sequences in a row without repeating.
@@ -159,17 +159,17 @@ Streak breaks on: taking heavy damage, repeating a combo sequence, idle auto-com
 ### Idle Behavior
 | Level | Auto-Combat Behavior |
 |-------|---------------------|
-| 1–71 | Auto-fires single Strike at base damage |
-| 72–100 | Auto-fires last used 2-input combo at 70% potency |
+| 1-71 | Auto-fires single Strike at base damage |
+| 72-100 | Auto-fires last used 2-input combo at 70% potency |
 | 100 (mastery) | Never retreats from Tier 3 zones or lower |
 
-Streak does not build during idle — active play only.
+Streak does not build during idle, active play only.
 
 ---
 
-## 🔧 Technical Notes for Implementation
+## Technical Notes for Implementation
 
-**Grimoire ScriptableObject — Warfare fields:**
+**Grimoire ScriptableObject, Warfare fields:**
 ```csharp
 public class GrimoireData : ScriptableObject {
     // Combat progression
@@ -187,7 +187,7 @@ public class GrimoireData : ScriptableObject {
 
     // Permanent stat bonuses (accumulated on milestone reach)
     // Written to player_stat_bonuses table when milestone hit
-    // NOT stored on Grimoire — stored on character permanently
+    // NOT stored on Grimoire, stored on character permanently
 }
 ```
 
@@ -210,7 +210,7 @@ void GrantPermanentStat(StatType stat, int amount, string grimoireId) {
 }
 ```
 
-**Supabase schema — permanent stat bonuses:**
+**Supabase schema, permanent stat bonuses:**
 ```sql
 CREATE TABLE player_stat_bonuses (
     player_id    UUID REFERENCES players(id),
@@ -238,17 +238,17 @@ void OnComboResolved(List<ComboInput> inputs, float totalInputTime) {
 }
 ```
 
-**No crit system for Vanguard** — same as Arcanist. Skill expression is through combo knowledge, execution speed, and streak maintenance. No random crit procs.
+**No crit system for Vanguard**, same as Arcanist. Skill expression is through combo knowledge, execution speed, and streak maintenance. No random crit procs.
 
 ```csharp
 if (currentGrimoire.path == GrimoirePath.Vanguard) {
     critChance = 0f;
     weakPointEnabled = false;
 }
-// Marksmanship weak point system unaffected — Warden only
+// Marksmanship weak point system unaffected, Warden only
 ```
 
 ---
 
-*Document version 0.1 — Warfare: Vanguard Grimoire Combat Progression*
+*Document version 0.1, Warfare: Vanguard Grimoire Combat Progression*
 *Next: Shadowblade / Black Ledger depth · Runeweaver deep tree · Phase 2 handoff*

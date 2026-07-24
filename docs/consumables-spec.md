@@ -4,12 +4,12 @@ version: 0.2
 updated: 2026-07-11
 ---
 
-# Project Grimoire — Consumables Spec
+# Project Grimoire, Consumables Spec
 ### Version 0.1
 
 ---
 
-## Resource Model — Final Decision
+## Resource Model, Final Decision
 
 This spec resolves the contradiction between the design doc (WIL → mana pool) and the
 Lifebinder spec (HP is the casting resource, no mana).
@@ -23,11 +23,11 @@ Lifebinder spec (HP is the casting resource, no mana).
 | **Stamina** | Vanguard only | 2-input and 3-input combos during active play | Passive regen always active; Endurance Draughts (hotbar); Cookery meals |
 
 **Stamina is Vanguard-exclusive and idle-safe.** During idle auto-combat the system only
-uses basic Strike (0 stamina cost) — stamina is never depleted or managed during idle
+uses basic Strike (0 stamina cost), stamina is never depleted or managed during idle
 sessions. It only becomes relevant during active play, acting as a burst resource that
 limits how many high-cost combos can be chained before falling back to singles.
 
-At 0 stamina the Vanguard falls back to single Strike — same behaviour as idle. Never
+At 0 stamina the Vanguard falls back to single Strike, same behaviour as idle. Never
 hard-locked, always degrading gracefully.
 
 ### Stamina Pool
@@ -41,31 +41,31 @@ Stamina Regen = 2/sec passive (always active in combat)
 
 | VIT | Max Stamina | Combat regen | Notes |
 |-----|------------|-------------|-------|
-| 10 | 45 | 2/sec | Early game — ~3 three-input combos |
-| 30 | 75 | 2/sec | Mid game — ~4 three-input combos |
-| 60 | 120 | 2/sec | Late game — ~6 three-input combos |
-| 100 | 180 | 2/sec | Max VIT — sustained combo chains possible |
+| 10 | 45 | 2/sec | Early game, ~3 three-input combos |
+| 30 | 75 | 2/sec | Mid game, ~4 three-input combos |
+| 60 | 120 | 2/sec | Late game, ~6 three-input combos |
+| 100 | 180 | 2/sec | Max VIT, sustained combo chains possible |
 
 ### Stamina Costs (Vanguard only)
 
 | Combo depth | Stamina cost | Notes |
 |------------|-------------|-------|
-| 1-input (Strike/Guard/Surge alone) | 0 | Always free — idle fallback |
+| 1-input (Strike/Guard/Surge alone) | 0 | Always free, idle fallback |
 | 2-input | 8 | Standard combo cost |
-| 3-input | 18 | Full combo — premium cost |
+| 3-input | 18 | Full combo, premium cost |
 
 **Idle auto-combat:** Always uses 1-input Strike. Stamina never depletes during idle.
-**Active play:** Player manages stamina as a burst resource — chain combos, let singles
+**Active play:** Player manages stamina as a burst resource, chain combos, let singles
 regen, burst again. The natural rhythm of the 1.5s auto-fire timer aligns with this.
 
-### Mana Pool — Arcanist (not Lifebinder)
+### Mana Pool, Arcanist (not Lifebinder)
 
 ```
 Max Mana = 50 + (WIL × 2)
-Mana Regen = 1.0/sec base (out of combat only — no in-combat mana regen)
+Mana Regen = 1.0/sec base (out of combat only, no in-combat mana regen)
 ```
 
-Runeweaver and Summoner draw from this pool. Lifebinder has `hasManaPool = false` —
+Runeweaver and Summoner draw from this pool. Lifebinder has `hasManaPool = false`, 
 no mana bar rendered, no mana costs applied, HP is the resource instead.
 
 **[pending]** Mana pool not yet implemented. `ItemData` mana effect fields not yet added.
@@ -81,7 +81,7 @@ Two buckets, each with different use rules:
 | **Instant-use** | Combat hotbar | Anytime, including active combat | Healing Draught, Mana Vial, Antidote |
 | **Buff-use** | Inventory page only | Outside active combat | All Cookery meals and stews, Poison Coating |
 
-This keeps the combat screen clean — only items with immediate single-use impact appear
+This keeps the combat screen clean, only items with immediate single-use impact appear
 in the hotbar. Buffs require a deliberate pause to apply, preventing mid-fight spam.
 
 ---
@@ -100,16 +100,16 @@ Hotbar assignments persist across sessions (stored in `player_settings`).
 | 2 | Class resource instant-use | Mana Vials (Arcanist); Endurance Draughts (Vanguard); second HP slot (Warden) |
 | 3 | Status cure (Antidote) | Any class |
 
-Non-Arcanist players see slot 2 as a second HP slot — Mana Vials simply don't appear in their
+Non-Arcanist players see slot 2 as a second HP slot, Mana Vials simply don't appear in their
 inventory picker for that slot.
 
 ---
 
-## Item Definitions — Instant-Use (Combat Hotbar)
+## Item Definitions, Instant-Use (Combat Hotbar)
 
 ### Healing Draught (Alchemy)
 
-Instant HP restore. Flat amount, not percentage — flat scales better with quality tiers and is
+Instant HP restore. Flat amount, not percentage, flat scales better with quality tiers and is
 more readable to players ("this restores 80 HP" vs "this restores 15% HP").
 
 | Quality | HP Restored | Cooldown |
@@ -131,10 +131,10 @@ cooldownSeconds = 8 / 8 / 8 / 8 / 6
 
 ---
 
-### Mana Vial (Alchemy — Arcanist only)
+### Mana Vial (Alchemy, Arcanist only)
 
 Instant mana restore. Only usable by Arcanist path; inventory picker filters by
-`GrimoireManager.currentPath == Arcanist`. Lifebinder cannot use — no mana pool.
+`GrimoireManager.currentPath == Arcanist`. Lifebinder cannot use, no mana pool.
 
 | Quality | Mana Restored | Cooldown |
 |---------|--------------|---------|
@@ -154,10 +154,10 @@ requiresPath = Arcanist
 
 ---
 
-### Endurance Draught (Alchemy — Vanguard only)
+### Endurance Draught (Alchemy, Vanguard only)
 
 Instant stamina restore. Only usable by Vanguard path; inventory picker filters by
-`GrimoireManager.currentPath == Vanguard`. Arcanist and Warden cannot use — no stamina pool.
+`GrimoireManager.currentPath == Vanguard`. Arcanist and Warden cannot use, no stamina pool.
 
 | Quality | Stamina Restored | Cooldown |
 |---------|-----------------|---------|
@@ -181,11 +181,11 @@ Cures status debuffs instantly. Applied from the hotbar mid-combat.
 
 **Cures:**
 - Poison (DoT damage over time)
-- Bleed (DoT — applied by Shadowblade combos, some enemies)
+- Bleed (DoT, applied by Shadowblade combos, some enemies)
 - Weaken (damage reduction debuff)
 - Accuracy Down (applied by Void Shade, some enemies)
 
-Does NOT cure: Freeze, Stagger, Slow — these are short-duration control effects that expire
+Does NOT cure: Freeze, Stagger, Slow, these are short-duration control effects that expire
 naturally and don't warrant an item slot.
 
 | Quality | Debuffs cured | Cooldown |
@@ -206,15 +206,15 @@ cooldownSeconds = 12 / 12 / 10 / 10 / 8
 
 ---
 
-## Item Definitions — Buff-Use (Inventory Only, Outside Combat)
+## Item Definitions, Buff-Use (Inventory Only, Outside Combat)
 
 ### Cookery Meals (Cookery Talent)
 
-Meals apply **timed stat buffs** — not instant HP fills. The distinction between potions
+Meals apply **timed stat buffs**, not instant HP fills. The distinction between potions
 (instant, emergency) and meals (planned, sustained) is intentional. Players eat a meal
 before entering a zone, not mid-fight.
 
-Meals can buff HP regen, stats, or drop rate — they do not instantly restore HP.
+Meals can buff HP regen, stats, or drop rate, they do not instantly restore HP.
 
 | Item | Buff | Duration | Quality scaling |
 |------|------|---------|----------------|
@@ -225,9 +225,9 @@ Meals can buff HP regen, stats, or drop rate — they do not instantly restore H
 | Warden's Focus Meal | DEX +3, LCK +1 | 20 min | Potency ×quality multiplier |
 | **Warrior's Ration** | Max Stamina +30 (Vanguard only) | 20 min | Potency ×quality multiplier |
 | **Hearty Stew** | Stamina regen +2/sec (Vanguard only) | 20 min | Potency ×quality multiplier |
-| Masterwork Feast | All stats +5 | 60 min | Masterwork only — no scaling |
+| Masterwork Feast | All stats +5 | 60 min | Masterwork only, no scaling |
 
-Warrior's Ration and Hearty Stew have `requiresPath = Vanguard` — they don't appear in other
+Warrior's Ration and Hearty Stew have `requiresPath = Vanguard`, they don't appear in other
 classes' inventory meal picker. Stack with each other since they affect different stamina
 properties (max vs regen), but still subject to the one-meal-at-a-time rule per category
 (one HP/stat meal + one stamina meal can both be active simultaneously).
@@ -242,7 +242,7 @@ properties (max vs regen), but still subject to the one-meal-at-a-time rule per 
 | Pristine | ×1.3 | ×1.2 |
 | Masterwork | ×1.6 | ×1.5 |
 
-Only one meal buff active at a time — eating a second meal replaces the first.
+Only one meal buff active at a time, eating a second meal replaces the first.
 
 **`ItemData` fields needed:**
 ```
@@ -255,12 +255,12 @@ inventoryOnly = true
 
 ---
 
-### Poison Coating (Alchemy — Warden primary, any class)
+### Poison Coating (Alchemy, Warden primary, any class)
 
 Applied to the equipped weapon from inventory. Cannot be applied mid-combat.
 
 Adds a **charge-based poison DoT** to the next N attacks. Each hit that consumes a charge
-applies a bleed/poison DoT to the target for a fixed duration. Not a damage buff — a DoT
+applies a bleed/poison DoT to the target for a fixed duration. Not a damage buff, a DoT
 applicator. Runs out after N charges regardless of time elapsed.
 
 | Quality | Charges | DoT damage/tick | DoT duration | Tick rate |
@@ -271,8 +271,8 @@ applicator. Runs out after N charges regardless of time elapsed.
 | Pristine | 16 | 18/sec | 12s | 1s |
 | Masterwork | 24 | 28/sec | 15s | 1s |
 
-Multiple coatings cannot stack — applying a new coating while one is active replaces it.
-Shadowblade's Hemorrhage Mastery (bleed DoTs stack twice) interacts with Poison Coating —
+Multiple coatings cannot stack, applying a new coating while one is active replaces it.
+Shadowblade's Hemorrhage Mastery (bleed DoTs stack twice) interacts with Poison Coating, 
 if the equipped weapon has a coating active, Hemorrhage Mastery's stacking applies.
 
 **`ItemData` fields needed:**
@@ -291,9 +291,9 @@ inventoryOnly = true
 
 During idle combat sessions, the player is not present to use the hotbar. Auto-eat
 automatically consumes a Healing Draught (or designated hotbar item) when HP drops to a
-threshold. Only applies to HP — auto-mana is not in scope.
+threshold. Only applies to HP, auto-mana is not in scope.
 
-### Free Tier [as-built: not yet built — pending]
+### Free Tier [as-built: not yet built, pending]
 
 | Property | Value |
 |----------|-------|
@@ -305,21 +305,21 @@ threshold. Only applies to HP — auto-mana is not in scope.
 ### Royal Merchant Upgrade Tiers [pending]
 
 Purchased from the Royal Merchant with Gold Marks. Account-bound on purchase.
-Each tier is additive — purchasing Tier 3 includes Tier 1 and 2 behavior.
+Each tier is additive, purchasing Tier 3 includes Tier 1 and 2 behavior.
 
 | Tier | Upgrade | GM Cost | Real Money |
 |------|---------|---------|-----------|
-| **Free** | Auto-eat at 25% HP, lowest quality item, 2s delay, 1/encounter | — | — |
+| **Free** | Auto-eat at 25% HP, lowest quality item, 2s delay, 1/encounter |, |, |
 | **Tier 1** | Threshold raises to 40% HP | 200 GM | $0.99 |
 | **Tier 2** | Auto-selects best available quality (not lowest) | 300 GM | $1.49 |
 | **Tier 3** | Response delay reduced to 0.5s; limit raises to 3/encounter | 500 GM | $1.99 |
 | **Tier 4** | Second resource covered: auto-mana at 30% mana (Arcanist only) | 400 GM | $1.99 |
 
-**Design note:** Tier 1 and 2 together represent the biggest QoL upgrade — catching HP earlier
+**Design note:** Tier 1 and 2 together represent the biggest QoL upgrade, catching HP earlier
 and using better items. Tier 3 is for high-difficulty idle sessions. Tier 4 is Arcanist-specific.
-Total cost for all tiers: 1,400 GM or ~$6.46 real money — reasonable for a permanent QoL stack.
+Total cost for all tiers: 1,400 GM or ~$6.46 real money, reasonable for a permanent QoL stack.
 
-**Implementation — auto-eat logic:**
+**Implementation, auto-eat logic:**
 ```csharp
 void OnPlayerHPChanged(float currentHP, float maxHP) {
     float threshold = GetAutoEatThreshold(); // 0.25 free, 0.40 T1+
@@ -331,13 +331,13 @@ void OnPlayerHPChanged(float currentHP, float maxHP) {
 }
 ```
 
-Auto-eat tier state stored in `player_settings.auto_eat_tier` (int 0–4).
+Auto-eat tier state stored in `player_settings.auto_eat_tier` (int 0-4).
 
 ---
 
-## `ItemData` — New Fields Required
+## `ItemData`, New Fields Required
 
-**[pending]** — `ItemData` currently has only `isConsumable bool`. Add:
+**[pending]**, `ItemData` currently has only `isConsumable bool`. Add:
 
 ```csharp
 // Consumable effect fields (add to ItemData ScriptableObject)
@@ -369,7 +369,7 @@ public enum ConsumableEffectType {
 
 ---
 
-## `InventoryManager.UseConsumable` — Updates Required
+## `InventoryManager.UseConsumable`, Updates Required
 
 **[as-built]** Currently only handles `ZoneMap` effect type.
 
@@ -378,7 +378,7 @@ public enum ConsumableEffectType {
 ```csharp
 void UseConsumable(ItemData item, GameObject target = null) {
     switch (item.effectType) {
-        case ZoneMap:      // existing — keep
+        case ZoneMap:      // existing, keep
             ApplyZoneMap(item); break;
         case InstantHP:
             PlayerStats.RestoreHP(item.effectValue);
@@ -419,12 +419,12 @@ void UseConsumable(ItemData item, GameObject target = null) {
 
 ## What's Not In Scope
 
-- **Stamina for non-Vanguard** — Warden and Arcanist have no stamina pool. Stamina items don't appear in their pickers.
-- **Stamina depletion during idle** — idle auto-combat always uses 1-input Strike (0 cost). Stamina is an active-play resource only.
-- **Combat stat buffs** — potions don't buff stats; only meals do, and only from inventory.
-- **Mana potions for Lifebinder** — Lifebinder has no mana pool; Mana Vials don't appear in their hotbar picker.
-- **Stacking same-category meal buffs** — one HP/stat meal and one stamina meal can both be active simultaneously, but two HP meals cannot stack.
-- **Royal Merchant UI** — auto-eat tier purchases are blocked on Royal Merchant being built. The `auto_eat_tier` field can be added to `player_settings` now; purchase flow comes when Royal Merchant ships.
+- **Stamina for non-Vanguard**, Warden and Arcanist have no stamina pool. Stamina items don't appear in their pickers.
+- **Stamina depletion during idle**, idle auto-combat always uses 1-input Strike (0 cost). Stamina is an active-play resource only.
+- **Combat stat buffs**, potions don't buff stats; only meals do, and only from inventory.
+- **Mana potions for Lifebinder**, Lifebinder has no mana pool; Mana Vials don't appear in their hotbar picker.
+- **Stacking same-category meal buffs**, one HP/stat meal and one stamina meal can both be active simultaneously, but two HP meals cannot stack.
+- **Royal Merchant UI**, auto-eat tier purchases are blocked on Royal Merchant being built. The `auto_eat_tier` field can be added to `player_settings` now; purchase flow comes when Royal Merchant ships.
 
 ---
 
@@ -439,7 +439,7 @@ void UseConsumable(ItemData item, GameObject target = null) {
 7. Build combat hotbar UI (3 slots, slot 2 shows class-appropriate item type)
 8. Add `TimedBuff` and `WeaponCoating` handling (inventory-only gate)
 9. Implement `BuffManager` for meal buff tracking (one HP/stat meal + one stamina meal simultaneously)
-10. Add stamina depletion to combo system — 2-input costs 8, 3-input costs 18; idle auto-combat uses Strike only (0 cost)
+10. Add stamina depletion to combo system, 2-input costs 8, 3-input costs 18; idle auto-combat uses Strike only (0 cost)
 11. Add auto-eat free tier to `CombatManager.OnPlayerHPChanged`
 12. Add `auto_eat_tier` to `player_settings` Supabase table + sync
 13. Royal Merchant auto-eat tier purchases (blocked on Royal Merchant UI)

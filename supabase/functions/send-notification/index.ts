@@ -117,9 +117,9 @@ serve(async (req) => {
 
 // ── FCM V1 OAuth via service account JWT ──────────────────────────────────
 // Env vars required:
-//   FIREBASE_PROJECT_ID     — e.g. "projectgrimoire-4c75e"
-//   FIREBASE_CLIENT_EMAIL   — from service account JSON
-//   FIREBASE_PRIVATE_KEY    — from service account JSON (include \n literally)
+//   FIREBASE_PROJECT_ID, e.g. "projectgrimoire-4c75e"
+//   FIREBASE_CLIENT_EMAIL, from service account JSON
+//   FIREBASE_PRIVATE_KEY, from service account JSON (include \n literally)
 async function getFCMAccessToken(): Promise<string> {
   const clientEmail = Deno.env.get("FIREBASE_CLIENT_EMAIL")!;
   const privateKey  = Deno.env.get("FIREBASE_PRIVATE_KEY")!.replace(/\\n/g, "\n");

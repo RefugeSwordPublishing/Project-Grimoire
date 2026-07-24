@@ -3,10 +3,10 @@ type: implementation-brief
 spec: slaying-talent-spec.md, combat-engagement-spec.md (v0.2)
 updated: 2026-07-11
 purpose: Wire the Slaying talent elite spawn bonus into the existing combat loop stub.
-         Short brief — one method to implement, already stubbed in CombatManager.
+         Short brief, one method to implement, already stubbed in CombatManager.
 ---
 
-# Slaying Talent — Elite Spawn Bonus Implementation Brief
+# Slaying Talent, Elite Spawn Bonus Implementation Brief
 
 ## What's Already Built
 
@@ -25,7 +25,7 @@ This brief tells Claude Code what `GetEliteSpawnBonus()` should return.
 
 ## Implement SlayingTalent.GetEliteSpawnBonus()
 
-The bonus is milestone-based — specific Slaying levels unlock fixed bonuses,
+The bonus is milestone-based, specific Slaying levels unlock fixed bonuses,
 not a smooth curve. Read current Slaying level from `TalentManager`.
 
 ```csharp
@@ -47,7 +47,7 @@ public static class SlayingTalent {
 
 ---
 
-## Full Elite Chance Formula (already in CombatManager — no change needed)
+## Full Elite Chance Formula (already in CombatManager, no change needed)
 
 ```
 finalEliteChance = 0.06                              // 6% base
@@ -62,11 +62,11 @@ finalEliteChance = 0.06                              // 6% base
 - **Theoretical max: 35% elite chance**
 
 This means a dedicated Slayer with maxed Slaying and high Total Combat Level
-sees an elite roughly 1 in 3 encounters — a genuinely meaningful identity.
+sees an elite roughly 1 in 3 encounters, a genuinely meaningful identity.
 
 ---
 
-## Slaying XP — Also Wire Here
+## Slaying XP, Also Wire Here
 
 While touching Slaying, confirm XP awards on elite and boss kills are
 flowing correctly into the Slaying talent. From the spec:
@@ -85,7 +85,7 @@ void OnEnemyKilled(EnemyData enemy) {
 
 Elites and bosses should have higher `slayingXP` values on their
 `EnemyData` assets than standard enemies. Confirm during the sprite/content
-pass — if not set, add:
+pass, if not set, add:
 
 ```
 Standard enemy slayingXP:  10
@@ -95,7 +95,7 @@ Zone boss slayingXP:       200
 
 ---
 
-## Monster Sign Queue Integration (Tracking Talent — stub)
+## Monster Sign Queue Integration (Tracking Talent, stub)
 
 The Tracking talent's Monster Sign (level 33) feeds an elite encounter queue
 (max 3 queued elites). When the queue has entries, the next combat encounter
@@ -124,7 +124,7 @@ EnemyData GetNextEnemy(ZoneData zone) {
 ```
 
 `TrackingTalent.EliteQueue` returns an empty queue until Tracking is
-implemented — no behaviour change for now.
+implemented, no behaviour change for now.
 
 ---
 

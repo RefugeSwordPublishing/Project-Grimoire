@@ -6,19 +6,19 @@ purpose: Wire AggroManager.cs into the existing CombatManager, VanguardComboMech
          ArcanistConstellationMechanic, and ConstructManager. Read alongside aggro-spec.md.
 ---
 
-# Aggro System — Implementation Brief
+# Aggro System, Implementation Brief
 
 ## What's Already Built (hook into these)
 
-- `CombatManager` — damage events `OnPlayerAttack`, `OnEnemyAttack` already fire
-- `VanguardComboMechanic` — `OnAttackFired(multiplier)` fires on combo resolution
-- `ActiveCombatMechanic` — base class all combat paths implement
-- `ConstructManager` — construct damage events (built with Summoner)
-- `PlayerData` — subclass identity available via `GrimoireManager.currentSubclass`
+- `CombatManager`, damage events `OnPlayerAttack`, `OnEnemyAttack` already fire
+- `VanguardComboMechanic`, `OnAttackFired(multiplier)` fires on combo resolution
+- `ActiveCombatMechanic`, base class all combat paths implement
+- `ConstructManager`, construct damage events (built with Summoner)
+- `PlayerData`, subclass identity available via `GrimoireManager.currentSubclass`
 
 ---
 
-## AggroManager.cs — Create This
+## AggroManager.cs, Create This
 
 Singleton, lives on `GameManager` or its own GameObject:
 
@@ -77,9 +77,9 @@ public class AggroManager : MonoBehaviour {
 
 ---
 
-## Passive Aggro Rates — Set on PlayerData or SubclassData
+## Passive Aggro Rates, Set on PlayerData or SubclassData
 
-Store as a lookup — drive from subclass name so it's data-driven:
+Store as a lookup, drive from subclass name so it's data-driven:
 
 ```csharp
 float GetPassiveRate(string subclass) => subclass switch {
@@ -100,7 +100,7 @@ bool IsTankSubclass(Entity e) =>
 
 ---
 
-## Damage Multipliers — Set on SubclassData ScriptableObject
+## Damage Multipliers, Set on SubclassData ScriptableObject
 
 Rather than hardcoding, add `aggroMultiplier` to `GrimoireData` or a
 `SubclassData` ScriptableObject. Default values:
@@ -111,16 +111,16 @@ Bulwark:      1.2
 Sharpshot:    0.8
 LoneWanderer: 0.6
 Runeweaver:   0.9
-Summoner:     0.5  (personal — constructs generate their own)
-Lifebinder:   0.4  (damage only — heals use separate multipliers)
+Summoner:     0.5  (personal, constructs generate their own)
+Lifebinder:   0.4  (damage only, heals use separate multipliers)
 Shadowblade:  0.3
 ```
 
 ---
 
-## Wire Points — Where to Call AddAggro
+## Wire Points, Where to Call AddAggro
 
-### 1. CombatManager — on player damage dealt
+### 1. CombatManager, on player damage dealt
 
 ```csharp
 // In CombatManager, wherever player damage is applied to enemy:
@@ -130,7 +130,7 @@ void OnPlayerDamageDealt(float damage, EnemyData enemy) {
 }
 ```
 
-### 2. VanguardComboMechanic — taunt combos
+### 2. VanguardComboMechanic, taunt combos
 
 Already stubbed in the combo brief. Wire here:
 
@@ -143,10 +143,10 @@ if (combo.tauntValue > 0)
         combo.tauntValue);
 ```
 
-Taunt value spikes aggro independently of damage — it's a flat addition,
+Taunt value spikes aggro independently of damage, it's a flat addition,
 not multiplied by the class multiplier.
 
-### 3. ArcanistConstellationMechanic — on spell damage
+### 3. ArcanistConstellationMechanic, on spell damage
 
 ```csharp
 // In OnAttackFired for Arcanist:
@@ -159,7 +159,7 @@ void OnAttackFired(float damageDealt) {
 }
 ```
 
-### 4. Lifebinder — on heal events
+### 4. Lifebinder, on heal events
 
 ```csharp
 // In LifebinderCombat, on each heal applied:
@@ -170,13 +170,13 @@ void OnHealApplied(float healAmount, HealType healType) {
         HealType.MassHeal   => healAmount * 0.6f,
         _                   => healAmount * 0.4f
     };
-    // Aggro goes against all active enemies — healer draws attention
+    // Aggro goes against all active enemies, healer draws attention
     foreach (var enemy in CombatManager.ActiveEnemies)
         AggroManager.Instance.AddAggro(enemy, localPlayer, healAggro);
 }
 ```
 
-### 5. ConstructManager — on construct damage
+### 5. ConstructManager, on construct damage
 
 ```csharp
 // In ConstructManager, on each construct hit:
@@ -196,13 +196,13 @@ float GetConstructAggroMultiplier(ConstructType type) => type switch {
 };
 ```
 
-Note: Constructs are `Entity` subclass — `AggroManager` treats them the same
+Note: Constructs are `Entity` subclass, `AggroManager` treats them the same
 as players in the targeting table. `GetTarget()` will return a construct
 if it has the highest aggro value.
 
 ---
 
-## Enemy Target Selection — Wire Into Enemy AI
+## Enemy Target Selection, Wire Into Enemy AI
 
 Currently enemies target the player directly. Replace with:
 
@@ -213,11 +213,11 @@ Entity target = AggroManager.Instance.GetTarget(currentEnemy);
 ```
 
 In solo zone combat this always returns the player (or highest-aggro construct
-for Summoner) — no behavioural change for solo play.
+for Summoner), no behavioural change for solo play.
 
 ---
 
-## CombatManager.Tick — Add AggroManager.Tick
+## CombatManager.Tick, Add AggroManager.Tick
 
 ```csharp
 // In CombatManager.Update():
@@ -239,13 +239,13 @@ AggroManager.Instance.ResetOnCombatEnd();
 
 ---
 
-## Solo Zone Combat — No Behaviour Change
+## Solo Zone Combat, No Behaviour Change
 
 In solo zone combat `CombatManager.ActivePlayers` has one entry.
-Aggro still runs but trivially — only one target exists so `GetTarget()`
+Aggro still runs but trivially, only one target exists so `GetTarget()`
 always returns the player. No special-casing needed.
 
-Summoner is the exception — constructs register as separate entities,
+Summoner is the exception, constructs register as separate entities,
 so the Stone Golem will correctly absorb enemy targeting in solo combat.
 This is intentional and the whole point of the Summoner HP pool mechanic.
 

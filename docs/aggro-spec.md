@@ -5,7 +5,7 @@ updated: 2026-07-11
 promoted-from: CLAUDE.md summary
 ---
 
-# Project Grimoire — Aggro System Spec
+# Project Grimoire, Aggro System Spec
 ### Version 0.1
 
 > This spec promotes the aggro model from the brief description in `CLAUDE.md` into a full
@@ -37,14 +37,14 @@ by the enemy AI every frame to pick its current target.
 
 ## Passive Aggro Rate (per second)
 
-Generated simply by being present in combat — critical for idle sessions.
+Generated simply by being present in combat, critical for idle sessions.
 
 | Subclass | Passive rate/sec | Notes |
 |----------|-----------------|-------|
-| Bulwark | 20 | Highest — pure tank identity |
+| Bulwark | 20 | Highest, pure tank identity |
 | Warlord | 15 | Strong passive + taunt combos |
-| Sharpshot | 2 | Low — ranged damage dealer |
-| Lone Wanderer | 2 | Low — solo/stealth identity |
+| Sharpshot | 2 | Low, ranged damage dealer |
+| Lone Wanderer | 2 | Low, solo/stealth identity |
 | Runeweaver | 3 | Standard damage dealer |
 | Summoner (personal) | 2 | Constructs generate independent aggro (see below) |
 | Lifebinder | 2 | Healing generates separate aggro (see below) |
@@ -58,14 +58,14 @@ Applied to every point of damage or healing dealt:
 
 | Subclass | Multiplier | Notes |
 |----------|-----------|-------|
-| Warlord | ×1.5 | Elevated — intended to out-aggro DPS even when dealing less damage |
-| Bulwark | ×1.2 | Elevated — some damage, lots of passive |
-| Sharpshot | ×0.8 | Reduced — high damage but should stay off primary target |
-| Lone Wanderer | ×0.6 | Lowest non-zero — stealth/survival identity |
+| Warlord | ×1.5 | Elevated, intended to out-aggro DPS even when dealing less damage |
+| Bulwark | ×1.2 | Elevated, some damage, lots of passive |
+| Sharpshot | ×0.8 | Reduced, high damage but should stay off primary target |
+| Lone Wanderer | ×0.6 | Lowest non-zero, stealth/survival identity |
 | Runeweaver | ×0.9 | Near-standard |
-| Summoner (personal) | ×0.5 | Constructs generate their own aggro — see below |
+| Summoner (personal) | ×0.5 | Constructs generate their own aggro, see below |
 | Lifebinder | ×0.4 | Healing generates aggro via separate modifier below |
-| Shadowblade | ×0.3 | Near-zero — highest damage, near-invisible aggro profile |
+| Shadowblade | ×0.3 | Near-zero, highest damage, near-invisible aggro profile |
 
 ### Lifebinder Healing Aggro
 
@@ -87,7 +87,7 @@ Vanguard combo combos with taunt effects add a one-time flat spike to `aggroValu
 | Combo | Subclass | Taunt value added |
 |-------|---------|-----------------|
 | G→U (Bulwark Surge) | Warlord | +200 |
-| U→U (Warcry) | Warlord | +500 (AoE — applies vs all nearby enemies) |
+| U→U (Warcry) | Warlord | +500 (AoE, applies vs all nearby enemies) |
 | G→G (Shield Wall) | Bulwark | +300 |
 | G→U (Aegis Surge) | Bulwark | +250 |
 | G→G→U (Bulwark's Oath) | Bulwark | +400 |
@@ -115,14 +115,14 @@ void Update() {
 
 | Subclass | Decay rate |
 |----------|-----------|
-| Warlord, Bulwark | 2%/sec — slower decay keeps threat through brief pauses |
+| Warlord, Bulwark | 2%/sec, slower decay keeps threat through brief pauses |
 | All others | 5%/sec |
 
 On combat end: all aggro values reset to 0.
 
 ---
 
-## Summoner Constructs — Independent Aggro
+## Summoner Constructs, Independent Aggro
 
 Each active construct maintains its own `aggroValue` against each enemy, separate from the
 Summoner's personal aggro. Enemy AI evaluates all players AND all constructs and targets the
@@ -130,12 +130,12 @@ entity with the highest aggro.
 
 | Construct | Aggro multiplier (of damage dealt) |
 |-----------|-----------------------------------|
-| Stone Golem | ×2.0 — primary aggro sink |
-| Storm Wisp | ×1.2 — chain attacks spread aggro |
+| Stone Golem | ×2.0, primary aggro sink |
+| Storm Wisp | ×1.2, chain attacks spread aggro |
 | Ember Sprite | ×1.0 |
 | Frost Shard | ×0.8 |
 | Celestial Guardian | ×0.5 (of healing done) |
-| Void Shade | ×0.3 — near-invisible |
+| Void Shade | ×0.3, near-invisible |
 
 Constructs use the same 5%/sec decay as non-tank entities.
 Summoner personal aggro (×0.2 of all actions) means the Summoner is almost never targeted while
@@ -143,7 +143,7 @@ constructs are alive.
 
 ---
 
-## Target Selection — Enemy AI
+## Target Selection, Enemy AI
 
 Enemy evaluates its target each frame:
 
@@ -164,7 +164,7 @@ nearest entity.
 
 ---
 
-## Implementation — AggroManager
+## Implementation, AggroManager
 
 `AggroManager.cs` is a singleton manager:
 
@@ -208,7 +208,7 @@ Call `AddPassiveAggro` and `DecayAggro` from `Update`. Call `AddAggro` from:
 
 ## Zone Combat (Solo)
 
-In solo zone combat there is only one player entity and no other players. Aggro is irrelevant —
+In solo zone combat there is only one player entity and no other players. Aggro is irrelevant, 
 the single enemy always targets the player (or, for Summoner, the highest-aggro construct).
 `AggroManager` still runs but with a trivial table: no tank/DPS competition.
 
@@ -220,7 +220,7 @@ Aggro becomes meaningful when 2+ player entities are in the same encounter. Warl
 actively maintain aggro through passive rate + taunt combos or the enemy will drift to a Runeweaver
 dealing heavy damage.
 
-Zone bosses follow the same aggro rules as dungeon bosses — active play only, same AI.
+Zone bosses follow the same aggro rules as dungeon bosses, active play only, same AI.
 
 ---
 

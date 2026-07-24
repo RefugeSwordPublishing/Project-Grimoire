@@ -8,7 +8,7 @@ const corsHeaders = {
 
 interface IdleRewardRequest {
   player_id: string;
-  // Optional — if omitted, Edge Function reads last_active from players table
+  // Optional, if omitted, Edge Function reads last_active from players table
   last_session_at?: string;
 }
 
@@ -37,7 +37,7 @@ serve(async (req) => {
 
     const { player_id, last_session_at }: IdleRewardRequest = await req.json();
 
-    // Read last_active from DB — never trust client-reported time
+    // Read last_active from DB, never trust client-reported time
     const { data: playerRow, error: playerErr } = await supabase
       .from("players")
       .select("last_active")
@@ -60,7 +60,7 @@ serve(async (req) => {
     const elapsedMs = now.getTime() - lastActive.getTime();
     const elapsedMinutes = elapsedMs / (1000 * 60);
 
-    // Under 1 minute — nothing meaningful to report
+    // Under 1 minute, nothing meaningful to report
     if (elapsedMinutes < 1) {
       return emptyResponse(elapsedMinutes);
     }
