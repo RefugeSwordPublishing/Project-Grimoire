@@ -1,6 +1,6 @@
 ---
 type: implementation-status
-updated: 2026-07-22
+updated: 2026-07-24
 purpose: Single source of truth for WHAT IS ACTUALLY BUILT vs. design intent in the specs.
 audience: Claude (Chat or Code) starting a session. Read this FIRST, then the relevant spec.
 ---
@@ -20,14 +20,67 @@ so it builds on the current state rather than the original design.
 - **Phase 1:** complete (managers, ScriptableObjects, Bowstring mechanic, idle loop, Supabase + FCM).
 - **Phase 2:** guild system + Guild Merchant complete (below). Remaining Phase 2: Vanguard combo panel into combat (verify), Exchange buy orders/auctions, zone content, sprite pass. Arcanist trio (Runeweaver, Summoner, Lifebinder), aggro, and the progression rebalance are done.
 
+## Session 2026-07-24, equipment system + assembly + tools-as-gear
+
+### Equipment as a stat-bearing system (gear)
+Weapons and armour now carry stats, derived (not stored) from (quality, type) per
+`stat-scaling-combat-formulas.md` section 2.
+- `ItemData` gains `weaponType` (Bow/Sword/Dagger/Staff/Wand/Axe) and `armorType`
+  (Plate/Leather/Vestments). `EquipmentStats` (Data) holds every spec table: weapon damage band,
+  armour rating, armour evasion base, stat-bonus bands, favoured stats per type.
+- `PlayerData` gains an equipment stat channel (`STREquip..LCKEquip`, `armorRating`,
+  `armorEvasionBase`). ADDITIVE: with nothing equipped every getter matches its old value. New
+  `GetMeleeAttack`/`GetMagicAttack` join `GetRangedAttack`; `GetDefense`/`GetEvasionRating`/
+  `GetMaxHP`/`GetMaxMana` fold in the equipment terms.
+- `EquipmentManager` (new, `GameManager.Equipment`): equip/unequip weapon+armour by slot and tools
+  by talent; recomputes the channel from the spec tables; PlayerPrefs persistence, restored on boot
+  after inventory load. `CharacterPanelManager.equipmentBonus` now reads this channel (was 0).
+- `CombatManager.ResolveAttack` picks the attack by equipped Grimoire path (Vanguard melee/STR,
+  Arcanist magic/INT, Warden ranged/DEX), so weapon damage matters for all paths.
+
+### Tools now behave like gear (CHANGED)
+Tools are no longer auto-applied from the bag. They are equipped into their talent slot (out of the
+bag), and the EQUIPPED tool drives the idle-time multiplier (`IdleManager.GetToolMultiplier`). An
+owned-but-unequipped tool gives no bonus.
+
+### Assembly / quality upgrade (STEP 8)
+`AssemblyManager` (`GameManager.Assembly`): `AttemptUpgrade` walks an item one quality step
+(Crude->Masterwork). Base success 100/70/55/35/20 + 0.18% per assembler-talent level; XP
+15/35/65/110/250 on win OR lose. Success consumes the item + components + rare material and yields
+the next quality; failure returns the item, still consumes components + rare, no downgrade.
+- `AssemblyView` popup (live success %, component checklist, ~0.85s cosmetic build bar).
+- `AssemblyStationView` overlay lists every upgradeable item in the bag; opened from an "Assembly
+  Station" button in the Crafting panel header.
+- As-built simplifications: assembler talent = "Artificing" for all items (the spec's Timber
+  Shaping / Runesmithing / Tailoring do not exist as talents yet); components shared by
+  target-quality band, not per-item.
+
+### Character page equip UI
+- Equip from the inventory item menu (Equip action) OR from an empty slot: tapping an empty gear
+  slot or tool tile opens `EquipPickerUI` listing matching inventory items.
+- Tap a filled slot/tile to unequip. Quality badges show on slots and tool tiles (Crude = none).
+- Tool rows use flexible-fill layout (cannot overflow horizontally); grimoire-slot icon tint fixed.
+
+### Content authored
+- `CreateEquipment`: 6 weapons + 15 armour pieces (Plate/Leather/Vestment x Helm/Chest/Legs/Boots/
+  Gloves), full Crude->Masterwork ladders with upgrade chains.
+- `CreateTools` extended to full ladders; `AssemblyMaterials`: 12 shared band materials.
+- Editor build tools (run into a scene, save after each): `Create Equipment`, `Create Sample
+  Tools`, `Build Assembly View`, `Build Assembly Station`, `Build Equip Picker`, `Build Inventory
+  Context Menu`, `Add Quality Badges`.
+
+### Still open
+- Gear/tool items have no icon art yet (slots show a highlight + short name until art lands).
+- Enchanting bonus + weapon accuracy bonus still stubbed (0). Per-craft smithing talents deferred.
+
 ## Session 2026-07-21/22, Arcanist trio complete + quality/tier correction
 
 ### Character page rebuilt as a paper doll
 Class body sprite centred with 8 equipment slots flanking it, zone-buff row, tool slots (3-3-2
 centred), and collapsible Stats + Advanced sections. The class body comes from a new
 `GrimoireData.bodySprite`, so each Grimoire supplies its own. The Grimoire slot taps to the equip
-picker and long-presses to the Grimoire Book. Tools auto-apply (best owned quality wins, no equip
-step). Built by `Tools > Grimoire > Build Character Paper Doll`.
+picker and long-presses to the Grimoire Book. (Tools auto-applied here; as of 2026-07-24 they equip
+like gear, see the 2026-07-24 section above.) Built by `Tools > Grimoire > Build Character Paper Doll`.
 
 ### Arcanist path complete (all three subclasses)
 - **Constellation live in combat.** `Add Constellation UI` builds the rune arch and wires
