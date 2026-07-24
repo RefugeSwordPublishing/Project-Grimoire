@@ -2,17 +2,17 @@
 type: implementation-brief
 version: 0.2
 updated: 2026-07-19
-purpose: Full progression rebalance — XP curve, per-item idle times, tool quality
+purpose: Full progression rebalance, XP curve, per-item idle times, tool quality
          modifiers, processing ratios, upgrade assembly model, station-as-tool system,
          and processing resource check. Based on playtesting feedback.
 ---
 
-# Progression Rebalance — Implementation Brief
+# Progression Rebalance, Implementation Brief
 ### Version 0.2
 
 ---
 
-## 1. Combat XP — Damage-Based Model
+## 1. Combat XP, Damage-Based Model
 
 Replace the fixed XP-per-kill with damage-proportional XP.
 
@@ -33,7 +33,7 @@ Idle avg damage: 5/hit × 0.3 = 1.5 XP/hit
 1,200 × 2,700 = 3,240,000 XP ≈ level 100 (target: 3,478,000)
 ```
 
-Active players dealing 20–50 damage/hit earn 6–15 XP/hit — meaningfully
+Active players dealing 20-50 damage/hit earn 6-15 XP/hit, meaningfully
 faster than idle without being extreme.
 
 ---
@@ -44,30 +44,30 @@ Total to level 100: **3,478,000 XP**
 
 | Level Range | XP per level | Cumulative |
 |------------|-------------|-----------|
-| 1–5 | 300 | 1,500 |
-| 6–10 | 600 | 4,500 |
-| 11–15 | 1,100 | 10,000 |
-| 16–20 | 1,800 | 19,000 |
-| 21–25 | 2,800 | 33,000 |
-| 26–30 | 4,000 | 53,000 |
-| 31–35 | 5,500 | 80,500 |
-| 36–40 | 7,500 | 118,000 |
-| 41–45 | 10,500 | 170,500 |
-| 46–50 | 14,000 | 240,500 |
-| 51–55 | 18,500 | 333,000 |
-| 56–60 | 24,000 | 453,000 |
-| 61–65 | 31,000 | 608,000 |
-| 66–70 | 39,000 | 803,000 |
-| 71–75 | 49,000 | 1,048,000 |
-| 76–80 | 61,000 | 1,353,000 |
-| 81–85 | 76,000 | 1,733,000 |
-| 86–90 | 94,000 | 2,203,000 |
-| 91–95 | 115,000 | 2,778,000 |
-| 96–100 | 140,000 | 3,478,000 |
+| 1-5 | 300 | 1,500 |
+| 6-10 | 600 | 4,500 |
+| 11-15 | 1,100 | 10,000 |
+| 16-20 | 1,800 | 19,000 |
+| 21-25 | 2,800 | 33,000 |
+| 26-30 | 4,000 | 53,000 |
+| 31-35 | 5,500 | 80,500 |
+| 36-40 | 7,500 | 118,000 |
+| 41-45 | 10,500 | 170,500 |
+| 46-50 | 14,000 | 240,500 |
+| 51-55 | 18,500 | 333,000 |
+| 56-60 | 24,000 | 453,000 |
+| 61-65 | 31,000 | 608,000 |
+| 66-70 | 39,000 | 803,000 |
+| 71-75 | 49,000 | 1,048,000 |
+| 76-80 | 61,000 | 1,353,000 |
+| 81-85 | 76,000 | 1,733,000 |
+| 86-90 | 94,000 | 2,203,000 |
+| 91-95 | 115,000 | 2,778,000 |
+| 96-100 | 140,000 | 3,478,000 |
 
 ---
 
-## 3. Tool Quality — Idle Time Modifier
+## 3. Tool Quality, Idle Time Modifier
 
 Equipped tool quality reduces idle action duration for gathering, processing,
 and crafting (see Section 5 for which tool applies to which talent).
@@ -100,16 +100,16 @@ float GetIdleDuration(float baseDuration, ItemQuality toolQuality) {
 ## 4. Tool Equipment Panel (All Tools Equipped Simultaneously)
 
 Tools move out of the main inventory into a dedicated **Tool Panel** in the
-equipment screen. All tools are equipped simultaneously — no swapping needed.
+equipment screen. All tools are equipped simultaneously, no swapping needed.
 One slot per tool type.
 
 ```
 EQUIPMENT PANEL
 ───────────────────────────────────────────────────────
-COMBAT GEAR (swappable — one active at a time)
+COMBAT GEAR (swappable, one active at a time)
   [ Weapon ] [ Helm ] [ Chest ] [ Legs ] [ Boots ] [ Gloves ]
 
-TOOLS (all active simultaneously — passive bonuses always on)
+TOOLS (all active simultaneously, passive bonuses always on)
   [ Axe ]          [ Pickaxe ]       [ Trapper's Kit ] [ Fishing Rod ]
   [ Smith's Hammer ] [ Carpenter's Kit ] [ Alchemy Kit ]
   [ Cookery Set ]  [ Inscription Set ] [ Weaving Loom ] [ Tailoring Kit ]
@@ -136,19 +136,19 @@ Each tool reduces idle times for its primary and secondary talent.
 | Axe | Felling (gather) | Timber Shaping (processing) | Same material chain |
 | Pickaxe | Delving (gather) | Smelting (processing) | Same material chain |
 | Trapper's Kit | Trapping (gather) | Tanning (processing) | Same material chain |
-| Fishing Rod | Dredging (gather) | — | Dredging only |
-| Smith's Hammer | Runesmithing (crafting) | — | Component forging |
-| Carpenter's Kit | Timber Shaping (crafting) | — | Component milling |
-| Alchemy Kit | Alchemy (crafting) | — | Brewing times |
-| Cookery Set | Cookery (crafting) | — | Cooking times |
-| Inscription Set | Inscription (crafting) | — | Scribing times |
-| Weaving Loom | Arcane Weaving (crafting) | — | Weaving times |
-| Tailoring Kit | Tailoring (crafting) | — | Sewing times |
-| Quiver | Combat (arrow capacity) | — | No idle time effect |
+| Fishing Rod | Dredging (gather) |, | Dredging only |
+| Smith's Hammer | Runesmithing (crafting) |, | Component forging |
+| Carpenter's Kit | Timber Shaping (crafting) |, | Component milling |
+| Alchemy Kit | Alchemy (crafting) |, | Brewing times |
+| Cookery Set | Cookery (crafting) |, | Cooking times |
+| Inscription Set | Inscription (crafting) |, | Scribing times |
+| Weaving Loom | Arcane Weaving (crafting) |, | Weaving times |
+| Tailoring Kit | Tailoring (crafting) |, | Sewing times |
+| Quiver | Combat (arrow capacity) |, | No idle time effect |
 
 ---
 
-## 6. Gathering Idle Times — Per Item
+## 6. Gathering Idle Times, Per Item
 
 Base duration assumes Crude tool (or no tool). Apply tool quality modifier on top.
 
@@ -221,7 +221,7 @@ Base duration assumes Crude tool (or no tool). Apply tool quality modifier on to
 
 | Activity | Unlock Level | Base Duration | XP per action |
 |---------|-------------|--------------|--------------|
-| Common Salvage | 1 | 25s | 5 |
+| Crude Salvage | 1 | 25s | 5 |
 | Ruin Search | 12 | 35s | 8 |
 | Old Coin | 31 | 40s | 10 |
 | Ancient Text Fragment | 38 | 50s | 12 |
@@ -230,7 +230,7 @@ Base duration assumes Crude tool (or no tool). Apply tool quality modifier on to
 | Lost Schematic | 63 | 80s | 24 |
 | Vault Cache | 86 | 110s | 32 |
 | Assembly Rare Material | 79 | 100s | 30 |
-| Epic Assembly Material | 92 | 140s | 42 |
+| Pristine Assembly Material | 92 | 140s | 42 |
 
 ### 🌾 Cultivation
 
@@ -274,10 +274,10 @@ reduces processing idle time using the same multiplier table.
 
 | Tier | Examples | Ratio | Reasoning |
 |------|---------|-------|----------|
-| Tier 1 (Common) | Pine→Plank, Copper→Bronze Bar, Rabbit Hide→Basic Leather | 2:1 | Accessible early game |
-| Tier 2 (Uncommon) | Oak→Plank, Iron→Iron Bar, Fox Hide→Cured Leather | 3:1 | Meaningful cost |
-| Tier 3 (Rare) | Ironbark→Plank, Silver→Bar, Deer Hide→Fine Leather | 4:1 | Rare material feels precious |
-| Tier 4 (Epic) | Mithril→Bar, Wolf Hide→Wolf Leather | 6:1 | Real commitment per bar |
+| Material Tier 1 | Pine→Plank, Copper→Bronze Bar, Rabbit Hide→Basic Leather | 2:1 | Accessible early game |
+| Material Tier 2 | Oak→Plank, Iron→Iron Bar, Fox Hide→Cured Leather | 3:1 | Meaningful cost |
+| Material Tier 3 | Ironbark→Plank, Silver→Bar, Deer Hide→Fine Leather | 4:1 | Rare material feels precious |
+| Material Tier 4 | Mithril→Bar, Wolf Hide→Wolf Leather | 6:1 | Real commitment per bar |
 | Tier 5 (Legendary) | Adamantine→Bar, Drake Scale processing | 8:1 | Endgame scarcity |
 | Tier 6 (Mythic) | Soulite→Bar, Voidtimber→Plank | 10:1 | Maximum rarity feel |
 
@@ -310,7 +310,7 @@ reduces processing idle time using the same multiplier table.
 | Magicwood → Magicwood Plank | 4 | 6:1 | 60s | 18 |
 | Ironbark Heartwood → Premium Plank | 5 | 8:1 | 80s | 25 |
 | Voidtimber → Voidtimber Plank | 6 | 10:1 | 110s | 34 |
-| Worldtree Shard → (direct use) | 6 | No processing | — | — |
+| Worldtree Shard → (direct use) | 6 | No processing |, |, |
 
 ### 🦴 Tanning
 
@@ -396,14 +396,14 @@ Duration is per recipe batch (typically 1 output unless Alchemy mastery applies)
 
 ---
 
-## 9. Tool Upgrade Assembly — Revised Model
+## 9. Tool Upgrade Assembly, Revised Model
 
 **Model: Upgrade existing tool. Old tool consumed on SUCCESS only. Fail = keep existing tool, components consumed.**
 
 Every tool quality level above Crude requires the previous tier tool as an
 input ingredient. Crude tools are built fresh from components.
 
-### Example — Felling Axe
+### Example, Felling Axe
 
 | Target Quality | Previous Tool Required | Additional Components | Rare Material | Success Rate (base) |
 |---------------|----------------------|----------------------|---------------|-------------------|
@@ -420,15 +420,15 @@ during assembly (per `assembly-materials-crafting-system.md`).
 - Old tool returned unchanged
 - Additional components consumed
 - Rare material consumed
-- No downgrade — ever
+- No downgrade, ever
 
 **On success:**
-- Old tool is transformed (same item ID, quality tier updated)
+- Old tool is transformed (same item ID, quality updated)
 - Additional components consumed
 - Rare material consumed
 
 Apply this upgrade pattern to EVERY tool and weapon in `assembly-materials-crafting-system.md`.
-The pattern is identical for all — previous tier tool + tier-appropriate components + rare material.
+The pattern is identical for all, previous tier tool + tier-appropriate components + rare material.
 
 ---
 
@@ -443,7 +443,7 @@ bool CanStartProcessing(ProcessingAction action) {
     int held = InventoryManager.GetQuantity(action.requiredInputItemId);
     if (held < required) {
         IdleUI.ShowBlockedMessage(
-            $"Need {required}× {action.requiredInputItem} — have {held}");
+            $"Need {required}× {action.requiredInputItem}, have {held}");
         return false;
     }
     return true;
@@ -466,14 +466,14 @@ void OnProcessingActionComplete(ProcessingAction action) {
 }
 ```
 
-Same logic applies to crafting (Alchemy, Cookery etc.) — check ingredient
+Same logic applies to crafting (Alchemy, Cookery etc.), check ingredient
 quantities before each batch, pause and notify when empty.
 
 ---
 
-## 11. Assembly XP — Confirmed
+## 11. Assembly XP, Confirmed
 
-Assembly DOES award XP — to the assembler's talent specifically.
+Assembly DOES award XP, to the assembler's talent specifically.
 Per `assembly-materials-crafting-system.md`:
 - Component crafting XP → component crafter's talent
 - Assembly XP → assembler's talent (Runesmithing, Timber Shaping, etc.)
