@@ -1,5 +1,5 @@
 # Project Grimoire, Claude Code Briefing
-### Last updated: 2026-07-11
+### Last updated: 2026-07-25
 
 ---
 
@@ -21,6 +21,22 @@
 3. The specific spec(s) relevant to current work
 
 Use raw URLs (`raw.githubusercontent.com/...`), GitHub folder pages are JS-rendered and fail to fetch.
+
+---
+
+## Handing off to Chat (design collaborator)
+
+Chat (claude.ai) designs the specs but cannot read the private Unity code and has no repo index. It
+CAN cold-fetch public `raw.githubusercontent.com` URLs, but only for files already PUSHED (an unpushed
+doc 404s). So every handoff to Chat follows this flow:
+
+1. Update `docs/implementation-status.md` (as-built truth) and any spec the work touched.
+2. Commit + push the parent repo (bump the submodule too if code changed).
+3. Paste Chat the raw links for every doc **added or changed that session**, pointing it at
+   `implementation-status.md` first.
+
+Base URL: `https://raw.githubusercontent.com/RefugeSwordPublishing/Project-Grimoire/main/docs/<file>.md`
+Keep new docs listed in `docs/README.md` (the index). Never hand Chat a link to an unpushed file.
 
 ---
 
