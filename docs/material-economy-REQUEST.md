@@ -1,9 +1,12 @@
 ---
 type: design-request
-status: open
+status: resolved
+resolved-by: material-economy.md
 for: Chat (design)
 updated: 2026-07-25
 ---
+
+> RESOLVED by `material-economy.md` (canonical). This request is kept for history.
 
 # Design Request: The Material Economy
 

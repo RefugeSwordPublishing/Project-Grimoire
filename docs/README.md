@@ -31,7 +31,8 @@ Raw base: `https://raw.githubusercontent.com/RefugeSwordPublishing/Project-Grimo
 - exchange-unlock-flow.md, Exchange unlock gating
 - inventory-character-system.md, inventory + character sheet
 - equipment-tier-design.md, CANONICAL two-axis model: quality (instance flag + badge, raised at the bench) plus tier (crafted item ladder Bronze->Void); supersedes the old "quality tier" tables
-- material-economy-REQUEST.md, OPEN design ask: tier-material acquisition + naming + leather-chain reconcile
+- material-economy.md, CANONICAL material economy: Delving + Smelting talents, ore->bar->component pipeline, leather renames, acquisition per material
+- material-economy-REQUEST.md, the design ask (RESOLVED by material-economy.md; kept for history)
 - assembly-materials-crafting-system.md, crafting + assembly (design; reconciled to the two-axis model)
 - assembly-implementation-spec.md, STEP 8 assembly implementation spec (upgrade model, success rates, XP, tool tables)
 - enemy-zone-tables.md / phase2-zone-tables.md, zones, enemies, drops, bosses
