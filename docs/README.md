@@ -1,10 +1,10 @@
 # Project Grimoire, Docs Index
 
-**Fetching note:** Claude Code (local) reads these files directly from disk. Claude Chat (claude.ai)
-can only fetch a URL that Dustin pasted into a message or that came from a search result, it cannot
-cold-fetch these raw URLs on its own, and this repo isn't indexed. So for Chat, Dustin pastes the
-relevant file's content or its URL in-message. GitHub folder pages (`/tree/main/docs`) are JS-rendered
-and fail to fetch regardless, use the direct `raw.githubusercontent.com` links below.
+**Fetching note:** these are public raw files and Claude Chat (claude.ai) CAN fetch them directly via
+the `raw.githubusercontent.com` links below, verified working. The only catch: a doc must be PUSHED
+first, an unpushed/uncommitted file 404s. Handoff flow: push the docs, then paste Chat the raw links
+for anything added or changed that session. Claude Code (local) reads them from disk. GitHub folder
+pages (`/tree/main/docs`) are JS-rendered and fail, use the direct raw links.
 
 **Read `implementation-status.md` FIRST.** It records what is actually built vs. design intent;
 when a spec and the code conflict, it wins.
@@ -30,7 +30,9 @@ Raw base: `https://raw.githubusercontent.com/RefugeSwordPublishing/Project-Grimo
 - wayferers-exchange-and-grimoire-system.md, economy, market listings, Grimoire binding
 - exchange-unlock-flow.md, Exchange unlock gating
 - inventory-character-system.md, inventory + character sheet
-- assembly-materials-crafting-system.md, crafting, item quality, assembly (design)
+- equipment-tier-design.md, CANONICAL two-axis model: quality (instance flag + badge, raised at the bench) plus tier (crafted item ladder Bronze->Void); supersedes the old "quality tier" tables
+- material-economy-REQUEST.md, OPEN design ask: tier-material acquisition + naming + leather-chain reconcile
+- assembly-materials-crafting-system.md, crafting + assembly (design; reconciled to the two-axis model)
 - assembly-implementation-spec.md, STEP 8 assembly implementation spec (upgrade model, success rates, XP, tool tables)
 - enemy-zone-tables.md / phase2-zone-tables.md, zones, enemies, drops, bosses
 - daily-weekly-quest-system.md, settings-screen.md, onboarding-flow.md, while-you-were-away.md
