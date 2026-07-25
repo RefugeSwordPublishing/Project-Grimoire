@@ -1,6 +1,6 @@
 ---
 type: implementation-status
-updated: 2026-07-24
+updated: 2026-07-25
 purpose: Single source of truth for WHAT IS ACTUALLY BUILT vs. design intent in the specs.
 audience: Claude (Chat or Code) starting a session. Read this FIRST, then the relevant spec.
 ---
@@ -19,6 +19,44 @@ so it builds on the current state rather than the original design.
 ## Phase status
 - **Phase 1:** complete (managers, ScriptableObjects, Bowstring mechanic, idle loop, Supabase + FCM).
 - **Phase 2:** guild system + Guild Merchant complete (below). Remaining Phase 2: Vanguard combo panel into combat (verify), Exchange buy orders/auctions, zone content, sprite pass. Arcanist trio (Runeweaver, Summoner, Lifebinder), aggro, and the progression rebalance are done.
+
+## Session 2026-07-25, quality-as-flag + tier system + item stats
+
+### Quality is now an INSTANCE FLAG, not a separate asset
+Big architecture change. Quality (Crude..Masterwork) is a flag on the inventory stack, not a distinct
+ItemData per quality. One asset per gear/tool item.
+- `InventorySlot.quality`; stacking is quality-aware (a Crude and a Rough of the same item are
+  separate stacks). No-quality `AddItem/RemoveItem/GetQuantity/HasItem` default to `item.quality`
+  (so materials, which have a fixed rarity, behave as before); overloads take an explicit quality.
+- Persistence: LocalSave stores per-slot quality; **Supabase migration 021** adds a `quality` column
+  and widens the PK to `(player_id, item_id, quality)`; the sync reads/writes it. Materials load at
+  their fixed `item.quality`, gear at the saved flag.
+- The **Assembly bench** raises the flag in place (previous quality unit consumed on success, plus
+  shared band components + a rare material; fail keeps the item). `AssemblyManager` is quality-flag
+  based; the per-quality gear assets were collapsed to one-per-item.
+- Quality **badge shows only for gear/tools**, not materials (a rarity badge on "Masterwork Leather"
+  was meaningless). EquipmentManager carries each equipped piece's quality into the stat channel.
+
+### Equipment Tier axis (equipment-tier-design.md, canonical)
+Two axes: quality (flag, via bench) and **tier** (crafted item ladder, the power axis).
+- `ItemData.materialTier` (1=Bronze .. 5=Void; tools always 1, default 1 keeps old items identical).
+- `EquipmentStats` adds a **flat tier bonus** to weapon damage and armour rating only (additive:
+  `{0,0,20,45,80,125}` weapons; per-type armour). Evasion, stat bonuses, and tool idle-time are
+  quality-only. No compounding.
+- Content: **105 tier gear assets** (Bronze/Iron/Steel/Mithril/Void weapons + Plate; Rabbit-Hide ->
+  Drake Scale leather; Cloth -> Void vestments; Pine -> Heartwood staff/wand), one asset each, base
+  Crude. Authored by `Create Equipment`.
+- **Tier crafting recipes** (`Add Gear Crafting Recipes`): craft tier N from the tier-(N-1) item + a
+  tier material, on the owning smith talent, gated at levels 1/21/42/65/88.
+- **Material economy is NOT built:** the tier materials (Copper/Iron/Steel/Mithril Bar, Void Alloy,
+  limbs, apparatus, drake scale, etc.) are authored but have **no acquisition path** (dev-grant only,
+  `Grant Tier Materials`). Design pending, see `material-economy-REQUEST.md`. Also unresolved: material
+  names reusing quality words (Rough/Masterwork Leather) and the Tanning leather-chain vs tier mapping.
+
+### Item stats in inventory
+Tapping a gear/tool item shows its computed stats (damage/armour/evasion/bonuses, or tool idle-time,
+at its exact quality AND tier) plus a coloured "vs equipped" comparison, in a stats card in the item
+context menu. `ItemStats` helper; materials/consumables show no card.
 
 ## Session 2026-07-24, equipment system + assembly + tools-as-gear
 

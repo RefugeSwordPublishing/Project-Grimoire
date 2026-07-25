@@ -1,19 +1,19 @@
-# Project Grimoire, Stat Scaling & Combat Formulas
+# ⚔️ Project Grimoire , Stat Scaling & Combat Formulas
 ### Version 0.1
 
 ---
 
-## Design Philosophy
+## 📐 Design Philosophy
 
-- **Simple with diminishing returns**, every stat point matters early, returns gradually reduce past soft cap
-- **Hybrid gain**, milestone passives from Talent levels + equipment bonuses + Enchanting on top
-- **Hybrid UI**, character sheet shows derived stats (Attack, Defense, Crit %, Evasion, Block) not raw formulas
-- **No separate stat XP bar**, stats grow as a reward for Talent progression and gear upgrades
-- **Idle compatible**, all formulas work the same during idle auto-combat, just without player-triggered bonuses
+- **Simple with diminishing returns** , every stat point matters early, returns gradually reduce past soft cap
+- **Hybrid gain** , milestone passives from Talent levels + equipment bonuses + Enchanting on top
+- **Hybrid UI** , character sheet shows derived stats (Attack, Defense, Crit %, Evasion, Block) not raw formulas
+- **No separate stat XP bar** , stats grow as a reward for Talent progression and gear upgrades
+- **Idle compatible** , all formulas work the same during idle auto-combat, just without player-triggered bonuses
 
 ---
 
-## Core Stats Reference
+## 📊 Core Stats Reference
 
 | Stat | Abbreviation | Primary Role | Secondary Role |
 |------|-------------|-------------|---------------|
@@ -27,10 +27,10 @@
 
 ---
 
-## Stat Gain Sources
+## 📈 Stat Gain Sources
 
 ### 1. Talent Milestone Passives
-Automatically awarded at specific Talent levels, already embedded in Talent spec sheets.
+Automatically awarded at specific Talent levels , already embedded in Talent spec sheets.
 Small permanent increases. No player action required.
 
 **Examples from spec sheets:**
@@ -40,19 +40,22 @@ Small permanent increases. No player action required.
 - Inscription 41 → WIL +2
 - Gleaning 23 → LCK +2
 
-Full list lives in the Talent Spec Sheets doc, not duplicated here.
+Full list lives in the Talent Spec Sheets doc , not duplicated here.
 
 ### 2. Equipment Bonuses
-The largest source of stat gains. Scales with Assembly quality tier.
+Stat bonuses are quality-only. No tier component. Tier power goes into weapon damage
+and armour rating; stat bonuses stay bounded to avoid compounding with diminishing returns.
 
-| Quality Tier | Stat Bonus Range (per piece) |
-|-------------|---------------------------|
-| Crude | +1 to +2 per relevant stat |
-| Rough | +3 to +5 per relevant stat |
-| Refined | +6 to +9 per relevant stat |
-| Pristine | +10 to +14 per relevant stat |
-| Masterwork | +15 to +20 per relevant stat |
-| Legendary | +25 to +35 per relevant stat *(DLC)* |
+Primary stat gets the top number; secondary gets the bottom.
+
+| Quality | Primary stat | Secondary stat |
+|---------|-------------|---------------|
+| Crude | +2 | +1 |
+| Rough | +5 | +3 |
+| Refined | +9 | +6 |
+| Pristine | +14 | +10 |
+| Masterwork | +20 | +15 |
+| Legendary (DLC) | +35 | +25 |
 
 **Weapon stat focus by type:**
 | Weapon | Primary Stat | Secondary Stat |
@@ -88,24 +91,44 @@ Max enchantment slots per item:
 
 ---
 
-## Derived Combat Stats
+## 🎯 Derived Combat Stats
 
 These are what players see on their character sheet. Calculated from raw stats + equipment + enchants.
 
 ### Attack (Melee)
 ```
-Attack = (STR × 1.5) + Weapon Damage + STR Equipment Bonus
+Attack = (STR × 1.5) + WeaponDamage + STR EquipBonus
 ```
-Weapon Damage is a flat range per weapon tier:
-| Tier | Damage Range |
-|------|-------------|
+
+Weapon damage is determined by two axes: quality (as built in code) plus a flat tier bonus.
+
+```
+WeaponDamageMin = qualityDamageMin[quality] + tierWeaponBonus[materialTier]
+WeaponDamageMax = qualityDamageMax[quality] + tierWeaponBonus[materialTier]
+```
+
+Quality damage bands (as built, unchanged):
+| Quality | Damage band |
+|---------|-------------|
 | Crude | 4-8 |
 | Rough | 8-14 |
 | Refined | 14-22 |
 | Pristine | 22-32 |
 | Masterwork | 32-45 |
+| Legendary (DLC) | 45-60 |
 
-### Attack (Ranged, Warden)
+Tier flat bonus (added to both ends of the band):
+| Tier | Name | Flat bonus |
+|------|------|-----------|
+| T1 | Bronze | +0 |
+| T2 | Iron | +20 |
+| T3 | Steel | +45 |
+| T4 | Mithril | +80 |
+| T5 | Void | +125 |
+
+See equipment-tier-design.md for the full combined table and the ItemData code contract.
+
+### Attack (Ranged , Warden)
 ```
 Ranged Attack = (DEX × 1.2) + Bow Damage + DEX Equipment Bonus
 ```
@@ -115,7 +138,7 @@ Active play modifier (Bowstring mechanic):
 - Draw power modifier: 0.70 at half draw → 1.0 at full draw
 - Idle baseline: Ranged Attack × 0.80 (mid-draw simulation)
 
-### Attack (Magic, Arcanist)
+### Attack (Magic , Arcanist)
 ```
 Magic Attack = (INT × 1.8) + Staff/Wand Damage + INT Equipment Bonus
 ```
@@ -131,20 +154,37 @@ Rune combination modifier:
 ```
 Defense = (VIT × 0.8) + Armor Rating + VIT Equipment Bonus
 ```
-Armor Rating flat value by tier:
-| Tier | Plate | Leather | Vestments |
-|------|-------|---------|-----------|
+Armor Rating is determined by quality (as built in code) plus a flat tier bonus.
+
+Quality base values (as built, unchanged):
+| Quality | Plate | Leather | Vestments |
+|---------|-------|---------|-----------|
 | Crude | 4 | 2 | 1 |
 | Rough | 8 | 5 | 3 |
 | Refined | 14 | 9 | 6 |
 | Pristine | 22 | 15 | 10 |
 | Masterwork | 32 | 22 | 15 |
+| Legendary (DLC) | 45 | 30 | 22 |
+
+Tier flat bonus by armour type:
+| Tier | Plate | Leather | Vestments |
+|------|-------|---------|-----------|
+| T1 Bronze | +0 | +0 | +0 |
+| T2 Iron | +8 | +5 | +3 |
+| T3 Steel | +18 | +12 | +8 |
+| T4 Mithril | +32 | +22 | +14 |
+| T5 Void | +50 | +35 | +22 |
+
+Final Armor Rating = quality base + tier bonus.
+Armour evasion base (Leather/Vestments/Plate Crude: 12/10/4, rising to 21/16/8 at Masterwork)
+is quality-only with no tier component. See equipment-tier-design.md for the full
+evasion table and combined armour rating table.
 
 Defense reduces incoming damage after hit/block resolution:
 ```
 Damage Taken = Max(1, Raw Damage - (Defense × 0.4))
 ```
-The ×0.4 factor means Defense never fully negates damage, always at least 1 damage gets through. Keeps combat meaningful at all tiers.
+The ×0.4 factor means Defense never fully negates damage , always at least 1 damage gets through. Keeps combat meaningful at all tiers.
 
 ### Max HP
 ```
@@ -155,8 +195,8 @@ Max HP = 50 + (VIT × 4) + VIT Equipment Bonus × 3
 | Subclass | HP Modifier | Notes |
 |----------|------------|-------|
 | Standard (all others) | ×1.0 | Base formula |
-| Lifebinder | ×1.6 | Largest HP pool, needs it for spell cost system |
-| Summoner | ×0.25 personal HP | Plus construct HP pool, see Summoner Spec for full effective HP formula |
+| Lifebinder | ×1.6 | Largest HP pool , needs it for spell cost system |
+| Summoner | ×0.25 personal HP | Plus construct HP pool , see Summoner Spec for full effective HP formula |
 
 **Summoner effective HP:**
 ```
@@ -190,9 +230,9 @@ Mana regen: 3/sec out of combat, 1/sec in combat
 
 ---
 
-## Combat Resolution Loop
+## 🎲 Combat Resolution Loop
 
-Every attack, player or enemy, resolves in this order:
+Every attack , player or enemy , resolves in this order:
 
 ```
 Step 1: Hit Roll
@@ -205,7 +245,7 @@ Step 6: Debuff Application (if applicable)
 
 ---
 
-### Step 1, Hit Roll
+### Step 1 , Hit Roll
 
 Attacker's accuracy vs defender's evasion rating:
 ```
@@ -219,21 +259,21 @@ Roll 1-100. If roll ≤ Hit Chance → Hit. Else → Miss (0 damage).
 Player Accuracy = 60 + (DEX × 0.8) + Weapon Accuracy Bonus
 Enemy Accuracy = Base Enemy Accuracy (set per enemy type in zone tables)
 ```
-DEX is the universal accuracy stat for all Grimoires, rewards investing in it regardless of class.
+DEX is the universal accuracy stat for all Grimoires , rewards investing in it regardless of class.
 
 **Enemy accuracy examples:**
 | Enemy | Base Accuracy |
 |-------|--------------|
 | Grimwood Brigand | 55 |
 | Forest Wolf | 62 |
-| Bandit Scout | 70 |
+| Bandit Scout ★ | 70 |
 | Zone 3 enemies | 72-78 |
 | Zone 5 enemies | 82-90 |
 | Raid bosses | 88-95 |
 
 ---
 
-### Step 2, Evasion Check
+### Step 2 , Evasion Check
 
 Only checked if Step 1 results in a Hit.
 ```
@@ -249,17 +289,17 @@ Player Evasion Rating = Armor Evasion Base + (DEX × 0.4)
 | Pristine | 15 | 18 | 14 | 7 |
 | Masterwork | 15 | 21 | 16 | 8 |
 
-No armor has a fixed 15% evasion base, DEX contributes on top.
-Plate nearly eliminates evasion, compensated by high block (Step 3).
+No armor has a fixed 15% evasion base , DEX contributes on top.
+Plate nearly eliminates evasion , compensated by high block (Step 3).
 
 Roll 1-100. If roll ≤ Evasion Rating → Evaded (0 damage). Else → proceed to Step 3.
 
 ---
 
-### Step 3, Block Check
+### Step 3 , Block Check
 
 Only checked if Step 2 results in not evaded.
-Evasion and Block are separate rolls, a hit that isn't evaded can still be blocked.
+Evasion and Block are separate rolls , a hit that isn't evaded can still be blocked.
 
 ```
 Block Chance = Armor Block Base (% by tier and type)
@@ -278,14 +318,14 @@ Roll 1-100. If roll ≤ Block Chance:
 ```
 Blocked Damage = Raw Damage × (1 - Block %)
 ```
-Block reduces damage by the tier's block percentage, not a full negate.
+Block reduces damage by the tier's block percentage , not a full negate.
 A Masterwork Plate block reduces incoming damage by 34%.
 
 If roll > Block Chance → full damage proceeds to Step 4.
 
 ---
 
-### Step 4, Damage Roll
+### Step 4 , Damage Roll
 
 ```
 Raw Damage = Attacker Attack Stat + Random(Weapon Damage Range)
@@ -314,9 +354,9 @@ Final Damage = Max(1, Raw Damage - (Defender Defense × 0.4))
 
 ---
 
-### Step 5, LCK Wild Card
+### Step 5 , LCK Wild Card
 
-Passive random check on every combat action, player only, not enemies.
+Passive random check on every combat action , player only, not enemies.
 LCK stat determines the chance of each wild card firing.
 
 ```
@@ -327,18 +367,18 @@ LCK Wild Card Chance = LCK × 0.1%
 Wild card effects (one random effect fires if check passes):
 | Effect | Description |
 |--------|-------------|
-| **Fortune Strike** | Non-crit hit becomes a crit, full crit damage applies |
+| **Fortune Strike** | Non-crit hit becomes a crit , full crit damage applies |
 | **Debuff Shrug** | Incoming debuff fails to land despite successful hit |
 | **Double Drop** | Next enemy kill drops double loot |
 | **Mana Surge** | Next spell costs 0 mana (Arcanist) |
 | **Quick Nock** | Bowstring draw speed +50% on next shot (Warden) |
 | **Iron Skin** | Incoming damage reduced by 50% on next hit |
 
-These are rare enough to feel like genuine luck moments rather than a primary combat strategy. Works identically during idle, the game rolls passively and applies the result.
+These are rare enough to feel like genuine luck moments rather than a primary combat strategy. Works identically during idle , the game rolls passively and applies the result.
 
 ---
 
-### Step 6, Debuff Application
+### Step 6 , Debuff Application
 
 If the attacker's move applies a debuff (poison, slow, void, etc.):
 ```
@@ -355,7 +395,7 @@ WIL as debuff resistance:
 | 75 | 22.5% reduction |
 | 100 | 30% reduction |
 
-Maximum 30% debuff resistance at WIL 100, debuffs always have a meaningful chance to land.
+Maximum 30% debuff resistance at WIL 100 , debuffs always have a meaningful chance to land.
 
 **WIL healing boost:**
 ```
@@ -365,7 +405,7 @@ Healing Received = Base Heal × (1 + WIL × 0.004)
 
 ---
 
-## Diminishing Returns
+## 📉 Diminishing Returns
 
 Past the soft cap of 50 in any stat, gains reduce gradually:
 
@@ -376,7 +416,7 @@ Effective Stat Value:
   If raw stat 76-100: Effective = 67.5 + (raw - 75) × 0.5
 ```
 
-**Example, DEX accuracy:**
+**Example , DEX accuracy:**
 | Raw DEX | Effective DEX | Accuracy from DEX |
 |---------|--------------|------------------|
 | 25 | 25 | +20 accuracy |
@@ -394,7 +434,7 @@ This means:
 
 ---
 
-## Aggro System, Hybrid Model
+## ⚔️ Aggro System , Hybrid Model
 
 Aggro determines which player enemies target in group combat (dungeons and raids). The hybrid model ensures tanks can reliably hold threat over active damage dealers without requiring constant manual intervention.
 
@@ -404,15 +444,15 @@ Total Aggro = Passive Rate (per second) + (Damage/Healing Dealt × Class Multipl
 ```
 
 ### Passive Aggro Rate (per second)
-Tanks generate baseline aggro just by being present, critical for idle scenarios where a Warlord may not be actively comboing but still needs to hold threat.
+Tanks generate baseline aggro just by being present , critical for idle scenarios where a Warlord may not be actively comboing but still needs to hold threat.
 
 | Class/Subclass | Passive Aggro/sec | Damage Multiplier | Notes |
 |---------------|------------------|------------------|-------|
 | Warlord | 15/sec | ×1.5 | Strong passive + taunt combos |
-| Bulwark | 20/sec | ×1.2 | Highest passive, pure tank |
+| Bulwark | 20/sec | ×1.2 | Highest passive , pure tank |
 | Shadowblade | 0/sec | ×0.3 | Actively avoids aggro |
-| Sharpshot | 2/sec | ×0.8 | Low, damage dealer |
-| Lone Wanderer | 2/sec | ×0.6 | Lowest, stealth/solo |
+| Sharpshot | 2/sec | ×0.8 | Low , damage dealer |
+| Lone Wanderer | 2/sec | ×0.6 | Lowest , stealth/solo |
 | Runeweaver | 3/sec | ×0.9 | Standard damage dealer |
 | Summoner | 2/sec | ×0.5 | Constructs generate own aggro separately |
 | Lifebinder | 2/sec | ×0.4 | Healing generates minor aggro |
@@ -422,11 +462,11 @@ Each Summoner construct generates aggro independently based on damage dealt. See
 
 ### Aggro Decay
 - All players: aggro decays 5% per second when no actions taken
-- Warlord/Bulwark: decay reduced to 2% per second, passive rate compensates for brief pauses
+- Warlord/Bulwark: decay reduced to 2% per second , passive rate compensates for brief pauses
 - On combat end: aggro resets fully for all players
 
 ### Taunt Combos (Vanguard only)
-Certain Vanguard melee combos spike aggro dramatically, see Vanguard Combo System doc for full taunt values. Taunt combos are required in raids to keep the boss on the tank when Runeweavers are dealing heavy damage.
+Certain Vanguard melee combos spike aggro dramatically , see Vanguard Combo System doc for full taunt values. Taunt combos are required in raids to keep the boss on the tank when Runeweavers are dealing heavy damage.
 
 ### Healing Aggro (Lifebinder)
 | Action | Aggro Generated |
@@ -436,25 +476,25 @@ Certain Vanguard melee combos spike aggro dramatically, see Vanguard Combo Syste
 | Mass heal (all allies) | ×0.6 of total heal |
 | Offensive spell | ×0.8 standard |
 
-Healing generates less aggro than damage, Lifebinder rarely pulls enemies off the tank unless healing extremely aggressively.
+Healing generates less aggro than damage , Lifebinder rarely pulls enemies off the tank unless healing extremely aggressively.
 
 ---
-## Character Sheet, Player Facing View
+## 🛡️ Character Sheet , Player Facing View
 
 What players see on their character sheet (no raw formulas visible):
 
 ```
 ┌─────────────────────────────┐
-│ DUSTIN, SHARPSHOT LV 31   │
+│ DUSTIN , SHARPSHOT LV 31   │
 ├─────────────────────────────┤
-│  Attack        84        │
-│  Defense       42        │
-│  Max HP        180       │
-│  Evasion       18%       │
-│  Block         8%        │
-│  Accuracy      78        │
-│  Crit Chance   12%       │
-│  Luck          24        │
+│ ⚔  Attack        84        │
+│ 🛡  Defense       42        │
+│ ❤  Max HP        180       │
+│ 💨  Evasion       18%       │
+│ 🛡  Block         8%        │
+│ 🎯  Accuracy      78        │
+│ ⚡  Crit Chance   12%       │
+│ 🍀  Luck          24        │
 ├─────────────────────────────┤
 │ STR 22  DEX 31  VIT 28     │
 │ INT 14  WIL 19  LCK 24     │
@@ -468,57 +508,59 @@ What players see on their character sheet (no raw formulas visible):
 ```
 
 Tapping any derived stat shows a brief plain-English tooltip:
-- Attack: "Your damage output, higher means harder hits"
+- Attack: "Your damage output , higher means harder hits"
 - Evasion: "Chance to dodge incoming attacks entirely"
 - Block: "When hit, chance to reduce damage by your armor's block value"
 - Luck: "Small chance each combat action triggers a fortune effect"
 
 ---
 
-## Balance Checkpoints
+## ⚖️ Balance Checkpoints
 
 Target combat feel per tier:
 
-| Zone Tier | Expected Player Evasion | Expected Block | Expected Avg Damage Taken |
-|-----------|------------------------|----------------|--------------------------|
-| Tier 1 (Crude gear) | 18-22% | 3-8% | 6-9 per hit |
-| Tier 2 (Rough gear) | 20-26% | 5-12% | 10-16 per hit |
-| Tier 3 (Refined gear) | 22-30% | 8-18% | 16-24 per hit |
-| Tier 4 (Pristine gear) | 24-34% | 11-24% | 20-32 per hit |
-| Tier 5 (Masterwork gear) | 26-38% | 15-34% | 26-42 per hit |
+| Zone Tier | Expected gear | Expected Player Evasion | Expected Block | Expected Avg Damage Taken |
+|-----------|--------------|------------------------|----------------|--------------------------|
+| Zone T1 (Grimwood, Saltmarsh) | Bronze Crude to Refined | 18-22% | 3-8% | 6-9 per hit |
+| Zone T2 (Ashfen, Ironspine) | Iron Crude to Refined | 20-26% | 5-12% | 10-16 per hit |
+| Zone T3 | Steel Crude to Pristine | 22-30% | 8-18% | 16-24 per hit |
+| Zone T4 | Mithril Crude to Masterwork | 24-34% | 11-24% | 20-32 per hit |
+| Zone T5 | Void Crude to Masterwork | 26-38% | 15-34% | 26-42 per hit |
 
-Target: A fully geared player at tier-appropriate equipment should survive ~30 hits before needing to retreat or consume a meal. Under-geared players feel the pressure, Cookery and Alchemy consumables become meaningful.
+Target: A fully geared player at tier-appropriate equipment should survive ~30 hits before needing to retreat or consume a meal. Under-geared players feel the pressure , Cookery and Alchemy consumables become meaningful.
 
 ---
 
-## DLC Stat Notes
+## 📋 DLC Stat Notes
 
 ### CHA Progression Roadmap
 CHA is intentionally limited in base game to avoid dead stat syndrome. Each DLC meaningfully expands its role:
 
 | Phase | CHA Role |
 |-------|---------|
-| Base game | Exchange margin bonus only, minor passive effect |
-| Beastbond DLC | Taming success rate, familiar bond strength, creature quality tier |
-| Bard DLC | Primary combat stat, performance debuffs, party aura buffs |
+| Base game | Exchange margin bonus only , minor passive effect |
+| Beastbond DLC | Taming success rate, familiar bond strength, creature quality |
+| Bard DLC | Primary combat stat , performance debuffs, party aura buffs |
 | Faction DLC | NPC standing gains, diplomatic quest rewards, faction war influence |
 
 **Implementation constraint:** Do NOT hardcode CHA as economy-only. Leave combat and taming formula slots returning 0 until relevant DLC ships.
 
-### Bard / Minstrel (DLC, path TBD)
+### Bard / Minstrel (DLC , path TBD)
 - Primary stats: WIL and CHA
-- CHA combat role: Performance debuffs, reduces enemy accuracy and damage
+- CHA combat role: Performance debuffs , reduces enemy accuracy and damage
 - WIL combat role: Extended buff duration, sustain auras for party
 - Specific formula to be designed at DLC spec phase
 
-### Beastbond (DLC, Warden path)
+### Beastbond (DLC , Warden path)
 - Primary stats: DEX and CHA
-- CHA taming role: Taming success rate, familiar bond strength, creature quality tier
+- CHA taming role: Taming success rate, familiar bond strength, creature quality
 - DEX taming role: Weakening and approaching creatures during taming encounter
 - Specific taming formula to be designed at DLC spec phase
 
 ---
 
-*Document version 0.3, Stat Scaling & Combat Formulas*
-*Added: Aggro hybrid model, construct aggro system, healing aggro rates*
-*Next: Onboarding flow · While You Were Away screen · Main design doc cleanup*
+*Document version 0.4, Stat Scaling and Combat Formulas*
+*v0.4: Two-axis model. Weapon damage uses as-built quality bands plus a flat tier bonus.*
+*Armour rating uses as-built quality base plus a flat tier bonus. Evasion and stat bonuses*
+*are quality-only (no tier component). See equipment-tier-design.md for tier tables,*
+*raw material gates, talent level gates, the full combined tables, and the code contract.*

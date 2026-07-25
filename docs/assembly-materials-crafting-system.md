@@ -1,12 +1,27 @@
-# ⚔️ Project Grimoire, Assembly Materials & Crafting System
-### Version 0.5
+# Project Grimoire, Assembly Materials and Crafting System
+### Version 0.6
+
+> NOTE (v0.6): The old table listing Bronze, Iron, Steel, Mithril, and Void as
+> quality upgrade steps is retired. Bronze through Void are now material tiers,
+> crafted inside the owning talent (Runesmithing, Timber Shaping, Tailoring,
+> Artificing). Quality (Crude through Masterwork) is a separate bench upgrade.
+> This document covers quality upgrades only.
+> See equipment-tier-design.md for the material tier ladder, raw material gates,
+> and talent level requirements.
+>
+> As-built: the bench uses shared components per quality band, not per-item components.
+> Components are: Rough = Iron Fitting + Ash Haft + Rough Binding Sigil;
+> Refined = Steel Fitting + Oak Haft + Refined Binding Sigil;
+> Pristine = Mithral Fitting + Ironwood Haft + Pristine Binding Sigil;
+> Masterwork = Adamant Fitting + Heartwood Haft + Masterwork Binding Sigil.
+> The per-item component tables below are retained as design reference.
 
 ---
 
 ## 📐 Core Assembly Rules
 
 ### Assembly Ownership
-Each weapon, armor piece, and tool has a designated **assembler Talent**, the Talent whose specialist would logically be the expert in that item. The assembler sources components from other Talents via trade or the Wayfarer's Exchange.
+Each weapon, armor piece, and tool has a designated **assembler Talent** , the Talent whose specialist would logically be the expert in that item. The assembler sources components from other Talents via trade or the Wayfarer's Exchange.
 
 **The assembler always:**
 - Provides at least one component themselves
@@ -26,16 +41,16 @@ Each weapon, armor piece, and tool has a designated **assembler Talent**, the Ta
 ### Assembly XP
 - Component crafters receive XP in their Talent at time of crafting
 - **Assembly XP** goes to the assembler Talent specifically
-- Assembly is a meaningful economy role, high-level assemblers get better attunement bonuses
+- Assembly is a meaningful economy role , high-level assemblers get better attunement bonuses
 
 ### Attunement Bonuses During Assembly
 Two distinct attunement moments per crafting Talent:
 
-**1. Assembly attunement**, when combining components at the Workbench:
+**1. Assembly attunement** , when combining components at the Workbench:
 - Success adds +% to rare material tier success rate
 - Specific % determined by assembler Talent level (see Attunement Data Spec)
 
-**2. Component crafting attunement**, when making individual components:
+**2. Component crafting attunement** , when making individual components:
 - Success gives XP boost
 - Small % chance to save secondary component (not consumed)
 
@@ -62,7 +77,7 @@ Attempt to upgrade Rough Axe → Refined Axe
 **Rules:**
 - The existing tool is NEVER destroyed or downgraded on fail
 - Only the upgrade components and rare material are consumed on fail
-- There is no guaranteed floor output, if you attempt and fail, you keep what you had
+- There is no guaranteed floor output , if you attempt and fail, you keep what you had
 - Crude items are always built fresh (no previous tier required)
 - Every tier above Crude requires the previous tier tool as an ingredient
 
@@ -86,7 +101,7 @@ This applies to ALL tools and weapons. The old fail cascade is removed entirely.
 
 All tools and weapons above Crude quality require the previous quality item as an
 ingredient. Crude is always built fresh from components. This eliminates
-market flooding, lower tier items are consumed in the upgrade chain.
+market flooding , lower tier items are consumed in the upgrade chain.
 
 ```
 Crude  → built fresh from components
@@ -98,11 +113,11 @@ Masterwork → Pristine + tier-5 components + rare material
 
 **On success:** Previous tier tool is replaced by the new quality item.
 **On fail:** Previous tier tool returned unchanged. Components and rare material consumed.
-**No downgrade on fail, ever.**
+**No downgrade on fail , ever.**
 
 The attunement bonus during assembly improves success chance.
 High-level assemblers offering upgrade services charge for their
-attunement skill, a genuine economy role.
+attunement skill , a genuine economy role.
 
 ### Base Success Rates
 
@@ -121,7 +136,7 @@ Attunement bonus = assembler Talent level × 0.18% (max +18% at level 100).
 ### 🏹 Bow (Warden primary weapon)
 **Assembler:** Timber Shaping
 **Assembly XP:** Timber Shaping
-**Rare Material:** Gemstone (from Delving), forces cross-Talent purchase
+**Rare Material:** Gemstone (from Delving) , forces cross-Talent purchase
 
 | Quality Target | Timber Shaping Component | Runesmithing Component | Rare Material |
 |---------------|--------------------------|----------------------|---------------|
@@ -228,7 +243,7 @@ Attunement bonus = assembler Talent level × 0.18% (max +18% at level 100).
 ### 🪓 Felling Axe (Felling tool)
 **Assembler:** Timber Shaping
 **Assembly XP:** Timber Shaping
-**Rare Material:** Gemstone (from Delving), cross-Talent purchase required
+**Rare Material:** Gemstone (from Delving) , cross-Talent purchase required
 
 | Quality Target | Runesmithing Component | Timber Shaping Component | Rare Material |
 |---------------|------------------------|--------------------------|---------------|
@@ -245,7 +260,7 @@ Attunement bonus = assembler Talent level × 0.18% (max +18% at level 100).
 ### ⛏️ Pickaxe (Delving tool)
 **Assembler:** Runesmithing
 **Assembly XP:** Runesmithing
-**Rare Material:** Amber (from Felling), cross-Talent purchase required
+**Rare Material:** Amber (from Felling) , cross-Talent purchase required
 
 | Quality Target | Runesmithing Component | Timber Shaping Component | Rare Material |
 |---------------|------------------------|--------------------------|---------------|
@@ -414,7 +429,7 @@ Attunement bonus = assembler Talent level × 0.18% (max +18% at level 100).
 
 ## 🛡️ ARMOR ASSEMBLY TABLES
 
-### ⚔️ Plate/Metal Armor (Vanguard, per piece)
+### ⚔️ Plate/Metal Armor (Vanguard , per piece)
 **Assembler:** Runesmithing
 **Assembly XP:** Runesmithing
 **Components:** 3 + rare material
@@ -428,12 +443,12 @@ Attunement bonus = assembler Talent level × 0.18% (max +18% at level 100).
 | Pristine | Mithril Plate Body | Wolf Leather Padding | Adamantine Fastenings | Refined Gemstone |
 | Masterwork | Adamantine Plate Body | Masterwork Padding | Starstone Fastenings | Pristine Gemstone |
 
-> Pieces: Helm, Chest, Legs, Boots, Gauntlets, each assembled separately
+> Pieces: Helm, Chest, Legs, Boots, Gauntlets , each assembled separately
 > Full Masterwork Plate set requires 5 separate Masterwork Assembly attempts
 
 ---
 
-### 🏹 Leather Armor (Warden, per piece)
+### 🏹 Leather Armor (Warden , per piece)
 **Assembler:** Tailoring
 **Assembly XP:** Tailoring
 **Components:** 3 + rare material
@@ -449,7 +464,7 @@ Attunement bonus = assembler Talent level × 0.18% (max +18% at level 100).
 
 ---
 
-### 🔮 Magical Vestments (Arcanist, per piece)
+### 🔮 Magical Vestments (Arcanist , per piece)
 **Assembler:** Tailoring
 **Assembly XP:** Tailoring
 **Components:** 3 + rare material
@@ -463,7 +478,7 @@ Attunement bonus = assembler Talent level × 0.18% (max +18% at level 100).
 | Pristine | Drake Scale Weave Body | Silk Lining | Ancient Text Binding | Refined Aetheric Filament |
 | Masterwork | Celestine Weave Body | Arcane Lining | Grimoire Page Binding | Pristine Aetheric Filament |
 
-> Pieces: Cowl, Robe, Leggings, Boots, Gloves, each assembled separately
+> Pieces: Cowl, Robe, Leggings, Boots, Gloves , each assembled separately
 
 ---
 
@@ -479,7 +494,7 @@ Attunement bonus = assembler Talent level × 0.18% (max +18% at level 100).
 
 ---
 
-## 🔍 Gleaning, Universal Rare Material Drop Bonus
+## 🔍 Gleaning , Universal Rare Material Drop Bonus
 
 Gleaning level adds a bonus rare material drop chance across ALL sources:
 
@@ -504,7 +519,7 @@ Gleaning level adds a bonus rare material drop chance across ALL sources:
 | Assembled Weapons | Refined - Pristine | Pre-assembled; ready to equip |
 | Assembled Armor pieces | Refined - Pristine | Pre-assembled; ready to equip |
 | Boss guaranteed drop | Rare Material T2-T4 | Always drops; tier scales with dungeon level |
-| Summoner's Tome | Rare drop, Tier 3+ dungeons and raids only | Unlocks Summoner deep subclass tree |
+| Summoner's Tome | Rare drop , Tier 3+ dungeons and raids only | Unlocks Summoner deep subclass tree |
 
 ### Raid Drops
 | Drop Type | Quality Range | Notes |
@@ -517,5 +532,7 @@ Gleaning level adds a bonus rare material drop chance across ALL sources:
 
 ---
 
-*Document version 0.4, Assembly Materials & Crafting System*
-*Next: Slaying Talent full spec · Attunement data spec updates · Session 3 handoff*
+*Document version 0.6, Assembly Materials and Crafting System*
+*v0.6: Two-axis model applied. Bronze/Iron/Steel/Mithril/Void removed as quality-step*
+*components. This doc now covers quality upgrades (Crude through Masterwork) at the bench*
+*only. Material tier ladder lives in equipment-tier-design.md.*
