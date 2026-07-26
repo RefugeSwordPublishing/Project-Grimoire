@@ -76,6 +76,11 @@ Six server-authoritative SECURITY DEFINER RPCs, mirroring `purchase_store_listin
 - **Button skin hook:** `BuildExchangeUI.Button` reads optional `ButtonSprite` / `ButtonFont` (+
   `ButtonHeight`/`ButtonFontSize`) so the coming sprite-button pass re-skins every Exchange button in
   one place; null keeps the flat look.
+- **Layout fix:** `HRow` now pins `flexibleHeight = 0` (its HorizontalLayoutGroup reported a positive
+  flexible height, so the parent VLG stretched every button row to fill leftover space, that was the
+  oversized-button bug). Button rows now honour their preferredHeight. Also: panel item icons +30%,
+  number fields right-aligned (bid field centered at 60% width), Watch / Create Buy Order / Back
+  compacted and centered (~25% width).
 - **Deferred:** buy-order fill quantity picker (fills 1 at a time), FCM outbid/sold notifications
   (schema flag `ending_soon_notified` ready), a project-wide UITheme for the sprite-button swap.
 
