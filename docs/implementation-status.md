@@ -18,7 +18,41 @@ so it builds on the current state rather than the original design.
 
 ## Phase status
 - **Phase 1:** complete (managers, ScriptableObjects, Bowstring mechanic, idle loop, Supabase + FCM).
-- **Phase 2:** guild system + Guild Merchant complete (below). Remaining Phase 2: Vanguard combo panel into combat (verify), Exchange buy orders/auctions, zone content, sprite pass. Arcanist trio (Runeweaver, Summoner, Lifebinder), aggro, and the progression rebalance are done.
+- **Phase 2:** guild system + Guild Merchant complete (below). Exchange buy orders + auctions now functional server-side (migration 022) + client-wired. Remaining Phase 2: Vanguard combo panel into combat (verify), zone content, sprite pass, auction buyout UI control. Arcanist trio (Runeweaver, Summoner, Lifebinder), aggro, and the progression rebalance are done.
+
+## Session 2026-07-25, Wayfarer's Exchange buy orders + auctions
+
+The Exchange tables existed since migration 004 and the store side was modernised in 020, but the
+**transaction RPCs for buy orders and auctions were never built**, and buy-order placement deducted
+escrow client-side only (so `cancel_buy_order` refunded money never charged, an exploit).
+
+### Server (migration 022, run AFTER 021)
+Six server-authoritative SECURITY DEFINER RPCs, mirroring `purchase_store_listing` (mutate
+`player_currency`/`player_inventory`, return the caller's new balance):
+- `place_buy_order` (real escrow out of the wallet), `fulfill_buy_order` (0% fee, delivers the item
+  to the buyer server-side, pays the seller from escrow, draws down remaining qty).
+- `place_auction_bid` (escrow bid, refund previous high bidder, 5% minimum increment enforced),
+  `buy_auction_buyout` (fee on sale, refund standing bidder, deliver item, complete),
+  `close_ended_auctions` (hourly cron: winner delivery + seller payout, or return to seller on no bids).
+- `sweep_expired_buy_orders` (daily cron: refund remaining escrow).
+- Added `quality int` to auctions + buy orders (delivery is quality-aware per the migration-021
+  `player_inventory` key), `expires_at` on buy orders, `ending_soon_notified` on auctions.
+- **SM-only** (buy orders/auctions match the as-built single-price columns; the store side stays
+  dual-currency). Item delivery uses the `(player_id, item_id, quality)` inventory key.
+- **pg_cron not yet scheduled:** enable pg_cron, then schedule `close_ended_auctions` (hourly) +
+  `sweep_expired_buy_orders` (daily) per the comment block in 022.
+
+### Client (MarketManager + ExchangeUI)
+- `PlaceBuyOrder` now routes through `place_buy_order` (server escrow) and adopts the returned
+  balance instead of pre-deducting client-side. `CreateAuctionListing` carries item quality.
+- New `PlaceAuctionBid` / `AuctionBuyout` methods (adopt balance; buyout adds the delivered item).
+- `fulfill_buy_order` result adopted for the seller's balance.
+- Auction rows in the item-detail view are display-only in the builder (`withButton:false`); made
+  tappable at runtime → **bid the minimum next increment**. Client changes are code-only (no scene
+  rebuild).
+- **Deferred:** a dedicated auction **buyout** button + a custom bid-amount panel (RPC +
+  `MarketManager.AuctionBuyout` are ready; only the UI control is pending), buy-order fill quantity
+  picker (fills 1 at a time), FCM outbid/sold notifications (schema flag `ending_soon_notified` ready).
 
 ## Session 2026-07-25, quality-as-flag + tier system + item stats
 
