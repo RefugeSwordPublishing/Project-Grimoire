@@ -123,6 +123,31 @@ rewarding step (the user's idea).
   (schema flag `ending_soon_notified` ready), a project-wide UITheme for the sprite-button swap,
   server-authoritative currency.
 
+## Session 2026-07-26, combat rebuild hardening + Warden ability tiers
+
+### Combat panel rebuild is now self-contained
+`Build Character Combat UI` destroys + rebuilds `ZoneCombatPanel`, which used to silently drop
+everything other tools layer onto it (3D scene link, Warden ring, Leave button, minimized-bar
+Resume). The builder now re-applies all of them in one run: re-links the surviving `CombatScene3D`
+(recreates the RawImage + wires `_sceneController`), then runs `BuildWardenAbilityUI`,
+`AddCombatLeaveButton`, and `BuildMinimizedCombatBar`. Also: the combat hub (zone-choose) wraps its
+header/body in its own `SafeAreaFitter` (X clears the notch, survives rebuilds); the in-combat draw
+charge bar/DRAW% are hidden in the 3D scene (the trajectory arc is the feedback); `ZoneData.background`
+is a dedicated in-combat backdrop sprite (falls back to `icon`).
+
+### Warden ability stack = hold-duration tiers (warden-combat-spec)
+Replaced the wrong tap-to-arm buttons. `WardenBowstringMechanic` accumulates hold time while drawing
+and exposes a per-subclass tier ladder; the highest fully-charged, unlocked, off-cooldown tier fires
+on release (falls back to the best lower tier when a higher one is locked/cooling).
+- Sharpshot: Standard 0.3s / Barbed 1.5s (Lv31, 20% bleed) / Full Draw 2.5s / Long Shot 4.0s (Lv86, 90s CD, x8).
+- Lone Wanderer: Rapid 0.3s (Lv44, 8s CD, 3 shots) / Standard 1.5s / Full Draw 2.5s.
+- Row tap ability: Sharpshot Armor Piercer (primes +armour-ignore), Lone Wanderer Fade (dodge next hit).
+- `WardenAbilityUI` draws a right-side stack whose rings FILL as you draw (lowest first, then the
+  next), plus one bottom row button. Per the user's note the tiers visibly fill (overrides the spec's
+  "no ring loader"). Ability buttons are procedural round rings (swap for authored sprites later).
+- Approximations pending deeper combat plumbing: Long Shot's guaranteed-weak-point and Armor Piercer's
+  true armour-ignore are flat multipliers for now; Rapid Fire fires 3 `FireAttack` calls.
+
 ## Session 2026-07-25, quality-as-flag + tier system + item stats
 
 ### Quality is now an INSTANCE FLAG, not a separate asset
