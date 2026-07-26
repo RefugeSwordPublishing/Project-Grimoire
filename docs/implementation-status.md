@@ -81,6 +81,19 @@ Six server-authoritative SECURITY DEFINER RPCs, mirroring `purchase_store_listin
   oversized-button bug). Button rows now honour their preferredHeight. Also: panel item icons +30%,
   number fields right-aligned (bid field centered at 60% width), Watch / Create Buy Order / Back
   compacted and centered (~25% width).
+### UX pass 3 (watchlist, toggles, dual currency, guild parity)
+- **Watchlist pins to top:** opening the Exchange with no search lists the player's watched items
+  (from `exchange_watchlist`); typing switches to the typeahead. Makes Watch meaningful.
+- **Toggle selected-state:** Store/Auction type + 1/7/15-day duration (and the new currency toggle)
+  show a camel/dim tint for the active choice.
+- **Dual currency (migration 025):** buy orders now escrow SM AND GM (either may be 0); auctions are
+  single-currency (seller picks SM or GM at creation, bids/buyout in it, so bids stay rankable). All
+  buy-order/auction RPCs rewritten with a `_wallet_credit(player, cur, amt)` helper and return both
+  balances; client adopts both. Buy-order panel gains a GM offer field; auction create gains an
+  SM/GM currency toggle; the bid panel shows the auction's currency.
+- **Guild merchant parity:** `BuildGuildBankUI` got the same `HRow` flexibleHeight fix + a
+  `LabeledInput` (captions outside + right-aligned, right-aligned number fields); the listing
+  composer's qty/price(SM+GM)/note now match the Exchange styling.
 - **Deferred:** buy-order fill quantity picker (fills 1 at a time), FCM outbid/sold notifications
   (schema flag `ending_soon_notified` ready), a project-wide UITheme for the sprite-button swap.
 
