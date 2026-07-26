@@ -202,6 +202,8 @@ See `docs/deferred-systems-dlc-notes.md` for full list. Hard stops:
 - Bloodweaver, Warlock, Kensei, Beastbond, Bard/Minstrel (DLC)
 - Divination Talent (show "???" placeholder on Talents page)
 - Black Ledger (removed from base game)
+- Enchanting (removed from base game; Inscription remains a scroll/codex crafting talent only. The
+  former enchant gates + `enchantBonus` stat channel were deleted 2026-07-25)
 - Legendary quality items (the `ItemQuality.Legendary` value exists for future content, but do
   not author any base-game item at that quality)
 

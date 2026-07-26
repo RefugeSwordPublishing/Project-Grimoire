@@ -213,9 +213,9 @@ the next quality; failure returns the item, still consumes components + rare, no
 ### Still open
 - Gear/tool items have no icon art yet (slots show a highlight + short name until art lands).
 - **Weapon accuracy now live:** `EquipmentStats.WeaponAccuracyBonus(weaponType)` (bow +12 .. axe +3)
-  flows through `PlayerData.weaponAccuracy` into the combat hit chance. **Enchanting bonus** is still a
-  placeholder (0), it needs a real enchant system (enchant items + apply-to-gear + UI), not a stub.
-  Per-craft smithing talents deferred.
+  flows through `PlayerData.weaponAccuracy` into the combat hit chance. **Enchanting was removed** from
+  the base game (CLAUDE.md do-not-build); the `enchantBonus` stat channel + Inscription enchant gates
+  were deleted. Per-craft smithing talents deferred.
 - **Lifebinder shields now live:** shield spells (Holy Aegis) grant a real absorb buffer
   (`PlayerData.ShieldHP` soaks damage before HP; refresh-not-stack). Still deferred: cleanse (needs a
   debuff system), revive (needs downed-ally/party state), drag-to-ally targeting. Warden ability ring
