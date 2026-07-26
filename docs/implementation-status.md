@@ -94,8 +94,20 @@ Six server-authoritative SECURITY DEFINER RPCs, mirroring `purchase_store_listin
 - **Guild merchant parity:** `BuildGuildBankUI` got the same `HRow` flexibleHeight fix + a
   `LabeledInput` (captions outside + right-aligned, right-aligned number fields); the listing
   composer's qty/price(SM+GM)/note now match the Exchange styling.
+### UX pass 4 (seller earnings + toasts)
+- **Seller earnings surfaced:** currency is client-authoritative (`SaveCurrency` PATCHes an absolute
+  value), so a seller's client showed a stale balance and could even overwrite the server-side sale
+  credit. `GameManager.RefreshCurrencyFromServer` reloads `player_currency` on Exchange open and
+  adopts it **upward only** (never clobbers an unsaved local gain). The top bar polls the balance, so
+  it updates live.
+  - **Known limitation:** if the seller's client autosaves a stale balance in the window between the
+    sale and reopening the Exchange, the credit can still be lost. Proper fix = server-authoritative
+    currency (client sends deltas via RPCs) or a claim-based pending-earnings row. Tracked for later.
+- **Toasts:** reused `LootToastUI` (now has a static `Instance` + `ShowMessage`); Exchange toasts
+  "Bought X", "Sold X", and "Sale earnings: +N" (from the reopen refresh delta).
 - **Deferred:** buy-order fill quantity picker (fills 1 at a time), FCM outbid/sold notifications
-  (schema flag `ending_soon_notified` ready), a project-wide UITheme for the sprite-button swap.
+  (schema flag `ending_soon_notified` ready), a project-wide UITheme for the sprite-button swap,
+  server-authoritative currency.
 
 ## Session 2026-07-25, quality-as-flag + tier system + item stats
 
