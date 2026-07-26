@@ -48,11 +48,12 @@ Six server-authoritative SECURITY DEFINER RPCs, mirroring `purchase_store_listin
 - New `PlaceAuctionBid` / `AuctionBuyout` methods (adopt balance; buyout adds the delivered item).
 - `fulfill_buy_order` result adopted for the seller's balance.
 - Auction rows in the item-detail view are display-only in the builder (`withButton:false`); made
-  tappable at runtime → **bid the minimum next increment**. Client changes are code-only (no scene
-  rebuild).
-- **Deferred:** a dedicated auction **buyout** button + a custom bid-amount panel (RPC +
-  `MarketManager.AuctionBuyout` are ready; only the UI control is pending), buy-order fill quantity
-  picker (fills 1 at a time), FCM outbid/sold notifications (schema flag `ending_soon_notified` ready).
+  tappable at runtime → open the **bid panel**: a custom bid-amount input (pre-filled to the minimum,
+  shows current + minimum bid) plus a **Buyout** button (shown only when the auction has a buyout).
+  `ExchangeBidPanel` built by `BuildPlaceBid` in `Build Exchange UI` (re-run it + Ctrl+S to get the
+  panel). Server errors are mapped to player-facing messages (outbid, insufficient funds, ended).
+- **Deferred:** buy-order fill quantity picker (fills 1 at a time), FCM outbid/sold notifications
+  (schema flag `ending_soon_notified` ready).
 
 ## Session 2026-07-25, quality-as-flag + tier system + item stats
 
