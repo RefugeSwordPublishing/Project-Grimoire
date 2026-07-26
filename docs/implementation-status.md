@@ -218,8 +218,12 @@ the next quality; failure returns the item, still consumes components + rare, no
   were deleted. Per-craft smithing talents deferred.
 - **Lifebinder shields now live:** shield spells (Holy Aegis) grant a real absorb buffer
   (`PlayerData.ShieldHP` soaks damage before HP; refresh-not-stack). Still deferred: cleanse (needs a
-  debuff system), revive (needs downed-ally/party state), drag-to-ally targeting. Warden ability ring
-  (Barbed/Long Shot, Fade) is still unbuilt, a new active-ability layer, not a stub.
+  debuff system), revive (needs downed-ally/party state), drag-to-ally targeting.
+- **Warden ability ring built:** 3 active abilities on `WardenBowstringMechanic` with cooldowns:
+  Long Shot (next shot x2.2, 6s), Barbed Shot (arms a bleed DoT via `CombatManager.ApplyEnemyDot`, 8s),
+  Fade (`SetDodgeNextEnemyAttack`, dodges the next enemy strike, 12s). `WardenAbilityUI` self-populates
+  a 3-button ring with cooldown fills; `Add Warden Ability UI` editor tool wires it into the combat
+  view (shown only when a Warden Grimoire is engaged). Enchanting was REMOVED from the base game.
 
 ## Session 2026-07-21/22, Arcanist trio complete + quality/tier correction
 
