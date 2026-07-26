@@ -64,8 +64,20 @@ Six server-authoritative SECURITY DEFINER RPCs, mirroring `purchase_store_listin
   **recent-average suggested price** (qty-weighted from sale history) alongside the fee; tighter buttons.
 - **Item icons** added to browse / detail / my-listings / my-buy-order rows and the create / bid /
   buy-order panels (from `ItemData.icon`, transparent when art is missing).
+### UX pass 2 (browse rework + auction cancel)
+- **Auction cancel** built: `cancel_auction` RPC (migration 024) refunds the standing bidder and
+  returns the item to the seller; My Listings auction rows now wire it (previously did nothing).
+- **Search is now a live typeahead** over the item registry (client-side, tradeable items only via
+  `isProtected`), replacing the broken server-filter search. The Store/Auction/Buy-Order filter
+  buttons + sort dropdown are removed; picking a result opens that item's market.
+- **Item market view = collapsible sections** (Sell Orders / Auctions / Buy Orders), each showing a
+  live count and collapsed by default; buy orders re-added as one of them. "Create Buy Order" sits in
+  the action row (works for items the player doesn't own, which the inventory sell flow can't).
+- **Button skin hook:** `BuildExchangeUI.Button` reads optional `ButtonSprite` / `ButtonFont` (+
+  `ButtonHeight`/`ButtonFontSize`) so the coming sprite-button pass re-skins every Exchange button in
+  one place; null keeps the flat look.
 - **Deferred:** buy-order fill quantity picker (fills 1 at a time), FCM outbid/sold notifications
-  (schema flag `ending_soon_notified` ready), further button visual polish.
+  (schema flag `ending_soon_notified` ready), a project-wide UITheme for the sprite-button swap.
 
 ## Session 2026-07-25, quality-as-flag + tier system + item stats
 
