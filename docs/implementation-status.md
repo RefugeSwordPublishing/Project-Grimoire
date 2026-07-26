@@ -52,8 +52,20 @@ Six server-authoritative SECURITY DEFINER RPCs, mirroring `purchase_store_listin
   shows current + minimum bid) plus a **Buyout** button (shown only when the auction has a buyout).
   `ExchangeBidPanel` built by `BuildPlaceBid` in `Build Exchange UI` (re-run it + Ctrl+S to get the
   panel). Server errors are mapped to player-facing messages (outbid, insufficient funds, ended).
+### UX pass (on-device testing feedback)
+- **Cancel listing fixed:** the direct PATCH failed RLS (42501) and never returned the escrowed
+  item. Now `cancel_store_listing` RPC (migration 023): verifies ownership, cancels, and hands the
+  item back (text→int quality map for the inventory key). MarketManager re-adds it.
+- **Notch:** the Exchange header/close now live inside a `SafeAreaFitter` built into `Build Exchange
+  UI` itself (a rebuild used to wipe the wrapper Apply-Safe-Area added).
+- **Item detail de-cluttered:** active-buy-order list + "Sell This" removed; store section relabeled
+  "Sell Orders"; "Place Buy Order" moved to the action row.
+- **Create panel:** captions sit BESIDE fields (not placeholder-in-field); shows **Total** and a
+  **recent-average suggested price** (qty-weighted from sale history) alongside the fee; tighter buttons.
+- **Item icons** added to browse / detail / my-listings / my-buy-order rows and the create / bid /
+  buy-order panels (from `ItemData.icon`, transparent when art is missing).
 - **Deferred:** buy-order fill quantity picker (fills 1 at a time), FCM outbid/sold notifications
-  (schema flag `ending_soon_notified` ready).
+  (schema flag `ending_soon_notified` ready), further button visual polish.
 
 ## Session 2026-07-25, quality-as-flag + tier system + item stats
 
