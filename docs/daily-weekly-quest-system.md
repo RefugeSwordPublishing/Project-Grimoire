@@ -1,239 +1,525 @@
-# Project Grimoire, Daily & Weekly Quest System
-### Version 0.1
+---
+type: design-spec
+version: 1.0
+updated: 2026-07-25
+path: docs/daily-weekly-quest-system.md
+---
+
+# Project Grimoire, Daily and Weekly Quest System
+### Version 1.0
 
 ---
 
-## Core Design
+## 1. Design Goals
 
-The quest system provides a daily engagement loop that rewards players for intentional play beyond passive idling. Quests are picked from a board, not auto-assigned, giving players agency to choose tasks that complement their current progression.
+Quests give players a structured reason to engage with content they might
+otherwise skip. They should feel like a natural extension of the existing
+talent and combat loop, not a separate obligation layered on top.
 
-### Board Structure
-- **Daily board:** 10 available quests, player picks up to 5 to accept
-- **Weekly board:** 6 available quests, player picks up to 2 to accept
-- **Board refreshes:** Midnight UTC for everyone simultaneously, creates a shared daily reset moment
-- **Accepted quests:** Cannot be abandoned once accepted, choosing carefully matters
-- **Completion:** Quests complete automatically when conditions are met, no manual turn-in required
-- **Missed quests:** Uncompleted quests at reset are lost, no carryover
+Three principles:
 
----
+**Additive, not gating.** No reward behind a quest should be exclusively
+obtainable there. Quests accelerate progress; they do not gate it.
 
-## Quest Difficulty Scaling
+**Faction-taggable from day one.** Every quest type carries a factionId
+field even when unused in the base game. The DLC faction reputation system
+drops in without schema changes.
 
-Quest difficulty and rewards scale with the player's overall progression. The system reads the player's **highest Talent level** to determine which difficulty tier to generate quests from.
-
-| Difficulty Tier | Trigger | Quest Scale |
-|----------------|---------|-------------|
-| **Novice** | Highest Talent 1-20 | Small quantities, Tier 1 zones, Crude materials |
-| **Journeyman** | Highest Talent 21-40 | Moderate quantities, Tier 2 zones, Rough materials |
-| **Adept** | Highest Talent 41-60 | Larger quantities, Tier 3 zones, Refined materials |
-| **Expert** | Highest Talent 61-80 | High quantities, Tier 4 zones, Pristine materials |
-| **Master** | Highest Talent 81-100 | Endgame quantities, Tier 5 zones, Masterwork materials |
-
-Each daily board always contains quests from the player's current tier plus one tier below, so a Journeyman player sees mostly Journeyman quests with a couple of easy Novice quests as reliable fillers.
+**Server-authoritative time.** All resets computed server-side via now()
+at UTC. The client displays a countdown from resets_at; it never computes
+eligibility itself.
 
 ---
 
-## Quest Categories
+## 2. Quest Board, New Nav Panel
 
-### Gathering Quests
-Generated from active gathering Talents. Quantity scales with difficulty tier.
+A new GamePanel.Quests entry is needed. Navigation drawer wiring follows
+the existing NavigationDrawerUI pattern.
 
-| Quest Type | Example (Novice) | Example (Master) |
-|------------|-----------------|-----------------|
-| **Forage X of Y** | Forage 20 Common Herbs | Forage 15 Celestine Sprigs |
-| **Fell X trees** | Fell 15 Pine trees | Fell 8 Voidtimber trees |
-| **Delve X ore** | Delve 30 Copper Ore | Delve 12 Soulite Ore |
-| **Catch X creatures** | Trap 5 Rabbits | Trap 3 Drake creatures |
-| **Catch X fish** | Dredge 10 Perch | Dredge 5 Dragon Eel |
-| **Harvest X crops** | Harvest 20 Wheat | Harvest 5 Worldseed crops |
-| **Track X creatures** | Track 3 common animals | Track 1 Legendary creature |
+Panel name: Quest Board
+Icon: Notice board (existing UI misc icon A1 from asset tracker)
+Position in nav: Between Guild and Settings
 
-**Rewards:** Rare materials relevant to that gathering Talent + Silver Marks
+The Quest Board shows two tabs: Daily and Weekly. Each tab shows the
+player's current quests for that cadence, progress bars, and a Claim
+button when complete.
 
----
+### UI Layout
 
-### Processing Quests
-Generated from processing Talents the player has leveled.
+```
+[ Daily | Weekly ]
 
-| Quest Type | Example (Novice) | Example (Master) |
-|------------|-----------------|-----------------|
-| **Craft X batches** | Brew 3 batches of Healing Draughts | Brew 5 batches of Void Coating |
-| **Cook X meals** | Cook 5 Herb Broths | Cook 3 Feasts of the Grimoire |
-| **Smelt X bars** | Smelt 20 Bronze Bars | Smelt 8 Grimoire Steel Bars |
-| **Tan X hides** | Tan 10 Rough Leather | Tan 5 Void Hide |
-| **Shape X timber** | Shape 15 Pine Planks | Shape 6 Worldtree Grips |
-| **Inscribe X scrolls** | Inscribe 3 Zone Maps | Inscribe 2 Living Grimoires |
-| **Enchant X items** | Enchant 2 items with Minor Accuracy | Enchant 3 items with Legendary slot |
+Quest card:
+  Title           "Fell 20 Oak Logs"
+  Description     "Chop Oak Logs in any zone."
+  Progress bar    [========--] 16 / 20
+  Reward preview  [icon] 500 Felling XP  [icon] 15 GM
+  [ Claim ] (greyed until complete, highlight when ready)
 
-**Rewards:** Gold Marks + XP boost to the relevant Processing Talent (10% bonus for 2 hours)
+Reset timer: "Resets in 6h 42m"
+```
+
+All quest progress updates in real time from the existing manager event
+system. No polling required if managers fire events on resource gain or
+enemy kill.
 
 ---
 
-### Combat Quests
-Generated from current zone access and Slaying level.
+## 3. Data Model
 
-| Quest Type | Example (Novice) | Example (Master) |
-|------------|-----------------|-----------------|
-| **Slay X enemies** | Slay 15 enemies in Grimwood Fringe | Slay 20 enemies in Ashenwold |
-| **Slay X of type** | Slay 8 Outlaw enemies | Slay 10 Void creatures |
-| **Defeat zone boss** | Defeat Aldric the Poacher King | Defeat The Ashen Sovereign |
-| **Active combat kills** | Get 10 active kills (no idle) | Get 20 active kills with crits |
-| **Attunement kills** | Land 5 crit shots actively | Land 15 weak point crits |
-| **Clear dungeon** | Complete Aldric's Warren | Complete The Pale Vault |
-| **Survive X hits** | Survive 30 hits without healing | Survive 50 hits in Tier 5 zone |
+### 3.1 Quest Definition (ScriptableObject)
 
-**Rewards:** Gold Marks + rare material drops from enemy faction type
+```csharp
+[CreateAssetMenu(menuName = "Grimoire/QuestDefinition")]
+public class QuestDefinition : ScriptableObject
+{
+    public string questId;           // stable snake_case key, e.g. "fell_oak_logs"
+    public QuestCadence cadence;     // Daily / Weekly
+    public QuestType type;           // see Section 4
+    public string displayTitle;
+    public string displayDescription;
 
----
+    // Targeting
+    public string targetId;          // itemName, talentName, or zone id
+    public EnemyFactionTag[] factionTags; // empty = any faction
+    public int targetCount;
 
-### Crafting Quests
-Assembly-focused, require cross-Talent cooperation, good for driving market activity.
+    // Pool weighting
+    public int weight = 10;
+    public int minZoneTier = 1;
+    public int maxZoneTier = 5;
 
-| Quest Type | Example (Novice) | Example (Master) |
-|------------|-----------------|-----------------|
-| **Assemble X weapons** | Assemble 2 Crude weapons | Assemble 1 Masterwork weapon |
-| **Assemble X armor pieces** | Assemble 3 Crude armor pieces | Assemble 2 Pristine armor pieces |
-| **Assemble with rare material** | Attempt 1 Rough tier Assembly | Attempt 1 Masterwork tier Assembly |
-| **Assemble for another player** | Assemble 1 item for a guild member | Assemble 3 items for other players |
-| **List X items on Exchange** | List 5 items on Wayfarer's Exchange | List 10 items with Buy Order matches |
+    // Rewards
+    public QuestReward[] rewards;
 
-**Rewards:** Rare materials (Assembly components) + Silver/Gold Marks
+    // DLC forward-compatibility hook
+    public string factionId;               // empty in base game
+    public int factionReputationAward;     // 0 in base game
+}
 
----
+public enum QuestCadence { Daily, Weekly }
 
-### Market Quests
-Economy-focused, drive Wayfarer's Exchange activity.
+public enum QuestType
+{
+    GatherItem,
+    ProcessItem,
+    CraftItem,
+    DefeatEnemies,
+    DefeatElites,
+    DefeatBoss,
+    CompleteDungeon,
+    EarnTalentXP,
+    ReachZone,
+    SellOnExchange,
+}
 
-| Quest Type | Example (Novice) | Example (Master) |
-|------------|-----------------|-----------------|
-| **Sell X items** | Sell 10 items on the Exchange | Sell 5 Masterwork items |
-| **Fill a Buy Order** | Fulfill any Buy Order | Fulfill a Buy Order worth 10,000+ SM |
-| **Place X Buy Orders** | Place 2 Buy Orders | Place 3 Buy Orders over 50 GM each |
-| **Earn X Marks trading** | Earn 500 SM from Exchange sales | Earn 50 GM from Exchange sales |
-| **List auction items** | List 1 Auction item | List 3 Auction items with buyout |
+public class QuestReward
+{
+    public QuestRewardType type;
+    public string id;     // talentName for XP, itemId for item, empty for currency
+    public int amount;
+}
 
-**Rewards:** Silver/Gold Marks bonus (higher than other quest types to reflect economy effort)
-> Note: CHA passive bonus will be added to market quest rewards post-Beastbond DLC release, CHA has no meaningful base game combat role until then
+public enum QuestRewardType
+{
+    TalentXP,
+    CombatXP,
+    Item,
+    SilverMarks,
+    GoldMarks,
+}
+```
 
----
+### 3.2 Player Quest State (Supabase)
 
-### Challenge Quests
-Harder quests, higher rewards, always one on the weekly board.
+```sql
+create table player_quests (
+    id           uuid primary key default gen_random_uuid(),
+    player_id    uuid references auth.users not null,
+    quest_id     text not null,
+    cadence      text not null,           -- 'daily' | 'weekly'
+    progress     int not null default 0,
+    target_count int not null,
+    completed    boolean not null default false,
+    claimed      boolean not null default false,
+    assigned_at  timestamptz not null default now(),
+    resets_at    timestamptz not null,
+    unique (player_id, quest_id, resets_at)
+);
 
-| Quest Type | Example (Journeyman) | Example (Master) |
-|------------|---------------------|-----------------|
-| **Chain Attunement** | Get 10 consecutive active kills without idle | Get 25 consecutive active crits |
-| **Speed run** | Complete a dungeon in under 20 min | Complete Firststone Sanctum in under 30 min |
-| **No consumables run** | Slay 20 enemies without using any potion | Clear a dungeon with no meals or potions |
-| **Economy challenge** | Earn 5,000 SM in one day | Earn 500 GM in one week |
-| **Talent sprint** | Gain 5 levels in one Talent in one day | Gain 3 levels in a Talent above level 80 |
-| **Assembly streak** | Successfully assemble 5 items in a row | Successfully hit Pristine tier 3 times |
-| **Master the hunt** | Defeat 3 zone bosses in one day | Defeat all 5 zone bosses in one week |
+alter table player_quests enable row level security;
+create policy "own rows" on player_quests
+    using (player_id = auth.uid());
+```
 
-**Rewards:** Highest rewards in the game outside of raids, Gold Marks + rare materials + Talent XP boosts
+### 3.3 Reset Timestamps
 
----
+Computed server-side only. Client never writes resets_at.
 
-## Reward Structure
+```sql
+-- Daily: next 00:00 UTC
+select date_trunc('day', now() at time zone 'utc') + interval '1 day'
 
-All rewards scale with difficulty tier. Base values at Novice, multiplied per tier.
+-- Weekly: next Monday 00:00 UTC
+select date_trunc('week', now() at time zone 'utc') + interval '1 week'
+```
 
-### Silver Mark Rewards
-| Difficulty | Daily Quest | Weekly Quest |
-|-----------|------------|-------------|
-| Novice | 200-500 SM | 1,500-3,000 SM |
-| Journeyman | 500-1,500 SM | 4,000-8,000 SM |
-| Adept | 1,500-4,000 SM | 10,000-20,000 SM |
-| Expert | 4,000-10,000 SM | 25,000-50,000 SM |
-| Master | 10,000-25,000 SM | 60,000-150,000 SM |
-
-### Gold Mark Rewards
-Combat and challenge quests pay in Gold Marks:
-| Difficulty | Daily Quest | Weekly Quest |
-|-----------|------------|-------------|
-| Novice | 0-1 GM | 2-5 GM |
-| Journeyman | 1-3 GM | 5-12 GM |
-| Adept | 3-8 GM | 15-30 GM |
-| Expert | 8-20 GM | 35-75 GM |
-| Master | 20-50 GM | 80-200 GM |
-
-### Rare Material Rewards
-Gathering and crafting quests award rare materials relevant to their Talent:
-- Novice quests: Crude tier material (1-3 units)
-- Journeyman quests: Rough tier material (1-2 units)
-- Adept quests: Refined tier material (1 unit)
-- Expert quests: Pristine tier material (1 unit, low chance)
-- Master quests: Masterwork tier material (rare chance only, keeps raids as primary source)
-
-### XP Boost Rewards
-Processing and challenge quests award temporary XP boosts:
-| Boost Type | Duration | Multiplier |
-|-----------|---------|-----------|
-| Talent XP Boost (specific) | 2 hours | +25% to named Talent |
-| Talent XP Boost (all) | 30 minutes | +15% to all Talents |
-| Attunement Surge Boost | 1 hour | Active play bonus increased to 4x |
+The Edge Function assign_quests runs on first board open after a reset,
+checks resets_at < now(), clears expired rows, and assigns a fresh set.
 
 ---
 
-## Board Generation Rules
+## 4. Quest Types and Targeting
 
-The quest board generates fresh at midnight UTC. Rules:
+### GatherItem
+Triggered by: InventoryManager.OnItemAdded event, filter on item.itemName.
+Progress increments by quantity added. Idle gathering counts. This is
+correct: quests reward the existing loop, not require active play.
 
-1. **No duplicate quest types** on the same board, each of the 5 categories appears at least once on the daily board
-2. **Weighted toward active Talents**, if Foraging is in the player's idle queue it's more likely to appear
-3. **At least one easy quest** always on the board, ensures players can always complete something
-4. **At least one challenge quest** on the weekly board, always one high-effort high-reward option
-5. **Combat quests respect zone access**, never generates a quest for a zone the player can't access
-6. **Processing quests respect Talent level**, never asks for a Formulae the player hasn't unlocked
-7. **Guild bonus (Phase 4):** Guild members see one shared guild quest on the weekly board, completing it contributes to a guild reward pool
+### ProcessItem
+Triggered by: processing completion event in Tanning, Smelting, Timber Shaping.
+Progress increments by quantity produced.
 
----
+### CraftItem
+Triggered by: Assembly bench success event.
+Progress increments on successful assembly only (not failed attempts).
 
-## Notifications
+### DefeatEnemies
+Triggered by: CombatManager.OnEnemyKilled.
+Filter on factionTags if specified. Empty = any enemy. Idle kills count.
 
-Push notifications (Firebase Cloud Messaging) for quests:
-- **Daily reset:** "New quests available on the board", sent at midnight UTC
-- **Quest complete:** "Your quest is complete, claim your reward", sent when conditions met during idle
-- **Quest expiring:** "2 of your quests expire in 1 hour", sent 1 hour before reset if incomplete quests remain
-- **Weekly reset:** "Weekly board refreshed, new challenges available"
+### DefeatElites
+Triggered by: CombatManager.OnEnemyKilled, filter isElite == true.
+factionTags filter applies.
 
-All notifications respect player notification preferences set in Settings.
+### DefeatBoss
+Triggered by: CombatManager.OnBossKilled.
+targetId matches enemyName. Any spawn of that boss counts.
 
----
+### CompleteDungeon
+Triggered by: dungeon completion event (boss killed, run ends).
+targetId empty = any dungeon. Populated = specific dungeon.
 
-## Quest Board UI
+### EarnTalentXP
+Triggered by: TalentManager.OnXPAdded, filter on talent name.
+Progress = cumulative XP earned during the quest window, not talent level.
 
-Accessible from main menu, dedicated Quest Board screen.
+### ReachZone
+Triggered by: zone entry event. Progress flips to 1 on first entry.
+Useful as a nudge for players who haven't visited a zone yet.
 
-**Daily tab:**
-- Shows all 10 available quests (grayed out once 5 are accepted)
-- Accepted quests show progress bar and completion percentage
-- Completed quests show green checkmark and reward summary
-- Time remaining until reset shown at top
-
-**Weekly tab:**
-- Shows all 6 available weekly quests
-- Same accept/progress/complete flow
-- Larger reward display, weeklies feel more significant
-
-**Quest card shows:**
-- Quest name and description
-- Category icon (gathering/processing/combat/crafting/market/challenge)
-- Difficulty indicator (Novice through Master)
-- Reward preview, Marks, materials, XP boost
-- Progress if accepted (e.g. "12/20 enemies slain")
-- Time remaining
+### SellOnExchange
+Triggered by: Exchange sale completion event (server-side, via collect
+earnings flow). Progress increments by items sold, not by currency value.
 
 ---
 
-## Cross-System Notes
+## 5. Quest Pools
 
-- **Faction integration (DLC):** Quest completion for faction-tagged enemies or in faction zones will contribute to faction standing when factions launch, tag quest types from day one
-- **Guild quests (Phase 4):** Shared weekly guild quest added to weekly board, no design change needed, just an additional slot
-- **Dungeon quests:** "Clear X dungeon" quests are only generated during months when that dungeon is in the active rotation
-- **Raid quests:** Weekly board can include a "participate in the raid" quest during active raid quarter, rewards participation not completion, so less skilled players still benefit
+### 5.1 Pool Structure
+
+Each QuestDefinition belongs to a pool by cadence. The assignment Edge
+Function draws randomly from the eligible pool, weighted by the weight field.
+
+### 5.2 Daily Pool: draw 3 per player
+
+No duplicates within a day. Mix constraint: at most 2 from the same
+QuestType to ensure variety. Recommended pool size at launch: 15-20.
+
+### 5.3 Weekly Pool: draw 2 per player
+
+No duplicates within a week. Weekly quests are larger in scope than
+dailies: more targets, harder requirements, better rewards.
+Recommended pool size at launch: 8-12.
+
+### 5.4 Zone-Tier Gating
+
+minZoneTier prevents a T1 player from getting a "Defeat 10 [Void]" quest
+they cannot complete. Assignment filters the pool:
+
+```csharp
+var eligible = allDefinitions
+    .Where(q => q.cadence == cadence)
+    .Where(q => q.minZoneTier <= player.highestZoneTier)
+    .Where(q => q.maxZoneTier >= player.highestZoneTier);
+```
 
 ---
 
-*Document version 0.1, Daily & Weekly Quest System*
-*Next: Onboarding flow · While You Were Away screen · Monetization scope · Main design doc cleanup*
+## 6. Reward Values
+
+Rewards should feel meaningful but not dominant. A full day of quests
+adds roughly 10-15% to a player's normal daily XP and a useful currency bonus.
+
+### 6.1 Daily Quest Rewards (per quest, 3 per day)
+
+| Reward type | T1 quest | T3 quest | Notes |
+|-------------|----------|----------|-------|
+| Talent XP | 400-600 | 800-1200 | Scales with zone tier |
+| Combat XP | 300-500 | 600-900 | For combat quests |
+| Gold Marks | 8-12 | 15-25 | Primary daily currency |
+| Silver Marks | 50-150 | 100-200 | Secondary, lower-tier |
+| Item | 1x Crude rare mat | 1x Refined rare mat | Zone-appropriate |
+
+### 6.2 Weekly Quest Rewards (per quest, 2 per week)
+
+| Reward type | Range | Notes |
+|-------------|-------|-------|
+| Talent XP | 3,000-8,000 | Significant weekly boost |
+| Combat XP | 2,000-5,000 | |
+| Gold Marks | 60-180 | Meaningful weekly income |
+| Item | 1x Pristine to 1x Masterwork rare mat | Best item reward in base game |
+
+Weekly quests are the primary source of Pristine and Masterwork rare
+materials outside dungeons and raids. This gives non-dungeon players a
+path to high-quality rare mats, consistent with the additive principle.
+
+---
+
+## 7. Reward Grant, Server RPC
+
+Do NOT grant currency via direct client write. Currency is client-authoritative
+and SaveCurrency patches the absolute value, which clobbers concurrent server
+credits (the same bug hit with Exchange sales). Route all quest reward claims
+through a server RPC.
+
+```sql
+create or replace function collect_quest_reward(p_quest_row_id uuid)
+returns json
+language plpgsql
+security definer
+as $$
+declare
+    v_quest  player_quests%rowtype;
+    v_def    json;
+begin
+    -- Validate ownership and completeness
+    select * into v_quest
+    from player_quests
+    where id = p_quest_row_id
+      and player_id = auth.uid()
+      and completed = true
+      and claimed = false;
+
+    if not found then
+        raise exception 'Quest not claimable';
+    end if;
+
+    -- Mark claimed immediately (idempotency guard)
+    update player_quests set claimed = true where id = p_quest_row_id;
+
+    -- Grant currency server-side additively
+    update players
+    set gold_marks   = gold_marks   + (v_def->>'goldMarks')::int,
+        silver_marks = silver_marks + (v_def->>'silverMarks')::int
+    where id = auth.uid();
+
+    -- Return non-currency reward payload for client to apply
+    return json_build_object(
+        'success', true,
+        'rewards', v_def->'rewards'
+    );
+end;
+$$;
+```
+
+Client receives the payload and applies:
+- Talent XP via TalentManager.AddXP(name, amount)
+- Combat XP via CombatXPManager.AddCombatXP(grimoireId, amount)
+- Items via InventoryManager.AddItem(ItemData, quality, qty)
+Currency is already credited server-side before the payload returns.
+
+---
+
+## 8. Assignment Edge Function
+
+```typescript
+// supabase/functions/assign_quests/index.ts
+
+Deno.serve(async (req) => {
+    const { playerId, cadence } = await req.json();
+    const supabase = createClient(/* service role key */);
+
+    // Check if current quests are still valid
+    const { data: existing } = await supabase
+        .from('player_quests')
+        .select('resets_at')
+        .eq('player_id', playerId)
+        .eq('cadence', cadence)
+        .limit(1)
+        .single();
+
+    if (existing && new Date(existing.resets_at) > new Date()) {
+        return new Response('quests still active', { status: 200 });
+    }
+
+    // Clear expired quests
+    await supabase
+        .from('player_quests')
+        .delete()
+        .eq('player_id', playerId)
+        .eq('cadence', cadence)
+        .lt('resets_at', new Date().toISOString());
+
+    // Compute next reset
+    const now = new Date();
+    let resetsAt: Date;
+    if (cadence === 'daily') {
+        resetsAt = new Date(Date.UTC(
+            now.getUTCFullYear(), now.getUTCMonth(),
+            now.getUTCDate() + 1, 0, 0, 0
+        ));
+    } else {
+        const daysUntilMonday = (8 - now.getUTCDay()) % 7 || 7;
+        resetsAt = new Date(Date.UTC(
+            now.getUTCFullYear(), now.getUTCMonth(),
+            now.getUTCDate() + daysUntilMonday, 0, 0, 0
+        ));
+    }
+
+    // Fetch eligible pool for player's zone tier
+    const playerTier = await getPlayerHighestZoneTier(playerId, supabase);
+    const pool = await getEligiblePool(cadence, playerTier, supabase);
+
+    // Draw quests (weighted random, no duplicates, type mix constraint)
+    const count = cadence === 'daily' ? 3 : 2;
+    const drawn = drawQuests(pool, count);
+
+    // Insert new rows
+    await supabase.from('player_quests').insert(
+        drawn.map(q => ({
+            player_id:    playerId,
+            quest_id:     q.questId,
+            cadence,
+            target_count: q.targetCount,
+            resets_at:    resetsAt.toISOString(),
+        }))
+    );
+
+    return new Response(JSON.stringify({ resetsAt, quests: drawn }), {
+        headers: { 'Content-Type': 'application/json' }
+    });
+});
+```
+
+---
+
+## 9. Progress Tracking
+
+Progress tracked client-side in memory, synced to player_quests.progress
+on change. Debounce writes to avoid write storms (max once per 5s).
+
+```csharp
+public class QuestProgressTracker : MonoBehaviour
+{
+    void Start() {
+        InventoryManager.OnItemAdded      += OnItemAdded;
+        CombatManager.OnEnemyKilled       += OnEnemyKilled;
+        CombatManager.OnBossKilled        += OnBossKilled;
+        TalentManager.OnXPAdded           += OnTalentXP;
+        DungeonManager.OnDungeonComplete  += OnDungeonComplete;
+        ExchangeManager.OnSaleComplete    += OnSaleComplete;
+    }
+
+    void OnItemAdded(string itemName, int qty) {
+        foreach (var quest in activeQuests
+            .Where(q => q.type == QuestType.GatherItem
+                     && q.targetId == itemName))
+            IncrementProgress(quest, qty);
+    }
+
+    void IncrementProgress(PlayerQuest quest, int amount) {
+        quest.progress = Mathf.Min(quest.progress + amount, quest.targetCount);
+        if (quest.progress >= quest.targetCount) quest.completed = true;
+        SyncDebounced(quest); // max one write per 5s per quest
+    }
+}
+```
+
+---
+
+## 10. Push Notifications
+
+**Daily quest ready:** "New quests are waiting — check the board."
+Fires at 00:00 UTC daily via existing FCM pipeline. Single message per
+day, not per quest.
+
+**Quest complete:** In-game P4 notification only (same channel as ore
+node and processing complete). Not worth an FCM push for a single quest.
+
+---
+
+## 11. Launch Quest Pool
+
+### Daily Quests (15 definitions)
+
+| questId | Type | Target | Count | Zone | Rewards | Weight |
+|---------|------|--------|-------|------|---------|--------|
+| gather_wolf_pelts | GatherItem | Wolf Pelt | 10 | T3 | 800 Trapping XP, 12 GM | 10 |
+| gather_iron_ore | GatherItem | Iron Ore | 20 | T2 | 600 Delving XP, 10 GM | 12 |
+| gather_common_herb | GatherItem | Common Herb | 30 | T1 | 500 Foraging XP, 8 GM | 15 |
+| smelt_iron_bars | ProcessItem | Iron Bar | 10 | T2 | 700 Smelting XP, 12 GM | 10 |
+| tan_fox_leather | ProcessItem | Fox Leather | 8 | T2 | 600 Tanning XP, 10 GM | 10 |
+| defeat_beasts | DefeatEnemies | [Beast] | 20 | T1 | 600 Combat XP, 10 GM | 12 |
+| defeat_undead | DefeatEnemies | [Undead] | 20 | T2 | 700 Combat XP, 12 GM | 10 |
+| defeat_void | DefeatEnemies | [Void] | 15 | T3 | 900 Combat XP, 15 GM | 8 |
+| defeat_elites | DefeatElites | any | 3 | T2 | 800 Combat XP, 1x Refined Gemstone | 8 |
+| earn_felling_xp | EarnTalentXP | Felling | 1,500 | T1 | 500 Felling XP, 8 GM | 10 |
+| earn_runesmithing_xp | EarnTalentXP | Runesmithing | 1,500 | T2 | 600 Runesmithing XP, 12 GM | 8 |
+| sell_exchange | SellOnExchange | any | 5 | T1 | 20 GM | 8 |
+| complete_dungeon | CompleteDungeon | any | 1 | T2 | 1,200 Combat XP, 1x Refined rare mat | 6 |
+| defeat_zone_boss | DefeatBoss | any | 1 | T1 | 1,000 Combat XP, 1x Refined rare mat | 6 |
+| enter_cinderpeak | ReachZone | Cinderpeak | 1 | T3 | 500 Combat XP, 10 GM | 4 |
+
+### Weekly Quests (10 definitions)
+
+| questId | Type | Target | Count | Zone | Rewards | Weight |
+|---------|------|--------|-------|------|---------|--------|
+| weekly_defeat_undead | DefeatEnemies | [Undead] | 100 | T2 | 5,000 Combat XP, 80 GM | 10 |
+| weekly_defeat_void | DefeatEnemies | [Void] | 75 | T3 | 6,000 Combat XP, 100 GM, 1x Pristine Void Spore | 8 |
+| weekly_defeat_elites | DefeatElites | any | 15 | T2 | 5,000 Combat XP, 1x Pristine Gemstone | 10 |
+| weekly_defeat_boss | DefeatBoss | any | 3 | T1 | 4,000 Combat XP, 80 GM | 8 |
+| weekly_complete_dungeons | CompleteDungeon | any | 3 | T2 | 6,000 Combat XP, 1x Pristine rare mat | 8 |
+| weekly_smelt_steel | ProcessItem | Steel Bar | 20 | T3 | 6,000 Smelting XP, 100 GM | 8 |
+| weekly_craft_weapon | CraftItem | any weapon | 2 | T2 | 5,000 Runesmithing XP, 1x Pristine Gemstone | 6 |
+| weekly_gather_drake | GatherItem | Drake Scale | 5 | T3 | 5,000 Trapping XP, 1x Pristine Amber | 6 |
+| weekly_earn_talent | EarnTalentXP | any | 8,000 | T1 | 4,000 Talent XP, 80 GM | 10 |
+| weekly_sell_exchange | SellOnExchange | any | 20 | T1 | 150 GM | 8 |
+
+---
+
+## 12. DLC Faction Hook
+
+Every QuestDefinition carries factionId and factionReputationAward.
+Both are empty/0 in base game. When the faction DLC ships:
+
+- Faction-aligned quests populate factionId with the faction name
+- Claiming that quest awards factionReputationAward reputation via
+  FactionManager.AddReputation(factionId, amount)
+- collect_quest_reward RPC gains a faction credit branch when factionId
+  is non-empty
+
+No schema changes needed at DLC launch. The hook is in from day one.
+
+---
+
+## 13. Acceptance Criteria
+
+- Daily quests: 3 assigned on first board open after 00:00 UTC, reset correctly
+- Weekly quests: 2 assigned on first board open after Monday 00:00 UTC
+- Idle gathering, idle combat, and idle processing all increment applicable
+  quest progress without requiring active play
+- Currency rewards are granted server-side via RPC, never via direct client write
+- Claiming a quest marks it claimed immediately; double-tap does not double-grant
+- Zone-tier gating prevents quests appearing for content the player has not unlocked
+- factionId and factionReputationAward fields exist on QuestDefinition with
+  empty/0 defaults
+- Quest Board panel exists as a new GamePanel entry with Daily and Weekly tabs,
+  progress bars, and a Claim button
+- Countdown timer displays time to next reset from server resets_at value
+
+---
+
+*Path: docs/daily-weekly-quest-system.md*
+*Version 1.0: data model, quest types, reward values, server RPC,*
+*assignment Edge Function, progress tracking, push notifications, launch pool.*

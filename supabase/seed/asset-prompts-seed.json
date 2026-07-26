@@ -1,0 +1,956 @@
+[
+  {
+    "sheet_id": "ui_dark_ages",
+    "cell": "A1",
+    "prompt": "Download from https://hypnobius.itch.io/dark-ages-ui \u2014 free commercial license. Import tilesheet, Point filter, PPU 32, Sprite Mode Multiple, Slice Grid 32x32.",
+    "model": "External asset \u2014 no generation needed",
+    "size": "32x32 tiles",
+    "notes": "Covers panel frames, buttons, scrollbars, stat bars, utility icons, flourishes."
+  },
+  {
+    "sheet_id": "ui_talent_icons",
+    "cell": "A1",
+    "prompt": "pixel art icon, crossed axes forming an X shape, 48x48, dark medieval fantasy, flat icon design, warm amber and dark teal palette, dark pixel outline, transparent background",
+    "model": "16-bit Pixel",
+    "size": "48x48",
+    "notes": "Felling talent nav icon"
+  },
+  {
+    "sheet_id": "ui_talent_icons",
+    "cell": "A2",
+    "prompt": "pixel art icon, mining pickaxe side view, 48x48, dark medieval fantasy, flat icon design, warm amber and dark teal palette, dark pixel outline, transparent background",
+    "model": "16-bit Pixel",
+    "size": "48x48",
+    "notes": "Delving talent nav icon"
+  },
+  {
+    "sheet_id": "ui_talent_icons",
+    "cell": "A3",
+    "prompt": "pixel art icon, mechanical snare trap with spring mechanism, 48x48, dark medieval fantasy, flat icon design, warm amber and dark teal palette, dark pixel outline, transparent background",
+    "model": "16-bit Pixel",
+    "size": "48x48",
+    "notes": "Trapping talent nav icon"
+  },
+  {
+    "sheet_id": "ui_talent_icons",
+    "cell": "A4",
+    "prompt": "pixel art icon, fishing hook with small line, 48x48, dark medieval fantasy, flat icon design, warm amber and dark teal palette, dark pixel outline, transparent background",
+    "model": "16-bit Pixel",
+    "size": "48x48",
+    "notes": "Dredging talent nav icon"
+  },
+  {
+    "sheet_id": "ui_talent_icons",
+    "cell": "B1",
+    "prompt": "pixel art icon, magnifying glass over crumbling stone ruins, 48x48, dark medieval fantasy, flat icon design, warm amber and dark teal palette, dark pixel outline, transparent background",
+    "model": "16-bit Pixel",
+    "size": "48x48",
+    "notes": "Gleaning talent nav icon"
+  },
+  {
+    "sheet_id": "ui_talent_icons",
+    "cell": "B2",
+    "prompt": "pixel art icon, wheat stalk bundle tied at base, 48x48, dark medieval fantasy, flat icon design, warm amber and dark teal palette, dark pixel outline, transparent background",
+    "model": "16-bit Pixel",
+    "size": "48x48",
+    "notes": "Cultivation talent nav icon"
+  },
+  {
+    "sheet_id": "ui_talent_icons",
+    "cell": "B3",
+    "prompt": "pixel art icon, animal paw print, 48x48, dark medieval fantasy, flat icon design, warm amber and dark teal palette, dark pixel outline, transparent background",
+    "model": "16-bit Pixel",
+    "size": "48x48",
+    "notes": "Tracking talent nav icon"
+  },
+  {
+    "sheet_id": "ui_talent_icons",
+    "cell": "B4",
+    "prompt": "pixel art icon, herb sprig with three leaves, 48x48, dark medieval fantasy, flat icon design, warm amber and dark teal palette, dark pixel outline, transparent background",
+    "model": "16-bit Pixel",
+    "size": "48x48",
+    "notes": "Foraging talent nav icon"
+  },
+  {
+    "sheet_id": "ui_talent_icons",
+    "cell": "C1",
+    "prompt": "pixel art icon, glass flask with bubbles rising inside, 48x48, dark medieval fantasy, flat icon design, warm amber and dark teal palette, dark pixel outline, transparent background",
+    "model": "16-bit Pixel",
+    "size": "48x48",
+    "notes": "Alchemy talent nav icon"
+  },
+  {
+    "sheet_id": "ui_talent_icons",
+    "cell": "C2",
+    "prompt": "pixel art icon, cooking pot with steam rising, 48x48, dark medieval fantasy, flat icon design, warm amber and dark teal palette, dark pixel outline, transparent background",
+    "model": "16-bit Pixel",
+    "size": "48x48",
+    "notes": "Cookery talent nav icon"
+  },
+  {
+    "sheet_id": "ui_talent_icons",
+    "cell": "C3",
+    "prompt": "pixel art icon, blacksmith hammer above small anvil, 48x48, dark medieval fantasy, flat icon design, warm amber and dark teal palette, dark pixel outline, transparent background",
+    "model": "16-bit Pixel",
+    "size": "48x48",
+    "notes": "Runesmithing talent nav icon"
+  },
+  {
+    "sheet_id": "ui_talent_icons",
+    "cell": "C4",
+    "prompt": "pixel art icon, hand saw above a wooden plank, 48x48, dark medieval fantasy, flat icon design, warm amber and dark teal palette, dark pixel outline, transparent background",
+    "model": "16-bit Pixel",
+    "size": "48x48",
+    "notes": "Timber Shaping talent nav icon"
+  },
+  {
+    "sheet_id": "ui_talent_icons",
+    "cell": "D1",
+    "prompt": "pixel art icon, animal hide stretched on a wooden frame, 48x48, dark medieval fantasy, flat icon design, warm amber and dark teal palette, dark pixel outline, transparent background",
+    "model": "16-bit Pixel",
+    "size": "48x48",
+    "notes": "Tanning talent nav icon"
+  },
+  {
+    "sheet_id": "ui_talent_icons",
+    "cell": "D2",
+    "prompt": "pixel art icon, sewing needle with thread looped through eye, 48x48, dark medieval fantasy, flat icon design, warm amber and dark teal palette, dark pixel outline, transparent background",
+    "model": "16-bit Pixel",
+    "size": "48x48",
+    "notes": "Tailoring talent nav icon"
+  },
+  {
+    "sheet_id": "ui_talent_icons",
+    "cell": "D3",
+    "prompt": "pixel art icon, glowing thread spool with light radiating from it, 48x48, dark medieval fantasy, flat icon design, warm amber and dark teal palette, dark pixel outline, transparent background",
+    "model": "16-bit Pixel",
+    "size": "48x48",
+    "notes": "Arcane Weaving talent nav icon"
+  },
+  {
+    "sheet_id": "ui_talent_icons",
+    "cell": "D4",
+    "prompt": "pixel art icon, quill pen beside a rolled scroll, 48x48, dark medieval fantasy, flat icon design, warm amber and dark teal palette, dark pixel outline, transparent background",
+    "model": "16-bit Pixel",
+    "size": "48x48",
+    "notes": "Inscription talent nav icon"
+  },
+  {
+    "sheet_id": "ui_talent_icons",
+    "cell": "E1",
+    "prompt": "pixel art icon, gear cog overlapping a small wrench, 48x48, dark medieval fantasy, flat icon design, warm amber and dark teal palette, dark pixel outline, transparent background",
+    "model": "16-bit Pixel",
+    "size": "48x48",
+    "notes": "Artificing talent nav icon"
+  },
+  {
+    "sheet_id": "ui_talent_icons",
+    "cell": "E2",
+    "prompt": "pixel art icon, two crossed swords with a skull above the cross point, 48x48, dark medieval fantasy, flat icon design, warm amber and dark teal palette, dark pixel outline, transparent background",
+    "model": "16-bit Pixel",
+    "size": "48x48",
+    "notes": "Slaying talent nav icon"
+  },
+  {
+    "sheet_id": "ui_talent_icons",
+    "cell": "E3",
+    "prompt": "pixel art icon, stone forge with orange flame visible inside, 48x48, dark medieval fantasy, flat icon design, warm amber and dark teal palette, dark pixel outline, transparent background",
+    "model": "16-bit Pixel",
+    "size": "48x48",
+    "notes": "Smelting talent nav icon"
+  },
+  {
+    "sheet_id": "ui_talent_icons",
+    "cell": "E4",
+    "prompt": "pixel art icon, kite shield with a sword diagonally behind it, 48x48, dark medieval fantasy, flat icon design, warm amber and dark teal palette, dark pixel outline, transparent background",
+    "model": "16-bit Pixel",
+    "size": "48x48",
+    "notes": "Warfare / Vanguard talent nav icon"
+  },
+  {
+    "sheet_id": "ui_currency",
+    "cell": "A1",
+    "prompt": "pixel art coin icon, silver mark, 48x48, dark medieval fantasy, silver coin face, grimoire sigil engraved in center, worn edge detail, warm palette, dark pixel outline, transparent background",
+    "model": "16-bit Pixel",
+    "size": "48x48",
+    "notes": "Silver Mark currency icon"
+  },
+  {
+    "sheet_id": "ui_currency",
+    "cell": "A2",
+    "prompt": "pixel art coin icon, gold mark, 48x48, dark medieval fantasy, gold coin face, grimoire sigil engraved in center, subtle gleam on edge, warm gold palette, dark pixel outline, transparent background",
+    "model": "16-bit Pixel",
+    "size": "48x48",
+    "notes": "Gold Mark currency icon"
+  },
+  {
+    "sheet_id": "ui_quality_badges",
+    "cell": "A1",
+    "prompt": "pixel art quality badge icon sheet, 6 badges in a single horizontal row, 32x32 each, total sheet 192x32, badge 1 grey circle Crude, badge 2 white square Rough, badge 3 green triangle Refined, badge 4 blue diamond Pristine, badge 5 purple star Masterwork, badge 6 gold crown Legendary, small corner overlay badge style, transparent background, distinct shapes for colorblind accessibility, dark pixel outline",
+    "model": "16-bit Pixel",
+    "size": "192x32 sheet / 32x32 each",
+    "notes": "Generate as single sheet. Import: Point filter, Sprite Mode Multiple, Slice Grid 32x32."
+  },
+  {
+    "sheet_id": "ui_debuff_icons",
+    "cell": "A1",
+    "prompt": "pixel art debuff status icon sheet, 4 icons in a single horizontal row, 64x64 each, total sheet 256x64, icon 1 poison green droplet with small skull, icon 2 barbed bleed red arrow with thorn motif, icon 3 hemorrhage bleed dark red blood drop, icon 4 empty slot, dark medieval fantasy, limited palette, dark pixel outline, transparent background",
+    "model": "16-bit Pixel",
+    "size": "256x64 sheet / 64x64 each",
+    "notes": "Generate as single sheet. Max 3 shown on enemy. Order: Poison, Barbed Bleed, Hemorrhage Bleed."
+  },
+  {
+    "sheet_id": "ui_grimoire_icons",
+    "cell": "A1",
+    "prompt": "pixel art grimoire book icon, 96x96, leather-bound spellbook, forest green cover, golden clasp on right side, bow and arrow motif embossed on cover, faint green magical glow aura around edges, dark medieval fantasy, limited palette, dark pixel outline, transparent background",
+    "model": "16-bit Pixel",
+    "size": "96x96",
+    "notes": "Sharpshot Grimoire icon"
+  },
+  {
+    "sheet_id": "ui_grimoire_icons",
+    "cell": "A2",
+    "prompt": "pixel art grimoire book icon, 96x96, leather-bound spellbook, amber brown cover with worn edges, golden clasp on right side, compass rose motif embossed on cover, faint amber magical glow aura around edges, dark medieval fantasy, limited palette, dark pixel outline, transparent background",
+    "model": "16-bit Pixel",
+    "size": "96x96",
+    "notes": "Lone Wanderer Grimoire icon"
+  },
+  {
+    "sheet_id": "ui_grimoire_icons",
+    "cell": "A3",
+    "prompt": "pixel art grimoire book icon, 96x96, leather-bound spellbook, deep blue cover, golden clasp on right side, constellation star pattern motif embossed on cover, faint blue magical glow aura around edges, dark medieval fantasy, limited palette, dark pixel outline, transparent background",
+    "model": "16-bit Pixel",
+    "size": "96x96",
+    "notes": "Runeweaver Grimoire icon \u2014 Phase 2"
+  },
+  {
+    "sheet_id": "ui_grimoire_icons",
+    "cell": "A4",
+    "prompt": "pixel art grimoire book icon, 96x96, leather-bound spellbook, deep purple cover, golden clasp on right side, arcane construct golem head motif embossed on cover, faint purple magical glow aura around edges, dark medieval fantasy, limited palette, dark pixel outline, transparent background",
+    "model": "16-bit Pixel",
+    "size": "96x96",
+    "notes": "Summoner Grimoire icon \u2014 Phase 2"
+  },
+  {
+    "sheet_id": "ui_grimoire_icons",
+    "cell": "B1",
+    "prompt": "pixel art grimoire book icon, 96x96, leather-bound spellbook, forest green cover with vine border detail, golden clasp on right side, leaf and vine motif embossed on cover, faint warm green magical glow, dark medieval fantasy, limited palette, dark pixel outline, transparent background",
+    "model": "16-bit Pixel",
+    "size": "96x96",
+    "notes": "Lifebinder Grimoire icon \u2014 Phase 2"
+  },
+  {
+    "sheet_id": "ui_grimoire_icons",
+    "cell": "B2",
+    "prompt": "pixel art grimoire book icon, 96x96, leather-bound spellbook, dark red cover with battle-worn edges, golden clasp on right side, kite shield motif embossed on cover, faint red magical glow aura, dark medieval fantasy, limited palette, dark pixel outline, transparent background",
+    "model": "16-bit Pixel",
+    "size": "96x96",
+    "notes": "Warlord Grimoire icon \u2014 Phase 2"
+  },
+  {
+    "sheet_id": "ui_grimoire_icons",
+    "cell": "B3",
+    "prompt": "pixel art grimoire book icon, 96x96, leather-bound spellbook, near-black cover with dark edges, golden clasp on right side, shadow crescent dagger motif embossed on cover, faint purple-black magical glow aura, dark medieval fantasy, limited palette, dark pixel outline, transparent background",
+    "model": "16-bit Pixel",
+    "size": "96x96",
+    "notes": "Shadowblade Grimoire icon \u2014 Phase 2"
+  },
+  {
+    "sheet_id": "ui_rune_nodes",
+    "cell": "A1",
+    "prompt": "pixel art rune icon, Ignis fire rune symbol, 64x64, magical medieval fantasy, elemental flame symbol design, orange-red color, faint glow, ornate rune style, dark pixel outline, transparent background",
+    "model": "16-bit Pixel",
+    "size": "64x64",
+    "notes": "Ignis rune node \u2014 generate with Phase 2 Arcanist content"
+  },
+  {
+    "sheet_id": "ui_rune_nodes",
+    "cell": "A2",
+    "prompt": "pixel art rune icon, Glacius ice rune symbol, 64x64, magical medieval fantasy, snowflake crystal design, blue-white color, faint frost glow, ornate rune style, dark pixel outline, transparent background",
+    "model": "16-bit Pixel",
+    "size": "64x64",
+    "notes": "Glacius rune node"
+  },
+  {
+    "sheet_id": "ui_rune_nodes",
+    "cell": "A3",
+    "prompt": "pixel art rune icon, Tempest lightning rune symbol, 64x64, magical medieval fantasy, lightning bolt jagged design, yellow-white color, electric glow, ornate rune style, dark pixel outline, transparent background",
+    "model": "16-bit Pixel",
+    "size": "64x64",
+    "notes": "Tempest rune node"
+  },
+  {
+    "sheet_id": "ui_rune_nodes",
+    "cell": "A4",
+    "prompt": "pixel art rune icon, Ventus wind rune symbol, 64x64, magical medieval fantasy, spiral swirl design, teal-cyan color, airy glow, ornate rune style, dark pixel outline, transparent background",
+    "model": "16-bit Pixel",
+    "size": "64x64",
+    "notes": "Ventus rune node"
+  },
+  {
+    "sheet_id": "ui_rune_nodes",
+    "cell": "B1",
+    "prompt": "pixel art rune icon, Terra earth rune symbol, 64x64, magical medieval fantasy, mountain triangle design, brown-orange color, stone glow, ornate rune style, dark pixel outline, transparent background",
+    "model": "16-bit Pixel",
+    "size": "64x64",
+    "notes": "Terra rune node"
+  },
+  {
+    "sheet_id": "ui_rune_nodes",
+    "cell": "B2",
+    "prompt": "pixel art rune icon, Vita life rune symbol, 64x64, magical medieval fantasy, leaf with spark of light design, green color, warm life glow, ornate rune style, dark pixel outline, transparent background",
+    "model": "16-bit Pixel",
+    "size": "64x64",
+    "notes": "Vita rune node"
+  },
+  {
+    "sheet_id": "ui_rune_nodes",
+    "cell": "B3",
+    "prompt": "pixel art rune icon, Umbra shadow rune symbol, 64x64, magical medieval fantasy, shadow crescent moon design, deep purple color, dark void glow, ornate rune style, dark pixel outline, transparent background",
+    "model": "16-bit Pixel",
+    "size": "64x64",
+    "notes": "Umbra rune node"
+  },
+  {
+    "sheet_id": "ui_rune_nodes",
+    "cell": "B4",
+    "prompt": "pixel art rune icon, Lux light rune symbol, 64x64, magical medieval fantasy, sun burst radiant design, gold-white color, bright radiant glow, ornate rune style, dark pixel outline, transparent background",
+    "model": "16-bit Pixel",
+    "size": "64x64",
+    "notes": "Lux rune node"
+  },
+  {
+    "sheet_id": "ui_misc",
+    "cell": "A1",
+    "prompt": "pixel art icon, wooden notice board with a parchment scroll pinned to it, 48x48, dark medieval fantasy, warm wood and cream parchment tones, dark pixel outline, transparent background",
+    "model": "16-bit Pixel",
+    "size": "48x48",
+    "notes": "Notice Board HUD icon"
+  },
+  {
+    "sheet_id": "ui_misc",
+    "cell": "A2",
+    "prompt": "pixel art icon, ornate medieval gear cog with decorative details, slightly more decorative than industrial, 48x48, dark medieval fantasy, warm amber tones, dark pixel outline, transparent background",
+    "model": "16-bit Pixel",
+    "size": "48x48",
+    "notes": "Settings gear HUD icon"
+  },
+  {
+    "sheet_id": "ui_splash",
+    "cell": "A1",
+    "prompt": "mobile app icon, open leather grimoire book with golden magical glow emanating from pages, dark fantasy medieval, rich deep navy background, amber and gold accent colors, ornate decorative border, painterly pixel art hybrid style, 1024x1024, no text, no UI elements, solid background no transparency",
+    "model": "FLUX painterly",
+    "size": "1024x1024",
+    "notes": "App store icon. Must have solid background \u2014 no transparency. Unity scales to required sizes."
+  },
+  {
+    "sheet_id": "ui_splash",
+    "cell": "A2",
+    "prompt": "game loading screen art, dark fantasy medieval RPG, lone cloaked archer silhouetted against a massive glowing grimoire floating in an ancient forest, volumetric god rays through trees, deep navy and amber color palette, atmospheric fog, cinematic painterly concept art style, 1920x1080, no text, no UI elements, no logos",
+    "model": "FLUX painterly",
+    "size": "1920x1080",
+    "notes": "Loading / splash screen. Painterly model \u2014 not pixel art."
+  },
+  {
+    "sheet_id": "characters_warden",
+    "cell": "A1",
+    "prompt": "warden archer base body, neutral skin tone, simple tunic and trousers, leather belt and bracers, idle pose, side view, limited palette, dark pixel outline, HD-2D pixel art style, full-body realistic proportions, Octopath Traveler-inspired atmospheric lighting, transparent background, 256x256",
+    "model": "16-bit Pixel",
+    "size": "256x256",
+    "notes": "Base body only \u2014 no hood, no quiver, no bow. Generate first as style anchor for all other characters and enemies."
+  },
+  {
+    "sheet_id": "characters_warden",
+    "cell": "A2",
+    "prompt": "warden archer cloak and hood layer only, forest green hooded cloak, transparent everywhere except cloak, matches base body proportions exactly, side view, limited palette, dark pixel outline, HD-2D pixel art style, transparent background, 256x256",
+    "model": "16-bit Pixel",
+    "size": "256x256",
+    "notes": "Sharpshot hood/cloak layer \u2014 composited over base body in Unity"
+  },
+  {
+    "sheet_id": "characters_warden",
+    "cell": "A3",
+    "prompt": "warden archer cloak and hood layer only, amber brown hooded travel cloak worn and weathered, transparent everywhere except cloak, matches base body proportions exactly, side view, limited palette, dark pixel outline, HD-2D pixel art style, transparent background, 256x256",
+    "model": "16-bit Pixel",
+    "size": "256x256",
+    "notes": "Lone Wanderer hood/cloak layer \u2014 composited over base body in Unity"
+  },
+  {
+    "sheet_id": "characters_warden",
+    "cell": "A4",
+    "prompt": "warden archer quiver layer only, brown leather quiver worn on back, arrows visible at top, transparent everywhere except quiver, matches base body back position exactly, side view, limited palette, dark pixel outline, HD-2D pixel art style, transparent background, 256x256",
+    "model": "16-bit Pixel",
+    "size": "256x256",
+    "notes": "Quiver back layer \u2014 composited in Unity"
+  },
+  {
+    "sheet_id": "characters_warden",
+    "cell": "B1",
+    "prompt": "warden archer bow layer only, simple wooden recurve bow held in left hand at rest, transparent everywhere except bow and hand, matches base body hand position exactly, side view, limited palette, dark pixel outline, HD-2D pixel art style, transparent background, 256x256",
+    "model": "16-bit Pixel",
+    "size": "256x256",
+    "notes": "Bow held layer \u2014 composited in Unity"
+  },
+  {
+    "sheet_id": "characters_warden",
+    "cell": "B2",
+    "prompt": "warden archer seen from behind over the right shoulder, back-facing view, same character messy brown hair leather vest bracers loose trousers boots, bow held forward in right hand aimed toward enemy, same 16-bit pixel art style, warm earth tones, dark pixel outlines, transparent background, 256x256",
+    "model": "16-bit Pixel",
+    "size": "256x256",
+    "notes": "Over-shoulder combat view \u2014 separate asset from side-view character"
+  },
+  {
+    "sheet_id": "characters_vanguard",
+    "cell": "A1",
+    "prompt": "vanguard warrior base body, neutral skin tone, layered plate armor over padded gambeson, sword at hip, idle stance, side view, limited palette, dark pixel outline, HD-2D pixel art style, full-body realistic proportions, Octopath Traveler-inspired atmospheric lighting, transparent background, 256x256",
+    "model": "16-bit Pixel",
+    "size": "256x256",
+    "notes": "Vanguard base body \u2014 use as style anchor for Warlord and Shadowblade variants"
+  },
+  {
+    "sheet_id": "characters_vanguard",
+    "cell": "A2",
+    "prompt": "warlord warrior character, heavy plate armor with shield on arm, commanding imposing build, prominent shield on left arm, sword in right, idle stance, side view, same style as approved Vanguard base body, limited palette, dark pixel outline, HD-2D pixel art style, transparent background, 256x256",
+    "model": "16-bit Pixel",
+    "size": "256x256",
+    "notes": "Warlord visual variant \u2014 use Vanguard base as 40% style reference"
+  },
+  {
+    "sheet_id": "characters_vanguard",
+    "cell": "A3",
+    "prompt": "shadowblade rogue character, lighter leather armor with dark accents, hood slightly raised, daggers at hip, crouched ready stance, side view, same style as approved Vanguard base body, limited palette, dark pixel outline, HD-2D pixel art style, transparent background, 256x256",
+    "model": "16-bit Pixel",
+    "size": "256x256",
+    "notes": "Shadowblade visual variant"
+  },
+  {
+    "sheet_id": "characters_vanguard",
+    "cell": "A4",
+    "prompt": "shadowblade rogue character in stealth mode, near-invisible translucent rendering, dark mist swirling around figure, crouched low stance, same proportions as Shadowblade variant, side view, limited palette, dark pixel outline, HD-2D pixel art style, transparent background, 256x256",
+    "model": "16-bit Pixel",
+    "size": "256x256",
+    "notes": "Shadowblade stealth/Shroud variant \u2014 rendered at low opacity in Unity with effect overlay"
+  },
+  {
+    "sheet_id": "characters_arcanist",
+    "cell": "A1",
+    "prompt": "arcanist mage base body, neutral skin tone, long flowing robes with arcane trim, staff held in hand, idle stance, side view, limited palette, dark pixel outline, HD-2D pixel art style, full-body realistic proportions, Octopath Traveler-inspired atmospheric lighting, transparent background, 256x256",
+    "model": "16-bit Pixel",
+    "size": "256x256",
+    "notes": "Arcanist base body \u2014 use as style anchor for all three Arcanist subclass variants"
+  },
+  {
+    "sheet_id": "characters_arcanist",
+    "cell": "A2",
+    "prompt": "runeweaver arcanist character, deep blue robes with constellation star patterns on hem, staff with glowing blue rune at tip, rune constellation arch faintly visible at waist, side view, same style as approved Arcanist base body, limited palette, dark pixel outline, HD-2D pixel art style, transparent background, 256x256",
+    "model": "16-bit Pixel",
+    "size": "256x256",
+    "notes": "Runeweaver visual variant"
+  },
+  {
+    "sheet_id": "characters_arcanist",
+    "cell": "A3",
+    "prompt": "summoner arcanist character, purple robes with summoning circle patterns at hem, staff with construct sigil at tip, floating magical construct fragment near hand, side view, same style as approved Arcanist base body, limited palette, dark pixel outline, HD-2D pixel art style, transparent background, 256x256",
+    "model": "16-bit Pixel",
+    "size": "256x256",
+    "notes": "Summoner visual variant"
+  },
+  {
+    "sheet_id": "characters_arcanist",
+    "cell": "A4",
+    "prompt": "lifebinder arcanist character, warm green robes with vine and leaf patterns at hem, staff with glowing life orb at tip, soft green healing light emanating from hands, side view, same style as approved Arcanist base body, limited palette, dark pixel outline, HD-2D pixel art style, transparent background, 256x256",
+    "model": "16-bit Pixel",
+    "size": "256x256",
+    "notes": "Lifebinder visual variant"
+  },
+  {
+    "sheet_id": "summoner_constructs",
+    "cell": "A1",
+    "prompt": "Ember Sprite magical construct, small fire elemental creature, compact rounded body of solidified flame, flickering fire wings, glowing ember eyes, hovering slightly off ground, aggressive posture, side view, limited palette, orange-red flame tones, dark pixel outline, HD-2D pixel art style, transparent background, 256x256",
+    "model": "16-bit Pixel",
+    "size": "256x256",
+    "notes": "Summoner construct \u2014 high damage, low HP fire attacker"
+  },
+  {
+    "sheet_id": "summoner_constructs",
+    "cell": "A2",
+    "prompt": "Stone Golem magical construct, heavy squat humanoid form built from rough-hewn stone blocks, visible crack lines with faint inner glow, wide stable stance, large stone fists, slow imposing posture, side view, limited palette, grey stone tones with amber inner glow, dark pixel outline, HD-2D pixel art style, transparent background, 256x256",
+    "model": "16-bit Pixel",
+    "size": "256x256",
+    "notes": "Summoner construct \u2014 primary tank, highest HP"
+  },
+  {
+    "sheet_id": "summoner_constructs",
+    "cell": "A3",
+    "prompt": "Frost Shard magical construct, floating geometric ice crystal formation, multiple sharp ice facets arranged in a loose humanoid silhouette, cold blue-white glow, hovering pose, side view, limited palette, blue-white ice tones, dark pixel outline, HD-2D pixel art style, transparent background, 256x256",
+    "model": "16-bit Pixel",
+    "size": "256x256",
+    "notes": "Summoner construct \u2014 slowing utility attacker"
+  },
+  {
+    "sheet_id": "summoner_constructs",
+    "cell": "A4",
+    "prompt": "Storm Wisp magical construct, small crackling lightning spirit, wispy translucent body with electric sparks arcing across surface, bright yellow-white lightning energy, hovering pose, side view, limited palette, yellow-white electric tones, dark pixel outline, HD-2D pixel art style, transparent background, 256x256",
+    "model": "16-bit Pixel",
+    "size": "256x256",
+    "notes": "Summoner construct \u2014 chain lightning attacker"
+  },
+  {
+    "sheet_id": "summoner_constructs",
+    "cell": "B1",
+    "prompt": "Void Shade magical construct, dark shadow humanoid form, near-featureless silhouette of deep purple-black void energy, faint purple glow at edges, slightly translucent, crouched stealth posture, side view, limited palette, deep purple-black void tones, dark pixel outline, HD-2D pixel art style, transparent background, 256x256",
+    "model": "16-bit Pixel",
+    "size": "256x256",
+    "notes": "Summoner construct \u2014 near-zero aggro debuffer"
+  },
+  {
+    "sheet_id": "summoner_constructs",
+    "cell": "B2",
+    "prompt": "Celestial Guardian magical construct, tall elegant humanoid form built from golden light and pale stone, radiant golden glow emanating from chest, protective stance with arms slightly raised, angelic but clearly artificial, side view, limited palette, gold and pale stone tones, dark pixel outline, HD-2D pixel art style, transparent background, 256x256",
+    "model": "16-bit Pixel",
+    "size": "256x256",
+    "notes": "Summoner construct \u2014 support healer, hardest to unlock (requires Inscription 56 + level 88)"
+  },
+  {
+    "sheet_id": "bg_grimwood",
+    "cell": "A1",
+    "prompt": "ancient dark fantasy forest combat arena, painterly concept art style, towering ancient oak trees with gnarled roots, dappled golden light filtering through dense canopy above, mossy stone ruins partially swallowed by undergrowth in midground, thick atmospheric ground fog at base of trees, cool green and deep shadow palette with warm golden light shafts, sense of depth clear foreground ground plane midground trees distant forest fading to atmospheric haze, HD fantasy game background, cinematic composition, no characters, no UI, no text, 1920x1080",
+    "model": "FLUX painterly",
+    "size": "1920x1080",
+    "notes": "Grimwood Fringe combat backdrop. Zone card: crop center 576x240."
+  },
+  {
+    "sheet_id": "bg_grimwood",
+    "cell": "A2",
+    "prompt": "No generation needed \u2014 crop the approved combat backdrop (A1) to 576x240 from the center of frame.",
+    "model": "Crop from A1",
+    "size": "576x240",
+    "notes": "Zone card thumbnail"
+  },
+  {
+    "sheet_id": "bg_saltmarsh",
+    "cell": "A1",
+    "prompt": "dark fantasy coastal combat arena, painterly concept art style, weathered stone dock ruins on a rocky shoreline, overcast sky with dramatic storm light breaking through clouds, sea mist and salt spray in the air, tide pools and wet rock in foreground, rotting dock timbers rusted chains barnacle-covered stone, teal and grey coastal palette with cold light, sense of depth rocky foreground ruined dock midground choppy sea horizon in far distance fading to grey haze, HD fantasy game background, cinematic composition, no characters, no UI, no text, 1920x1080",
+    "model": "FLUX painterly",
+    "size": "1920x1080",
+    "notes": "Saltmarsh Shore combat backdrop. Zone card: crop center 576x240."
+  },
+  {
+    "sheet_id": "bg_saltmarsh",
+    "cell": "A2",
+    "prompt": "No generation needed \u2014 crop the approved combat backdrop (A1) to 576x240 from the center of frame.",
+    "model": "Crop from A1",
+    "size": "576x240",
+    "notes": "Zone card thumbnail"
+  },
+  {
+    "sheet_id": "bg_ashfen",
+    "cell": "A1",
+    "prompt": "dark fantasy swamp combat arena, painterly concept art style, dead twisted trees rising from dark still bog water, bioluminescent fungi and floating spores providing eerie blue-green glow, sunken stone ruins barely visible through murky water and hanging moss, thick oppressive atmosphere low visibility beyond midground, desaturated green-grey palette with cold bioluminescent blue-green accents, sense of depth dark bog water foreground dead tree midground distant mire fading to murky atmospheric haze, HD fantasy game background, cinematic composition, no characters, no UI, no text, 1920x1080",
+    "model": "FLUX painterly",
+    "size": "1920x1080",
+    "notes": "Ashfen Mire combat backdrop. Zone card: crop center 576x240."
+  },
+  {
+    "sheet_id": "bg_ashfen",
+    "cell": "A2",
+    "prompt": "No generation needed \u2014 crop the approved combat backdrop (A1) to 576x240 from the center of frame.",
+    "model": "Crop from A1",
+    "size": "576x240",
+    "notes": "Zone card thumbnail"
+  },
+  {
+    "sheet_id": "bg_ashfen",
+    "cell": "B1",
+    "prompt": "ancient stone burial barrow interior far background layer, rough-hewn stone block walls with carved burial markings, wall-mounted iron torch sconces casting warm orange light, heavy shadows between torch pools, vaulted stone ceiling above, dark desaturated stone palette with warm torch light accents, painterly concept art style, no characters, seamlessly tileable horizontally, 1920x1080",
+    "model": "FLUX painterly",
+    "size": "1920x1080",
+    "notes": "Mirefall Barrow far parallax layer \u2014 moves at 0.1x scroll speed"
+  },
+  {
+    "sheet_id": "bg_ashfen",
+    "cell": "B2",
+    "prompt": "ancient stone burial barrow interior mid background layer, stone pillars with carved runes, arched stone doorways to side chambers, bog water seeping through floor cracks and wall joints, bioluminescent fungi clusters at pillar bases, submerged grave markers partially visible through standing water, same torch lighting as far layer cooler tones near bog water, painterly concept art style, no characters, seamlessly tileable horizontally, 1920x1080",
+    "model": "FLUX painterly",
+    "size": "1920x1080",
+    "notes": "Mirefall Barrow mid parallax layer \u2014 moves at 0.4x scroll speed"
+  },
+  {
+    "sheet_id": "bg_ashfen",
+    "cell": "B3",
+    "prompt": "ancient stone burial barrow interior near foreground layer, cracked stone floor tiles with standing bog water in cracks, scattered bone fragments rotted wood offerings corroded grave goods, bioluminescent fungi patches at floor level, close-up stone texture wet reflective floor surface, warm torch and cold fungi lighting mixing at floor level, painterly concept art style, no characters, seamlessly tileable horizontally, 1920x1080",
+    "model": "FLUX painterly",
+    "size": "1920x1080",
+    "notes": "Mirefall Barrow near parallax layer \u2014 moves at 0.8x scroll speed"
+  },
+  {
+    "sheet_id": "bg_ironspine",
+    "cell": "A1",
+    "prompt": "dark fantasy arid mountain combat arena, painterly concept art style, eroded stone ruins of a military outpost on a rocky mountain plateau, harsh directional light from a low sun casting long shadows, dust haze in the air sparse dry scrub crumbling fortification walls, distant mountain peaks visible through amber dust haze, warm amber and rust palette baked stone and dry earth tones, sense of depth rocky rubble foreground ruined walls midground mountain peaks fading into amber dust haze in far distance, HD fantasy game background, cinematic composition, no characters, no UI, no text, 1920x1080",
+    "model": "FLUX painterly",
+    "size": "1920x1080",
+    "notes": "Ironspine Reaches combat backdrop. Zone card: crop center 576x240."
+  },
+  {
+    "sheet_id": "bg_ironspine",
+    "cell": "A2",
+    "prompt": "No generation needed \u2014 crop the approved combat backdrop (A1) to 576x240 from the center of frame.",
+    "model": "Crop from A1",
+    "size": "576x240",
+    "notes": "Zone card thumbnail"
+  },
+  {
+    "sheet_id": "bg_ironspine",
+    "cell": "B1",
+    "prompt": "abandoned military fortress interior far background layer, thick stone fortress walls with narrow arrow slit windows, harsh exterior light cutting through slits in shafts, military banners faded some torn hanging from upper walls, iron wall brackets with torches, heavy stone construction, warm amber torch light with cold light shafts from arrow slits, painterly concept art style, no characters, seamlessly tileable horizontally, 1920x1080",
+    "model": "FLUX painterly",
+    "size": "1920x1080",
+    "notes": "Warden's Folly far parallax layer \u2014 moves at 0.1x scroll speed"
+  },
+  {
+    "sheet_id": "bg_ironspine",
+    "cell": "B2",
+    "prompt": "abandoned military fortress interior mid background layer, stone corridor with improvised deserter barricades stacked crates and furniture, scratched-out unit insignia on walls personal marks replacing them, weapon racks some empty some still holding spears and shields, bedrolls and camp detritus suggesting recent occupation, same lighting as far layer warmer near torch sources, painterly concept art style, no characters, seamlessly tileable horizontally, 1920x1080",
+    "model": "FLUX painterly",
+    "size": "1920x1080",
+    "notes": "Warden's Folly mid parallax layer \u2014 moves at 0.4x scroll speed"
+  },
+  {
+    "sheet_id": "bg_ironspine",
+    "cell": "B3",
+    "prompt": "abandoned military fortress interior near foreground layer, stone floor with rubble and debris broken pottery scattered coins, discarded military equipment worn boots torn gloves broken sword hilts, dried blood stains on stone scorch marks from old fires, cold stone floor texture warm reflected torch light from above, painterly concept art style, no characters, seamlessly tileable horizontally, 1920x1080",
+    "model": "FLUX painterly",
+    "size": "1920x1080",
+    "notes": "Warden's Folly near parallax layer \u2014 moves at 0.8x scroll speed"
+  },
+  {
+    "sheet_id": "bg_guild_hall",
+    "cell": "A1",
+    "prompt": "dark fantasy small gathering around a campfire, painterly concept art style, three or four cloaked figures huddled around a fire in a forest clearing, makeshift camp, intimate and humble beginnings, warm firelight against cool forest night, 1920x1080, no UI, no text",
+    "model": "FLUX painterly",
+    "size": "1920x1080",
+    "notes": "Guild Hall P0-4 \u2014 campfire beginning stage. Already generated in earlier session, re-prompt if needed."
+  },
+  {
+    "sheet_id": "bg_guild_hall",
+    "cell": "A2",
+    "prompt": "dark fantasy small tent encampment, painterly concept art style, several canvas tents in a forest clearing, central fire, guild members visible around camp, humble but organised beginning, warm campfire tones, 1920x1080, no UI, no text",
+    "model": "FLUX painterly",
+    "size": "1920x1080",
+    "notes": "Guild Hall P5-9 \u2014 tent camp stage"
+  },
+  {
+    "sheet_id": "bg_guild_hall",
+    "cell": "A3",
+    "prompt": "dark fantasy medieval encampment with wooden structures, painterly concept art style, mix of tents and rough wooden buildings, central fire pit, busy guild activity, warm amber tones, established camp feel, 1920x1080, no UI, no text",
+    "model": "FLUX painterly",
+    "size": "1920x1080",
+    "notes": "Guild Hall P10-19 \u2014 encampment stage"
+  },
+  {
+    "sheet_id": "bg_guild_hall",
+    "cell": "A4",
+    "prompt": "dark fantasy military encampment with command hall, painterly concept art style, large central command tent flanked by barracks tents, organized military camp, fire through doorway visible, banners on poles, 1920x1080, no UI, no text",
+    "model": "FLUX painterly",
+    "size": "1920x1080",
+    "notes": "Guild Hall P20-34 \u2014 army encampment stage. Already generated."
+  },
+  {
+    "sheet_id": "bg_guild_hall",
+    "cell": "B1",
+    "prompt": "dark fantasy guild fortress great hall interior, painterly concept art style, stone fortress hall, high vaulted ceilings, guild banner prominently displayed, long wooden feasting tables with members eating and drinking, weapons mounted on walls, fireplace roaring at far end, warm amber torch and firelight, sense of organised military strength, 1920x1080, no UI, no text",
+    "model": "FLUX painterly",
+    "size": "1920x1080",
+    "notes": "Guild Hall P35-49 \u2014 fortress stage"
+  },
+  {
+    "sheet_id": "bg_guild_hall",
+    "cell": "B2",
+    "prompt": "dark fantasy guild castle great hall interior, painterly concept art style, grand stone castle interior, carved stone pillars, high arched windows, elaborate guild tapestries on walls, long banquet tables fully set, guild members in various activities feasting planning sparring in background, warm golden candlelight and fireplace, sense of established wealth and power, 1920x1080, no UI, no text",
+    "model": "FLUX painterly",
+    "size": "1920x1080",
+    "notes": "Guild Hall P50-74 \u2014 castle stage"
+  },
+  {
+    "sheet_id": "bg_guild_hall",
+    "cell": "B3",
+    "prompt": "dark fantasy guild castle with thriving village visible through grand windows, painterly concept art style, elaborate great hall interior, arched stone windows showing village lights and market below, richly decorated hall carved stonework guild heraldry everywhere, members and NPCs visible in background, prosperous busy atmosphere, warm golden interior light contrasting with cool village exterior, 1920x1080, no UI, no text",
+    "model": "FLUX painterly",
+    "size": "1920x1080",
+    "notes": "Guild Hall P75-99 \u2014 castle with village stage"
+  },
+  {
+    "sheet_id": "bg_guild_hall",
+    "cell": "B4",
+    "prompt": "dark fantasy guild stronghold capital throne room, painterly concept art style, massive vaulted throne room, carved stone columns lining the hall, guild throne at far end on raised dais, guild banner above, stained glass windows casting coloured light across polished stone floors, sense of absolute prestige and power the pinnacle of guild achievement, warm dramatic light deep rich colours epic scale, 1920x1080, no UI, no text",
+    "model": "FLUX painterly",
+    "size": "1920x1080",
+    "notes": "Guild Hall P100 \u2014 stronghold capital stage"
+  },
+  {
+    "sheet_id": "bg_onboarding",
+    "cell": "A1",
+    "prompt": "dark fantasy world establishing shot, painterly concept art style, wide vista of a medieval fantasy landscape forest coastline mountains visible, dramatic sky with god rays breaking through clouds, sense of a vast world to explore, adventurous and inviting tone, deep rich colours painterly brushwork cinematic composition, no characters, no UI, no text, 1920x1080",
+    "model": "FLUX painterly",
+    "size": "1920x1080",
+    "notes": "Onboarding panel 1 \u2014 world establishing shot"
+  },
+  {
+    "sheet_id": "bg_onboarding",
+    "cell": "A2",
+    "prompt": "dark fantasy study interior, painterly concept art style, stone desk with multiple leather-bound grimoires laid open, glowing magical runes visible on pages, candlelight illuminating the scene, quill ink scattered parchment notes arcane instruments, warm amber candlelight sense of ancient knowledge and power, no characters, no UI, no text, 1920x1080",
+    "model": "FLUX painterly",
+    "size": "1920x1080",
+    "notes": "Onboarding panel 2 \u2014 grimoires on table"
+  },
+  {
+    "sheet_id": "bg_onboarding",
+    "cell": "A3",
+    "prompt": "dark fantasy forest path, painterly concept art style, ancient forest path leading into deep shadow between enormous trees, dappled light filtering through canopy inviting but slightly foreboding, mossy stones and roots framing the path edges, a sense of adventure beginning, cool green and warm gold palette, no characters, no UI, no text, 1920x1080",
+    "model": "FLUX painterly",
+    "size": "1920x1080",
+    "notes": "Onboarding panel 3 \u2014 Grimwood entrance path"
+  },
+  {
+    "sheet_id": "bg_onboarding",
+    "cell": "A4",
+    "prompt": "dark fantasy circular stone chamber, painterly concept art style, seven stone pedestals arranged in a circle each holding a glowing grimoire, each grimoire a different colour green amber blue purple red black teal, magical light rising from each book arcane symbols floating above them, vaulted stone ceiling with skylight above casting dramatic light, inviting and dramatic player choice moment, no characters, no UI, no text, 1920x1080",
+    "model": "FLUX painterly",
+    "size": "1920x1080",
+    "notes": "Grimoire selection room \u2014 shows all 7 grimoires on pedestals for player's first choice"
+  },
+  {
+    "sheet_id": "enemies_dreadhollow",
+    "cell": "A1",
+    "item_name": "Dreadhollow Revenant",
+    "model": "16-bit Pixel",
+    "size": "256x256",
+    "prompt": "armored undead revenant, heavy corroded plate partially fused to bone, cracked visor with dark hollow eyes visible through slit, one gauntlet hand outstretched, commanding stance, side view, void-purple energy seeping from armor joints, near-black and pale bone palette with cold grey steel, dark pixel outline, HD-2D pixel art style, full-body realistic proportions, Octopath Traveler-inspired atmospheric lighting, transparent background, 256x256",
+    "notes": "Weak point mask: thin horizontal strip at visor slit, top 25% of sprite. Subtle tier."
+  },
+  {
+    "sheet_id": "enemies_dreadhollow",
+    "cell": "A2",
+    "item_name": "Void Shade",
+    "model": "16-bit Pixel",
+    "size": "256x256",
+    "prompt": "translucent void shadow creature, near-featureless humanoid silhouette of deep purple-black void energy, faint purple glow at shifting edges, partially see-through body, gliding pose with arms slightly raised, side view, deep purple-black void palette, dark pixel outline, HD-2D pixel art style, full-body realistic proportions, Octopath Traveler-inspired atmospheric lighting, transparent background, 256x256",
+    "notes": "Weak point mask: small glowing void core at chest center, Obvious tier always glowing."
+  },
+  {
+    "sheet_id": "enemies_dreadhollow",
+    "cell": "A3",
+    "item_name": "Bone Archer",
+    "model": "16-bit Pixel",
+    "size": "256x256",
+    "prompt": "skeletal undead archer, bare bones of ribcage and arms visible, tattered cloth hood, drawing a bow of black dead-wood, notched arrow aimed forward, side view, pale ivory bone palette, void-purple energy on arrowhead, hollow eye sockets faintly glowing, dark pixel outline, HD-2D pixel art style, full-body realistic proportions, Octopath Traveler-inspired atmospheric lighting, transparent background, 256x256",
+    "notes": "Weak point mask: oval at skull, top 22% of sprite. Subtle tier."
+  },
+  {
+    "sheet_id": "enemies_dreadhollow",
+    "cell": "A4",
+    "item_name": "Corruption Beast",
+    "model": "16-bit Pixel",
+    "size": "256x256",
+    "prompt": "large four-legged void beast, wolf-like silhouette corrupted and warped, body partially dissolving into void energy at the edges, jagged spine ridge, wide low stance, side view, near-black body with shifting purple void corruption spreading across the flanks, dark pixel outline, HD-2D pixel art style, full-body realistic proportions, Octopath Traveler-inspired atmospheric lighting, transparent background, 256x256",
+    "notes": "Weak point mask: exposed void core at chest underside, Hidden tier, no glow."
+  },
+  {
+    "sheet_id": "enemies_dreadhollow",
+    "cell": "B1",
+    "item_name": "Wight Commander",
+    "model": "16-bit Pixel",
+    "size": "256x256",
+    "prompt": "elite undead wight in ornate corroded military plate, tall commanding build, crested helm with a single amber-gold elite trim band, one hand raised in a War Cry gesture, side view, dark corroded steel and bone palette, void-purple energy at shoulder joints, amber-gold trim on helm crest and pauldron edges, dark pixel outline, HD-2D pixel art style, full-body realistic proportions, Octopath Traveler-inspired atmospheric lighting, transparent background, 256x256",
+    "notes": "Elite. Weak point mask: crest area top 20%. Subtle tier \u2014 pulses on War Cry only. Amber-gold elite trim."
+  },
+  {
+    "sheet_id": "enemies_dreadhollow",
+    "cell": "B2",
+    "item_name": "Void Stalker",
+    "model": "16-bit Pixel",
+    "size": "256x256",
+    "prompt": "elite void creature, tall lithe humanoid of pure void energy, semi-translucent deep purple-black body, glowing void crystal embedded in chest always visible, predatory crouched ready stance, side view, void-purple and near-black palette, amber-gold elite trim as faint luminous edge along the silhouette, dark pixel outline, HD-2D pixel art style, full-body realistic proportions, Octopath Traveler-inspired atmospheric lighting, transparent background, 256x256",
+    "notes": "Elite. Weak point mask: void crystal at chest center, Obvious tier always glowing. Amber-gold trim on silhouette edge."
+  },
+  {
+    "sheet_id": "enemies_dreadhollow",
+    "cell": "B3",
+    "item_name": "The Hollow Archbishop",
+    "model": "16-bit Pixel",
+    "size": "320x320",
+    "prompt": "powerful undead archbishop boss, towering skeletal figure in vast tattered ceremonial robes, corrupted holy symbol at chest \u2014 glowing void-purple, ornate horned miter helm of dark corroded metal, hands raised with crackling void energy, floating slightly above ground, side view, near-black and pale bone palette, void-purple corruption spreading up the robes from the hem, dark pixel outline, HD-2D pixel art style, full-body realistic proportions, Octopath Traveler-inspired atmospheric lighting, transparent background, 320x320",
+    "notes": "Boss 320x320. Weak point mask: corrupted holy symbol at chest, Subtle in Phase 1, Obvious in Phase 2+. Pulses every 15s."
+  },
+  {
+    "sheet_id": "enemies_cinderpeak",
+    "cell": "A1",
+    "item_name": "Cinderpeak Drake",
+    "model": "16-bit Pixel",
+    "size": "256x256",
+    "prompt": "medium-sized volcanic drake, compact muscular build, dark charcoal-black scales with deep orange-red lava glow visible between scale plates, two forward-facing horns, thick tail, aggressive low stance, side view, ember glow at throat visible through scale gaps, dark pixel outline, HD-2D pixel art style, full-body realistic proportions, Octopath Traveler-inspired atmospheric lighting, transparent background, 256x256",
+    "notes": "Weak point mask: throat ember glow, center-front of neck. Subtle tier \u2014 brighter during fire breath."
+  },
+  {
+    "sheet_id": "enemies_cinderpeak",
+    "cell": "A2",
+    "item_name": "Fire Elemental",
+    "model": "16-bit Pixel",
+    "size": "256x256",
+    "prompt": "fire elemental creature, loosely humanoid form made entirely of living flame, deep orange-red core with bright white-yellow center, flame wisps extending from shoulders and head, hovering slightly above ground, side view, orange-red and white-yellow flame palette, dark pixel outline, HD-2D pixel art style, full-body realistic proportions, Octopath Traveler-inspired atmospheric lighting, transparent background, 256x256",
+    "notes": "Weak point mask: bright white-yellow core at chest center, Obvious tier always glowing."
+  },
+  {
+    "sheet_id": "enemies_cinderpeak",
+    "cell": "A3",
+    "item_name": "Highland Wyvern",
+    "model": "16-bit Pixel",
+    "size": "256x256",
+    "prompt": "large wyvern, heavy build compared to the drake, broad leathery wings folded against flanks, blunt armored head with prominent brow ridges, volcanic black and dark brown scales, standing four-legged with wings slightly raised in threat display, side view, dark pixel outline, HD-2D pixel art style, full-body realistic proportions, Octopath Traveler-inspired atmospheric lighting, transparent background, 256x256",
+    "notes": "Weak point mask: exposed joint where wing meets body, Hidden tier, no glow."
+  },
+  {
+    "sheet_id": "enemies_cinderpeak",
+    "cell": "A4",
+    "item_name": "Lava Construct",
+    "model": "16-bit Pixel",
+    "size": "256x256",
+    "prompt": "ancient stone-and-lava construct, angular blocky humanoid build, joints visible where cooled stone segments connect with lava still flowing between them, central chest rune glowing orange-red always, wide stable stance, side view, dark volcanic rock palette with lava orange-red at joints and chest rune, dark pixel outline, HD-2D pixel art style, full-body realistic proportions, Octopath Traveler-inspired atmospheric lighting, transparent background, 256x256",
+    "notes": "Weak point mask: central chest rune, Obvious tier always glowing orange-red."
+  },
+  {
+    "sheet_id": "enemies_cinderpeak",
+    "cell": "B1",
+    "item_name": "Drake Pack Alpha",
+    "model": "16-bit Pixel",
+    "size": "256x256",
+    "prompt": "elite large drake, significantly bigger than standard Cinderpeak Drake, deeper more saturated charcoal-black scales, lava glow more intense between plates, prominent scarred snout, battle-worn horn tips, more aggressive forward stance, side view, same volcanic palette as standard drake but richer and more intense, amber-gold elite trim on horn tips and crest ridge, dark pixel outline, HD-2D pixel art style, full-body realistic proportions, Octopath Traveler-inspired atmospheric lighting, transparent background, 256x256",
+    "notes": "Elite. Weak point mask: throat ember glow, same position as standard drake. Obvious tier during fire breath. Amber-gold trim on horns and crest."
+  },
+  {
+    "sheet_id": "enemies_cinderpeak",
+    "cell": "B2",
+    "item_name": "Greater Fire Elemental",
+    "model": "16-bit Pixel",
+    "size": "256x256",
+    "prompt": "elite larger fire elemental, taller more imposing than standard, flame form more defined and intense, deep crimson-red outer flame with brilliant white core, additional flame crown above head, side view, deep crimson-red and brilliant white palette, amber-gold elite trim as a golden ring of flame at the waist, dark pixel outline, HD-2D pixel art style, full-body realistic proportions, Octopath Traveler-inspired atmospheric lighting, transparent background, 256x256",
+    "notes": "Elite. Weak point mask: brilliant white core at chest, Obvious tier always glowing. Amber-gold flame ring trim at waist."
+  },
+  {
+    "sheet_id": "enemies_cinderpeak",
+    "cell": "B3",
+    "item_name": "Ignarath the Ashborn",
+    "model": "16-bit Pixel",
+    "size": "320x320",
+    "prompt": "massive ancient drake boss, enormous build dwarfing all other drakes, dark charcoal-black scales heavily scarred and pitted, strips of salvaged adventurer plate armor worn across the shoulders and chest, deep orange-red lava glow intense between scale plates, thick powerful neck with exposed throat scales glowing brightest, wide powerful four-legged stance, side view, dark pixel outline, HD-2D pixel art style, full-body realistic proportions, Octopath Traveler-inspired atmospheric lighting, transparent background, 320x320",
+    "notes": "Boss 320x320. Weak point mask: throat scales at neck center. Subtle in Phase 1 normal stance, Obvious only during Fire Breath channel. Very tight window in Phase 3."
+  },
+  {
+    "sheet_id": "enemies_dungeons_p3",
+    "cell": "A1",
+    "item_name": "The Hollow Archbishop",
+    "model": "16-bit Pixel",
+    "size": "320x320",
+    "prompt": "same as enemies_dreadhollow B3 \u2014 use that prompt. This cell reserved for dungeon-boss atlas grouping., dark pixel outline, HD-2D pixel art style, full-body realistic proportions, Octopath Traveler-inspired atmospheric lighting, transparent background, 320x320",
+    "notes": "Reference enemies_dreadhollow B3. Dungeon boss atlas grouping only."
+  },
+  {
+    "sheet_id": "enemies_dungeons_p3",
+    "cell": "A2",
+    "item_name": "Ignarath's Broodmother",
+    "model": "16-bit Pixel",
+    "size": "320x320",
+    "prompt": "massive female drake dungeon boss, larger than Ignarath zone boss, broader build with visible egg-sac attachment at lower abdomen glowing orange-red, deep charcoal-black scales, motherly but absolutely deadly posture \u2014 lower to ground protecting eggs, side view, volcanic black and lava orange-red palette, dark pixel outline, HD-2D pixel art style, full-body realistic proportions, Octopath Traveler-inspired atmospheric lighting, transparent background, 320x320",
+    "notes": "Boss 320x320. Dungeon boss for Ignarath's Maw. Weak point mask: egg-sac at lower abdomen, Obvious tier always glowing. Different from zone boss Ignarath."
+  },
+  {
+    "sheet_id": "bg_dreadhollow",
+    "cell": "A1",
+    "item_name": "Combat backdrop (1920x1080 full scene)",
+    "model": "FLUX painterly",
+    "size": "1920x1080",
+    "prompt": "dark fantasy dead forest combat arena, painterly concept art style, ancient trees stripped of all bark and leaves standing as pale skeletal trunks, void energy corruption visible as deep purple wisps drifting between the trunks, collapsed village structures half-swallowed by the dead earth in the midground, shadow-touched clearings where no light reaches the ground, near-black and cold grey palette with deep purple void energy accents, sense of depth pale skeletal trunks foreground collapsed structures midground distant dead forest fading into absolute darkness, HD fantasy game background, cinematic composition, no characters, no UI, no text, 1920x1080",
+    "notes": "Dreadhollow Zone 3A combat backdrop. Zone card: crop center 576x240."
+  },
+  {
+    "sheet_id": "bg_dreadhollow",
+    "cell": "A2",
+    "item_name": "Zone card thumbnail (576x240 crop from backdrop)",
+    "model": "Crop from A1",
+    "size": "576x240",
+    "prompt": "No generation needed. Crop the approved combat backdrop (A1) to 576x240 from the center of frame.",
+    "notes": "Zone card thumbnail"
+  },
+  {
+    "sheet_id": "bg_dreadhollow",
+    "cell": "B1",
+    "item_name": "Gravenspire \u2014 far layer (cathedral walls, corrupted windows)",
+    "model": "FLUX painterly",
+    "size": "1920x1080",
+    "prompt": "sunken cathedral interior, far background layer, tall stone walls with tall arched windows, stained glass almost entirely dark, a few remaining glass panels glowing with sickly void-purple light, stone vaulted ceiling ribbing visible above, heavy shadows between stone bays, cold grey stone palette with void-purple window glow accents and deep shadow, painterly concept art style, no characters, seamlessly tileable horizontally, 1920x1080",
+    "notes": "Gravenspire far parallax layer. Moves at 0.1x scroll speed."
+  },
+  {
+    "sheet_id": "bg_dreadhollow",
+    "cell": "B2",
+    "item_name": "Gravenspire \u2014 mid layer (pews, pillars, void seep patches)",
+    "model": "FLUX painterly",
+    "size": "1920x1080",
+    "prompt": "sunken cathedral interior, mid background layer, rows of rotted black dead-wood pews many collapsed or overturned, stone pillars with carved religious iconography now partially erased, void seep patches on the floor dark circular areas where void energy pools, pale bone fragments scattered between pews, same cold window glow from far layer void seep patches add low purple floor light, painterly concept art style, no characters, seamlessly tileable horizontally, 1920x1080",
+    "notes": "Gravenspire mid parallax layer. Moves at 0.4x scroll speed."
+  },
+  {
+    "sheet_id": "bg_dreadhollow",
+    "cell": "B3",
+    "item_name": "Gravenspire \u2014 near layer (stone floor, scattered remains)",
+    "model": "FLUX painterly",
+    "size": "1920x1080",
+    "prompt": "sunken cathedral interior, near foreground layer, cracked stone floor tiles with void seep patches glowing faintly purple at the edges, scattered religious relics corroded candlesticks crumbling stone offertory bowls, pale bone fragments at floor level ancient dried flower offerings long dead, cold grey stone floor void purple glow reflecting faintly in the wet cracks, painterly concept art style, no characters, seamlessly tileable horizontally, 1920x1080",
+    "notes": "Gravenspire near parallax layer. Moves at 0.8x scroll speed."
+  },
+  {
+    "sheet_id": "bg_cinderpeak",
+    "cell": "A1",
+    "item_name": "Combat backdrop (1920x1080 full scene)",
+    "model": "FLUX painterly",
+    "size": "1920x1080",
+    "prompt": "dark fantasy volcanic highland combat arena, painterly concept art style, cooled black lava flows forming a stepped terrain, active lava channels glowing deep orange-red in the midground distance, volcanic rock formations and thermal steam vents in the foreground, ash haze in the air reducing visibility beyond midground, a massive caldera wall visible in the far distance glowing at its rim, charcoal-black and volcanic grey palette with deep orange-red lava glow accents, sense of depth volcanic rock foreground lava channels midground caldera wall fading into ash haze in the far distance, HD fantasy game background, cinematic composition, no characters, no UI, no text, 1920x1080",
+    "notes": "Cinderpeak Zone 3B combat backdrop. Zone card: crop center 576x240."
+  },
+  {
+    "sheet_id": "bg_cinderpeak",
+    "cell": "A2",
+    "item_name": "Zone card thumbnail (576x240 crop from backdrop)",
+    "model": "Crop from A1",
+    "size": "576x240",
+    "prompt": "No generation needed. Crop the approved combat backdrop (A1) to 576x240 from the center of frame.",
+    "notes": "Zone card thumbnail"
+  },
+  {
+    "sheet_id": "bg_cinderpeak",
+    "cell": "B1",
+    "item_name": "Ignarath's Maw \u2014 far layer (tunnel walls, ancient machinery)",
+    "model": "FLUX painterly",
+    "size": "1920x1080",
+    "prompt": "volcanic tunnel interior, far background layer, rough volcanic rock walls with ancient arcane pipe and valve machinery partially buried in cooled lava some pipes still glowing faintly orange, tunnel ceiling low and uneven thermal steam visible in the upper corners, charcoal-black volcanic rock palette with deep orange arcane machinery glow, painterly concept art style, no characters, seamlessly tileable horizontally, 1920x1080",
+    "notes": "Ignarath's Maw far parallax layer. Moves at 0.1x scroll speed."
+  },
+  {
+    "sheet_id": "bg_cinderpeak",
+    "cell": "B2",
+    "item_name": "Ignarath's Maw \u2014 mid layer (cooled lava flows, nesting debris)",
+    "model": "FLUX painterly",
+    "size": "1920x1080",
+    "prompt": "volcanic tunnel interior, mid background layer, cooled black lava flow formations on the tunnel floor creating uneven terrain, drake nesting debris broken eggshell fragments scattered bones, a partially melted and collapsed lava construct visible against the tunnel wall, lava vent grates in the floor faint orange glow from active vents below, same arcane machinery glow from far layer orange vent glow from below, painterly concept art style, no characters, seamlessly tileable horizontally, 1920x1080",
+    "notes": "Ignarath's Maw mid parallax layer. Moves at 0.4x scroll speed."
+  },
+  {
+    "sheet_id": "bg_cinderpeak",
+    "cell": "B3",
+    "item_name": "Ignarath's Maw \u2014 near layer (tunnel floor, egg fragments, vent grates)",
+    "model": "FLUX painterly",
+    "size": "1920x1080",
+    "prompt": "volcanic tunnel interior, near foreground layer, rough volcanic rock floor with cooled lava ripples and surface texture, cracked drake eggshell fragments scattered across the floor, ancient arcane valve components half-buried in the lava rock, lava vent grates close up orange-red heat glow visible through the grate slats, warm deep orange floor light from vents below charcoal-black rock above, painterly concept art style, no characters, seamlessly tileable horizontally, 1920x1080",
+    "notes": "Ignarath's Maw near parallax layer. Moves at 0.8x scroll speed."
+  }
+]

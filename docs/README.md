@@ -39,6 +39,11 @@ Raw base: `https://raw.githubusercontent.com/RefugeSwordPublishing/Project-Grimo
 - daily-weekly-quest-system.md, settings-screen.md, onboarding-flow.md, while-you-were-away.md
 - player-account-system.md, push-notification-triggers.md, monetization-scope.md, infrastructure-cost-planning.md
 
+## Phase 3 content
+- dungeon-room-pools-phase3-brief.md, Gravenspire + Ignarath's Maw room pools, bosses, puzzles, hazards
+- phase3-attunement-data-spec.md, Tanning tiered attunement, Smelting HeatGauge attunement, combat zone events, Delving node placement
+- phase3-enemy-content-brief.md, all T3 EnemyData (HP, damage, weak points, drops, new mechanics)
+
 ## Subclasses / combat specs
 - subclass-trees-warden.md, subclass-trees-arcanist.md, subclass-trees-vanguard.md
 - runic-constellation-spec.md, summoner-spec.md, lifebinder-spec.md

@@ -288,27 +288,27 @@ Pine Log: Felling idle gather, Zone T1.
 
 ## 10. What Claude Code Needs to Build
 
-1. **Delving talent**: new gathering talent. Ore nodes, gem deposits, and amber/cave
+1. **Delving talent** — new gathering talent. Ore nodes, gem deposits, and amber/cave
    drops as idle gather sources per zone tier. Pickaxe as tool type.
    Add milestone passives to talent-spec-sheets.md.
 
-2. **Smelting talent**: new processing talent. Recipes in Section 3.
+2. **Smelting talent** — new processing talent. Recipes in Section 3.
    Forge as new tool type; assembly table in Section 3.
    Add milestone passives to talent-spec-sheets.md.
 
-3. **Leather renames**: apply old -> new name mapping (Section 4) to all ItemData
+3. **Leather renames** — apply old -> new name mapping (Section 4) to all ItemData
    assets, Tanning recipes, and every component reference in
    assembly-materials-crafting-system.md.
 
-4. **Pine Haft**: add as Timber Shaping recipe (Section 8).
+4. **Pine Haft** — add as Timber Shaping recipe (Section 8).
 
-5. **Arcane apparatus recipes**: add to Artificing (Section 6).
+5. **Arcane apparatus recipes** — add to Artificing (Section 6).
 
-6. **Drake Leather**: add as direct enemy drop from Drake enemies (T4-T5); no Tanning.
+6. **Drake Leather** — add as direct enemy drop from Drake enemies (T4-T5); no Tanning.
 
-7. **Shadow Essence**: add as Alchemy recipe: 3x Shadow Pelt, Alchemy 60.
+7. **Shadow Essence** — add as Alchemy recipe: 3x Shadow Pelt, Alchemy 60.
 
-8. **Ore/amber/gem nodes per zone**: Delving idle gather sources placed per zone band
+8. **Ore/amber/gem nodes per zone** — Delving idle gather sources placed per zone band
    matching the zone alignment table in Section 9.
 
 ---
