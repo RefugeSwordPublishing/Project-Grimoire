@@ -104,7 +104,21 @@ Six server-authoritative SECURITY DEFINER RPCs, mirroring `purchase_store_listin
     sale and reopening the Exchange, the credit can still be lost. Proper fix = server-authoritative
     currency (client sends deltas via RPCs) or a claim-based pending-earnings row. Tracked for later.
 - **Toasts:** reused `LootToastUI` (now has a static `Instance` + `ShowMessage`); Exchange toasts
-  "Bought X", "Sold X", and "Sale earnings: +N" (from the reopen refresh delta).
+  "Bought X", "Sold X".
+
+### Pending earnings + collect-at-merchant (migration 026) — the real fix
+Sale proceeds no longer credit the seller's wallet directly (which the client could overwrite).
+Instead a sale accrues to a **server-side pending bucket per marketplace** (`exchange_pending_earnings`,
+source `exchange`|`guild`); the seller taps **Collect** at that merchant, a client-initiated
+`collect_earnings(source)` that moves pending → `player_currency` and returns the amount (client adds
+it, additive, never clobbers a local gain). Fixes the lost-earnings bug and makes collecting a
+rewarding step (the user's idea).
+- Every sale RPC redefined to route the SELLER to `_add_pending`: `purchase_store_listing`,
+  `fulfill_buy_order`, `buy_auction_buyout`, `close_ended_auctions`.
+- **Guild merchant fixed too:** `buy_guild_listing` now charges the buyer from `player_currency`
+  (was `players.*`, the long-standing split-table bug) and routes the seller to pending('guild').
+- UI: a **Collect** bar on Exchange **My Listings** and the **Guild Merchant** tab shows the total and
+  collects. `RefreshCurrencyFromServer` stays for escrow refunds.
 - **Deferred:** buy-order fill quantity picker (fills 1 at a time), FCM outbid/sold notifications
   (schema flag `ending_soon_notified` ready), a project-wide UITheme for the sprite-button swap,
   server-authoritative currency.
