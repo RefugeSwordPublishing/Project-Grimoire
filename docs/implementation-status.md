@@ -123,18 +123,26 @@ rewarding step (the user's idea).
   (schema flag `ending_soon_notified` ready), a project-wide UITheme for the sprite-button swap,
   server-authoritative currency.
 
-## Session 2026-07-27, Phase 3 dungeon data model
+## Session 2026-07-27, Phase 3 dungeons (full system)
 
-Dungeons were NEVER built (the Phase 2 DungeonGenerator/DungeonData foundation didn't exist). Built
-the **data layer**: `DungeonData` + `RoomData` ScriptableObjects + `RoomType`/`DungeonHazard`/
-`DungeonPuzzle` enums. `Create Phase 3 Dungeons` authors Gravenspire (Dreadhollow) + Ignarath's Maw
-(Cinderpeak): entrance/safe/boss fixed rooms + 8-room weighted pools, hazards, the exclusive puzzle
-(Pyre / Pressure Valve), and the dungeon boss. References the Phase 3 enemies.
-- **Runtime NOT built (the big remaining piece):** DungeonGenerator (assembly rules), room-by-room
-  crawl integrated with CombatManager, safe-room regen/loot, the 8 hazard behaviours, the two puzzle
-  mechanics + UI, dungeon UI, and the first-clear XP bonus. This is a multi-turn gameplay system.
-- Boss reconciliation flagged for Chat: enemy brief makes the dungeon bosses the Archbishop-Gravenspire
-  (8400) + Broodmother (7800); the dungeon brief names the zone bosses. Used the enemy-brief bosses.
+Dungeons were net-new (no Phase 2 foundation existed). Built the **whole system**:
+- **Data:** `DungeonData` + `RoomData` SOs + `RoomType`/`DungeonHazard`/`DungeonPuzzle` enums.
+  `Create Phase 3 Dungeons` authors Gravenspire + Ignarath's Maw (entrance/safe/boss + 8-room weighted
+  pools, hazards, exclusive puzzle, dungeon boss) and links each host zone via `ZoneData.dungeon`.
+- **Generator** (`DungeonGenerator`): entrance + min..max pool rooms (guaranteed + puzzle-by-chance +
+  weighted, shuffled) + safe (2nd-last) + boss (last).
+- **Crawl** (`CombatManager`): `EnterDungeon` full-heals + generates; room enemies queue and spawn one
+  at a time; clearing a room awaits `AdvanceDungeonRoom`; safe rooms heal; boss room -> complete with
+  first-clear XP. Hub dungeon tile launches it.
+- **UI:** `DungeonRunUI` (room-progress banner + Advance/Finish + Complete/Leave). `DungeonPuzzleUI`
+  (Pyre 5-brazier flash-repeat / Pressure-Valve 3-valve shown-order sequence; solve = bonus Refined
+  material; wrong = reset + minor damage; optional). Both added by `Build Dungeon Run UI`.
+- **Hazards:** simplified periodic tick while fighting in a hazardous room (telegraphed/avoidable
+  behaviour deferred).
+- **Deferred:** hazard telegraphs, room-specific loot bonuses (lootNote is reference text), enforced
+  puzzle gating. Boss reconciliation flagged for Chat (used enemy-brief dungeon bosses: Archbishop-
+  Gravenspire 8400 + Broodmother 7800).
+- **Run:** Create Phase 3 Enemies -> Create Phase 3 Dungeons -> Build Dungeon Run UI, Ctrl+S.
 
 ## Session 2026-07-27, Phase 3 combat zone events + nav cleanup
 
