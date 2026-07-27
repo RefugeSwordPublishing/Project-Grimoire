@@ -123,6 +123,25 @@ rewarding step (the user's idea).
   (schema flag `ending_soon_notified` ready), a project-wide UITheme for the sprite-button swap,
   server-authoritative currency.
 
+## Session 2026-07-27, Inscription rebuild + stacking buffs + recipe sweep
+
+- **Full recipe sweep** (parsed every talent recipe, gather, drop): the ONLY self-referential /
+  unsourced junk in the economy was **Inscription** (4 recipes consuming their own output + duplicating
+  Gleaning's sigils). Everything else traces cleanly to gather/process/Gleaning/mob-drop. Remaining
+  unsourced items are the two expected T5 drops (Drake Leather, Void Creature Part).
+- **Leather -> Vellum -> Scroll pipeline** (`Build Inscription Economy` tool): Tanning gains a second
+  product line (pelt -> Vellum / Fine Vellum / Runed Vellum); Inscription rebuilt to real scroll/codex
+  `TimedBuff` consumables (Scroll of Precision/Warding, Codex of Insight/the Hunt, Ancient Glyph) from
+  Vellum + a Gleaning sigil. Removes all Inscription junk; fixes the stale "auto-enchant" description.
+- **Stacking timed buffs** (`BuffManager`): using the same buff again now EXTENDS its timer (up to 6h)
+  instead of replacing it, so many short consumables bank into one long buff. Magnitude applies once;
+  different buffs coexist. Scrolls use short durations by design. Regen buffs stack the same way.
+- **Reagent orphans sourced:** Alchemy distils Clear/Swift/Pure; Gleaning gathers Binding Stone + Rare
+  Ore (Gleaning is Artificing's supply talent). Limbs + Base Oil producers added earlier.
+- **Still flagged (not yet done):** dedup Shadow Essence (Trapping should drop the Pelt, not Essence) +
+  Herb Extract (Alchemy vs Cookery); diversify tool rare-material off Bone Fragment (all 14 tools use
+  it); the buff-consumables (Ironbone Relic / totems / tonics) are craftable but may lack wired effects.
+
 ## Session 2026-07-27, material-economy audit + gap fills
 
 Audited the material-economy batch against the code: **most of it is already built** and only a few
