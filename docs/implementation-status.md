@@ -123,6 +123,19 @@ rewarding step (the user's idea).
   (schema flag `ending_soon_notified` ready), a project-wide UITheme for the sprite-button swap,
   server-authoritative currency.
 
+## Session 2026-07-27, Processing->Crafting merge + idle/recipe fixes
+
+- **Processing merged into Crafting.** `TalentCategory.Arcane` renamed to `Crafting`; the 4 processing
+  talents (Smelting/Tanning/Cookery/Alchemy) moved into it. The category split is now just Gathering
+  (from the world) vs Crafting (consumes materials). The Crafting panel queries by category at runtime
+  so it shows all 9 talents with no canvas rebuild; the Processing nav entry is hidden. `Processing`
+  enum value kept (deprecated) to preserve Combat=2/Crafting=3 serialization.
+- **Processing/crafting idle no longer vanishes offline** (inventory-load race): `InventoryManager.
+  MarkLoaded/IsLoaded` + `IdleManager.WaitForInventory` gate resume + offline calc on the bag being
+  loaded. Dev `Simulate 30 min Offline` ContextMenu on IdleManager for testing WYWA in-editor.
+- **Recipe hygiene:** Cookery recipes made single-output (dead Broth/Energy Cake/Rare Spice byproducts
+  removed); the only either/or crafting outputs were those 3. Gathering nodes still yield varied mats.
+
 ## Session 2026-07-27, Inscription rebuild + stacking buffs + recipe sweep
 
 - **Full recipe sweep** (parsed every talent recipe, gather, drop): the ONLY self-referential /
