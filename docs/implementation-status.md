@@ -123,6 +123,21 @@ rewarding step (the user's idea).
   (schema flag `ending_soon_notified` ready), a project-wide UITheme for the sprite-button swap,
   server-authoritative currency.
 
+## Session 2026-07-27, Phase 3 combat zone events + nav cleanup
+
+- **Combat zone events** (VoidPulse / ThermalVentBurst): `ZoneData.combatEvent` (`ZoneCombatEvent` enum).
+  `CombatManager` counts encounters per zone and fires the event every N (4-7 / 5-8), opening a
+  damage-buff window. Idle gets the passive bonus automatically (+10% / +8%); an active tap of the cue
+  gives the full bonus (+20% / +15%). `ZoneEventDamageMult` scales the strike; `TapZoneEvent` +
+  `OnZoneEvent`; `ZoneCombatView` shows a tappable "<cue> (tap!)" prompt. Phase 3 tool wires VoidPulse
+  -> Dreadhollow, ThermalVentBurst -> Cinderpeak (re-run the tool to set them on the zones).
+- **Nav cleanup:** `RelayoutNav()` re-stacks the visible nav rows so the hidden Processing entry no
+  longer leaves a gap.
+- **Attunement is a real mechanic, not stubbed:** during any idle cycle with `hasAttunement`, a tap-cue
+  button appears (via `AttunementUI` on `IdleManager.OnAttunementWindowOpen`); tapping within the window
+  grants the yield/XP/rare bonus (idle always gets base). Per-cue-type VISUALS aren't differentiated yet
+  (Smelting's HeatGauge shows the generic tap button); the mechanic works for all talents.
+
 ## Session 2026-07-27, Phase 3 attunement + locked-zone overlay
 
 - **Tanning tiered attunement + Smelting HeatGauge** (`Add Phase 3 Attunement` tool): Tanning's 4
