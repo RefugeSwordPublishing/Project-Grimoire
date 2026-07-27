@@ -123,6 +123,16 @@ rewarding step (the user's idea).
   (schema flag `ending_soon_notified` ready), a project-wide UITheme for the sprite-button swap,
   server-authoritative currency.
 
+## Session 2026-07-27, crafting panel UX: detail popup + keep-open
+
+`CategoryTalentPanelUI`: tapping a recipe/gather tile now opens a runtime **detail popup** over the
+panel instead of starting the task and closing to the main screen.
+- Shows what it makes (+ gear stats via `ItemStats` for equipment), each input with held/needed and
+  its SOURCE (`Gather: <talent>` / `Craft: <talent>` / drop) via `SourceOf`, and XP+cycle yield.
+- **Start/Stop runs the action without closing the panel** (queue a few, then switch); Start is gated
+  on the recipe's materials being held. Locked tiles stay inert. No canvas rebuild (runtime popup).
+- Note: gather source names the talent (gathering isn't zone-gated in the data model), not a zone.
+
 ## Session 2026-07-27, Processing->Crafting merge + idle/recipe fixes
 
 - **Processing merged into Crafting.** `TalentCategory.Arcane` renamed to `Crafting`; the 4 processing
