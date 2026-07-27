@@ -123,6 +123,21 @@ rewarding step (the user's idea).
   (schema flag `ending_soon_notified` ready), a project-wide UITheme for the sprite-button swap,
   server-authoritative currency.
 
+## Session 2026-07-27, Phase 3 enemies + zones
+
+`Create Phase 3 Enemies` authors all Phase 3 EnemyData per phase3-enemy-content-brief: Dreadhollow
+([Undead]/[Void]) and Cinderpeak ([Beast]/[Arcane]), 4 standard + 2 elite + 1 zone boss each (Hollow
+Archbishop, Ignarath the Ashborn), plus the two dungeon bosses (Ignarath's Broodmother, Archbishop-
+Gravenspire variant) as standalone assets in Enemies/Dungeons for later dungeon wiring. Creates the
+2 T3 ZoneData (Dreadhollow lv51, Cinderpeak lv60, hasDungeon set), wires enemies + zone boss, and
+registers them in the hub.
+- `EnemyData.goldMarkDropMin/Max` added; `CombatManager` credits Gold Marks on kill (T3 primary
+  currency; silver zeroed at T3). Special/boss abilities are reference text (behaviour deferred, as
+  Phase 2). Sprites/masks null (sprite pass). Drop-table material names resolve once those items exist.
+- **Still open in Phase 3:** dungeon DungeonData (room pools, wire the 2 dungeon bosses), Tanning
+  tiered attunement, Smelting HeatGauge cue, combat zone events (VoidPulse/ThermalVentBurst),
+  and authoring the new T3 drop-material ItemData.
+
 ## Session 2026-07-27, crafting panel UX: detail popup + keep-open
 
 `CategoryTalentPanelUI`: tapping a recipe/gather tile now opens a runtime **detail popup** over the
