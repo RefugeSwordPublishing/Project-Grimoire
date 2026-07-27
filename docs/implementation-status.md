@@ -138,9 +138,12 @@ rewarding step (the user's idea).
   different buffs coexist. Scrolls use short durations by design. Regen buffs stack the same way.
 - **Reagent orphans sourced:** Alchemy distils Clear/Swift/Pure; Gleaning gathers Binding Stone + Rare
   Ore (Gleaning is Artificing's supply talent). Limbs + Base Oil producers added earlier.
-- **Still flagged (not yet done):** dedup Shadow Essence (Trapping should drop the Pelt, not Essence) +
-  Herb Extract (Alchemy vs Cookery); diversify tool rare-material off Bone Fragment (all 14 tools use
-  it); the buff-consumables (Ironbone Relic / totems / tonics) are craftable but may lack wired effects.
+- **Economy cleanups (done):** deduped Shadow Essence (Trapping now drops only Shadow Pelt; Alchemy
+  makes Essence) + Herb Extract (Alchemy owns it; removed from Cookery's Herb Broth). Tool crafting
+  rare-material diversified off Bone Fragment (`ToolRareMat` in AddGearRecipes: metal->Gemstone,
+  gather/leather/wood->Amber, arcane->Rune Shard; re-run Add Gear Crafting Recipes). The 5 dead
+  buff-consumables (Clarity Tonic / Speed Draught / Power Elixir / Stone Totem / Ironbone Relic) were
+  craftable no-ops; `Wire Buff Consumables` gives them stackable TimedBuff effects.
 
 ## Session 2026-07-27, material-economy audit + gap fills
 
