@@ -123,6 +123,26 @@ rewarding step (the user's idea).
   (schema flag `ending_soon_notified` ready), a project-wide UITheme for the sprite-button swap,
   server-authoritative currency.
 
+## Session 2026-07-27, material-economy audit + gap fills
+
+Audited the material-economy batch against the code: **most of it is already built** and only a few
+real gaps remained.
+- **Already built:** Delving talent (17 nodes: ore/coal/gem/amber), Smelting talent (7 bar/alloy
+  recipes), all bar/ore/limb/apparatus item assets (`Data/Items/Materials/`), Pine Haft recipe
+  (`Shape Pine Haft`), `ItemData.materialTier` + `EquipmentStats` tier bonus arrays (match spec
+  exactly), Shadow Essence + Base Oil item assets, and the leather rename (via `Reconcile Leather
+  Chain`). Tailoring already consumes processed leather (Rabbit Hide/Fox/Wolf/Direwolf/Drake).
+- **Fixed this session:** leather item descriptions still read the old names (corrected); **Tanning
+  moved to the Processing category** (was Arcane/crafting) at the source (`Phase1DataCreator`) + asset,
+  placing it between Trapping and Tailoring. New `Add Missing Producer Recipes` tool fills the two
+  "consumed but never produced" gaps: **limbs** (Runesmithing forges Bronze/Iron/Steel/Mithril/Void
+  Limbs from the tier bar; Timber Shaping bows consume them) and **Base Oil** (Alchemy `Render Base
+  Oil` from Common Herb; Healing Salve + Inscription consume it).
+- **Still open in the batch:** arcane apparatus recipes (verify producers exist), Drake Leather as a
+  live enemy drop (needs Drake enemies), and the larger Phase 3 pieces: enemy/dungeon ScriptableObjects,
+  Tanning/Smelting attunement cues, combat zone events, and the full quest system.
+- Also (testing): Grimoire swap cooldown set to 0 (restore before release).
+
 ## Session 2026-07-26, combat rebuild hardening + Warden ability tiers
 
 ### Combat panel rebuild is now self-contained
