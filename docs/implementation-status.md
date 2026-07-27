@@ -139,8 +139,17 @@ is a dedicated in-combat backdrop sprite (falls back to `icon`).
 Replaced the wrong tap-to-arm buttons. `WardenBowstringMechanic` accumulates hold time while drawing
 and exposes a per-subclass tier ladder; the highest fully-charged, unlocked, off-cooldown tier fires
 on release (falls back to the best lower tier when a higher one is locked/cooling).
-- Sharpshot: Standard 0.3s / Barbed 1.5s (Lv31, 20% bleed) / Full Draw 2.5s / Long Shot 4.0s (Lv86, 90s CD, x8).
-- Lone Wanderer: Rapid 0.3s (Lv44, 8s CD, 3 shots) / Standard 1.5s / Full Draw 2.5s.
+- Rings are the subclass's UNLOCKED abilities only (no "Standard" ring; a sub-charge release is the
+  standard shot). Ordered by unlock level so a new unlock slots in at the top and lower rings keep
+  their timing. Windows are short (~0.5-0.8s each) so the top ring is ~2-3s of hold.
+- Sharpshot (5): Full Draw (Lv1, x1.3) / Aimed (Lv18, guaranteed-WP approx x2) / Barbed (Lv31, 20%
+  bleed) / Pierce (Lv55, armour-shred approx x1.5) / Long Shot (Lv86, 90s CD, x8).
+- Lone Wanderer (4): Full Draw (Lv1) / Twin (Lv15, 2 arrows) / Rapid (Lv44, 8s CD, 3 shots) /
+  Volley (Lv68, 12s CD, 4 arrows).
+- **Single-target approximations pending multi-enemy combat:** Pierce's true line-pierce and Volley's
+  AoE are single-target multi-hits for now; Aimed's guaranteed-WP and Long Shot's guaranteed-WP are
+  flat multipliers. Upgrade when combat supports multiple simultaneous targets. Playtester feedback
+  will tune the set (user's call).
 - Row tap ability: Sharpshot Armor Piercer (primes +armour-ignore), Lone Wanderer Fade (dodge next hit).
 - `WardenAbilityUI` draws a right-side stack whose rings FILL as you draw (lowest first, then the
   next), plus one bottom row button. Per the user's note the tiers visibly fill (overrides the spec's
