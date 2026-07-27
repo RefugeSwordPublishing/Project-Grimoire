@@ -123,6 +123,21 @@ rewarding step (the user's idea).
   (schema flag `ending_soon_notified` ready), a project-wide UITheme for the sprite-button swap,
   server-authoritative currency.
 
+## Session 2026-07-27, Phase 3 attunement + locked-zone overlay
+
+- **Tanning tiered attunement + Smelting HeatGauge** (`Add Phase 3 Attunement` tool): Tanning's 4
+  leather grades get per-grade cycle lengths (12/18/25/35s) + window durations + rare bonuses + cue
+  labels (Pulse cue); Smelting's 7 bars get HeatGauge attunement (window per bar, quality bonus for
+  Steel+). `TalentActivity.attunementCueType` + `AttunementCueType` enum (Pulse/Crack/Shimmer/
+  HeatGauge/Placement) added. The dedicated HeatGauge visual is deferred (timing runs on the existing
+  cycle-window mechanic; cueType flags it for that UI). Shadow Leather grade omitted (material-economy
+  keeps Shadow Pelt Alchemy-only) - flagged for Chat.
+- **Locked-zone overlay** (`CombatHubUI`): locked zones/dungeons get a "???" overlay over the banner
+  (assign `_lockedOverlaySprite` + `_lockedOverlayOpacity`, 0.85 default peeks the art through; dark
+  placeholder until a sprite is assigned).
+- **Still open in Phase 3:** combat zone events (VoidPulse / ThermalVentBurst), dungeon DungeonData
+  (room pools + wire the 2 dungeon bosses), and the new T3 drop-material ItemData.
+
 ## Session 2026-07-27, Phase 3 enemies + zones
 
 `Create Phase 3 Enemies` authors all Phase 3 EnemyData per phase3-enemy-content-brief: Dreadhollow
