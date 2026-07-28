@@ -144,6 +144,25 @@ Dungeons were net-new (no Phase 2 foundation existed). Built the **whole system*
   Gravenspire 8400 + Broodmother 7800).
 - **Run:** Create Phase 3 Enemies -> Create Phase 3 Dungeons -> Build Dungeon Run UI, Ctrl+S.
 
+## Session 2026-07-27, Tier 1 dungeons (Aldric's Warren + Crestfall Cove)
+
+Per `docs/dungeon-room-pools-t1-brief.md`. The two T1 zones already carried placeholder dungeon tiles
+(`hasDungeon` + a name) but no `DungeonData`, so the tiles dead-tapped. Now built for real:
+- **Bosses:** `Aldric the Wolf` (Warren, 1800 HP, 2-phase) and `Captain Mirra Vane` (Cove, 2100 HP,
+  2-phase), authored into `Enemies/Dungeons`. Silver-Mark drops (T1 is pre-Gold). Abilities are
+  reference text (same deferral as every other boss). Note: the Warren zone boss is still
+  `Aldric the Poacher King`; the Wolf is the dungeon variant (same split as the T3 Archbishop).
+- **Dungeons** (`Create Phase 1 Dungeons`): entrance/safe/boss + 5-room weighted pools each,
+  `minRooms 2 / maxRooms 3`, `firstClearXP 500`, **no puzzle**. Rooms reuse existing zone enemies
+  (Grimwood Brigand, Bandit Scout, Saltmarsh Smuggler, Coastal Poacher).
+- **Zone link:** matches the real `zoneId` (`zone_1a` / `zone_1b`, NOT the brief's
+  `grimwood_fringe`/`saltmarsh_shore`) and sets `ZoneData.dungeon`.
+- **New hazard `DungeonHazard.TidalSurge`** (Cove's Tidal Chamber): movement-penalty-only by design,
+  so with no movement system yet it ticks **no damage**, just a periodic "Tidal surge" cue.
+- **UI fix:** `DungeonRunUI` banner moved down (y -250) and made non-raycast so it no longer covers the
+  Leave Combat button (top-right).
+- **Run:** Create Phase 1 Dungeons, Ctrl+S. (No enemy tool needed; the two bosses are authored inline.)
+
 ## Session 2026-07-27, Phase 3 combat zone events + nav cleanup
 
 - **Combat zone events** (VoidPulse / ThermalVentBurst): `ZoneData.combatEvent` (`ZoneCombatEvent` enum).
@@ -630,4 +649,8 @@ The combat hotbar + auto-eat the user wants are **blocked on design**:
 - **Next:** Chat writes `consumables-spec.md` (effects per item, food-vs-buff ruling, combat-hotbar list, poison model, Royal Merchant auto-eat tiers); then Code adds `ItemData` effect fields → real `UseConsumable` → combat hotbar (HP fills) → idle auto-eat.
 
 ## Do-not-build (still in force)
-Raids, dungeon room puzzles, faction system, Bloodweaver/Warlock/Kensei/Beastbond (DLC), guild bounties (post-launch), Divination talent, Legendary tier, Black Ledger.
+Raids, faction system, Bloodweaver/Warlock/Kensei/Beastbond (DLC), guild bounties (post-launch), Divination talent, Legendary tier, Black Ledger.
+
+**Dungeon room puzzles are IN (flag lifted 2026-07-27).** T2/T3 dungeons have puzzles (Pyre / Pressure
+Valve, live via `DungeonPuzzleUI`); T1 dungeons have none by design. The prior "dungeon room puzzles"
+do-not-build entry was stale, the shipped T3 dungeons already used them.
