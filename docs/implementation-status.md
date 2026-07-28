@@ -163,6 +163,27 @@ Per `docs/dungeon-room-pools-t1-brief.md`. The two T1 zones already carried plac
   Leave Combat button (top-right).
 - **Run:** Create Phase 1 Dungeons, Ctrl+S. (No enemy tool needed; the two bosses are authored inline.)
 
+## Session 2026-07-27, Tier 2 dungeons (Mirefall Barrow + Warden's Folly)
+
+Per `docs/dungeon-room-pools-brief.md`, with the puzzle do-not-build flag lifted. Fills the T2 gap (we
+had built T3 first, skipping T2).
+- **Bosses:** `Aldrath the Sunken` (Mirefall, 4800 HP, 3-phase phylactery-pulse lich) and
+  `Commander Valdris the Turncoat` (Folly, 5200 HP, 3-phase, shifting weak point). Silver-Mark drops.
+  Abilities are reference text; Valdris's Chest->HEAD mask swap is deferred with the mask system.
+- **Two new puzzle types** (`DungeonPuzzle.GlyphPuzzle` / `WeightPuzzle`), both live in `DungeonPuzzleUI`:
+  - **GlyphPuzzle** (Mirefall): rune sequence memory, reuses the flash-repeat mechanic but full 5-length
+    (harder than the T3 Pyre's 4).
+  - **WeightPuzzle** (Folly): counterweight balance, tap the subset of weights that sums to the target.
+    Deviation from the brief's inventory-item balance (our dungeons are linear, no bypass path), so it is
+    a self-contained numeric balance, always solvable. Toggle freely, no damage on a wrong pick.
+- **New hazards** (`DungeonHazard`): BogSeepage, PoisonGas, CursedSarcophagus, Tripwire, PowderKeg
+  (simplified periodic tick; Falling Debris reuses CollapsingMasonry, Arcane Discharge reuses ArcaneDischarge).
+- **Dungeons** (`Create Phase 2 Dungeons`): entrance/safe/boss + 8-room weighted pools each,
+  `minRooms 3 / maxRooms 5`, `firstClearXP 1000`, exclusive Glyph / Weight puzzle. All room enemies are
+  existing Ashfen Mire / Ironspine Reaches assets. Links `ashfen_mire` / `ironspine_reaches`, flips
+  `hasDungeon`, registers the zones in the hub.
+- **Run:** Create Phase 2 Dungeons, Ctrl+S.
+
 ## Session 2026-07-27, Phase 3 combat zone events + nav cleanup
 
 - **Combat zone events** (VoidPulse / ThermalVentBurst): `ZoneData.combatEvent` (`ZoneCombatEvent` enum).
