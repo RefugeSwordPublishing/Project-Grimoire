@@ -300,7 +300,7 @@ This is what blocks Claude Code from having a playable build. Prioritize this li
 | Sharpshot cloak/hood layer | 256x256 per frame | Forest green, composites over base body |
 | Lone Wanderer cloak/hood layer | 256x256 per frame | Amber/brown ragged, composites over base body |
 | Quiver layer (back-worn) | 256x256 per frame | Separate layer, all animation frames |
-| Bow layer, Crude/Rough/Refined tiers | 256x256 per frame | Held in hand, separate layer per quality tier |
+| Bow layer, Crude/Rough/Refined tiers | 256x256 per frame | Held in hand, separate layer per quality |
 | Leather Armor layer set, Crude/Rough/Refined | 256x256 per frame | Helm, chest, legs, boots, gloves each as separate layers |
 
 > Layered approach: Unity composites base body + cloak + quiver + bow + armor at runtime. Each layer is a separate sprite sheet with matching frame count.
@@ -385,6 +385,98 @@ All item icons generated as **sprite atlas sheets**, see Sprite Atlas Organizati
 |-------|-----------|-------|
 | Notice Board background, wooden parchment board | 1920x1080 or panel size | Pixel art pinboard UI |
 | Parchment notice card | 512x256 | Individual notice card, tiled on board |
+
+---
+
+## Dungeon System Art (Tiers 1-3)
+
+*Added v0.7, 2026-07-27. Cross-referenced against Assets/Data/Dungeons/, Assets/Data/Enemies/Dungeons/, and DungeonHazard / DungeonPuzzle / RoomType enums in Assets/Scripts/Data/DungeonData.cs.*
+
+### Dungeon Boss Sprites
+
+| Enemy | Dungeon | Resolution | Weak point |
+|-------|---------|-----------|-----------|
+| Aldric the Wolf | Aldric's Warren (T1) | 320x320 | Scarred left shoulder, Subtle |
+| Captain Mirra Vane | Crestfall Cove (T1) | 320x320 | Belt buckle, Subtle |
+| Aldrath the Sunken | Mirefall Barrow (T2) | 320x320 | Crown, Obvious on pulse |
+| Commander Valdris | Warden's Folly (T2) | 320x320 | Chest insignia (P1-2), head (P3), two mask textures |
+| The Hollow Archbishop | Gravenspire (T3) | 320x320 | Corrupted holy symbol, Subtle P1 / Obvious P2+ |
+| Ignarath's Broodmother | Ignarath's Maw (T3) | 320x320 | Egg sac abdomen, Obvious |
+
+Each boss needs: base sprite + idle (4 frames) + attack (3-4 frames) + death (4 frames).
+
+### Dungeon Backdrops (3 parallax layers each)
+
+| Dungeon | Zone | Palette | Layers needed |
+|---------|------|---------|---------------|
+| Aldric's Warren | Grimwood Fringe | Dark earth, warm amber torchlight | far / mid / near |
+| Crestfall Cove | Saltmarsh Shore | Cold teal-grey, sea light, lantern accent | far / mid / near |
+| Mirefall Barrow | Ashfen Mire | Stone burial chambers, bioluminescent fungi, bog water | far / mid / near |
+| Warden's Folly | Ironspine Reaches | Military stone fortress, barracks, armory | far / mid / near |
+| Gravenspire | Dreadhollow | Sunken cathedral, black dead-wood pews, void-corrupted glass | far / mid / near |
+| Ignarath's Maw | Cinderpeak | Volcanic rock tunnels, hardened lava, arcane machinery | far / mid / near |
+
+All backdrop layers: 1920x1080, FLUX painterly model, seamlessly tileable horizontally.
+
+### Dungeon Room Type Icons
+
+| Icon | Symbol | Size |
+|------|--------|------|
+| Standard | Crossed swords | 64x64 |
+| Elite | Crowned skull | 64x64 |
+| Safe | Shield or heart | 64x64 |
+| Boss | Large skull, red accent | 64x64 |
+| Puzzle | Gear/cogs | 64x64 |
+| Treasure | Open chest | 64x64 |
+| Trap | Spike/exclamation | 64x64 |
+
+Plus locked-zone overlay card: 576x240, FLUX painterly, fog and "?" symbol.
+
+### Dungeon Puzzle Props
+
+| Prop | Dungeon | Size | Notes |
+|------|---------|------|-------|
+| Glyph/rune pad (lit) | Mirefall Barrow (T2) | 128x128 | Amber-gold glow, active state |
+| Glyph/rune pad (unlit) | Mirefall Barrow (T2) | 128x128 | Cold stone, no glow, clearly distinct |
+| Counterweight block (numbered) | Warden's Folly (T2) | 128x128 | Number legible at size |
+| Balance scale frame | Warden's Folly (T2) | 128x128 | Two pans, pivot beam, iron chain |
+| Pyre brazier (lit) | Gravenspire (T3) | 128x128 | Black-purple void flame, wall-mounted |
+| Pyre brazier (unlit) | Gravenspire (T3) | 128x128 | Cold ash only, clearly distinct from lit |
+| Pressure valve (numbered dial) | Ignarath's Maw (T3) | 128x128 | Dial 1-2-3 legible, pipe flanges |
+
+### Dungeon Hazard Telegraphs
+
+| Hazard | Dungeon | Size | Visual |
+|--------|---------|------|--------|
+| Void seep pool | Gravenspire (T3) | 128x128 | Purple void energy pooling in floor cracks |
+| Lava vent grate | Ignarath's Maw (T3) | 128x128 | Iron grate, orange-red pre-eruption glow |
+| Collapsing masonry warning | Gravenspire (T3) | 128x128 | Shadow circle on floor below cracked ceiling |
+| Cursed reliquary | Gravenspire (T3) | 128x128 | Stone box, void-purple energy at lid seam |
+| Arcane discharge | Ignarath's Maw (T3) | 128x128 | Orange-red burst from construct joint |
+| Hatching egg | Ignarath's Maw (T3) | 128x128 | Cracked egg, orange-red internal glow |
+| Bog seepage | Mirefall Barrow (T2) | 128x128 | Murky brown-green water rising through stone cracks |
+| Poison gas cloud | Mirefall Barrow (T2) | 128x128 | Pale green-yellow gas cloud, bioluminescent glow |
+| Cursed sarcophagus | Mirefall Barrow (T2) | 128x128 | Stone sarcophagus, void-purple energy at lid seam |
+| Tripwire shimmer | Warden's Folly (T2) | 128x128 | Near-invisible wire, faint metallic shimmer |
+| Powder keg fuse | Warden's Folly (T2) | 128x128 | Dark wooden barrel, sparking fuse |
+| Tidal surge water | Crestfall Cove (T1) | 128x128 | Clear sea water rising through cave rock cracks |
+
+### Boss-Drop Item Icons (64x64)
+
+| Item | Source | Visual |
+|------|--------|--------|
+| Aldric's Key | Aldric the Wolf | Iron key, wolf-head bow |
+| Worn Bandit Cowl | Aldric the Wolf | Folded dark leather hood, torn edge |
+| Mirra's Compass | Captain Mirra Vane | Brass pocket compass, teal-weathered rim |
+| Corsair's Coat | Captain Mirra Vane | Folded dark teal naval coat, brass button |
+| Aldrath's Signet | Aldrath the Sunken | Dark iron signet ring, lich crown motif, amber-green void glow |
+| Barrow Knight Armor | Aldrath the Sunken | Dark corroded plate chest piece, bog-stained |
+| Valdris's War Banner | Commander Valdris | Furled crimson banner on pole, gold deserter cross |
+| Turncoat's Blade | Commander Valdris | Short military sword, deserter mark near crossguard |
+| Deserter's Arms | Commander Valdris | Folded dark iron vambrace, military stamp marks |
+| Warlord's Badge | Ironspine Warlord (Elite) | Circular iron rank badge, crossed-axes emblem |
+| Amber | Zone drop | Irregular amber gemstone, warm orange-gold translucent |
+| Runic Cog | Gleaning drop | Small iron cog, rune marks on teeth, amber glow |
 
 ---
 
@@ -495,7 +587,8 @@ All DLC sprites follow same resolution standards as base game equivalents.
 
 ---
 
-*Document version 0.6, Art Asset Requirements by Phase*
+*Document version 0.7, Art Asset Requirements by Phase*
 *Added: Sprite Atlas organization system, sheet format standards, full atlas master list*
 *Updated: Full HD-2D art direction added (Grimoire Variant). Full-body realistic proportion characters, front-to-back camera, post-processing stack, per-zone color grading, parallax background layers. Replaces Kingdom Two Crowns reference.*
-*Updated v0.6: Zone card thumbnails (576×240 cinemascope crop from combat backdrop). Combat backdrops generated at 1920×1080, zone cards cropped from approved backdrop — same asset, no re-generation needed. Portrait combat backdrops (1080×2400) noted as separate asset from landscape zone backdrops. Guild Hall prestige art generated at 1920×1080 portrait through P20-34.*
+*Updated v0.6: Zone card thumbnails (576×240 cinemascope crop from combat backdrop). Combat backdrops generated at 1920×1080, zone cards cropped from approved backdrop, same asset, no re-generation needed. Portrait combat backdrops (1080×2400) noted as separate asset from landscape zone backdrops. Guild Hall prestige art generated at 1920×1080 portrait through P20-34.*
+*Updated v0.7 (2026-07-27): Added Dungeon System Art section covering Tiers 1-3. Added: 6 dungeon boss sprites (Aldric the Wolf, Captain Mirra Vane, Aldrath the Sunken, Commander Valdris, The Hollow Archbishop, Ignarath's Broodmother), 6 dungeon backdrops x 3 parallax layers each (Aldric's Warren, Crestfall Cove, Mirefall Barrow, Warden's Folly, Gravenspire, Ignarath's Maw), 7 room type icons + locked-zone overlay, 7 puzzle props, 12 hazard telegraphs, 12 boss-drop item icons.*
