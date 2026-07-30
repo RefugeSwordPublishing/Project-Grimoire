@@ -22,6 +22,7 @@ Raw base: `https://raw.githubusercontent.com/RefugeSwordPublishing/Project-Grimo
 - stat-scaling-combat-formulas.md, combat math, stat formulas, hit/evasion/block
 - talent-spec-sheets.md, all talents, level unlocks, XP curve
 - combat-xp-curve.md, Grimoire combat XP curve + milestone bonuses
+- combat-progression-reconcile.md, per-Grimoire combat XP routing, shared-talent retirement, Total Combat Level source, Combat Tab display (as-built)
 - combat-engagement-spec.md, zones/dungeons/raids engagement model
 
 ## Systems

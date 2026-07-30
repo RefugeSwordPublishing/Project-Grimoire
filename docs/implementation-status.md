@@ -20,6 +20,30 @@ so it builds on the current state rather than the original design.
 - **Phase 1:** complete (managers, ScriptableObjects, Bowstring mechanic, idle loop, Supabase + FCM).
 - **Phase 2:** guild system + Guild Merchant complete (below). Exchange buy orders + auctions now functional server-side (migration 022) + client-wired. Remaining Phase 2: Vanguard combo panel into combat (verify), zone content, sprite pass, auction buyout UI control. Arcanist trio (Runeweaver, Summoner, Lifebinder), aggro, and the progression rebalance are done.
 
+## Session 2026-07-29, quest system + Talents merge + combat progression reconcile
+
+- **Quest system (client-first):** `QuestDefinition` SO + `QuestManager` (weighted daily/weekly
+  assignment, UTC resets, zone-tier gating, progress matching, claim + reward grant, PlayerPrefs
+  persistence, pool loaded from `Resources/Quests`) + `QuestProgressTracker`. Quest Board UI (windowed,
+  Daily/Weekly, layout-group cards) + `GamePanel.Quests` nav. `QuestScaler` scales targets/rewards by
+  tier + real talent XP curve; pool banded (`maxZoneTier`) + 5 fill quests (30 total). Tracking events
+  added: `OnItemAdded`, `OnEnemyDefeated`, `OnXPAdded`. Server layer (player_quests table, assign
+  Edge Function, collect RPC) is the deferred alpha swap-in. Docs: `daily-weekly-quest-system-scaling.md`.
+- **Tools menu:** 67 flat entries reduced to Build/ Content/ Dev/ submenus; 6 dead one-time tools deleted.
+- **Talents menu merged:** Gathering + Crafting now one combined list (`_mergeGatheringAndCrafting`),
+  single "Talents" nav entry (`Build Talents Menu`).
+- **Idle bar:** stop-X moved inside the bar's right edge (clear of the menu button); progress bar
+  shifted left to make room. Attunement slider: bar persistent while running, green target flashes in
+  per window, tap brought to front so it registers (temporary; per-talent sprite attunements later).
+- **Combat progression reconcile** (`combat-progression-reconcile.md`): per-Grimoire XP was already
+  wired (`CombatManager.AwardDamageXP(_grimoireId)`), and zone gating already reads
+  `CombatXP.TotalCombatLevel`. Removed the redundant shared `Marksmanship` award in `BowstringMechanic`;
+  added a kill bonus (25% of Slaying value to the equipped Grimoire, additive with Slaying); added a
+  Slaying Mastery section to `CombatTabUI`. Marksmanship/Spellcasting/Warfare surface in no UI (retired).
+  Skipped the banked-XP migration on purpose: the Grimoire already earned damage XP those sessions, so a
+  transfer would double-count. Deferred cleanup: delete the retired shared-talent enums/SOs +
+  `GetHighestCombatTalentLevel`. CLAUDE.md's per-Grimoire combat rule is now accurate as-built.
+
 ## Session 2026-07-25, Wayfarer's Exchange buy orders + auctions
 
 The Exchange tables existed since migration 004 and the store side was modernised in 020, but the
