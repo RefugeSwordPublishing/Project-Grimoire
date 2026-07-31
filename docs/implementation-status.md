@@ -56,6 +56,17 @@ so it builds on the current state rather than the original design.
   Lv25 4th task slot / Lv100 cap, earn-XP note). Self-installed by `NavigationDrawerUI`, opened from a
   "Slaying Mastery" button on the combat hub. Marksmanship/Spellcasting/Warfare stay retired.
 
+## Session 2026-08-01, onboarding polish + combat-hub button move
+
+- **Onboarding:** removed the Skip button (the Grimoire choice is required for new accounts). Added a
+  per-step **background-sprite layer**: `OnboardingUI` loads `Resources/Onboarding/<key>` (`intro1`,
+  `intro2`, `intro3`, `grimoire_choice`) and shows it behind the content, dark fallback when absent, so
+  art just drops into `Assets/Resources/Onboarding/`. Added a `GrimoireData.lore` `[TextArea]` field,
+  shown under the tagline on the Grimoire choice (content still needs authoring per subclass).
+- **Combat-hub buttons** (DEV Force Boss / Slaying Mastery / Royal Merchant) moved from top-right to
+  **top-left**, they were behind the S10e notch.
+- Dev: re-test onboarding via **Tools > Grimoire > Dev > Reset Onboarding**, then Play.
+
 ## Session 2026-08-01, onboarding spine
 
 - **Onboarding spine (`onboarding-flow.md`, `OnboardingUI`):** first-run flow on a top-most canvas that
