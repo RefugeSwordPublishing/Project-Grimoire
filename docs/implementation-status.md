@@ -52,8 +52,14 @@ so it builds on the current state rather than the original design.
   can't be created). Host START FIGHT flips the row to active; every client's next `OnLobbyChanged`
   runs `CombatManager.BeginBossFight(boss, boss_max_hp)` (party-scaled HP via `_enemyMaxHpOverride`)
   and opens the combat view. Solo host = party of 1 = base HP, fully testable single-account.
-  **Still deferred:** guild online-roster invite list, invite push notifications (FCM P1), and
-  cross-zone guest boss resolution (guest currently resolves the boss from their own current zone).
+- **STEP 10 Phase B, guild invites + guest discovery (built):** an empty lobby slot (host) shows an
+  Invite button opening a sub-panel of online guildmates (`guild_members` joined `players`, filtered to
+  `last_active` within 5 min, excluding lobby members and self); tapping one adds them to the slot.
+  `BossLobbyManager.DiscoverMyLobby` polls every 12s while not in a lobby, so an added guest's client
+  adopts the waiting lobby and opens `PreBossLobbyUI` without a push notification.
+  **Still deferred:** invite push notifications (FCM P1, nicer than the discovery poll) and cross-zone
+  guest boss resolution (a guest resolves the boss from their own current zone). Then Phase C is the
+  real-time shared-HP multiplayer fight.
 
 ## Session 2026-07-31, TaskBoard bottom-8 pass (gathering/UI/armor/WYWA fixes + 2 Chat requests)
 
