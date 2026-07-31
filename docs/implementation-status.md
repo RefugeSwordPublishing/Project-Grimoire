@@ -12,6 +12,24 @@ implemented in code** where the two diverge. When they conflict, the code (and t
 Claude Code updates this file as features land; Claude Chat should read it before any design work
 so it builds on the current state rather than the original design.
 
+## Session 2026-07-31, STEP 10 zone boss Phase A (solo) + STEP 9 remainder + melee/magic fix
+
+- **STEP 9 remainder done:** `ZoneCombatView.HasWeakPointRevealTalent` now gates on the equipped Warden
+  subclass level (Sharpshot Deadeye Lv59 / Lone Wanderer Lone Wolf's Eye Lv38) instead of hardcoded
+  false. The rings + arc-fill UI were already built; STEP 9 is complete.
+- **Melee/magic equip double-count fixed** (`GetMeleeAttack`/`GetMagicAttack`), matching the ranged
+  reconcile. `GetDefense`/`GetMaxHP` left (deliberate x3 weighting).
+- **STEP 10 Phase A, SOLO zone boss (`zone-boss-implementation-brief.md`):** a boss now rolls at 5%
+  after a standard kill in an **active** session (`CombatManager.SessionActive`, set by the combat
+  view's foreground state), one at a time, 10-minute despawn. `CombatManager` exposes `BossActive`,
+  `PendingBoss`, `BossSecondsRemaining`, `EngageBoss()`, and events `OnBossSpawned`/`OnBossRetreated`/
+  `OnBossFightEnded(bool,CombatSessionTally)`. `ZoneCombatView` shows a red boss banner with a live
+  mm:ss countdown (tap to engage), and a Victory/Defeated results overlay (grimoire XP, Slaying XP,
+  loot) with a Return-to-Hub button. Engaging forfeits the current fight and drops into the solo boss
+  at base HP (x1.0). Boss loot/XP reuse the normal kill path; results reuse a `CombatSessionTally`.
+  **Deferred to Phase B/C:** the pre-boss lobby, `boss_lobby` Supabase table + RLS, party HP scaling
+  (x1.6/x2.2), real-time shared-HP multiplayer, and the P1 boss-spawn push notification.
+
 ## Session 2026-07-31, TaskBoard bottom-8 pass (gathering/UI/armor/WYWA fixes + 2 Chat requests)
 
 - **Rare materials from gathering (TB#25/26):** new `TalentActivity.rareLoot` + `rareLootChance`
