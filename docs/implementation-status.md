@@ -42,7 +42,10 @@ so it builds on the current state rather than the original design.
   Armor Piercer is additive (+0.15) not multiplicative, Aimed 2.0->1.8, Long Shot 8.0->3.0, and a
   hard `Mathf.Clamp(mult, 1.0, 2.5)` caps any single active shot. Zone-1 enemy defense raised 3-10 ->
   10-18 in `CreateZoneEnemies` (both Grimwood Fringe + Saltmarsh Shore). Re-run **Create Zone Enemies**.
-  Melee/magic have the same equip double-count but are out of this Warden-scoped spec (future pass).
+  Melee (`GetMeleeAttack`) and magic (`GetMagicAttack`) had the same equip double-count and were
+  fixed the same way (equip out of the x multiplier, flat once) at the user's request, extending the
+  Warden-scoped spec. `GetDefense`/`GetMaxHP` carry deliberate x3 milestone/equip weighting and were
+  left as-is.
 - **Offline combat on WYWA (TB#29, `offline-combat-wywa.md`, Option A summary-only):** new
   `CombatSessionTally` (Core) accumulates grimoire XP (via new `CombatXPManager.OnXpAwarded` choke
   point), Slaying XP, drops, consumables used, and a knockout flag during live zone combat.
