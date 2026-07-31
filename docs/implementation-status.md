@@ -37,11 +37,16 @@ so it builds on the current state rather than the original design.
 - **STEP 10 Phase B foundation (`migration 027_boss_lobby.sql`):** `boss_lobby` table (host + 2 guest
   slots, per-player ready flags, `boss_current_hp`/`boss_max_hp` for the Phase C shared pool, status,
   despawn_at) with RLS (participants read; host insert/delete; participants update), `join_boss_lobby`
-  / `leave_boss_lobby` SECURITY DEFINER RPCs, and realtime enabled. **Apply the migration in Supabase.**
-  Still to build (Phase B client): `BossLobbyManager` (create/join/ready/start + realtime subscribe),
-  `PreBossLobbyUI` (host+2, guild-online invite, ready/kick/start), guild online-roster fetch, invite
-  push notifications, HP scaling on start, and routing `EngageBoss` through the lobby instead of straight
-  to the solo fight.
+  / `leave_boss_lobby` SECURITY DEFINER RPCs, and realtime enabled. **Migration 027 applied** to the
+  Project Grimoire Supabase project (mvyxponuacmicqlriwqq) via the Management API.
+- **STEP 10 Phase B client, `BossLobbyManager` (built):** create/join/leave/ready/kick/start over the
+  `boss_lobby` REST + RPCs, with poll-based sync (2s; the codebase has no websocket realtime, guild
+  voting polls the same way, so the brief's "realtime" is a poll). Party helpers (`PartySize`, `IsHost`,
+  `AllReady`) and `ScaledBossHP(partySize, baseHP)` (x1.0/1.6/2.2). Registered on GameManager
+  (`GameManager.BossLobby`), auto-created. Still to build: `PreBossLobbyUI` (host+2, guild-online
+  invite, ready/kick/start UI), guild online-roster fetch, invite push notifications, and routing the
+  boss banner tap through the lobby + starting the party-scaled fight (host StartFight -> participants
+  see status=active -> drop into the boss at boss_max_hp).
 
 ## Session 2026-07-31, TaskBoard bottom-8 pass (gathering/UI/armor/WYWA fixes + 2 Chat requests)
 
