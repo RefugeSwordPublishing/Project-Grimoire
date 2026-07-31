@@ -12,6 +12,19 @@ implemented in code** where the two diverge. When they conflict, the code (and t
 Claude Code updates this file as features land; Claude Chat should read it before any design work
 so it builds on the current state rather than the original design.
 
+## Session 2026-08-01, Royal Merchant (auto-eat tiers)
+
+- **Royal Merchant (TB#27, `consumables-spec.md`):** the idle auto-eat upgrade tiers.
+  `migration 030_auto_eat_tier.sql` adds `player_settings.auto_eat_tier` (int, applied);
+  `SettingsManager.AutoEatTier` + `SetAutoEatTier` load/persist it. `CombatManager.CheckAutoEat` now
+  reads the tier: Free 25%/2.0s/lowest-quality/1x; T1 threshold->40%; T2 best-quality pick; T3 delay
+  0.5s + 3 auto-eats/encounter (`_autoEatUsed` bool -> `_autoEatCount`). `RoyalMerchantUI` storefront
+  (5 tiers, current highlighted, sequential/additive GM purchase deducting `Player.GoldMarks`), opened
+  from a "Royal Merchant" button on the combat hub; self-installed by `NavigationDrawerUI`.
+  **Deferred:** T4 auto-mana for Arcanists (tier buyable, effect not wired), real-money IAP (Unity IAP
+  + RevenueCat, per CLAUDE.md do not build custom), and a server-authoritative GM-purchase RPC (deducts
+  client-side for now, like the Exchange).
+
 ## Session 2026-08-01, quest server layer (alpha swap-in)
 
 - **Quest server layer (TB#14, `migration 029_player_quests.sql` applied):** `player_quests` table
