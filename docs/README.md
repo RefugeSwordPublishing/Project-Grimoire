@@ -23,6 +23,7 @@ Raw base: `https://raw.githubusercontent.com/RefugeSwordPublishing/Project-Grimo
 - talent-spec-sheets.md, all talents, level unlocks, XP curve
 - combat-xp-curve.md, Grimoire combat XP curve + milestone bonuses
 - combat-progression-reconcile.md, per-Grimoire combat XP routing, shared-talent retirement, Total Combat Level source, Combat Tab display (as-built)
+- combat-balance-reconcile-REQUEST.md, OPEN: bow active-shot multiplier stacking (lv13 Sharpshot 2-shots zone 1); diagnosis + design questions for Chat
 - combat-engagement-spec.md, zones/dungeons/raids engagement model
 
 ## Systems
@@ -38,6 +39,7 @@ Raw base: `https://raw.githubusercontent.com/RefugeSwordPublishing/Project-Grimo
 - assembly-implementation-spec.md, STEP 8 assembly implementation spec (upgrade model, success rates, XP, tool tables)
 - enemy-zone-tables.md / phase2-zone-tables.md, zones, enemies, drops, bosses
 - daily-weekly-quest-system.md, settings-screen.md, onboarding-flow.md, while-you-were-away.md
+- offline-combat-wywa-REQUEST.md, OPEN: no offline-combat accrual exists; design questions for surfacing combat XP/drops/consumables on WYWA
 - daily-weekly-quest-system-scaling.md, dynamic quest target/reward scaling by tier + talent level (addendum; as-built in QuestScaler)
 - player-account-system.md, push-notification-triggers.md, monetization-scope.md, infrastructure-cost-planning.md
 

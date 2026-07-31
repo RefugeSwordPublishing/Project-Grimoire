@@ -12,6 +12,33 @@ implemented in code** where the two diverge. When they conflict, the code (and t
 Claude Code updates this file as features land; Claude Chat should read it before any design work
 so it builds on the current state rather than the original design.
 
+## Session 2026-07-31, TaskBoard bottom-8 pass (gathering/UI/armor/WYWA fixes + 2 Chat requests)
+
+- **Rare materials from gathering (TB#25/26):** new `TalentActivity.rareLoot` + `rareLootChance`
+  channel, rolled independently of primary loot in `IdleManager` (a landed attunement nudges the odds
+  ×1.5). Amber moved off Delving: it is now a rare bonus drop while **Felling** (tier tracks the tree,
+  Crude..Pristine); gemstones are a rare bonus drop while **mining** in Delving. The dedicated
+  "Collect Amber"/"Chip Gemstone" idle activities were removed. Re-run **Create Economy Talents**.
+  Starting drop chance 0.10/cycle (flagged for playtest tuning).
+- **Idle bar text (TB#28):** `ActiveIdleBarUI.LayoutBar()` re-anchors the row to the bar's right edge
+  ([name][time][progress][X]); name is right-aligned and clamped so long names truncate left of the
+  timer instead of sliding under it. Width-independent, runtime (no canvas rebuild). Removed the old
+  runtime `-52` progress-bar shift.
+- **Enemy faction ID (TB#30):** kept the enemy-category kill quests as-is; added a coloured
+  `[Faction]` tag to the combat nameplate + a faction-tinted placeholder box in `ZoneCombatView`
+  (Outlaw/Beast/Undead/Arcane/Void/Nature). The faction-reputation DLC hook stays empty.
+- **Armor off-type penalties (TB#31):** new `EquipmentStats.ArmorOffTypePenalty` applied in
+  `EquipmentManager.Recompute`. Vestments: large physical-defence penalty + minor DEX. Plate: large
+  DEX + minor INT. Leather: minor INT. Quality-scaled; armour rating floored at 0. First-pass
+  magnitudes, tune with the combat-balance reconcile.
+- **WYWA resume refresh (TB#27):** backgrounding again while the WYWA popup is open now folds the new
+  away gap into the uncollected result (`IdleManager.MergeSessionResults`) and the open panel
+  re-renders (relaxed the `activeSelf` guards in `WhileYouWereAwayUI`). Was: stale, showed only the
+  first gap.
+- **OPEN, handed to Chat:** `combat-balance-reconcile-REQUEST.md` (TB#32, lv13 Sharpshot 2-shots
+  zone 1, active-multiplier stacking) and `offline-combat-wywa-REQUEST.md` (TB#29, no offline-combat
+  accrual exists yet). Both are design decisions awaiting Chat before Code implements.
+
 ## Repo layout
 - `Project-Grimoire` (public), this repo: design docs (`docs/`), Supabase SQL (`supabase/migrations/`), and the Unity project as a **git submodule** at `ProjectGrimoire/`.
 - `ProjectGrimoire` (private), the Unity/C# game. Chat cannot read it (private → 404); design docs + SQL here are public and readable.
