@@ -43,10 +43,17 @@ so it builds on the current state rather than the original design.
   `boss_lobby` REST + RPCs, with poll-based sync (2s; the codebase has no websocket realtime, guild
   voting polls the same way, so the brief's "realtime" is a poll). Party helpers (`PartySize`, `IsHost`,
   `AllReady`) and `ScaledBossHP(partySize, baseHP)` (x1.0/1.6/2.2). Registered on GameManager
-  (`GameManager.BossLobby`), auto-created. Still to build: `PreBossLobbyUI` (host+2, guild-online
-  invite, ready/kick/start UI), guild online-roster fetch, invite push notifications, and routing the
-  boss banner tap through the lobby + starting the party-scaled fight (host StartFight -> participants
-  see status=active -> drop into the boss at boss_max_hp).
+  (`GameManager.BossLobby`), auto-created.
+- **STEP 10 Phase B, `PreBossLobbyUI` + routing (built):** self-building lobby screen (own high-sort
+  canvas, self-installed by NavigationDrawerUI) driven by `BossLobbyManager.OnLobbyChanged`, boss
+  title, live retreat countdown, host + 2 guest slots with ready state, host Kick, Ready/Unready,
+  Leave, and START FIGHT (host-only, all-ready-gated, shows party size). The boss banner tap now
+  routes here (`OpenForPendingBoss`: claim boss -> CreateLobby -> show; solo fallback if the lobby
+  can't be created). Host START FIGHT flips the row to active; every client's next `OnLobbyChanged`
+  runs `CombatManager.BeginBossFight(boss, boss_max_hp)` (party-scaled HP via `_enemyMaxHpOverride`)
+  and opens the combat view. Solo host = party of 1 = base HP, fully testable single-account.
+  **Still deferred:** guild online-roster invite list, invite push notifications (FCM P1), and
+  cross-zone guest boss resolution (guest currently resolves the boss from their own current zone).
 
 ## Session 2026-07-31, TaskBoard bottom-8 pass (gathering/UI/armor/WYWA fixes + 2 Chat requests)
 
