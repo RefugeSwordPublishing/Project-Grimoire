@@ -27,8 +27,21 @@ so it builds on the current state rather than the original design.
   mm:ss countdown (tap to engage), and a Victory/Defeated results overlay (grimoire XP, Slaying XP,
   loot) with a Return-to-Hub button. Engaging forfeits the current fight and drops into the solo boss
   at base HP (x1.0). Boss loot/XP reuse the normal kill path; results reuse a `CombatSessionTally`.
-  **Deferred to Phase B/C:** the pre-boss lobby, `boss_lobby` Supabase table + RLS, party HP scaling
-  (x1.6/x2.2), real-time shared-HP multiplayer, and the P1 boss-spawn push notification.
+  **Deferred to Phase B/C:** the pre-boss lobby, party HP scaling (x1.6/x2.2), real-time shared-HP
+  multiplayer, and the P1 boss-spawn push notification.
+- **Global boss banner:** `BossBannerUI` on its own high-sort canvas floats over every page EXCEPT
+  Settings and Inventory while a boss is waiting (so the 10-min timer is visible anywhere); tapping it
+  opens the combat view and engages. `NavigationDrawerUI` self-installs it (exposes `ActivePanel`).
+  The old in-combat banner in `ZoneCombatView` was removed (results overlay stays). Dev aid:
+  `CombatManager.DevForceBossSpawn()` + a self-built "DEV: Force Boss" button on the combat hub.
+- **STEP 10 Phase B foundation (`migration 027_boss_lobby.sql`):** `boss_lobby` table (host + 2 guest
+  slots, per-player ready flags, `boss_current_hp`/`boss_max_hp` for the Phase C shared pool, status,
+  despawn_at) with RLS (participants read; host insert/delete; participants update), `join_boss_lobby`
+  / `leave_boss_lobby` SECURITY DEFINER RPCs, and realtime enabled. **Apply the migration in Supabase.**
+  Still to build (Phase B client): `BossLobbyManager` (create/join/ready/start + realtime subscribe),
+  `PreBossLobbyUI` (host+2, guild-online invite, ready/kick/start), guild online-roster fetch, invite
+  push notifications, HP scaling on start, and routing `EngageBoss` through the lobby instead of straight
+  to the solo fight.
 
 ## Session 2026-07-31, TaskBoard bottom-8 pass (gathering/UI/armor/WYWA fixes + 2 Chat requests)
 
