@@ -49,6 +49,7 @@ Raw base: `https://raw.githubusercontent.com/RefugeSwordPublishing/Project-Grimo
 - dungeon-room-pools-brief.md, Mirefall Barrow + Warden's Folly (T2) room pools, bosses, puzzles, hazards
 - dungeon-room-pools-t1-brief.md, Aldric's Warren + Crestfall Cove (T1) room pools, bosses, TidalSurge hazard (no puzzles)
 - dungeon-room-pools-phase3-brief.md, Gravenspire + Ignarath's Maw room pools, bosses, puzzles, hazards
+- dungeon-room-pools-t4t5-REQUEST.md, OPEN: design ask for the T4 (Veilborn Wastes) + T5 (Ashenwold) dungeons (Dustin decided T4/T5 get dungeons); Chat to spec room pools/bosses/puzzles/hazards
 - grimoire-talent-reference.xlsx, talent reference workbook (per-talent activities, tiers, unlocks)
 - phase3-attunement-data-spec.md, Tanning tiered attunement, Smelting HeatGauge attunement, combat zone events, Delving node placement
 - phase3-enemy-content-brief.md, all T3 EnemyData (HP, damage, weak points, drops, new mechanics)

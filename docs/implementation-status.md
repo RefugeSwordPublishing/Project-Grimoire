@@ -12,6 +12,22 @@ implemented in code** where the two diverge. When they conflict, the code (and t
 Claude Code updates this file as features land; Claude Chat should read it before any design work
 so it builds on the current state rather than the original design.
 
+## Session 2026-08-01, board sweep (onboarding, Slaying page, Aldric, tool pouch, T4/T5 ask)
+
+- **Tool pouch (TB#10): already solved, closed.** Equipped tools live in `EquipmentManager._tools`
+  (a per-talent dictionary), not the inventory; `EquipTool` moves the tool out of the bag and
+  `UnequipTool` returns it. All 8 tool talents can be equipped at once with zero inventory cost. No build.
+- **Aldric reconcile (TB#18):** kept the zone boss "Aldric the Poacher King"; renamed the T1 dungeon boss
+  "Aldric the Wolf" -> **"Garrik the Wolf"** (the Poacher King's enforcer) in `CreatePhase1Dungeons.cs`.
+  The Warren / Den / Key stay Aldric's lair. **Re-run Create Phase 1 Dungeons**; the old
+  "Aldric the Wolf" enemy asset is orphaned, delete it.
+- **T4/T5 dungeons (TB#20):** Dustin decided T4 (Veilborn Wastes) + T5 (Ashenwold) DO get dungeons;
+  handed the design to Chat as `dungeon-room-pools-t4t5-REQUEST.md`.
+- **Slaying Mastery page (TB#21, `SlayingPanelUI`):** a dedicated Slaying progression modal (level + XP
+  bar, elite-spawn bonus + next threshold, level unlocks Lv10 Finishing Blow / Lv20 spawn scaling /
+  Lv25 4th task slot / Lv100 cap, earn-XP note). Self-installed by `NavigationDrawerUI`, opened from a
+  "Slaying Mastery" button on the combat hub. Marksmanship/Spellcasting/Warfare stay retired.
+
 ## Session 2026-08-01, onboarding spine
 
 - **Onboarding spine (`onboarding-flow.md`, `OnboardingUI`):** first-run flow on a top-most canvas that
