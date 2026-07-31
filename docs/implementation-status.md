@@ -12,6 +12,21 @@ implemented in code** where the two diverge. When they conflict, the code (and t
 Claude Code updates this file as features land; Claude Chat should read it before any design work
 so it builds on the current state rather than the original design.
 
+## Session 2026-08-01, quest server layer (alpha swap-in)
+
+- **Quest server layer (TB#14, `migration 029_player_quests.sql` applied):** `player_quests` table
+  (assignment + progress + claimed + scaled rewards, keyed `(player, quest, cadence, resets_at)`) with
+  own-row RLS, and `collect_quest_reward(p_id)` SECURITY DEFINER RPC that flips claimed atomically and
+  grants the currency portion into `player_currency` (returns silver/gold + rewards_json).
+- **`QuestManager` swapped to server-authoritative when authed** (falls back to PlayerPrefs offline,
+  gated by `ServerMode`): `LoadFromServer` GETs the player's rows (filters expired, prunes them), assigns
+  fresh windows via `UpsertNew`, patches progress via `PatchProgress`, and routes Claim through
+  `collect_quest_reward` (then applies XP/items + optimistic currency locally). A `_serverLoading` guard
+  prevents the board-open `EnsureAssigned` from racing the async load. The quest POOL stays in Unity
+  Resources; the client assigns from it and persists the result. **Deferred:** the `assign_quests` Edge
+  Function / pg_cron (client-driven reset works); per-progress PATCH is unthrottled (fine for kill/gather
+  cadence). Migration applied to `mvyxponuacmicqlriwqq`.
+
 ## Session 2026-08-01, board sweep (onboarding, Slaying page, Aldric, tool pouch, T4/T5 ask)
 
 - **Tool pouch (TB#10): already solved, closed.** Equipped tools live in `EquipmentManager._tools`
