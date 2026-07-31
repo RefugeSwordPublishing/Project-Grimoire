@@ -35,9 +35,22 @@ so it builds on the current state rather than the original design.
   away gap into the uncollected result (`IdleManager.MergeSessionResults`) and the open panel
   re-renders (relaxed the `activeSelf` guards in `WhileYouWereAwayUI`). Was: stale, showed only the
   first gap.
-- **OPEN, handed to Chat:** `combat-balance-reconcile-REQUEST.md` (TB#32, lv13 Sharpshot 2-shots
-  zone 1, active-multiplier stacking) and `offline-combat-wywa-REQUEST.md` (TB#29, no offline-combat
-  accrual exists yet). Both are design decisions awaiting Chat before Code implements.
+- **Combat balance reconcile (TB#32, `combat-balance-reconcile.md`):** implemented Chat's v1.0.
+  `PlayerData.GetRangedAttack` DEX equip no longer double-counted (out of the x1.2, added flat once).
+  Weak-point/bullseye crit 2.0 -> 1.6 (`BowstringMechanic._arcMaxMultiplier`). In
+  `WardenBowstringMechanic`, a charged ability ring now REPLACES the crit (no longer stacks on top),
+  Armor Piercer is additive (+0.15) not multiplicative, Aimed 2.0->1.8, Long Shot 8.0->3.0, and a
+  hard `Mathf.Clamp(mult, 1.0, 2.5)` caps any single active shot. Zone-1 enemy defense raised 3-10 ->
+  10-18 in `CreateZoneEnemies` (both Grimwood Fringe + Saltmarsh Shore). Re-run **Create Zone Enemies**.
+  Melee/magic have the same equip double-count but are out of this Warden-scoped spec (future pass).
+- **Offline combat on WYWA (TB#29, `offline-combat-wywa.md`, Option A summary-only):** new
+  `CombatSessionTally` (Core) accumulates grimoire XP (via new `CombatXPManager.OnXpAwarded` choke
+  point), Slaying XP, drops, consumables used, and a knockout flag during live zone combat.
+  `CombatManager.FlushAndStopCombat` ends the session and returns the tally; `GameManager` persists it
+  to PlayerPrefs on background/quit and shows it on return/cold-launch via
+  `WhileYouWereAwayUI.ShowCombatResult` (reuses the idle WYWA panel; consumables render in a muted
+  style). No offline kill simulation (Option B deferred). Idle and combat are mutually exclusive, so
+  only one WYWA fires.
 
 ## Repo layout
 - `Project-Grimoire` (public), this repo: design docs (`docs/`), Supabase SQL (`supabase/migrations/`), and the Unity project as a **git submodule** at `ProjectGrimoire/`.

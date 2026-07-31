@@ -23,7 +23,8 @@ Raw base: `https://raw.githubusercontent.com/RefugeSwordPublishing/Project-Grimo
 - talent-spec-sheets.md, all talents, level unlocks, XP curve
 - combat-xp-curve.md, Grimoire combat XP curve + milestone bonuses
 - combat-progression-reconcile.md, per-Grimoire combat XP routing, shared-talent retirement, Total Combat Level source, Combat Tab display (as-built)
-- combat-balance-reconcile-REQUEST.md, OPEN: bow active-shot multiplier stacking (lv13 Sharpshot 2-shots zone 1); diagnosis + design questions for Chat
+- combat-balance-reconcile.md, bow active-shot multiplier model (crit 1.6, ability ring replaces crit, Armor Piercer additive, Long Shot 3.0, cap 2.5, DEX bug fix, zone-1 defense 10-18) (as-built)
+- combat-balance-reconcile-REQUEST.md, the design ask (RESOLVED by combat-balance-reconcile.md; kept for history)
 - combat-engagement-spec.md, zones/dungeons/raids engagement model
 
 ## Systems
@@ -39,7 +40,8 @@ Raw base: `https://raw.githubusercontent.com/RefugeSwordPublishing/Project-Grimo
 - assembly-implementation-spec.md, STEP 8 assembly implementation spec (upgrade model, success rates, XP, tool tables)
 - enemy-zone-tables.md / phase2-zone-tables.md, zones, enemies, drops, bosses
 - daily-weekly-quest-system.md, settings-screen.md, onboarding-flow.md, while-you-were-away.md
-- offline-combat-wywa-REQUEST.md, OPEN: no offline-combat accrual exists; design questions for surfacing combat XP/drops/consumables on WYWA
+- offline-combat-wywa.md, combat session summary on WYWA (Option A, summary only, no offline sim); running CombatSessionTally, persist-on-background, ShowCombatResult (as-built)
+- offline-combat-wywa-REQUEST.md, the design ask (RESOLVED by offline-combat-wywa.md; kept for history)
 - daily-weekly-quest-system-scaling.md, dynamic quest target/reward scaling by tier + talent level (addendum; as-built in QuestScaler)
 - player-account-system.md, push-notification-triggers.md, monetization-scope.md, infrastructure-cost-planning.md
 
