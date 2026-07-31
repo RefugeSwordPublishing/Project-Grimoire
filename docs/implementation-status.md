@@ -58,8 +58,21 @@ so it builds on the current state rather than the original design.
   `BossLobbyManager.DiscoverMyLobby` polls every 12s while not in a lobby, so an added guest's client
   adopts the waiting lobby and opens `PreBossLobbyUI` without a push notification.
   **Still deferred:** invite push notifications (FCM P1, nicer than the discovery poll) and cross-zone
-  guest boss resolution (a guest resolves the boss from their own current zone). Then Phase C is the
-  real-time shared-HP multiplayer fight.
+  guest boss resolution (a guest resolves the boss from their own current zone).
+- **STEP 10 Phase C, shared boss HP (built, needs multi-account to verify):** co-op boss fights share
+  one server-authoritative HP pool. `migration 028_boss_shared_hp.sql` (applied) adds `boss_take_damage`
+  (participant-only, atomic decrement, floors at 0, flips status to complete; amount 0 = cheap read).
+  A lobby-started fight carries `_lobbyFightId`; `CombatManager` centralises damage through
+  `DamageEnemy`/`CheckEnemyDead` (local HP is optimistic, kills are gated), flushes accrued damage to
+  `BossLobbyManager.ReportBossDamage` every 1s, adopts the returned authoritative HP, and resolves the
+  kill (per-player loot/XP via the normal `OnEnemyKilled` path) when the server pool hits 0. A network
+  error returns hp = -1 and is ignored (never a false kill). Solo-via-lobby (party of 1) exercises the
+  whole path single-account; 2-3 player reconciliation needs multiple accounts.
+  **Push-notification blocker (noted):** the `send-notification` edge function requires the service
+  role, so the anon client can't call it directly, invite pushes need a new anon-callable sender edge
+  function (verify host -> service-role send) or a pg_net DB trigger. Deferred as infra; invites work
+  via the discovery poll meanwhile.
+  **Phase C remainder:** party HP frames and quick-comm.
 
 ## Session 2026-07-31, TaskBoard bottom-8 pass (gathering/UI/armor/WYWA fixes + 2 Chat requests)
 
