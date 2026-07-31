@@ -12,6 +12,20 @@ implemented in code** where the two diverge. When they conflict, the code (and t
 Claude Code updates this file as features land; Claude Chat should read it before any design work
 so it builds on the current state rather than the original design.
 
+## Session 2026-08-01, onboarding spine
+
+- **Onboarding spine (`onboarding-flow.md`, `OnboardingUI`):** first-run flow on a top-most canvas that
+  blocks the game until the player picks a Grimoire. Step 1 World intro (3 text panels, 8s auto-advance
+  or tap, Skip jumps to the choice) and Step 4 Grimoire Choice (7 starters from `GrimoireMgr.Owned` in a
+  horizontal scroll, per-subclass accent colour, tap -> preview of tagline + signature passive + idle
+  behaviour, Confirm -> `EquipGrimoire` + `ResetSwapCooldown` so the first pick isn't a 24h swap ->
+  `PlayerPrefs["onboarding_complete"]=1`). Self-installed by `NavigationDrawerUI`; self-destroys if
+  already complete. Dev reset: **Tools > Grimoire > Dev > Reset Onboarding**.
+  **Deferred (art/scripted, per the spec):** Step 2 interactive Foraging tutorial, Step 3 Bowstring
+  combat tutorial (tutorial-combat no-death flag), the natural `TooltipManager` (fire-once tooltips),
+  and the first-WYWA welcome variant. Onboarding state is client-side (PlayerPrefs) for now; the server
+  `players.onboarding_complete/step` columns exist for the alpha sync.
+
 ## Session 2026-07-31, STEP 10 zone boss Phase A (solo) + STEP 9 remainder + melee/magic fix
 
 - **STEP 9 remainder done:** `ZoneCombatView.HasWeakPointRevealTalent` now gates on the equipped Warden
