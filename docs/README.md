@@ -58,6 +58,7 @@ Raw base: `https://raw.githubusercontent.com/RefugeSwordPublishing/Project-Grimo
 - subclass-trees-warden.md, subclass-trees-arcanist.md, subclass-trees-vanguard.md
 - runic-constellation-spec.md, summoner-spec.md, lifebinder-spec.md
 - vanguard-combo-system.md, warfare-spec.md, slaying-talent-spec.md
+- slaying-content-REQUEST.md, OPEN: design ask for Slaying "extra content" (slayer zones/hunts, hunted monster variants, progression track, Slaying page home) for Chat
 - attunement-data-spec.md, phase2-attunement-data-spec.md
 
 ## Constraints
