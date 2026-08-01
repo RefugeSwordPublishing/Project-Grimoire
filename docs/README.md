@@ -44,13 +44,15 @@ Raw base: `https://raw.githubusercontent.com/RefugeSwordPublishing/Project-Grimo
 - offline-combat-wywa-REQUEST.md, the design ask (RESOLVED by offline-combat-wywa.md; kept for history)
 - daily-weekly-quest-system-scaling.md, dynamic quest target/reward scaling by tier + talent level (addendum; as-built in QuestScaler)
 - player-account-system.md, push-notification-triggers.md, monetization-scope.md, infrastructure-cost-planning.md
+- royal-merchant-store-REQUEST.md, OPEN: reconcile monetization-scope.md + consumables-spec.md + the as-built GM auto-eat store into one categorized Royal Merchant store page, for Chat
 
 ## Phase 3 content
 - dungeon-room-pools-brief.md, Mirefall Barrow + Warden's Folly (T2) room pools, bosses, puzzles, hazards
 - dungeon-room-pools-t1-brief.md, Aldric's Warren + Crestfall Cove (T1) room pools, bosses, TidalSurge hazard (no puzzles)
 - dungeon-room-pools-phase3-brief.md, Gravenspire + Ignarath's Maw room pools, bosses, puzzles, hazards
-- dungeon-room-pools-t4t5-brief.md, T4/T5 dungeons (The Breach, Valdren's Keep, The Pale Vault, Firststone Sanctum): rooms, bosses, new hazards + puzzles (BLOCKED on T4/T5 enemies)
-- phase4-enemy-content-REQUEST.md, OPEN: full EnemyData stats for the T4/T5 zone enemies (prerequisite for the dungeons), for Chat
+- dungeon-room-pools-t4t5-brief.md, T4/T5 dungeons (The Breach, Valdren's Keep, The Pale Vault, Firststone Sanctum): rooms, bosses, new hazards + puzzles (enemies now authored; dungeons pending build)
+- phase4-enemy-content-brief.md, all T4/T5 EnemyData (24 standard/elite + 4 zone bosses) + the four ZoneData + new material/trophy ItemData. As-built via CreatePhase4Enemies + CreatePhase4Items.
+- phase4-enemy-content-REQUEST.md, the design ask (RESOLVED by phase4-enemy-content-brief.md; kept for history)
 - dungeon-room-pools-t4t5-REQUEST.md, the design ask (RESOLVED by dungeon-room-pools-t4t5-brief.md; kept for history)
 - grimoire-talent-reference.xlsx, talent reference workbook (per-talent activities, tiers, unlocks)
 - phase3-attunement-data-spec.md, Tanning tiered attunement, Smelting HeatGauge attunement, combat zone events, Delving node placement
@@ -60,7 +62,8 @@ Raw base: `https://raw.githubusercontent.com/RefugeSwordPublishing/Project-Grimo
 - subclass-trees-warden.md, subclass-trees-arcanist.md, subclass-trees-vanguard.md
 - runic-constellation-spec.md, summoner-spec.md, lifebinder-spec.md
 - vanguard-combo-system.md, warfare-spec.md, slaying-talent-spec.md
-- slaying-content-REQUEST.md, OPEN: design ask for Slaying "extra content" (slayer zones/hunts, hunted monster variants, progression track, Slaying page home) for Chat
+- slaying-content-spec.md, Slaying "extra content" (as-built foundation): full Lv1-100 unlock ladder, Hunted Variants (passive), Finishing Blow, Faction Mastery kill counters + titles, Lv100 capstone, Slaying page on the Combat Tab. Slayer Hunts + Bounty Board are specced but deferred (next content pass).
+- slaying-content-REQUEST.md, the design ask (RESOLVED by slaying-content-spec.md; kept for history)
 - attunement-data-spec.md, phase2-attunement-data-spec.md
 
 ## Constraints

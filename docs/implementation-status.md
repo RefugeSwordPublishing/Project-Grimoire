@@ -12,6 +12,89 @@ implemented in code** where the two diverge. When they conflict, the code (and t
 Claude Code updates this file as features land; Claude Chat should read it before any design work
 so it builds on the current state rather than the original design.
 
+## Session 2026-08-01, combat-hub section rework + Slaying re-home + store REQUEST
+
+- **Combat page reworked into a section hub** (`combat-engagement-spec.md` IA): `CombatHubUI` now shows a
+  runtime **section overlay** (opaque, in front of the legacy zone/dungeon lists so no prefab rewiring)
+  with four cards, **Slayer / Zone Combat / Dungeons / Raids**. Slayer opens the full Slaying page; Zone
+  Combat and Dungeons drill into a back-able scrollable list built at runtime from `_zones` + `ZoneAccess`
+  (routes through `CombatManager.EnterZone`/`EnterDungeon`, reports to its own status line); Raids is a
+  locked "coming in a later update" card (Raids stay hard-deferred per CLAUDE.md). The legacy `BuildTiles`
+  lists still exist underneath but are covered.
+- **Full Slaying page re-homed** to Combat > Slayer. `CombatTabUI` (Combat Progression) no longer launches
+  it, it keeps only an informational Slaying level line pointing to Combat > Slayer.
+- **Royal Merchant store: reconcile handed to Chat** as `royal-merchant-store-REQUEST.md`. The as-built
+  `RoyalMerchantUI` (GM auto-eat store) conflicts with `monetization-scope.md` (Royal Merchant = IAP vendor
+  inside the Exchange; tickets/cosmetics/Grimoires; the auto-eat tiers are not in it). The full categorized
+  store (Consumables/Inventory/Cosmetics/etc.) is BLOCKED on that reconcile before building.
+- **Deferred/next:** Slayer bounties on the quest board (they ride `player_quests` cadence='bounty'; render
+  once bounties are built); an **accessory equipment slot** keeps coming up (boss trophies + Slaying Hunt
+  Trophies both assume one), worth doing as its own task.
+
+## Session 2026-08-01, T4/T5 enemies + zones — `phase4-enemy-content-brief.md`
+
+Authored the T4/T5 enemy content (the prerequisite that unblocks the T4/T5 dungeons). Chat delivered
+`phase4-enemy-content-brief.md` (resolves the earlier REQUEST); Code authored it.
+
+- **`CreatePhase4Enemies` (editor tool, Tools > Grimoire > Content):** 28 EnemyData, 24 standard/elite
+  + 4 zone bosses, across **Veilborn Wastes (4A)**, **Shattered Citadel (4B)**, **Ashenwold (5A)**,
+  **Elder Reaches (5B)**. Full per-enemy stats from the brief (defense/accuracy/evasion/block, not
+  role-defaults; block stored as a 0-100 percent). Creates the four `ZoneData` (tier 4 gate 91, tier 5
+  gate 141), wires the enemy pool + zone boss, sets `hasDungeon`/`dungeonName` (The Breach / Valdren's
+  Keep / The Pale Vault / Firststone Sanctum), VoidPulse combat event on the two void zones, and
+  registers all four in the CombatHub. Special/boss abilities are reference text (behaviour deferred,
+  same as Phase 2/3). Re-runnable.
+- **`CreatePhase4Items` (editor tool):** authors the new T4/T5 materials (Soul Residue, Void Crystal/
+  Core/Shard, Aetheric Fragment, Starstone Ore Chunk, Soulite Dust/Fragment, Soul Essence, Grimoire
+  Steel Fragment, Wyvern Heart, Ancient Fang, Worldtree Shard, Masterwork Ancient Sigil, etc.) + the
+  four zone-boss trophies, idempotent (skips anything already in the ItemRegistry), registered so drops
+  resolve. Run it after Create Phase 4 Enemies.
+- **Known gaps / notes:**
+  - Boss spawn still uses `CombatManager`'s flat 5% const (`BossSpawnChance`), so the brief's 1-in-15
+    for T5 bosses is recorded on the zone asset (`bossSpawnChance`) but not honoured at runtime yet.
+  - **No accessory slot exists** (`EquipmentSlot` has no Accessory). The zone-boss "accessory" drops
+    (and the Slaying Hunt Trophies) are authored as Pristine collectible trophies for now; an accessory
+    slot + the minor +faction-damage channel is a separate task.
+  - A few generic boss-loot placeholders in the brief ("Pristine weapon", "Legendary weapon/component",
+    "Pristine Vestments piece") are not authored (not concrete items); boss-loot polish later.
+- **Next:** build the four dungeons, `CreatePhase4Dungeons` (rooms reference these EnemyData now that
+  they exist) + the two new puzzle minigames (VoidRiftSeal, RuneLock) + wiring the four new hazard
+  behaviours. The four dungeon bosses are already fully specced in `dungeon-room-pools-t4t5-brief.md`.
+
+## Session 2026-08-01, Slaying content (foundation) — `slaying-content-spec.md`
+
+Built the client-side foundation of the Slaying content system (TB#21 follow-on). No new migration
+(faction counters + titles persist in PlayerPrefs for the alpha, same posture as onboarding; the
+server sync columns come with the account-sync pass).
+
+- **`SlayingTalent` (rewritten):** full Lv1-100 unlock ladder. Elite spawn bonus is now the spec's
+  cumulative curve (+2% Lv5 -> +20% cap Lv95). Adds `GetHuntedSpawnChance` (L15 5% -> L100 15% lerp),
+  Finishing Blow params (unlock Lv10, threshold 15/20/25% at Lv10/45/80, cooldown 30s->20s at Lv80),
+  and the feature gates (FactionTracking 30, Hunts 40, Bounty 50, 2nd Hunt 70, BossHunt 85,
+  Slayer's Eye 90, Capstone 100). `Ladder[]` drives the page + Next-Unlocks.
+- **`SlayerProgress` (new, Core):** per-faction kill counters + separate Hunted-kill counters (6
+  factions), Faction Mastery titles (100 Hunter / 500 Slayer / 1000 Bane / 2500 Master), equipped
+  display title, and the Lv100 capstone (`CapstoneDamageMult` = +5% vs all factions). Counting begins
+  at Slaying 30 (spec S6). PlayerPrefs-backed with an in-memory cache.
+- **`CombatManager`:** Hunted Variant overlay on non-elite standard spawns (`GetHuntedSpawnChance`):
+  +40% HP (`_enemyMaxHpOverride`), +15% enemy damage (EnemyStrike), 2x Slaying XP + `dropChance` x1.3
+  on kill; faction counters via `SlayerProgress.RecordKill` (fires `OnSlayerTitleEarned` on a crossing);
+  Finishing Blow backend (`CanFinishingBlow`/`TryFinishingBlow`, cooldown gate, boss/co-op excluded);
+  capstone +5% folded into `ResolveAttack` (direct hits; construct/coating-DoT damage does not get the
+  5% yet). `CurrentEnemyHunted` + `EnemyHPRatio` exposed for the view.
+- **`SlayingPanelUI` (rewritten):** full scrollable page (RectMask2D) per spec S7, passive bonuses,
+  Faction Mastery rows (kills + current/next title), Titles-Earned selector (tap to display, incl.
+  the capstone title), Next Unlocks, and Hunts/Bounty shown as "coming soon". `CombatTabUI` shows the
+  Slaying summary (level, elite/hunted rates, active title) + a **View Full Slaying Page** button, its
+  nav home (spec S1), not a top-level nav entry.
+- **`ZoneCombatView`:** orange `[Hunted]` nameplate mark, the Finishing Blow tap button (appears only
+  when the enemy is executable), and a title-earned toast via `TooltipManager`.
+- **Dev:** Tools > Grimoire > Dev > Slaying +5,000 / +100,000 XP, Grant Test Faction Kills (600 each),
+  Reset Slayer Progress.
+- **Deferred (specced, not built):** Slayer Hunts (HuntData/BossHuntData SOs, HuntManager, hunt-spawn
+  wiring, exclusive-drop ItemData), the Bounty Board (`player_quests` cadence='bounty' + 15 bounty
+  defs + weekly reset), and title display on the guild roster. These are the next Slaying content pass.
+
 ## Session 2026-08-01, Royal Merchant (auto-eat tiers)
 
 - **Royal Merchant (TB#27, `consumables-spec.md`):** the idle auto-eat upgrade tiers.
