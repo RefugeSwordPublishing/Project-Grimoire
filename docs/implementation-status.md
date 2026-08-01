@@ -56,6 +56,12 @@ so it builds on the current state rather than the original design.
   Lv25 4th task slot / Lv100 cap, earn-XP note). Self-installed by `NavigationDrawerUI`, opened from a
   "Slaying Mastery" button on the combat hub. Marksmanship/Spellcasting/Warfare stay retired.
 
+## Session 2026-08-01, T4/T5 dungeon brief landed (foundation + prereq)
+
+- **`dungeon-room-pools-t4t5-brief.md` (Chat v1.0) placed.** Four dungeons (The Breach 4A, Valdren's Keep 4B, The Pale Vault 5A, Firststone Sanctum 5B), one per zone, with full boss stats, room pools, first-clear XP (T4 3500 / T5 5000), four new hazards, and two new puzzles.
+- **Foundation added:** `DungeonHazard` gains RealityFracture/ArcaneSurge/AshStorm/StoneCollapseWide (HazardName wired, simplified tick like the others); `DungeonPuzzle` gains VoidRiftSeal/RuneLock (minigames come with the dungeon build).
+- **BLOCKED prerequisite:** the ~20 T4/T5 ZONE enemies the rooms reference do NOT exist as EnemyData, and enemy-zone-tables.md lacks their combat stats. Handed to Chat as `phase4-enemy-content-REQUEST.md`. Sequence: Chat enemy brief -> author T4/T5 enemies + zones (CreatePhase4Enemies) -> build the dungeons (CreatePhase4Dungeons + the two new puzzle minigames). The four DUNGEON bosses are already fully specced in the dungeon brief.
+
 ## Session 2026-08-01, combat-hub cleanup + Royal Merchant nav
 
 - Removed the Slaying Mastery + Royal Merchant buttons from the combat hub (kept the DEV Force Boss control).
