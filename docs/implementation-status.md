@@ -56,6 +56,10 @@ so it builds on the current state rather than the original design.
   Lv25 4th task slot / Lv100 cap, earn-XP note). Self-installed by `NavigationDrawerUI`, opened from a
   "Slaying Mastery" button on the combat hub. Marksmanship/Spellcasting/Warfare stay retired.
 
+## Session 2026-08-01, natural tooltips (onboarding Step 5)
+
+- **`TooltipManager` (fire-once contextual hints):** any system calls `TooltipManager.Instance.Show(id, text)`; each id fires once per account (whole shown-set in one PlayerPrefs key, `tips_shown`). Self-installed by `NavigationDrawerUI`; `ShowPanel` fires first-open tips for Inventory/Combat/Exchange/Talents/Quests, and the first talent level-up fires one via `TalentManager.OnTalentLevelUp`. Dismissible card (X + 8s auto-hide). Dev: **Tools > Grimoire > Dev > Reset Tooltips**. Remaining onboarding-flow triggers (first WYWA welcome, boss spawn, Grimoire cooldown) are easy one-line `Show` adds.
+
 ## Session 2026-08-01, onboarding polish + combat-hub button move
 
 - **Onboarding:** removed the Skip button (the Grimoire choice is required for new accounts). Added a
