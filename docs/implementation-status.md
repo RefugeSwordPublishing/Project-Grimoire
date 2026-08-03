@@ -12,6 +12,21 @@ implemented in code** where the two diverge. When they conflict, the code (and t
 Claude Code updates this file as features land; Claude Chat should read it before any design work
 so it builds on the current state rather than the original design.
 
+## Session 2026-08-02, email-OTP password recovery + enemy-icon recovery
+
+- **Password recovery via email OTP (built + verified).** `AuthManager.VerifyRecoveryOtp`
+  (`POST /verify` type=recovery -> session) + `UpdatePassword` (`PUT /user`, new `Put` helper).
+  `AuthGateUI` gains a runtime "Forgot password?" link -> a `Recover` mode reusing the wired fields
+  (username=code, password=new password): send code -> verify + set password -> signed in. No Site URL /
+  localhost redirect involved. **Dashboard requirement:** the Supabase "Reset Password" email template
+  must send `{{ .Token }}` (the 6-digit OTP), not `{{ .ConfirmationURL }}` (done). Domain + a branded
+  reset page / App Links are a launch-time upgrade (roadmap).
+- **Enemy-icon loss fixed + guarded.** The `CreateXEnemies` tools set `icon=null` on every run, so an
+  earlier zone-1 regen wiped 7 zone-1 enemy icons. Restored them from git (`6b76f71`, refs verified) and
+  guarded the null with `if (isNew)` in `CreatePhase2/3/4Enemies` + `CreateZoneEnemies` so regeneration
+  now preserves assigned art. Note: committed art peaked at 8 icons; anything assigned beyond that was
+  never committed and isn't recoverable, commit after an art pass.
+
 ## Session 2026-08-01, combat-hub section rework + Slaying re-home + store REQUEST
 
 - **Combat page reworked into a section hub** (`combat-engagement-spec.md` IA): `CombatHubUI` now shows a
