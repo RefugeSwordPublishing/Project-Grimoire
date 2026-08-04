@@ -12,6 +12,26 @@ implemented in code** where the two diverge. When they conflict, the code (and t
 Claude Code updates this file as features land; Claude Chat should read it before any design work
 so it builds on the current state rather than the original design.
 
+## Session 2026-08-02, crafting recipe deadlock audit + fix + validator
+
+- **Audited all 213 talent recipes** for progression deadlocks (an ingredient whose earliest obtainable
+  level exceeds the recipe's own level). Found 20 hard locks; the trigger was the Lv1 wand needing a
+  Lv15 Iron Apparatus.
+- **Fixed by aligning every ingredient at or before its earliest consumer.** Lowered 9 intermediates
+  (Bronze Bar 5->1, Vellum 5->1, Fine Vellum 40->25, Glean Enchant Seal 20->10, Runic Cog 35->25,
+  Binding Sigil 55->45, Moonbloom 25->15, River Fishing 15->10, Steel Clockwork Apparatus 50->35;
+  Adamantine Apparatus 80->85 for its Void Alloy input). For arcane weapons, added a tier-1 **Bronze
+  Apparatus** (item + Lv1 assembly recipe) so the apparatus ladder mirrors bow limbs
+  (Bronze/Iron/Steel/Mithril/Void) and wands/staves stay at their tier level (wand back to Lv1).
+- **Durability:** intermediate levels updated in `CreateEconomyTalents`; `StaffMats` remap + Bronze
+  Apparatus in `AddGearRecipes` + `CreateEconomyMaterials`; apparatus assembly recipes are hand-authored
+  in `Artificing.asset` (edited directly). Re-audit: **0 locks**.
+- **`RecipeValidator`** (Tools > Grimoire > Validate > Recipe Level Locks) re-runs the same check over
+  all TalentData + enemy drops to catch regressions.
+- **Unity re-run to finalize option A:** Create Economy Materials -> Add Gear Recipes -> Validate Recipes
+  (creates the Bronze Apparatus item + remaps the wand/staff recipes to it; assets are already lock-free
+  in the interim).
+
 ## Session 2026-08-02, email-OTP password recovery + enemy-icon recovery
 
 - **Password recovery via email OTP (built + verified).** `AuthManager.VerifyRecoveryOtp`
