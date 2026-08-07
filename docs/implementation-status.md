@@ -32,8 +32,26 @@ so it builds on the current state rather than the original design.
 - **Crafting live-refresh (bug fix):** `CategoryTalentPanelUI` now subscribes to
   `InventoryManager.OnInventoryChanged`, so a recipe's "Needs X/Y held" + the Start button + tile
   highlights update the moment materials are consumed/acquired (was stale until page re-open).
-- **Deferred to Phase 2b:** the Bounty Board (needs `player_quests` cadence='bounty' + 15 defs + weekly
-  reset), Boss Hunt (Lv85), 2nd hunt slot (Lv70), Hunt reward +20% XP (Lv60), 3x hunted-variant boost.
+- **Deferred to Phase 2b:** the Bounty Board (built, see next section), Boss Hunt (Lv85), 2nd hunt slot
+  (Lv70), Hunt reward +20% XP (Lv60), 3x hunted-variant boost.
+
+## Session 2026-08-07, Slaying Phase 2b, Bounty Board (`slaying-content-spec.md` S5)
+
+- **`BountyManager` (static, PlayerPrefs, like HuntManager):** a weekly Bounty Board. A 15-target pool
+  of named enemies across all tiers (bosses require 1 kill, elites 3, standard 8-10) with Slaying XP +
+  GM + material rewards. **3 bounties drawn per week**, reset Monday 00:00 UTC (`NextMondayUtc`, redraws
+  three distinct). `OnKill` ticks progress when the named target dies; `Claim` grants the reward once
+  complete. Unlocks at Slaying 50. Reset timer is a Unix timestamp (survives restarts). Server
+  `player_quests` cadence='bounty' reuse remains a future account-sync pass.
+- **`CombatManager`:** `OnEnemyKilled` -> `BountyManager.OnKill` (alongside the Hunt hook).
+- **`SlayingPanelUI`:** a **Bounty Board** section below Slayer Hunts, the 3 active bounties with
+  progress/required, a live reset countdown, and a Claim button per completed bounty. Row helpers
+  generalized (`InfoRowIn`/`ButtonRowIn`) so Hunts and Bounties share them. Dev: Reset Bounties (redraw 3).
+- **`HuntBannerUI` (scope fix):** the hunt banner now shows **only** over the home hub and during an
+  active fight (`CombatManager.SessionActive`), not on menu pages where it sat on top of content and was
+  hard to read behind. (Was: everywhere except Settings/Inventory.)
+- **Deferred to later Phase 2b:** Boss Hunt (Lv85), 2nd hunt slot (Lv70), Hunt reward +20% XP (Lv60),
+  bounty "zone access required" marking, and the Quest Board display of active bounties.
 
 ## Session 2026-08-02, accessory equipment slot
 
