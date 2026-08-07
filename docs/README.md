@@ -51,7 +51,7 @@ Raw base: `https://raw.githubusercontent.com/RefugeSwordPublishing/Project-Grimo
 - dungeon-room-pools-brief.md, Mirefall Barrow + Warden's Folly (T2) room pools, bosses, puzzles, hazards
 - dungeon-room-pools-t1-brief.md, Aldric's Warren + Crestfall Cove (T1) room pools, bosses, TidalSurge hazard (no puzzles)
 - dungeon-room-pools-phase3-brief.md, Gravenspire + Ignarath's Maw room pools, bosses, puzzles, hazards
-- dungeon-room-pools-t4t5-brief.md, T4/T5 dungeons (The Breach, Valdren's Keep, The Pale Vault, Firststone Sanctum): rooms, bosses, new hazards + puzzles (enemies now authored; dungeons pending build)
+- dungeon-room-pools-t4t5-brief.md, T4/T5 dungeons (The Breach, Valdren's Keep, The Pale Vault, Firststone Sanctum): rooms, bosses, new hazards + puzzles. As-built via CreatePhase4Dungeons + VoidRiftSeal/RuneLock puzzle minigames in DungeonPuzzleUI.
 - phase4-enemy-content-brief.md, all T4/T5 EnemyData (24 standard/elite + 4 zone bosses) + the four ZoneData + new material/trophy ItemData. As-built via CreatePhase4Enemies + CreatePhase4Items.
 - phase4-enemy-content-REQUEST.md, the design ask (RESOLVED by phase4-enemy-content-brief.md; kept for history)
 - dungeon-room-pools-t4t5-REQUEST.md, the design ask (RESOLVED by dungeon-room-pools-t4t5-brief.md; kept for history)

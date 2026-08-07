@@ -12,6 +12,24 @@ implemented in code** where the two diverge. When they conflict, the code (and t
 Claude Code updates this file as features land; Claude Chat should read it before any design work
 so it builds on the current state rather than the original design.
 
+## Session 2026-08-02, T4/T5 dungeons built, `dungeon-room-pools-t4t5-brief.md`
+
+- **`CreatePhase4Dungeons` (editor tool):** authors the 4 dungeon bosses (The Veil Harbinger 18.5k,
+  Valdren the Unfinished 20k, The Pale Vault Warden 32k, The Firststone Warden 38k, in
+  Assets/Data/Enemies/Dungeons) + all 44 rooms (entrance/safe/boss + 8-room weighted pool each) + the 4
+  `DungeonData` (The Breach 4A / Valdren's Keep 4B / The Pale Vault 5A / Firststone Sanctum 5B), wired to
+  their host zones (`zone.dungeon`). Rooms reference the T4/T5 enemies (run Create Phase 4 Enemies first).
+  Rec levels 65/70/82/90, first-clear XP 3500/3500/5000/5000. Re-runnable.
+- **Two new puzzle minigames in `DungeonPuzzleUI`:** **VoidRiftSeal** (Pale Vault, seal 5 rifts dim to
+  bright within 8s, brightness is the cue, wrong/timeout = 10 dmg + reopen) and **RuneLock** (Firststone, 3
+  interdependent wheels: outer shifts middle, middle shifts inner, confirm to match target, no timer, wrong
+  confirm = 10 dmg no reset). Breach reuses Glyph, Valdren's Keep reuses Weight.
+- **Hazards** (RealityFracture / ArcaneSurge / AshStorm / StoneCollapseWide) stay reference-level, behaviour
+  deferred, consistent with T1-T3.
+- **Run to finalize:** Tools > Grimoire > Content > Create Phase 4 Dungeons (after Create Phase 4 Enemies),
+  then save the scene. Boss accessory drops (Harbinger's Mark, Valdren's Apparatus Key, Warden's Seal,
+  Firststone Key) reference items that need the accessory slot / item authoring; they no-op until then.
+
 ## Session 2026-08-02, Royal Merchant full store (Phase 1), `royal-merchant-store-spec.md`
 
 - **`RoyalMerchantUI` rebuilt** from the auto-eat-only page into the full **5-tab categorized store**
