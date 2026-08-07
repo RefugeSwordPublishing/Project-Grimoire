@@ -12,6 +12,24 @@ implemented in code** where the two diverge. When they conflict, the code (and t
 Claude Code updates this file as features land; Claude Chat should read it before any design work
 so it builds on the current state rather than the original design.
 
+## Session 2026-08-02, accessory equipment slot
+
+- **New `EquipmentSlot.Accessory`** + `EnemyFactionTag.None` (all-faction sentinel). `ItemData` gains
+  accessory fields (`accessoryFaction`, `accessoryDamagePct`, `accessoryResistPct`). Accessories grant a
+  **faction-scoped combat bonus** (+damage vs the faction, -damage taken from it) rather than the
+  quality-derived stat gear gets; `faction = None` = all enemies.
+- **Wiring:** `PlayerData` carries the equipped-accessory channel + `GetAccessoryDamageMult` /
+  `GetAccessoryResistMult`; `EquipmentManager` adds Accessory to the gear slots + reads it in `Recompute`
+  (persists like other slots); `CombatManager` applies the damage mult in `ResolveAttack` and the resist
+  in `EnemyStrike`; `CharacterPanelUI` shows the Accessory slot (equips via the existing picker).
+- **`CreateAccessories` (editor tool):** authors the 4 dungeon-boss trophies as accessories,
+  Harbinger's Mark (Void +10%/12%), Valdren's Apparatus Key (Arcane +10%/12%), Warden's Seal
+  (Void +12%/15%), Firststone Key (Arcane +12%/15%), updating the two that CreatePhase4Items had made
+  RareMaterials. Run it after the dungeon tools. Dual-faction trophies model their PRIMARY faction only
+  (secondary +8% dropped for the single-slot model).
+- **Unblocks:** boss-trophy drops now resolve to real equippable items; the same channel powers Slaying
+  Hunt Trophies (add to CreateAccessories when Hunts land) and any faction-damage cosmetic.
+
 ## Session 2026-08-02, T4/T5 dungeons built, `dungeon-room-pools-t4t5-brief.md`
 
 - **`CreatePhase4Dungeons` (editor tool):** authors the 4 dungeon bosses (The Veil Harbinger 18.5k,
