@@ -12,6 +12,29 @@ implemented in code** where the two diverge. When they conflict, the code (and t
 Claude Code updates this file as features land; Claude Chat should read it before any design work
 so it builds on the current state rather than the original design.
 
+## Session 2026-08-02, Slaying Phase 2a, Slayer Hunts (`slaying-content-spec.md` S4)
+
+- **`HuntManager` (static, PlayerPrefs, like SlayerProgress):** one active Hunt slot. A hunt pool of 6
+  faction hunts (Beast/Outlaw @40, Undead @50, Void/Arcane @60, Nature @70) with kill target, duration,
+  Slaying XP + GM + material rewards + a 10% exclusive-trophy chance. `StartHunt`, `OnKill` (counts
+  target-faction kills, completes at target), lazy timer expiry (partial reward at >=50% kills, else none),
+  4h cooldown. Timers are Unix timestamps (survive restarts).
+- **`CombatManager`:** `OnEnemyKilled` -> `HuntManager.OnKill`; the active hunt's target faction spawns
+  **2x** (`EffectiveWeight` in `PickWeighted`); hunt completion/expiry surfaces in the combat log.
+- **`SlayingPanelUI`:** an interactive **Slayer Hunts** section, lists available hunts with Activate,
+  shows the active hunt's kills/target + a live countdown (throttled `Update`), or the cooldown.
+- **`CreateAccessories`:** the 6 exclusive Hunt Trophies (Outlaw Trophy, Beast Fang Necklace, Wraith
+  Binding, Void Shard Pendant, Arcane Focus Shard, Nature Crown), accessories with +2% faction damage,
+  matching the hunt reward names. Dev: Tools > Grimoire > Dev > Reset Slayer Hunt.
+- **`HuntBannerUI`:** global live hunt-progress banner (own high-sort canvas, self-installed) on the hub +
+  combat pages; kill count updates live as enemies die, tap opens the Slaying page. Hidden on
+  Settings/Inventory; sits just below the boss-banner slot.
+- **Crafting live-refresh (bug fix):** `CategoryTalentPanelUI` now subscribes to
+  `InventoryManager.OnInventoryChanged`, so a recipe's "Needs X/Y held" + the Start button + tile
+  highlights update the moment materials are consumed/acquired (was stale until page re-open).
+- **Deferred to Phase 2b:** the Bounty Board (needs `player_quests` cadence='bounty' + 15 defs + weekly
+  reset), Boss Hunt (Lv85), 2nd hunt slot (Lv70), Hunt reward +20% XP (Lv60), 3x hunted-variant boost.
+
 ## Session 2026-08-02, accessory equipment slot
 
 - **New `EquipmentSlot.Accessory`** + `EnemyFactionTag.None` (all-faction sentinel). `ItemData` gains
