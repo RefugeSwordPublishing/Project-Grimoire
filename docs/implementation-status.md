@@ -12,6 +12,23 @@ implemented in code** where the two diverge. When they conflict, the code (and t
 Claude Code updates this file as features land; Claude Chat should read it before any design work
 so it builds on the current state rather than the original design.
 
+## Session 2026-08-02, Royal Merchant full store (Phase 1), `royal-merchant-store-spec.md`
+
+- **`RoyalMerchantUI` rebuilt** from the auto-eat-only page into the full **5-tab categorized store**
+  (Consumables / Inventory / Quests & Tasks / Cosmetics / Grimoires & DLC), a top-level nav page (spec
+  decision 1.1). Scrollable, RectMask2D + SafeArea, tab bar, per-row cards, GM balance, confirm dialog.
+  `OpenToCategory` deep-link entry added (callers are Phase 2).
+- **Live:** Consumables > Auto-Eat tiers 1-3 (reuse the existing `SettingsManager.AutoEatTier` path +
+  costs, unchanged per spec 1.2). **Honest stubs:** the Auto-Drink/mana tier + all GM slot rows
+  (inventory/exchange/quest/slaying) render "Soon" (effect not wired); Cosmetics + Grimoires & DLC +
+  large packs + task slot 8 render "In-app" (IAP, per CLAUDE.md do not hand-build receipt validation).
+- **Deferred to Phase 2 (deliberately, flagged):** the `purchase_merchant_item` RPC + `merchant_purchases`
+  column + `RoyalMerchantManager`, and the slot-effect wiring. Reason: Gold Marks have a **known
+  currency-split** (`players.gold_marks` vs `player_currency.gold_marks`, noted in migration 020), and
+  `GameManager` reloads GM from `player_currency`; the server deduct must be built against that once, when
+  the first merchant_purchases item goes live. No live Phase-1 purchase needs the RPC (auto-eat uses the
+  settings path). Auto-drink combat effect also Phase 2.
+
 ## Session 2026-08-02, crafting recipe deadlock audit + fix + validator
 
 - **Audited all 213 talent recipes** for progression deadlocks (an ingredient whose earliest obtainable
@@ -66,7 +83,7 @@ so it builds on the current state rather than the original design.
   once bounties are built); an **accessory equipment slot** keeps coming up (boss trophies + Slaying Hunt
   Trophies both assume one), worth doing as its own task.
 
-## Session 2026-08-01, T4/T5 enemies + zones — `phase4-enemy-content-brief.md`
+## Session 2026-08-01, T4/T5 enemies + zones, `phase4-enemy-content-brief.md`
 
 Authored the T4/T5 enemy content (the prerequisite that unblocks the T4/T5 dungeons). Chat delivered
 `phase4-enemy-content-brief.md` (resolves the earlier REQUEST); Code authored it.
@@ -96,7 +113,7 @@ Authored the T4/T5 enemy content (the prerequisite that unblocks the T4/T5 dunge
   they exist) + the two new puzzle minigames (VoidRiftSeal, RuneLock) + wiring the four new hazard
   behaviours. The four dungeon bosses are already fully specced in `dungeon-room-pools-t4t5-brief.md`.
 
-## Session 2026-08-01, Slaying content (foundation) — `slaying-content-spec.md`
+## Session 2026-08-01, Slaying content (foundation), `slaying-content-spec.md`
 
 Built the client-side foundation of the Slaying content system (TB#21 follow-on). No new migration
 (faction counters + titles persist in PlayerPrefs for the alpha, same posture as onboarding; the
@@ -438,7 +455,7 @@ Six server-authoritative SECURITY DEFINER RPCs, mirroring `purchase_store_listin
 - **Toasts:** reused `LootToastUI` (now has a static `Instance` + `ShowMessage`); Exchange toasts
   "Bought X", "Sold X".
 
-### Pending earnings + collect-at-merchant (migration 026) — the real fix
+### Pending earnings + collect-at-merchant (migration 026), the real fix
 Sale proceeds no longer credit the seller's wallet directly (which the client could overwrite).
 Instead a sale accrues to a **server-side pending bucket per marketplace** (`exchange_pending_earnings`,
 source `exchange`|`guild`); the seller taps **Collect** at that merchant, a client-initiated

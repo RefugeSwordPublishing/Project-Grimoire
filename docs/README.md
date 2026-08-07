@@ -44,7 +44,8 @@ Raw base: `https://raw.githubusercontent.com/RefugeSwordPublishing/Project-Grimo
 - offline-combat-wywa-REQUEST.md, the design ask (RESOLVED by offline-combat-wywa.md; kept for history)
 - daily-weekly-quest-system-scaling.md, dynamic quest target/reward scaling by tier + talent level (addendum; as-built in QuestScaler)
 - player-account-system.md, push-notification-triggers.md, monetization-scope.md, infrastructure-cost-planning.md
-- royal-merchant-store-REQUEST.md, OPEN: reconcile monetization-scope.md + consumables-spec.md + the as-built GM auto-eat store into one categorized Royal Merchant store page, for Chat
+- royal-merchant-store-spec.md, full categorized Royal Merchant store (Chat v1.0): 5 tabs (Consumables/Inventory/Quests & Tasks/Cosmetics/Grimoires & DLC), GM-live rows + stubbed IAP, RoyalMerchantManager + purchase_merchant_item RPC + merchant_purchases column. Stays a top-level nav page (not an Exchange tab).
+- royal-merchant-store-REQUEST.md, the design ask (RESOLVED by royal-merchant-store-spec.md; kept for history)
 
 ## Phase 3 content
 - dungeon-room-pools-brief.md, Mirefall Barrow + Warden's Folly (T2) room pools, bosses, puzzles, hazards
