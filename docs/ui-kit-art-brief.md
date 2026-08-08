@@ -4,7 +4,7 @@ version: 0.1
 updated: 2026-08-07
 path: docs/ui-kit-art-brief.md
 companion: art-asset-requirements.md (v0.5)
-generator: Layer.ai, `ui` asset type (4 tokens each) + `prop` for icon sheets (1 token)
+generator: Layer.ai (web UI; no MCP connection, generate manually and import to Unity)
 ---
 
 # UI Kit Art Brief
@@ -21,15 +21,18 @@ layout staying still.
 
 ## 1. Tooling reality (read first)
 
-- **Generator:** Layer.ai, through the connected MCP. It supports a dedicated **`ui` asset type**
-  (4 tokens per generation, 16-512px). UI chrome generates through `ui`; content icons keep using
-  the pixel/`prop` icon-sheet workflow from the art spec (1 token per sheet).
-- **Funding gate:** the Layer.ai balance is currently **0 tokens (free plan)**. No generation runs,
-  UI or sprite, until the account is funded. Producing the full first-pass kit below costs roughly
-  **60-80 tokens** (see Section 6). Fund to at least that before a generation session.
-- **Layer does the art, Unity does the assembly.** Layer.ai paints panel faces, borders, button
-  states, and bar fills. The 9-slice borders, state swaps, anchoring, and atlasing happen in Unity
-  against the existing code-built UIs. Every runtime UI in the project (`RoyalMerchantUI`,
+- **Generator:** Layer.ai, in its own web UI. There is **no Layer.ai MCP connection** in the build
+  environment, so Claude Code cannot drive it directly. Dustin runs the generations in Layer; Claude
+  supplies the prompts (Section 4) and handles Unity import and assembly (Section 8). (The separately
+  connected `sprite-ai` MCP is a **different service**, not Layer.ai; ignore its token/asset-type
+  economics here.)
+- **Style consistency:** use a **pre-built or custom Layer model** as the fixed style anchor, the
+  same approach `art-asset-requirements.md` (Workflow B) uses for characters/enemies/icons, so the
+  UI chrome shares one visual DNA across every pull. Confirm generation credit cost against Layer's
+  own pricing at the start of the session; this brief counts generations, not credits (Section 6).
+- **Layer does the art, Unity does the assembly.** Layer paints panel faces, borders, button states,
+  and bar fills. The 9-slice borders, state swaps, anchoring, and atlasing happen in Unity against
+  the existing code-built UIs. Every runtime UI in the project (`RoyalMerchantUI`,
   `NavigationDrawerUI`, combat views) is built in C# with flat-color placeholders today; the kit
   swaps those placeholder `Image` colors for authored sprites.
 
@@ -60,7 +63,7 @@ Every `ui` generation carries the same DNA so the kit reads as one system:
 
 Grouped by how they generate. Sizes are the Layer.ai generation size; Unity slices/imports down.
 
-### 3.1 Frames and panels (`ui`, 9-slice, generate at 96x96 unless noted)
+### 3.1 Frames and panels (9-slice, generate at 96x96 unless noted)
 | Component | Gen size | Notes |
 |-----------|---------|-------|
 | Primary panel skin | 96x96 | Main page/modal background, dark stone + bronze edge, 9-slice |
@@ -70,7 +73,7 @@ Grouped by how they generate. Sizes are the Layer.ai generation size; Unity slic
 | Inventory slot, empty | 64x64 | Sunken socket look |
 | Inventory slot, highlight | 64x64 | Selected/equipped ring, same footprint |
 
-### 3.2 Buttons and tabs (`ui`, generate at 96x96, 9-slice)
+### 3.2 Buttons and tabs (generate at 96x96, 9-slice)
 | Component | States | Notes |
 |-----------|--------|-------|
 | Primary button | up / down / disabled | Green-trim buy/confirm; author all three faces |
@@ -78,13 +81,13 @@ Grouped by how they generate. Sizes are the Layer.ai generation size; Unity slic
 | Tab | active / inactive | For the Royal Merchant and Exchange tab bars |
 | Icon button (round) | up / down | Close, nav, small HUD actions |
 
-### 3.3 Bars and meters (`ui`, generate frame + fill separately)
+### 3.3 Bars and meters (generate frame + fill separately)
 | Component | Pieces | Notes |
 |-----------|--------|-------|
 | Resource bar (HP / idle) | frame + fill | Fill is a flat tileable strip tinted in Unity |
 | Boss HP bar | frame + fill | Wider, ornate; used by the boss banner |
 
-### 3.4 Chips and badges (`ui`, small)
+### 3.4 Chips and badges (small)
 | Component | Gen size | Notes |
 |-----------|---------|-------|
 | Currency chip / pill | 64x32 | Background for the GM/SM balance readout |
@@ -96,8 +99,8 @@ Grouped by how they generate. Sizes are the Layer.ai generation size; Unity slic
 ### 3.5 Nav and HUD icons (icon workflow, not `ui` chrome)
 The drawer/nav glyphs (Inventory, Character, Gathering, Processing, Combat, Crafting, Exchange,
 Guild, Quests, Slaying, Royal Merchant, Settings) generate as a **48x48 pixel-icon sheet** through
-the same icon workflow as item icons (4-wide grid), not as `ui` chrome. They are content glyphs,
-so they share the pixel-art DNA of the item icons rather than the parchment chrome.
+the same icon workflow as item icons (4-wide grid), separate from the parchment chrome. They are
+content glyphs, so they share the pixel-art DNA of the item icons rather than the panel skin.
 
 The currency and slot-ticket icons the Royal Merchant work needs (Gold Mark coin, Silver Mark coin,
 Inventory/Quest/Slaying/Exchange Slot Tickets) already have a home: `icons_currency_ui.png` in the
@@ -105,7 +108,7 @@ art spec's atlas list. Generate that sheet when the icon batch runs.
 
 ---
 
-## 4. Layer.ai `ui` prompt template
+## 4. UI-chrome prompt template
 
 Fill the bracket, keep the suffix fixed on every UI-chrome generation:
 
@@ -143,20 +146,21 @@ Produce in this order so the most-reused pieces land first and the rest inherit 
 
 ---
 
-## 6. Token budget
+## 6. Generation count (size the session)
 
-| Batch | Gens | Type | Tokens |
-|-------|------|------|--------|
-| Panels + cards + modal + tooltip + slots | 6 | ui | 24 |
-| Buttons + tabs (with states) | ~7 | ui | 28 |
-| Bars (frame+fill x2) | 4 | ui | 16 |
-| Chips + badges | 2 | ui | 8 |
-| Nav-icon sheet + currency/UI icon sheet | 2 | prop/icon | ~2 |
-| **First-pass kit total** | | | **~78 tokens** |
+Counted as distinct Layer generations, not credits (confirm credit cost against Layer's pricing):
 
-Fund for **~80 tokens** to cover the full kit in one session, plus headroom for the inevitable
-2-3 rerolls on the panel and button faces. Rerolls matter most on the panel skin (step 1), because
-everything downstream matches it, so budget a couple extra pulls there specifically.
+| Batch | Generations |
+|-------|-------------|
+| Panels + cards + modal + tooltip + slots | 6 |
+| Buttons + tabs (each state a separate pull) | ~7 |
+| Bars (frame + fill x2) | 4 |
+| Chips + badges | 2 |
+| Nav-icon sheet + currency/UI icon sheet | 2 |
+| **First-pass kit** | **~21 generations** |
+
+Budget extra pulls for the panel skin (step 1) specifically: everything downstream matches it, so
+2-3 rerolls there is normal and worth it before committing to the rest.
 
 ---
 
@@ -185,4 +189,5 @@ processing, crafting, character.
 
 *Path: docs/ui-kit-art-brief.md*
 *Builds on: art-asset-requirements.md (v0.5) resolution table + atlas list.*
-*Blocked on: Layer.ai token funding (currently 0).*
+*Generation: Layer.ai web UI (funded); no Layer.ai MCP connection, so Dustin runs the pulls with*
+*these prompts and Claude handles Unity import + assembly.*
