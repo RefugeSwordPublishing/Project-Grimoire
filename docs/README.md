@@ -17,6 +17,7 @@ Raw base: `https://raw.githubusercontent.com/RefugeSwordPublishing/Project-Grimo
 ## Core design
 - game-design-doc.md, core philosophy, tech stack, art direction, combat perspective
 - art-asset-requirements.md, HD-2D art direction, resolutions, sprite/atlas specs
+- ui-kit-art-brief.md, UI chrome/component system (panels, buttons, tabs, cards, bars, chips) for Layer.ai `ui` type: style DNA + palette anchors, component inventory, prompt template, generation order, ~80-token budget, Unity 9-slice assembly. Fills the UI-chrome gap the art spec leaves open.
 - phase1-sprite-prompts.md, Layer.ai prompt library (characters, enemies, items, UI)
 - guild-hall-art-spec.md, Guild Hall background dimensions/safe-zones + 8 prestige-stage prompts
 - stat-scaling-combat-formulas.md, combat math, stat formulas, hit/evasion/block
