@@ -89,6 +89,27 @@ so it builds on the current state rather than the original design.
   then save the scene. Boss accessory drops (Harbinger's Mark, Valdren's Apparatus Key, Warden's Seal,
   Firststone Key) reference items that need the accessory slot / item authoring; they no-op until then.
 
+## Session 2026-08-07, Royal Merchant Phase 2 foundation, server-authoritative GM purchase (`royal-merchant-store-spec.md` S9)
+
+- **Migration 031 (applied to live DB, verified):** `players.merchant_purchases text[]` idempotency ledger
+  + `purchase_merchant_item(p_item_id, p_gm_cost)` RPC. One-time unlocks cannot be re-bought
+  (`already_purchased`).
+- **Currency-split resolved for the merchant path:** the spec's example RPC (S9.1) deducted from
+  `players.gold_marks`, the **stale** side of the split. The client reads/writes `player_currency`, so that
+  would have charged a wallet the player never sees (GM reappears on relog). The RPC deducts from
+  `player_currency`, exactly like the exchange RPCs (020/025). A loud comment in the migration guards
+  against a "fix" back to `players.*`.
+- **`RoyalMerchantUI` reroute:** the auto-eat purchase no longer does a client-side `GoldMarks -= cost`
+  (which never persisted). It calls `rpc/purchase_merchant_item`, **adopts** the server-returned balance
+  (same pattern as buy orders/auctions), then applies the tier via `SettingsManager`. Offline/dev falls
+  back to a local deduction so it stays testable without a backend (`ServerMode` = authed + configured).
+- **Still stubbed (each a follow-up increment; the RPC + adopt-balance pattern is now in place for all):**
+  auto-drink tiers, inventory packs, exchange slots, guild bank (existing `expand_guild_bank`), quest
+  slots, Slaying task slots 5-7. Each is an item-id + an ApplyUnlock branch + its consuming-system wiring.
+- **Not built:** a standalone `RoyalMerchantManager` (the purchase helper lives in `RoyalMerchantUI` for
+  now, mirroring how `ExchangeUI` drives `MarketManager`); a visible failure toast (failures are logged +
+  the balance simply stays put).
+
 ## Session 2026-08-02, Royal Merchant full store (Phase 1), `royal-merchant-store-spec.md`
 
 - **`RoyalMerchantUI` rebuilt** from the auto-eat-only page into the full **5-tab categorized store**
