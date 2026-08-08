@@ -50,7 +50,7 @@ Keep new docs listed in `docs/README.md` (the index). Never hand Chat a link to 
 | Firebase Cloud Messaging | Push notifications |
 | Unity IAP + RevenueCat | Purchases, do NOT build custom receipt validation |
 | GameAnalytics | Player behaviour tracking |
-| Layer.ai (Sprite AI MCP) | Art asset generation |
+| Layer.ai | Art asset generation (web UI; NO MCP connection, generate manually) |
 | Suno | Music generation |
 
 ---
@@ -184,7 +184,10 @@ player_stat_bonuses    (player_id, grimoire_id, stat_type, amount, granted_at)
 
 ## Art generation workflow
 
-Sprite AI connected via MCP, use it directly.
+Art is generated in **Layer.ai's web UI**. There is **no Layer.ai MCP** in the build environment, so
+Claude Code cannot drive it; Dustin runs the generations from the prompt library and Claude handles
+Unity import + assembly. (The separately connected `sprite-ai` MCP is a **different service**, not
+Layer.ai; do not treat it as the project's art tool.)
 - Prompt library: `docs/phase1-sprite-prompts.md`
 - Generate Warden base body first; use as style reference for all subsequent sprites
 - Standard suffix: `"limited palette, dark pixel outline, HD-2D pixel art, full-body realistic proportions, Octopath Traveler-inspired, transparent background"`
