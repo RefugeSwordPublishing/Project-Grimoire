@@ -1,6 +1,6 @@
 ---
 type: implementation-status
-updated: 2026-07-25
+updated: 2026-08-17
 purpose: Single source of truth for WHAT IS ACTUALLY BUILT vs. design intent in the specs.
 audience: Claude (Chat or Code) starting a session. Read this FIRST, then the relevant spec.
 ---
@@ -11,6 +11,30 @@ The spec files in `docs/` describe **design intent**. This file records **what i
 implemented in code** where the two diverge. When they conflict, the code (and this file) win.
 Claude Code updates this file as features land; Claude Chat should read it before any design work
 so it builds on the current state rather than the original design.
+
+## Session 2026-08-17, unified status-effect system + debuff scoping (`combat-engagement-spec.md`)
+
+- **`StatusEffect` (new, `Combat/`):** typed effect model, `Dot`/`Hot`/`Buff`/`Debuff`/`Shield`,
+  per-tick magnitude, radial-timer fraction. `Shield` is reserved and unused (player shields live on
+  `PlayerData.ShieldHP`, not the list).
+- **`CombatManager`:** enemy + player status lists (`EnemyStatuses`/`PlayerStatuses`), `TickStatuses`
+  tick loop, change events. The single enemy DoT (weapon coatings, Barbed Shot) migrated onto
+  `ApplyEnemyDebuff` so DoTs stack; `ApplyEnemyDot` kept as a delegating shim. `ApplyPlayerDebuff` +
+  `CleansePlayer` exist and are **dormant** (nothing applies a player debuff yet).
+- **Shields, single source:** `PlayerData.ShieldHP` (absorbed inside `PlayerData.DamageHP`), set by the
+  Lifebinder shield spells. An earlier parallel status-shield pool was removed (it double-absorbed).
+  `CombatManager.PlayerShield` reads `ShieldHP` for the HUD.
+- **Lifebinder wiring:** Glacial Shield now resolves as a shield (matched by name/"absorb"; its effect
+  string lacks the "shield" token, so it was wrongly falling to the stand-in heal). Cleanse spells
+  (Radiant Heal, Cleansing Flame, Mass Miracle) call `CleansePlayer` alongside the heal.
+- **UI:** `ZoneCombatView` enemy-debuff icon row (radial countdown, `ui_debuff_icons`);
+  `CombatBuffBarUI` adds a shield chip + player-debuff chips to the HOT/meal aggregation.
+- **Design decision, debuffs are dungeon/raid-scoped:** enemy-applied player debuffs + cleanse belong to
+  dungeons/raids (active play), not idle zone combat (auto-resolved, no counterplay). Stripped the two
+  Ashfen zone-elite player debuffs (Barrow Revenant Necrotic Aura, Thornwood Ancient Root Snare),
+  replaced with non-debuff active mechanics (Grave Volley telegraph, Bramble Guard self-buff). Zone
+  bosses keep control effects. Player-applied DoTs on enemies unchanged. See spec `## Dungeon Combat`.
+- **`InventoryManager`:** initialize `_slots` to fix an NRE in `UsedSlots` before `Initialize`.
 
 ## Session 2026-08-02, Slaying Phase 2a, Slayer Hunts (`slaying-content-spec.md` S4)
 

@@ -215,6 +215,18 @@ Dungeons are **not idleable**, hazards during the approach phase require active 
 The combat loop inside dungeon rooms follows the same resolve logic as zone combat, without the
 spawn roll (rooms have fixed enemy compositions from their ScriptableObject pool).
 
+### Player debuffs are dungeon/raid-scoped (design rule)
+
+Enemy-applied debuffs on the player (heal reduction, snares, corruption DoTs, and the like) and
+their counterplay (Lifebinder cleanse) belong to **dungeons and raids only**, the actively-played
+layers where the player can see and react to them. Idle zone combat auto-resolves, so a player
+debuff there is invisible math, not a mechanic. Zone enemies (including elites) deal damage and use
+non-debuff abilities (telegraphed hits, self-buffs, summons, positioning); zone bosses may keep
+control effects since a boss fight is a deliberate active encounter. Player-applied DoTs on enemies
+(Barbed Shot bleed, weapon coatings) are unaffected, they are DPS tools and stay everywhere. The
+status-effect system (`StatusEffect`, `CombatManager.ApplyPlayerDebuff` / `CleansePlayer`) is built
+and dormant; the dungeon/raid ability system is what feeds it player debuffs.
+
 ---
 
 ## Raids, Phase 4 Design Intent (do not implement now)
