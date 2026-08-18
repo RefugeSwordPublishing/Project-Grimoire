@@ -12,6 +12,29 @@ implemented in code** where the two diverge. When they conflict, the code (and t
 Claude Code updates this file as features land; Claude Chat should read it before any design work
 so it builds on the current state rather than the original design.
 
+## Session 2026-08-17, Multiplayer Chat P0, friend system + block + presence (`multiplayer-chat-spec.md`)
+
+- **Migration 036 (applied live + verified):** `player_friendships` (requester/addressee, status
+  pending/accepted/declined, unique pair) + `player_blocks` (both RLS-on). Presence reuses
+  `players.last_active` (already bumped by PlayerDataService); online = within 5 min (matches the
+  guild roster). Because `players` is "own row only" under RLS, all cross-player reads go through
+  SECURITY DEFINER RPCs: `friend_search`, `friend_request` (auto-accepts a reciprocal request,
+  re-opens a declined one), `friend_respond`, `friend_remove`, `friend_block` (also drops the
+  friendship), `friend_unblock`, `friend_list` (accepted + incoming/outgoing pending, each with
+  username + online), `friend_blocked_list`, `touch_presence`.
+- **`FriendManager` (client, component on GameManager, `GameManager.Friends`):** wraps those RPCs;
+  `SendRequestByUsername` chains search then request; presence heartbeat calls `touch_presence`
+  every 60s while foregrounded. `IncomingRequestCount` for the future badge.
+- **`FriendPanelUI` + `BuildFriendPanel` (Tools > Grimoire > Build > Build Friend Panel):** the P0
+  Friends screen. Search-to-add, accept/decline incoming, friends list with online/offline dot,
+  remove/block. Rows clone an editable `FriendRow` prefab; controller sits on an always-active root
+  that toggles the panel child. Temporary top-left "Friends" hub button is the P0 entry (replaced by
+  the chat pill in P1).
+- **Remaining manual steps (not code):** run the baker in-editor, do the art pass on the panel +
+  FriendRow prefab, and verify the flow across two accounts on-device. UI not yet skinned/tested.
+- **Not built (later phases):** chat_messages/read_state, realtime `RealtimeManager`, guild/lobby/DM
+  channels, general chat. See the spec's P1-P4.
+
 ## Session 2026-08-17, unified status-effect system + debuff scoping (`combat-engagement-spec.md`)
 
 - **`StatusEffect` (new, `Combat/`):** typed effect model, `Dot`/`Hot`/`Buff`/`Debuff`/`Shield`,
