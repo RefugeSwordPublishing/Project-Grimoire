@@ -12,6 +12,24 @@ implemented in code** where the two diverge. When they conflict, the code (and t
 Claude Code updates this file as features land; Claude Chat should read it before any design work
 so it builds on the current state rather than the original design.
 
+## Session 2026-08-17, Multiplayer Chat P1 (guild chat over RPCs; realtime pending) (`multiplayer-chat-spec.md`)
+
+- **Migration 037 (applied live + verified):** `chat_messages` (channel_type/channel_ref/sender/body,
+  500-char check) + `chat_read_state` (both RLS-on). Guild-channel SELECT policy (realtime honors it).
+  SECURITY DEFINER RPCs: `send_chat_message` (membership via `chat_can_post` + 5-msg/10s rate limit +
+  length), `fetch_chat_messages` (with usernames, newest-first), `mark_chat_read`, `chat_guild_unread`.
+  `chat_messages` published to `supabase_realtime`. Transport-agnostic (serves realtime + poll).
+- **`ChatManager` (client, `GameManager.Chat`):** send/fetch/mark-read/unread; resolves the caller's
+  guild id (`guild_members`) for the guild channel; one open channel kept fresh by a 3s poll.
+- **`ChatPanelUI` + `BuildChatPanel` (Tools > Grimoire > Build > Build Chat Panel):** guild chat window,
+  message list + bottom input, auto-scroll, "Join a guild" empty state; clones editable `MessageRow`
+  prefab. Temp top-left "Guild Chat" hub button. Reuses hardened FriendPanel patterns (SafeArea,
+  raycastTarget-off text, controller-on-root, AuthGate input).
+- **Sequencing decision:** guild chat built RPC/poll-first (working + testable now); the realtime
+  `RealtimeManager` (first websocket, Phoenix protocol) is the next step and drops in without schema/UI
+  rework. **Remaining manual:** run the baker in-editor, art pass, two-account test (both in one guild).
+- **Not built:** RealtimeManager (live delivery), lobby/DM/general channels, the unified chat pill.
+
 ## Session 2026-08-17, Multiplayer Chat P0, friend system + block + presence (`multiplayer-chat-spec.md`)
 
 - **Migration 036 (applied live + verified):** `player_friendships` (requester/addressee, status
