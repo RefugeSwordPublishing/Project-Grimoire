@@ -18,6 +18,8 @@ Raw base: `https://raw.githubusercontent.com/RefugeSwordPublishing/Project-Grimo
 - game-design-doc.md, core philosophy, tech stack, art direction, combat perspective
 - art-asset-requirements.md, HD-2D art direction, resolutions, sprite/atlas specs
 - ui-kit-art-brief.md, UI chrome/component system (panels, buttons, tabs, cards, bars, chips): style DNA + palette anchors, component inventory, prompt template, generation order (~21 Layer generations), Unity 9-slice assembly. Fills the UI-chrome gap the art spec leaves open. Generated in Layer.ai's web UI (no MCP connection); Claude handles Unity assembly.
+- hub-hud-station-brief.md, Main Hub HUD: 4 station props (Quest Board, Upgrade Terminal, Slayer Hub, Notice Board) + 5 ambient props, PixelLab prompts (ui_hub_stations / ui_hub_ambient), portrait placement + parallax depth spec, badge/notification behavior, and the Claude-Code dependency list to wire the hub scene
+- enemy-sprite-prompts-backfill.md, PixelLab base-sprite prompts + weak-point notes for the 45 enemies that had no prompt (Cinderpeak T3B, Veilborn/Shattered T4, Ashenwold/Elder T5, and 8 dungeon bosses). Loaded into the tracker's asset_prompts; anim frames derive from the approved base
 - phase1-sprite-prompts.md, Layer.ai prompt library (characters, enemies, items, UI)
 - guild-hall-art-spec.md, Guild Hall background dimensions/safe-zones + 8 prestige-stage prompts
 - stat-scaling-combat-formulas.md, combat math, stat formulas, hit/evasion/block
