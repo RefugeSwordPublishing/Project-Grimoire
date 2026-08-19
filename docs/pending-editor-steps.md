@@ -14,6 +14,10 @@ recompile/redeploy to the phone to test.
   Alchemy crafting list.
 - [ ] **Build Buff Bar** — adds a persistent top-center buff bar showing active meal/timed buffs with
   their remaining time (reposition/skin as needed).
+- [ ] **Build Hub Stations** — adds 5 placeholder station buttons (Quest Board, Notice Board, Slayer
+  Hub, Upgrade Terminal = equipment upgrade, Guild), wired to their destinations. Reposition/resize to
+  match the layout, then swap each button's Image for the station art as it lands. This restores Guild
+  and equipment-upgrade access.
 
 _(P2 lobby chat needs no baker: the pre-boss lobby is runtime-built, so its new "Chat" button lands automatically on recompile.)_
 
