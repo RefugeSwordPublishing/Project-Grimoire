@@ -12,6 +12,8 @@ recompile/redeploy to the phone to test.
 - [ ] **Content > Add Alchemy Potion Recipes** — adds Craft recipes for the three Healing Draughts to
   the Alchemy talent (Crude @L1 / Refined @L35 / Masterwork @L70). Run once; verify they show in the
   Alchemy crafting list.
+- [ ] **Build Buff Bar** — adds a persistent top-center buff bar showing active meal/timed buffs with
+  their remaining time (reposition/skin as needed).
 
 _(P2 lobby chat needs no baker: the pre-boss lobby is runtime-built, so its new "Chat" button lands automatically on recompile.)_
 
