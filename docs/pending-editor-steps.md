@@ -9,6 +9,9 @@ recompile/redeploy to the phone to test.
 ## To run (newest first)
 
 - [ ] **Build Chat Pill** — adds the top-right "Messages" unread pill (DM unread badge). New this session.
+- [ ] **Content > Add Alchemy Potion Recipes** — adds Craft recipes for the three Healing Draughts to
+  the Alchemy talent (Crude @L1 / Refined @L35 / Masterwork @L70). Run once; verify they show in the
+  Alchemy crafting list.
 
 _(P2 lobby chat needs no baker: the pre-boss lobby is runtime-built, so its new "Chat" button lands automatically on recompile.)_
 
@@ -25,10 +28,9 @@ _(P2 lobby chat needs no baker: the pre-boss lobby is runtime-built, so its new 
 - **Equipment upgrade access** — the upgrade path IS the Assembly system (AssemblyManager,
   AssemblyStationView, BuildAssemblyStation = "Upgrade Terminal"); its nav entry vanished in the
   hub rework. Restoring it is part of the hub nav placeholders above.
-- **Alchemy health-potion recipes** — health potions exist as items but Alchemy has no recipe to
-  craft them. Author alchemy recipes (editor Create/Add-recipes script, then run it) producing the
-  existing potion items, gated by Alchemy tier. Recipe pattern: Editor/AddGearRecipes.cs.
-- **Eat-quantity for stackable consumables** — InventoryManager.UseConsumable consumes exactly 1.
-  Add bulk-consume (eat N up to the stack) with a quantity slider/drag bar showing the full stacked
-  amount. Manager method is pure code; the slider UI needs a small baker. Design Qs: HP overheal cap,
-  whether food TimedBuffs stack duration or refresh.
+- **Alchemy health-potion recipes** — DONE (code). `AddAlchemyRecipes` editor script authored; run
+  **Content > Add Alchemy Potion Recipes** (see checklist above) to generate them, then verify.
+- **Eat-quantity for stackable consumables** — backend DONE: `InventoryManager.UseConsumable(item, n)`
+  bulk-consumes up to n (capped at held, applies the per-unit effect each time). Still TODO: the
+  quantity slider/drag-bar UI wired into the consume flow (InventoryUI / InventoryContextMenuUI) with
+  a small baker. Design Qs remain: HP overheal cap, whether food TimedBuffs stack duration or refresh.
