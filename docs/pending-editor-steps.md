@@ -18,6 +18,8 @@ recompile/redeploy to the phone to test.
   Hub, Upgrade Terminal = equipment upgrade, Guild), wired to their destinations. Reposition/resize to
   match the layout, then swap each button's Image for the station art as it lands. This restores Guild
   and equipment-upgrade access.
+- [ ] **Build Eat Quantity UI** — adds the bulk-eat quantity popup (drag slider + Eat/Cancel). The
+  inventory Use action opens it for stacks > 1. Run once; skin the card/slider as desired.
 
 _(P2 lobby chat needs no baker: the pre-boss lobby is runtime-built, so its new "Chat" button lands automatically on recompile.)_
 
