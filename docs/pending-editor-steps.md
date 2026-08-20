@@ -13,7 +13,8 @@ recompile/redeploy to the phone to test.
   bonus, blocks create past it), Daily/Weekly quest slots (extra quests at next reset), Slaying Task Slot
   5/6/7 (extra Bounty Board slots; level-gated at purchase), Auto-Drink Mana (Arcanist drinks a mana
   consumable under 30% in combat). Buy each with GM, confirm the effect, and that it persists across a
-  relaunch. GUILD BANK rows stay "Coming Soon" (needs a guild-side RPC, tracked separately).
+  relaunch. GUILD BANK +5/+15 is now live too (migration 043, officer-gated): as an officer/guild_master
+  buy it, the guild bank grows for all members and persists; non-officers get a rejection.
 
 - [ ] **Art > Skin Hub Bars** — reskins the hub HP bar and the active idle-task bar with the UISkin
   frame + fills (same look as the combat bars: fillHP on HP, fillTimer on idle, barFrame on both
