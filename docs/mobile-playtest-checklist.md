@@ -55,6 +55,14 @@ Open the Royal Merchant. Buy each, confirm the effect, then **relaunch** and con
 - [ ] **Auto-Drink Mana** (Consumables tab): as an Arcanist with mana potions in the bag, in combat when mana drops below 30% it auto-drinks after ~2s. (No effect for non-mana classes, e.g. Lifebinder.)
 - [ ] **Guild Bank +5/+15** (Inventory tab, officer/guild_master only): buy it, the guild bank grows for all members and persists across relaunch. A non-officer buying is rejected.
 
+## 5b. Quest Board redesign (Idle Clans-inspired)
+
+- [ ] Open the Quest Board. Each quest card shows progress as **"X / Y  NN%"**.
+- [ ] Rewards render as **item icons + amount** (currency/XP as compact colored chips), not a plain text line.
+- [ ] Each quest shows a **bonus reward chip prefixed with its drop %** (default 20% at bonus XP until you author specific bonuses).
+- [ ] Claim a completed quest a few times; roughly 1 in 5 should also grant the bonus (XP by default). Guaranteed rewards always land.
+- [ ] Author a real bonus on a quest (QuestDefinition.bonusReward + bonusChance) and confirm it shows + rolls. Currency bonuses won't persist (use item/XP).
+
 ## 6. Status effects + shields (combat)
 
 - [ ] As Lifebinder, cast a **shield** spell (Glacial Shield / Holy Aegis): an absorb buffer soaks the next hits before HP drops.
