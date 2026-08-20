@@ -40,14 +40,14 @@ recompile/redeploy to the phone to test.
 - [ ] **Content > Build Item Source Index** — generates Resources/item_sources.json for the
   tap-an-ingredient popup. Re-run when content changes. (Then tap an ingredient name in any recipe to
   see where it comes from.)
-- [ ] ~~**Art > Reassign Icon Atlas Sprites**~~ **DO NOT RUN.** It mis-assigns: the composited
-  `*_icon_atlas.png` sheets do NOT physically match the name-to-cell manifest (that manifest was built
-  from the tracker plan in `sheets.js`, not from how the sheets were actually laid out). Running it in
-  b56fe84 gave 92 items the wrong icon; reverted in submodule 9f8d5de (icons restored to their
-  individual PNGs). Before atlasing can be retried, the sheets must be re-composited from the known
-  per-cell art (`Assets/Art/GeneratedIcons/<sheet>/<cell>.png`) so a slice named `<sheet>_A1` really is
-  cell A1. `Slice Icon Atlases` alone is harmless, but the reassign stays parked until the compositor
-  guarantees layout == cell names.
+- [ ] **Icon atlas re-batch (now SAFE, corrected by the compositor).** `tools/build_atlases.py` was
+  re-run: it pulls each material sheet's Approved/Imported per-cell art from the tracker and stitches
+  it so the physical layout matches `sheets.js` cell->name, then rewrites `icon_atlas_manifest.json`.
+  The atlases are verified name-under-art (contact sheets). To batch these 13 material sheets, run in
+  order: **1) Art > Slice Icon Atlases** (re-slices for the new per-sheet heights), **2) Art > Reassign
+  Icon Atlas Sprites** (now maps correctly). Verify a few item icons in-game. If anything looks off,
+  the item icons are individual PNGs until step 2, so it is reversible. (Weapons/armor + cultivation/
+  delving_special/tailoring_* stay on individual PNGs; not yet atlased.)
 
 _(P2 lobby chat needs no baker: the pre-boss lobby is runtime-built, so its new "Chat" button lands automatically on recompile.)_
 
