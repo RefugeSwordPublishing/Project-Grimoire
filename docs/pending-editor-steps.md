@@ -8,6 +8,16 @@ recompile/redeploy to the phone to test.
 
 ## To run (newest first)
 
+- [ ] **Art > Skin Hub Bars** — reskins the hub HP bar and the active idle-task bar with the UISkin
+  frame + fills (same look as the combat bars: fillHP on HP, fillTimer on idle, barFrame on both
+  tracks). Edit-time + re-runnable; positions stay yours. Run Refresh UISkin first if the skin is
+  unbound.
+- [ ] **Art > Add Currency Icons** — drops the Silver/Gold Mark coin icons (ui_currency A1/A2) next to
+  the SM/GM currency labels on the top bar. Already-built tool; just run it, then nudge size/position
+  in the Inspector.
+- [ ] **Build > Toggle Resume Bar (Editor)** — reveals the resume/minimized-combat bar
+  (MinimizedCombatBar/Content) in the editor so you can reposition/reskin it by hand, then run again to
+  hide it. Runtime visibility is still owned by MinimizedCombatBarUI; re-hide before committing.
 - [ ] **Build Chat Pill** — adds the top-right "Messages" unread pill (DM unread badge). New this session.
 - [ ] **Content > Add Alchemy Potion Recipes** — adds Craft recipes for the three Healing Draughts to
   the Alchemy talent (Crude @L1 / Refined @L35 / Masterwork @L70). Run once; verify they show in the
