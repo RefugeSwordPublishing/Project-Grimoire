@@ -53,7 +53,7 @@ Open the Royal Merchant. Buy each, confirm the effect, then **relaunch** and con
 - [ ] **Daily/Weekly Quest Slot** (Quests & Tasks tab): extra quest slots appear at the **next daily/weekly reset** (not instantly).
 - [ ] **Slaying Task Slot 5/6/7** (Quests & Tasks tab): each is level-gated at purchase (Slaying 30/50/70); after buying, the Bounty Board shows an extra slot.
 - [ ] **Auto-Drink Mana** (Consumables tab): as an Arcanist with mana potions in the bag, in combat when mana drops below 30% it auto-drinks after ~2s. (No effect for non-mana classes, e.g. Lifebinder.)
-- [ ] Guild Bank rows still read "Coming Soon" (deliberately, pending a guild-side server RPC).
+- [ ] **Guild Bank +5/+15** (Inventory tab, officer/guild_master only): buy it, the guild bank grows for all members and persists across relaunch. A non-officer buying is rejected.
 
 ## 6. Status effects + shields (combat)
 
@@ -71,7 +71,6 @@ Open the Royal Merchant. Buy each, confirm the effect, then **relaunch** and con
 
 ## Known-deferred (do not expect these to work yet)
 
-- Guild Bank GM expansion (needs the guild-side RPC, task chip spawned).
 - Buff-bar icon + radial timer upgrade (needs the debuff icons imported to Unity; still text chips).
 - Phoenix Wave revive + drag-to-ally targeting (needs a party downed-ally state, multiplayer).
 - Commander Valdris shifting weak point (needs the sprite-mask system).
