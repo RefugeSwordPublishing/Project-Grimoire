@@ -18,8 +18,9 @@ recompile/redeploy to the phone to test.
   Hub, Upgrade Terminal = equipment upgrade, Guild), wired to their destinations. Reposition/resize to
   match the layout, then swap each button's Image for the station art as it lands. This restores Guild
   and equipment-upgrade access.
-- [ ] **Build Eat Quantity UI** — adds the bulk-eat quantity popup (drag slider + Eat/Cancel). The
-  inventory Use action opens it for stacks > 1. Run once; skin the card/slider as desired.
+- [ ] **Build Eat Quantity UI** — REQUIRED for bulk consume to work at all (without it, Use just
+  consumes one). Adds the quantity popup: drag slider (1..held) + a live preview that shows the
+  resulting stacked buff duration (food) or amount restored (potions) as you scroll, + Eat/Cancel.
 - [ ] **Content > Create Economy Talents** — re-run to apply the reworked Gleaning: common rune
   materials guaranteed, all upgrade sigils (Rough/Refined/Pristine/Masterwork + Runic Cog + Ancient) as
   tiered RARE bonus drops (7% -> 2% by tier). All sigils obtainable, and scarce.
@@ -43,7 +44,18 @@ _(P2 lobby chat needs no baker: the pre-boss lobby is runtime-built, so its new 
   hub rework. Restoring it is part of the hub nav placeholders above.
 - **Alchemy health-potion recipes** — DONE (code). `AddAlchemyRecipes` editor script authored; run
   **Content > Add Alchemy Potion Recipes** (see checklist above) to generate them, then verify.
-- **Eat-quantity for stackable consumables** — backend DONE: `InventoryManager.UseConsumable(item, n)`
-  bulk-consumes up to n (capped at held, applies the per-unit effect each time). Still TODO: the
-  quantity slider/drag-bar UI wired into the consume flow (InventoryUI / InventoryContextMenuUI) with
-  a small baker. Design Qs remain: HP overheal cap, whether food TimedBuffs stack duration or refresh.
+- **Eat-quantity for stackable consumables** — DONE (backend + popup UI with live buff/restore
+  preview). Just needs the Build Eat Quantity UI baker run (see checklist). Open q: keep it as a popup
+  or move the slider inline under Use in the context menu (would re-bake the context menu).
+- **Sprite atlas (draw-call batching)** — NOT set up. Item icons are authored as atlas sheets (source
+  art, sliced 64x64) but there is no Unity SpriteAtlas packing them. TODO: create a SpriteAtlas,
+  add the icon folders, enable packing, verify draw-call reduction. Purely an optimization/editor task.
+- **Import hub station sprites** — the ui_hub_stations sprites are approved in the tracker but NOT yet
+  downloaded to Assets/Art/GeneratedIcons/ui_hub_stations/. Pull them in (download script), then swap
+  each HubStations placeholder button's Image for the sprite.
+- **Hub station positions per guild-background tier** — station placements must change with the
+  prestige-driven guild background. TODO: HubSceneUI holds per-prestige-tier position sets and
+  repositions the stations when the background/prestige tier changes.
+- **Tap an ingredient -> see its source** — runtime source lookup (Gleaning rare drop Lv X, drops from
+  enemy Y, Craft on talent Z) + a small popup, shown when tapping a recipe ingredient. Reuses the
+  audit's source-index logic. NEXT build.
