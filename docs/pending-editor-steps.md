@@ -14,10 +14,11 @@ recompile/redeploy to the phone to test.
   Alchemy crafting list.
 - [ ] **Build Buff Bar** — adds a persistent top-center buff bar showing active meal/timed buffs with
   their remaining time (reposition/skin as needed).
-- [ ] **Build Hub Stations** — adds 5 placeholder station buttons (Quest Board, Notice Board, Slayer
-  Hub, Upgrade Terminal = equipment upgrade, Guild), wired to their destinations. Reposition/resize to
-  match the layout, then swap each button's Image for the station art as it lands. This restores Guild
-  and equipment-upgrade access.
+- [ ] **Build Hub Stations** — bakes the base `HubStationSet` prefab (5 station buttons: Quest Board,
+  Notice Board, Slayer Hub, Upgrade Terminal = equipment upgrade, Guild) + a HubStationsRoot with
+  HubSceneUI (stage 0 wired). Per-prestige-stage layouts: **duplicate the prefab per stage, reposition
+  the stations to fit that stage's background, then assign each to HubSceneUI's Stage Sets array**
+  (index 0..7; null slots fall back). It swaps live with prestige. Restores Guild + equipment upgrade.
 - [ ] **Build Eat Quantity UI** — REQUIRED for bulk consume to work at all (without it, Use just
   consumes one). Adds the quantity popup: drag slider (1..held) + a live preview that shows the
   resulting stacked buff duration (food) or amount restored (potions) as you scroll, + Eat/Cancel.
