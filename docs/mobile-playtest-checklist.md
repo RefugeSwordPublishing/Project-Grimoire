@@ -57,10 +57,11 @@ Open the Royal Merchant. Buy each, confirm the effect, then **relaunch** and con
 
 ## 5b. Quest Board redesign (Idle Clans-inspired)
 
-- [ ] Open the Quest Board. Each quest card shows progress as **"X / Y  NN%"**.
-- [ ] Rewards render as **item icons + amount** (currency/XP as compact colored chips), not a plain text line.
-- [ ] Each quest shows a **bonus reward chip prefixed with its drop %** (default 20% at bonus XP until you author specific bonuses).
-- [ ] Claim a completed quest a few times; roughly 1 in 5 should also grant the bonus (XP by default). Guaranteed rewards always land.
+- [ ] Open the Quest Board. It shows **4 daily / 3 weekly** quests (plus any Royal Merchant slots).
+- [ ] Quests are **compact rows**: title + a **red-to-green** progress bar reading **"X / Y  NN%"** + a status (Ready / ▼). It scans cleanly.
+- [ ] **Tap a row** to expand it (accordion, one at a time): shows the description, **reward icons + amounts** (currency/XP as chips), the **bonus chip with its drop %**, and the Claim button.
+- [ ] **Claim** shows a **toast** summarizing what you earned (XP included, and "Bonus …" if the bonus dropped).
+- [ ] Claim a few completed quests; roughly 1 in 5 should also grant the bonus (XP by default). Guaranteed rewards always land.
 - [ ] Author a real bonus on a quest (QuestDefinition.bonusReward + bonusChance) and confirm it shows + rolls. Currency bonuses won't persist (use item/XP).
 
 ## 6. Status effects + shields (combat)
