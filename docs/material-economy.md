@@ -199,10 +199,12 @@ a metal bar plus a Gleaning sigil or seal drop.
 
 Sigil sources (as-built): Gleaning guarantees the common rune materials each cycle (Crude
 Rune Shard, Minor Enchant Seal) and drops the scarce upgrade materials as tiered RARE bonus
-rolls (`rareLoot` + `rareLootChance`), not as dedicated gathers. By level band: Glean Runic
-Deposits (20) -> Rough Binding Sigil / Runic Cog @7%; Glean Deep Runes (45) -> Refined Binding
-Sigil @5%; Glean Ancient Runes (70) -> Pristine Binding Sigil / Ancient Sigil @3%; Glean
-Voidtouched Runes (88) -> Masterwork Binding Sigil @2%. Rates get rarer with tier.
+rolls (`rareLoot` + `rareLootChance`), rolled independently both idle and active (active adds a
+x1.5 bonus on a landed attunement tap). By level band: Glean Runic Deposits (20) -> Rough
+Binding Sigil / Runic Cog @1.0%; Glean Deep Runes (45) -> Refined Binding Sigil @0.8%; Glean
+Ancient Runes (70) -> Pristine Binding Sigil / Ancient Sigil @0.6%; Glean Voidtouched Runes
+(88) -> Masterwork Binding Sigil @0.4%. Cycle time scales as 14 + level, so a full 8h idle
+session yields roughly T2 ~8, T3 ~4, T4 ~2, T5 ~1 sigil, scarce and tier-gated.
 
 Gleaning is therefore a supply dependency for all Artificing production. Players
 who neglect Gleaning will bottleneck Staff, Wand, Alchemy Kit, and tool crafting.
