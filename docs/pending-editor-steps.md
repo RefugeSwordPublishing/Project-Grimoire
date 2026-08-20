@@ -8,6 +8,13 @@ recompile/redeploy to the phone to test.
 
 ## To run (newest first)
 
+- [ ] **Royal Merchant capacity, TEST (no baker; works on recompile, migration 042 applied live).** New GM
+  categories are live: Inventory Pack +10/+25 (bag grows), Exchange Slot +1/+3 (active-listing cap 10 +
+  bonus, blocks create past it), Daily/Weekly quest slots (extra quests at next reset), Slaying Task Slot
+  5/6/7 (extra Bounty Board slots; level-gated at purchase), Auto-Drink Mana (Arcanist drinks a mana
+  consumable under 30% in combat). Buy each with GM, confirm the effect, and that it persists across a
+  relaunch. GUILD BANK rows stay "Coming Soon" (needs a guild-side RPC, tracked separately).
+
 - [ ] **Art > Skin Hub Bars** — reskins the hub HP bar and the active idle-task bar with the UISkin
   frame + fills (same look as the combat bars: fillHP on HP, fillTimer on idle, barFrame on both
   tracks). Edit-time + re-runnable; positions stay yours. Run Refresh UISkin first if the skin is
