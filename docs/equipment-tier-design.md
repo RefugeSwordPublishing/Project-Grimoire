@@ -59,6 +59,13 @@ Five tiers, mapping 1:1 to the existing zone tier bands.
 | T4 | Mithril | Zone T4 | Level 91 |
 | T5 | Void | Zone T5 | Level 141 |
 
+**As-built (2026-08-19): equipment tier is gated by the EQUIPPED Grimoire's own combat level, not
+Total Combat Level.** A single Grimoire caps at 100, so the Total-based 141 for T5 would be
+unreachable by one Grimoire; and gating gear on the account total let a fresh Grimoire wield T5.
+So equipment uses per-Grimoire thresholds that fit 1-100 (mirroring the crafting unlocks): T1 1,
+T2 21, T3 42, T4 65, T5 88. Zones still gate on Total Combat Level (the table above). Swapping to a
+Grimoire too low for the equipped gear auto-unequips it to the bag. Rarity is never gated.
+
 Five tiers matches five zone bands exactly. No tier numbering appears in the player-facing
 UI. Players see item names: "Iron Sword", "Steel Plate Helm", "Void Bow".
 
