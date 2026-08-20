@@ -197,9 +197,12 @@ a metal bar plus a Gleaning sigil or seal drop.
 | Adamantine Apparatus | 1x Void Alloy + 1x Pristine Binding Sigil | 80 | 180s |
 | Void Foci | 1x Void Alloy + 1x Ancient Sigil | 88 | 180s |
 
-Sigil sources: Crude Rune Shard and Minor Enchant Seal from Gleaning (T1-T2);
-Runic Cog from Gleaning rare drop (T2-T3); Refined and Pristine Binding Sigil
-from Gleaning (T3-T4); Ancient Sigil from Gleaning rare drop (T3-T4).
+Sigil sources (as-built): Gleaning guarantees the common rune materials each cycle (Crude
+Rune Shard, Minor Enchant Seal) and drops the scarce upgrade materials as tiered RARE bonus
+rolls (`rareLoot` + `rareLootChance`), not as dedicated gathers. By level band: Glean Runic
+Deposits (20) -> Rough Binding Sigil / Runic Cog @7%; Glean Deep Runes (45) -> Refined Binding
+Sigil @5%; Glean Ancient Runes (70) -> Pristine Binding Sigil / Ancient Sigil @3%; Glean
+Voidtouched Runes (88) -> Masterwork Binding Sigil @2%. Rates get rarer with tier.
 
 Gleaning is therefore a supply dependency for all Artificing production. Players
 who neglect Gleaning will bottleneck Staff, Wand, Alchemy Kit, and tool crafting.

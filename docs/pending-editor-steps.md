@@ -20,8 +20,9 @@ recompile/redeploy to the phone to test.
   and equipment-upgrade access.
 - [ ] **Build Eat Quantity UI** — adds the bulk-eat quantity popup (drag slider + Eat/Cancel). The
   inventory Use action opens it for stacks > 1. Run once; skin the card/slider as desired.
-- [ ] **Content > Create Economy Talents** — re-run to pick up the new Gleaning activities that source
-  Rough Binding Sigil (@18) and Masterwork Binding Sigil (@88), so all four sigils are obtainable.
+- [ ] **Content > Create Economy Talents** — re-run to apply the reworked Gleaning: common rune
+  materials guaranteed, all upgrade sigils (Rough/Refined/Pristine/Masterwork + Runic Cog + Ancient) as
+  tiered RARE bonus drops (7% -> 2% by tier). All sigils obtainable, and scarce.
 - [ ] **Content > Audit Item Sources** — run and read the Console: lists items with no source, recipe
   inputs that block crafting, and dangling references. Use it to find remaining obtainability gaps.
 
