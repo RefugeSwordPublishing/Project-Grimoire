@@ -47,9 +47,12 @@ _(P2 lobby chat needs no baker: the pre-boss lobby is runtime-built, so its new 
 - **Eat-quantity for stackable consumables** — DONE (backend + popup UI with live buff/restore
   preview). Just needs the Build Eat Quantity UI baker run (see checklist). Open q: keep it as a popup
   or move the slider inline under Use in the context menu (would re-bake the context menu).
-- **Sprite atlas (draw-call batching)** — NOT set up. Item icons are authored as atlas sheets (source
-  art, sliced 64x64) but there is no Unity SpriteAtlas packing them. TODO: create a SpriteAtlas,
-  add the icon folders, enable packing, verify draw-call reduction. Purely an optimization/editor task.
+- **Sprite atlas (draw-call batching)** — tooling built. Flow: (1) place sheets flat in
+  Assets/Sprites/icons (done, named `*_icon_atlas.png`); (2) **Art > Slice Icon Atlases** grid-slices
+  them 64x64 into `<sheet>_<index>` sub-sprites; (3) **Art > Build Icon Sprite Atlas** creates the
+  packing SpriteAtlas (enable Sprite Packing in Project Settings > Editor). STILL TODO (Claude):
+  the reassign step, point ItemData.icon at the sliced sub-sprites (adapt ImportGeneratedIcons to load
+  `<sheet>_<cellIndex>` from the sheet instead of individual PNGs, reusing its sheet/cell->item map).
 - **Import hub station sprites** — the ui_hub_stations sprites are approved in the tracker but NOT yet
   downloaded to Assets/Art/GeneratedIcons/ui_hub_stations/. Pull them in (download script), then swap
   each HubStations placeholder button's Image for the sprite.
