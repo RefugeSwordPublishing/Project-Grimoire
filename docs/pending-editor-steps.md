@@ -30,8 +30,14 @@ recompile/redeploy to the phone to test.
 - [ ] **Content > Build Item Source Index** — generates Resources/item_sources.json for the
   tap-an-ingredient popup. Re-run when content changes. (Then tap an ingredient name in any recipe to
   see where it comes from.)
-- [ ] **Art > Slice Icon Atlases**, then **Art > Reassign Icon Atlas Sprites** — slice the icon sheets
-  (cell-named) and assign them to items (92 across 13 sheets; weapons/armor deferred).
+- [ ] ~~**Art > Reassign Icon Atlas Sprites**~~ **DO NOT RUN.** It mis-assigns: the composited
+  `*_icon_atlas.png` sheets do NOT physically match the name-to-cell manifest (that manifest was built
+  from the tracker plan in `sheets.js`, not from how the sheets were actually laid out). Running it in
+  b56fe84 gave 92 items the wrong icon; reverted in submodule 9f8d5de (icons restored to their
+  individual PNGs). Before atlasing can be retried, the sheets must be re-composited from the known
+  per-cell art (`Assets/Art/GeneratedIcons/<sheet>/<cell>.png`) so a slice named `<sheet>_A1` really is
+  cell A1. `Slice Icon Atlases` alone is harmless, but the reassign stays parked until the compositor
+  guarantees layout == cell names.
 
 _(P2 lobby chat needs no baker: the pre-boss lobby is runtime-built, so its new "Chat" button lands automatically on recompile.)_
 
