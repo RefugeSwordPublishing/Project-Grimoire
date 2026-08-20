@@ -26,6 +26,11 @@ recompile/redeploy to the phone to test.
   tiered RARE bonus drops (7% -> 2% by tier). All sigils obtainable, and scarce.
 - [ ] **Content > Audit Item Sources** — run and read the Console: lists items with no source, recipe
   inputs that block crafting, and dangling references. Use it to find remaining obtainability gaps.
+- [ ] **Content > Build Item Source Index** — generates Resources/item_sources.json for the
+  tap-an-ingredient popup. Re-run when content changes. (Then tap an ingredient name in any recipe to
+  see where it comes from.)
+- [ ] **Art > Slice Icon Atlases**, then **Art > Reassign Icon Atlas Sprites** — slice the icon sheets
+  (cell-named) and assign them to items (92 across 13 sheets; weapons/armor deferred).
 
 _(P2 lobby chat needs no baker: the pre-boss lobby is runtime-built, so its new "Chat" button lands automatically on recompile.)_
 
