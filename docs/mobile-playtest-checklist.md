@@ -63,6 +63,7 @@ Open the Royal Merchant. Buy each, confirm the effect, then **relaunch** and con
 - [ ] **Claim** shows a **toast** summarizing what you earned (XP included, and "Bonus …" if the bonus dropped).
 - [ ] Claim a few completed quests; roughly 1 in 5 should also grant the bonus (XP by default). Guaranteed rewards always land.
 - [ ] Author a real bonus on a quest (QuestDefinition.bonusReward + bonusChance) and confirm it shows + rolls. Currency bonuses won't persist (use item/XP).
+- [ ] **Bounties tab** (third tab): shows Slayer bounties in the same accordion (target + kill progress; expand for hunt target, faction, Slaying XP + GM + material, Claim). Below Slaying Lv 50 it shows the unlock message. Claiming toasts the reward.
 
 ## 6. Status effects + shields (combat)
 
