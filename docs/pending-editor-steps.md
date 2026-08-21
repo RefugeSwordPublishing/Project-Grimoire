@@ -8,6 +8,11 @@ recompile/redeploy to the phone to test.
 
 ## To run (newest first)
 
+- [ ] **Content > Create Grimoires** — re-bake the 7 Grimoire assets to pull in the authored **lore**
+  (already written in CreateGrimoires.cs, but the live .asset files predate it and show empty lore, the
+  cause of the "sparse Grimoire descriptions", BUG-009). After running, the onboarding Grimoire preview
+  shows tagline + lore + passive + idle. The preview panel was also widened + auto-sizes (code, no baker).
+
 - [ ] **Royal Merchant capacity, TEST (no baker; works on recompile, migration 042 applied live).** New GM
   categories are live: Inventory Pack +10/+25 (bag grows), Exchange Slot +1/+3 (active-listing cap 10 +
   bonus, blocks create past it), Daily/Weekly quest slots (extra quests at next reset), Slaying Task Slot
