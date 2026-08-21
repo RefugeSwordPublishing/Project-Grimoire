@@ -6,6 +6,27 @@ can't do remotely). Check off as done; Claude keeps this updated.
 Menu items are under **Tools > Grimoire > Build > ...** unless noted. After running bakers,
 recompile/redeploy to the phone to test.
 
+## Quick run order (the definitive list)
+
+Content (Tools > Grimoire > Content):
+1. [ ] Create Grimoires  (BUG-009 lore)
+2. [ ] Create Economy Talents  (Gleaning rework)
+3. [ ] Add Alchemy Potion Recipes
+4. [ ] Build Item Source Index  (BUG-001 tap-ingredient) — then Audit Item Sources to read gaps
+
+UI / Build (Tools > Grimoire > Build):
+5. [ ] Build Chat Pill
+6. [ ] Build Buff Bar
+7. [ ] Build Hub Stations  (then duplicate the prefab per prestige stage)
+8. [ ] Build Eat Quantity UI  (required for bulk-eat)
+9. [ ] Toggle Resume Bar (Editor)  (reskin the resume bar, then toggle back off)
+
+Art (Tools > Grimoire > Art):
+10. [ ] Skin Hub Bars   ·   11. [ ] Add Currency Icons
+12. [ ] Slice Icon Atlases  →  13. [ ] Reassign Icon Atlas Sprites  (icon batching; verify a few icons)
+
+Everything else works on a plain recompile. Detail on each is below.
+
 ## To run (newest first)
 
 - [ ] **Content > Create Grimoires** — re-bake the 7 Grimoire assets to pull in the authored **lore**

@@ -88,6 +88,23 @@ Open the Royal Merchant. Buy each, confirm the effect, then **relaunch** and con
 
 ---
 
+## 8. Bug-fix retests (from the bug tracker)
+
+- [ ] **BUG-005/006 (critical), Confirm Grimoire.** Fresh account onboarding: pick a Grimoire and tap
+  Confirm, it should equip and proceed into the game. This was NREing on an unloaded player; verify on a
+  clean install and on a slow/cold start.
+- [ ] **BUG-004 (high), Auto-eat tier persistence.** Buy an auto-eat tier, relaunch the app, confirm the
+  tier is still owned (not reset to 0). Also change an unrelated setting right after launch, then relaunch,
+  the tier must survive (the load-guard should stop startup from clobbering it).
+- [ ] **BUG-008, Intro tap.** The world intro waits for your tap ("Tap to continue") and no longer
+  auto-advances on its own.
+- [ ] **BUG-007, New Game screen.** First launch shows a title screen with a New Game button before the
+  story starts.
+- [ ] **BUG-009, Grimoire descriptions.** After running Create Grimoires, each Grimoire's preview shows
+  tagline + lore + passive + idle, and the wider panel fits it without clipping in portrait.
+- [ ] **BUG-001, Tap ingredient.** After running Build Item Source Index, tapping an ingredient in a
+  recipe shows where it comes from.
+
 ## Known-deferred (do not expect these to work yet)
 
 - Buff-bar icon + radial timer upgrade (needs the debuff icons imported to Unity; still text chips).

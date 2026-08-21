@@ -12,6 +12,41 @@ implemented in code** where the two diverge. When they conflict, the code (and t
 Claude Code updates this file as features land; Claude Chat should read it before any design work
 so it builds on the current state rather than the original design.
 
+## Session 2026-08-20, Economy/UX/combat batch + bug tracker pass
+
+- **Icon atlases fixed:** the old Reassign mis-mapped 92 item icons (atlas layout != cell manifest);
+  reverted item icons to their individual PNGs, then built `tools/build_atlases.py` (pulls each material
+  sheet's Approved/Imported per-cell art from the tracker, stitches ordered atlases matching sheets.js,
+  rewrites the manifest). 13 material sheets re-composited + verified name-under-art. Run Slice + Reassign
+  to batch. Weapons/armor stay on individual PNGs.
+- **Hub HUD reskin tools (editor):** `Skin Hub Bars` (UISkin frame+fill on HP + idle bars), `Add Currency
+  Icons` (existing), `Toggle Resume Bar (Editor)`.
+- **Chat keyboard UX:** input lifts above the on-screen keyboard and closes on send (guild/DM/lobby share
+  `ChatPanelUI`).
+- **XP scales with recipe complexity:** `IdleManager` multiplies xpPerCycle by inputs count + total units +
+  input materialTier (active + offline), capped x6; simple gathers unchanged. `QuestScaler` unaffected.
+- **Royal Merchant capacity, all 6 categories** (migrations 042 + 043, applied live): inventory packs,
+  exchange-slot cap, quest slots, slaying task slots, auto-drink mana (all per-player on player_settings),
+  and guild-bank expansion (guilds.bank_slot_bonus + officer-gated `purchase_guild_bank_slots` RPC).
+  `RoyalMerchantUI` has a generic Gm purchase path + owned/order/level gating. Persist now load-guarded
+  (fixes BUG-004 clobber).
+- **Status-effect foundation completed:** player DoTs now tick (ApplyPlayerDoT) + are cleansable, mirroring
+  enemy DoTs; shields/cleanse/HOTs were already in.
+- **Server hardening:** `boss-invite-notify` edge function built + deployed (anon-callable, host-gated,
+  delegates to send-notification); exchange auto-close cron verified already live; asset-prompts seed
+  confirmed STALE (do NOT upsert, would regress prompts).
+- **Quest Board redesign:** reward icons + % progress + guaranteed-base/chance-bonus model (bonus = a
+  tier-scaled rare material, gemstone/amber, 15%); accordion cards (tap-to-expand, red->green progress);
+  base counts 4 daily / 3 weekly; claim toast (LootToastUI, XP + bonus); Bounties as a third tab.
+- **Summoner 2-rune combos:** Siege Formation / Void Chain / Frozen Vanguard now drive the board
+  (ConstructManager BuffDamage/FocusAll/SpikeAggro + status DoTs); unlock-gated, mana-paid. Numbers
+  first-pass. Literal Frozen-Vanguard slow is a follow-up.
+- **Bug tracker (`games/bug-report`) pass:** fixed BUG-007 (New Game title screen), BUG-008 (tap-driven
+  intro); in_progress w/ committed fixes needing device retest: BUG-005/006 (Grimoire confirm null-guard),
+  BUG-004 (settings load-guard); BUG-009 layout done (lore needs Create Grimoires re-bake); BUG-001 built
+  (needs Build Item Source Index). BUG-002 left for the sprite pass.
+- **Deferred (task chips):** literal Frozen-Vanguard enemy slow; combat marker timing at projectile impact.
+
 ## Session 2026-08-17, Multiplayer Chat P1 (guild chat over RPCs; realtime pending) (`multiplayer-chat-spec.md`)
 
 - **Migration 037 (applied live + verified):** `chat_messages` (channel_type/channel_ref/sender/body,
