@@ -71,6 +71,15 @@ Open the Royal Merchant. Buy each, confirm the effect, then **relaunch** and con
 - [ ] Cast a **cleanse** spell while debuffed: debuff-like statuses (including any poison/bleed DoT) are removed.
 - [ ] If any enemy applies a damage-over-time on you, it ticks HP damage over time, is absorbed by a shield if one is up, and the buff bar shows it as a chip. (Enemy-inflicted DoTs are not authored on enemies yet, so you may not see one in normal play, the pipe is ready.)
 
+## 6b. Summoner 2-rune construct combos
+
+- [ ] As a Summoner with constructs out, draw a **2-rune combo** in order and confirm it fires the combo (announce) instead of a generic spell, and costs mana:
+  - **Terra → Ignis** = Siege Formation: constructs hit noticeably harder for ~8s and strike immediately.
+  - **Umbra → Tempest** = Void Chain: the enemy takes a stacking void DoT.
+  - **Terra → Glacius** = Frozen Vanguard: the enemy pulls onto your constructs (taunt) + a chill DoT.
+- [ ] Combos are gated by their unlock level (16 / 24 / 44) and fall through to the normal spell if you have no constructs or too little mana.
+- [ ] Numbers are first-pass, note if any combo feels too weak/strong (multipliers/durations are easy to tune). A literal attack-speed slow for Frozen Vanguard is a known follow-up.
+
 ## 7. Boss invite push notification
 
 - [ ] With two accounts in the same guild: host opens a boss lobby and invites a guildmate to a slot.
