@@ -146,6 +146,11 @@ cannot see Tier 2 has no reason to want Tier 2.
 
 ### 3.3 Dungeons collapse until a zone is cleared
 
+> **AMENDED by combat-navigation-flow-spec.md section 5/12:** the collapsed Dungeons
+> section is replaced by inline dungeon sub-rows on the parent zone cards (no standalone
+> Dungeons list). The intent below is preserved (a first-session player sees no dungeons);
+> only the mechanism changes. The nav-flow spec wins where they conflict.
+
 Dungeons are not idleable and carry more rules than zones. A first-session player
 does not need them competing for attention. Render the Dungeons section collapsed
 with a count badge ("Dungeons (2)") until the player has completed at least one zone
@@ -321,7 +326,7 @@ becomes real. This is how the player learns depth without meeting it on day one.
 |---------|---------|------------------------|
 | Grimoire header | Expanded, always | Never collapses |
 | Zone tiles | Expanded, always | Never collapses |
-| Dungeon section | Collapsed | Player completes one zone session |
+| Dungeon sub-row on zone card (amended, was "Dungeon section") | Hidden | Player completes one zone session |
 | Ability hotbar | Hidden | Grimoire reaches level 8 |
 | Buff bar | Hidden | At least one buff is active |
 | XP tracker | Collapsed to one line | On tap, per session |
