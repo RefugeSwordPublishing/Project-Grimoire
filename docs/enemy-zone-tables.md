@@ -51,7 +51,7 @@ Applied to all enemies from day one for DLC faction bonus compatibility:
 | `[Boss]` | Zone bosses, dungeon bosses |
 | `[Legendary]` | Raid bosses, world event bosses |
 
-### Quality Tier Reference (Updated)
+### Quality Reference (Updated)
 | Tier | Name | Color |
 |------|------|-------|
 | 1 | Crude | Grey |

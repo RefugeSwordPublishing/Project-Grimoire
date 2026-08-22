@@ -75,7 +75,7 @@ All assembled weapons and tools have five quality levels. Quality is determined 
 - Rare material is **consumed on failure**, if the target tier is not reached, material is lost, components are returned
 - Assembly **success rate and rarity outcome** scale with the assembler's relevant Talent level
 - **No level gate on Assembly itself**, equip and use requirements gate access naturally
-- Low-level assemblers can attempt Epic/Legendary Assembly but with low success rate, creating a market for high-level assembly services and friend-to-friend crafting
+- Low-level assemblers can attempt Masterwork/Legendary Assembly but with low success rate, creating a market for high-level assembly services and friend-to-friend crafting
 
 ### Weapon Component Structure
 | Weapon | Runesmithing Component | Timber Shaping / Tanning Component |
@@ -277,7 +277,7 @@ All assembled weapons and tools have five quality levels. Quality is determined 
 | 71 | LCK passive +3 | Stat milestone |
 | 79 | Assembly Rare Material drops added to loot table | Key economic unlock |
 | 86 | Field Notes: Vault Cache | Rare high-value multi-item find |
-| 92 | Epic Assembly Material drops possible | Rare; drives economy |
+| 92 | Masterwork Assembly Material drops possible | Rare; drives economy |
 | 100 | Hidden cache always visible in current zone | Mastery, no more missed spawns |
 
 ---

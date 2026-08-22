@@ -92,12 +92,12 @@ Settings accessed via a **gear icon** in the top-right corner of the main HUD, a
 | Large Text | Toggle | Off | Increases all text size beyond the Display UI Scale |
 | Bold Text | Toggle | Off | Increases text weight throughout UI |
 | Reduce Transparency | Toggle | Off | Removes UI transparency effects for clarity |
-| Colorblind Mode | Select | Off | Deuteranopia / Protanopia / Tritanopia options, adjusts quality tier badge colors and combat indicators |
+| Colorblind Mode | Select | Off | Deuteranopia / Protanopia / Tritanopia options, adjusts quality badge colors and combat indicators |
 | Attunement Window Size | Slider (Small/Medium/Large) | Medium | Increases the tap target size of Attunement prompts for motor accessibility |
 | Haptic Feedback | Toggle | On | Vibration on Attunement windows, boss spawns, rare drops |
 | Screen Reader Support | Toggle | Off | Enables VoiceOver/TalkBack compatibility labels on all UI elements |
 
-> Colorblind Mode requires separate color-safe sprite sets for quality tier badges, shape/pattern differentiation in addition to color changes so tiers are distinguishable without color alone.
+> Colorblind Mode requires separate color-safe sprite sets for quality badges, shape/pattern differentiation in addition to color changes so qualities are distinguishable without color alone.
 
 ---
 
@@ -214,7 +214,7 @@ Settings
 - `Screen Brightness Lock` uses `Screen.sleepTimeout = SleepTimeout.NeverSleep` when enabled
 
 **Accessibility:**
-- `Colorblind Mode` swaps quality tier badge color assets at runtime, requires separate color-safe badge sprite sets per mode with shape/pattern differentiation, not color alone
+- `Colorblind Mode` swaps quality badge color assets at runtime, requires separate color-safe badge sprite sets per mode with shape/pattern differentiation, not color alone
 - `Attunement Window Size` increases the tap target collision area of Attunement prompts, stored as a scale multiplier in player settings
 - `Screen Reader` toggle enables Unity Accessibility Plugin labels on all interactive UI elements
 

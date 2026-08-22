@@ -93,7 +93,7 @@ Grouped by how they generate. Sizes are the Layer.ai generation size; Unity slic
 | Currency chip / pill | 64x32 | Background for the GM/SM balance readout |
 | Count / notification badge | 32x32 | Corner count bubble |
 
-> Quality tier badges are already owned by `icons_quality_badges.png` in the art spec. Do not
+> Quality badges are already owned by `icons_quality_badges.png` in the art spec. Do not
 > duplicate them here.
 
 ### 3.5 Nav and HUD icons (icon workflow, not `ui` chrome)

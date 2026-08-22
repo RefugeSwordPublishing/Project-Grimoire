@@ -283,7 +283,7 @@ Full notes and base-game architectural constraints live in `docs/deferred-system
 | Bard/Minstrel subclass | DLC |
 | Dueling/PvP Arena | Phase 4 |
 | Hard mode dungeons / New Game Plus | DLC |
-| Mythic quality tier | DLC events only |
+| Mythic quality | DLC events only |
 
 ---
 

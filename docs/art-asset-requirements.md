@@ -196,7 +196,7 @@ Project Grimoire targets both mobile and Steam/PC. Character sprites use realist
 | Item icons (inventory) | **64x64** | Examined closely in inventory |
 | Rare material icons | **64x64** | High-value items deserve detail |
 | Currency icons | **48x48** | SM and GM coins |
-| Quality tier badges | **32x32** | Corner overlay, needs colorblind shape variants |
+| Quality badges | **32x32** | Corner overlay, needs colorblind shape variants |
 | Environment backdrops | **1920x1080** | Painterly/pre-rendered, HD-2D style |
 | Background layers (parallax) | **1920x1080 per layer** | 3-5 layers per zone for parallax depth |
 | Foreground elements | **Variable** | Trees, rocks, debris that blur with depth of field |
@@ -366,7 +366,7 @@ All item icons generated as **sprite atlas sheets**, see Sprite Atlas Organizati
 | Button states (default/hover/pressed/disabled) | 96x32 | All interactive button states |
 | Grimoire visual, Sharpshot, Lone Wanderer | 96x96 | Book/tome icon with path color |
 | Currency icons, Silver Mark, Gold Mark | 48x48 | Coin icons for HUD and inventory |
-| Quality tier badges, Crude through Masterwork | 32x32 | Corner overlay, needs colorblind shape variants too |
+| Quality badges, Crude through Masterwork | 32x32 | Corner overlay, needs colorblind shape variants too |
 | Notice Board icon (HUD) | 48x48 | Parchment/scroll icon with unread badge |
 | Settings gear icon (HUD) | 48x48 | Gear/cog icon |
 | Loading screen / splash art | 1920x1080 | First impression |

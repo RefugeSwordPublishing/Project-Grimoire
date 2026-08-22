@@ -109,7 +109,7 @@ inventory picker for that slot.
 
 ### Healing Draught (Alchemy)
 
-Instant HP restore. Flat amount, not percentage, flat scales better with quality tiers and is
+Instant HP restore. Flat amount, not percentage, flat scales better with quality and is
 more readable to players ("this restores 80 HP" vs "this restores 15% HP").
 
 | Quality | HP Restored | Cooldown |
@@ -405,7 +405,7 @@ void UseConsumable(ItemData item, GameObject target = null) {
 
 ---
 
-## Quality Tier Summary
+## Quality Summary
 
 | Quality | Healing Draught | Mana Vial | Endurance Draught | Antidote | Meal potency |
 |---------|----------------|-----------|------------------|---------|-------------|

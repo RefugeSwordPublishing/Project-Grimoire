@@ -85,7 +85,7 @@ All SFX are grounded in the physical reality of the medieval fantasy world. No c
 | Talent | Action | SFX Description |
 |--------|--------|-----------------|
 | **Foraging** | Pluck herb/plant | Soft leaf rustle + gentle snap |
-| **Foraging** | Quality tier bonus (Attunement) | Soft magical shimmer, brief, subtle |
+| **Foraging** | Quality bonus (Attunement) | Soft magical shimmer, brief, subtle |
 | **Felling** | Axe swing | Clean wood chop, solid thud, satisfying |
 | **Felling** | Tree falls | Slow creak then crash, distant echo |
 | **Felling** | Attunement timing hit | Bark crack sound + resonant wood knock |

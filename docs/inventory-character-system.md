@@ -99,7 +99,7 @@ Tapping any item opens a context menu with:
 - **Send to Player**, opens player search, sends item directly to another player's inventory
 - **Use** (if consumable), applies the item
 - **Lock/Unlock**
-- **View details**, full item card with stats, quality tier, source information
+- **View details**, full item card with stats, quality, source information
 
 ### Send to Player
 Direct player-to-player item transfer:

@@ -741,12 +741,12 @@ it rewards **accurate spatial placement** rather than timed taps.
 |-----------|-------------|-----------------|-----------------|--------------|----------|
 | Rabbit Snare | 1 | 3.0s | +15% catch rate |, | "Place here!" |
 | Fox Trap | 9 | 2.5s | +18% catch rate |, | "Set the trap!" |
-| Deer Cage | 22 | 2.0s | +20% catch rate | +1 quality tier | "Bait the cage!" |
+| Deer Cage | 22 | 2.0s | +20% catch rate | +1 quality grade | "Bait the cage!" |
 | Reinforced Snare | 16 | 2.0s | +22% catch rate |, | "Reinforce here!" |
-| Wild Boar Trap | 39 | 1.5s | +25% catch rate | +1 quality tier | "Brace it!" |
-| Beast Cage | 53 | 1.5s | +25% catch rate | +1 quality tier | "Secure the cage!" |
-| Wolf Trap | 61 | 1.2s | +28% catch rate | +1 quality tier | "Steady now!" |
-| Shadow Snare | 67 | 1.0s | +30% catch rate | +1 quality tier | "Feel the shadow!" |
+| Wild Boar Trap | 39 | 1.5s | +25% catch rate | +1 quality grade | "Brace it!" |
+| Beast Cage | 53 | 1.5s | +25% catch rate | +1 quality grade | "Secure the cage!" |
+| Wolf Trap | 61 | 1.2s | +28% catch rate | +1 quality grade | "Steady now!" |
+| Shadow Snare | 67 | 1.0s | +30% catch rate | +1 quality grade | "Feel the shadow!" |
 | Runed Trap | 73 | 0.8s | +30% catch rate | +rare creature chance | "Bind the rune!" |
 | Drake Trap | 82 | 0.6s | +35% catch rate | +Drake Scale chance | "Drake holds!" |
 | Void Snare | 89 | 0.4s | +35% catch rate | +void creature chance | "Void binds!" |
@@ -774,7 +774,7 @@ float distanceFromOptimal = Vector2.Distance(placementPos, optimalPos);
 float optimalRadius = 50f; // pixels
 float placementScore = Mathf.Clamp01(1f - (distanceFromOptimal / optimalRadius));
 float catchBonus = maxCatchBonus * placementScore;
-bool qualityUpgrade = placementScore > 0.75f; // top 25% gets quality tier
+bool qualityUpgrade = placementScore > 0.75f; // top 25% gets a quality upgrade
 ```
 
 ### Trapping, Shadow Snare Special (unlocks at Trapping 67)

@@ -1014,8 +1014,13 @@ Code had two parallel enums and used "tier" for what is actually quality. Now:
   ~140 references over 19 files; `TierForLevel`, `ToolTierMultiplier`, `CanEnchantTier`,
   `hpByTier`, `damageByTier` and `Construct.tier` renamed to their quality equivalents.
 - Bug the merge exposed: `CreateTools` assigned quality twice, stamping Masterwork tools as Epic.
-- The 17 spec docs still use the old language (quality tier, Common/Uncommon/Rare/Epic). Chat pass
-  pending; CLAUDE.md now carries the authoritative definition.
+- Quality/tier terminology pass done 2026-08-21: "quality tier" corrected to "quality" across the
+  specs (23 fixes in 12 docs; meta-references in README/equipment-tier-design and the session logs
+  left as-is), plus standalone old-rarity "Epic" corrected to "Masterwork" in talent-spec and the
+  deferred notes. STILL NEEDS a design call: the wayferers-exchange "Price Range by Rarity" table
+  still lists the old 5-name ladder (Common/Uncommon/Rare/Epic/Legendary) against price bands;
+  remapping it to the 6-name quality ladder (Crude..Legendary) is a pricing decision, not mechanical.
+  CLAUDE.md carries the authoritative definition.
 
 ### Combat HUD
 Subclass-aware resource bar (mana for Arcanist casters, stamina for Vanguard, hidden for Warden and

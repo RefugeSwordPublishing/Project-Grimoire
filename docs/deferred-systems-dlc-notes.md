@@ -131,7 +131,7 @@ Inverted Summoner, user is primary damage dealer, tamed real-world creatures fig
 
 ### Primary Stats: DEX + CHA
 - DEX: Physical skill to weaken and approach creatures during taming
-- CHA: Force of personality to bond with creatures, affects taming success rate, familiar bond strength, and creature quality tier
+- CHA: Force of personality to bond with creatures, affects taming success rate, familiar bond strength, and creature quality
 
 ### Distinction from Summoner
 - Summoner: backline, conjured constructs do the fighting, user buffs constructs
@@ -253,7 +253,7 @@ When released, bounty activation lives in the **Upgrades tab** of the Guild Hall
 **Design Status:** Concept only
 
 ### Core Concept
-A player-contract system where skilled Talent users can post service agreements, "I will enchant X gear for Y marks" or "I will assemble Epic tier items for Z marks." Players send items directly to the service provider who completes the work and sends back.
+A player-contract system where skilled Talent users can post service agreements, "I will enchant X gear for Y marks" or "I will assemble Masterwork items for Z marks." Players send items directly to the service provider who completes the work and sends back.
 
 Natural extension of the Send to Player inventory mechanic already designed. Requires trust system or escrow to prevent scams, design at Phase 4.
 

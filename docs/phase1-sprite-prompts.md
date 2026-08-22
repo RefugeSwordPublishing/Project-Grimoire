@@ -411,9 +411,9 @@ limited palette, dark pixel outline, HD-2D pixel art style — full-body realist
 transparent background, 48x48
 ```
 
-**Quality Tier Badges**
+**Quality Badges**
 ```
-small corner badge icon set, quality tier indicators: grey crude badge, 
+small corner badge icon set, quality indicators: grey crude badge, 
 white rough badge, green refined badge, blue pristine badge, purple masterwork 
 badge, small gem-shaped icons, limited palette, dark pixel outline, 
 HD-2D pixel art style, 6x1 grid, transparent background, total sheet 192x32, each badge 32x32

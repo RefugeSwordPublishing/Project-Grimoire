@@ -37,7 +37,7 @@ get ANY result contradicts the semi-idle design.
 | `attunementWindowDuration` | 2.5 |
 | `attunementXPBonus` | 1.5 |
 | `attunementLootBonus` | 0.0 |
-| `attunementYieldBonus` | 1 (extra resource of higher quality tier) |
+| `attunementYieldBonus` | 1 (extra resource of higher quality) |
 | `cycleLength` | 6.0 seconds |
 
 **Notes:** Window opens near the midpoint, player has time to see the choice. Bonus is quality upgrade on output, not extra quantity. Missing the window yields standard quality harvest.
