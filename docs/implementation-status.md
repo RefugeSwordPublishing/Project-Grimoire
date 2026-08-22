@@ -100,9 +100,14 @@ so it builds on the current state rather than the original design.
 - **Shields, single source:** `PlayerData.ShieldHP` (absorbed inside `PlayerData.DamageHP`), set by the
   Lifebinder shield spells. An earlier parallel status-shield pool was removed (it double-absorbed).
   `CombatManager.PlayerShield` reads `ShieldHP` for the HUD.
-- **Lifebinder wiring:** Glacial Shield now resolves as a shield (matched by name/"absorb"; its effect
-  string lacks the "shield" token, so it was wrongly falling to the stand-in heal). Cleanse spells
-  (Radiant Heal, Cleansing Flame, Mass Miracle) call `CleansePlayer` alongside the heal.
+- **Lifebinder wiring (Phase 2 complete 2026-08-21):** Glacial Shield / Holy Aegis resolve as shields
+  (matched by name/"absorb"/"aegis"). Cleanse now runs before the HOT/shield returns so HOT+cleanse
+  (Cleansing Flame) and heal+cleanse (Radiant Heal, Mass Miracle) both fire; detection broadened to
+  "remove ... debuff" phrasings, and a "one debuff" spell strips one via `CleansePlayer(int max)`.
+  Phoenix Wave revive implemented: resolved before the HP cost so a near-dead caster can fire it; cast
+  below 20% HP it restores 60% max HP plus a 15% absorb buffer, once per combat (reset in Configure).
+  NOTE: cleanse stays effectively dormant until an enemy applies a player debuff (`ApplyPlayerDebuff`
+  is unused in content so far).
 - **UI:** `ZoneCombatView` enemy-debuff icon row (radial countdown, `ui_debuff_icons`);
   `CombatBuffBarUI` adds a shield chip + player-debuff chips to the HOT/meal aggregation.
 - **Design decision, debuffs are dungeon/raid-scoped:** enemy-applied player debuffs + cleanse belong to
