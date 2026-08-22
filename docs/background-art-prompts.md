@@ -126,9 +126,17 @@ Color grade: deep teal and old gold, primordial green. Time: mystical golden hou
 ## Dungeon Interiors
 
 Dungeons are room-by-room; the fight still uses the front-to-back scene, so each dungeon wants its own
-interior backdrop (darker, enclosed, torch/glow-lit versus the open zone skies). One `mid` backdrop per
-dungeon is the priority; add `near` framing if you want extra depth. Each dungeon's theme matches its
-host zone's enemy faction.
+interior backdrop (darker, enclosed, torch/glow-lit versus the open zone skies). Each dungeon's theme
+matches its host zone's enemy faction.
+
+**You do NOT need a background per room.** The backdrop is static per room (front-to-back never scrolls,
+so nothing tiles, plain full-screen 1920x1080 images work). Per dungeon, generate:
+- **1 standard interior** (the `mid` prompt below), reused for Standard / Elite / Trap / Puzzle rooms
+- **1 boss-room backdrop** (append `grand boss chamber, dramatic, larger space` to the prompt)
+- **optional 1 safe-room** (append `calm lit alcove, campfire glow, no threat, restful` to the prompt)
+
+So ~2-3 images per dungeon. Add a `near` foreground-framing layer only if you want extra depth on the
+standard interior. Note: `near` is a parallax LAYER, not a room type.
 
 | Dungeon | Host zone | Backdrop prompt (mid layer) |
 |---|---|---|
