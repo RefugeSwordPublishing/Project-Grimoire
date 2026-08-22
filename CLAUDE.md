@@ -171,14 +171,20 @@ CREATE POLICY "own rows" ON foo FOR ALL USING (auth.uid() = player_id);
 
 ---
 
-## New Supabase tables still needed (Phase 2)
+## Supabase backend status (Phase 2, all built as of 2026-08-21)
+
+The Phase 2 tables and scheduled jobs that were once listed as "still needed" are all live:
 
 ```sql
-player_grimoire_levels (player_id, grimoire_id, combat_level, combat_xp, owned_at)
-player_stat_bonuses    (player_id, grimoire_id, stat_type, amount, granted_at)
--- Guild tables already built (migrations 002, 010-018)
--- Two Edge Functions pending: vote auto-close at 7 days, expired listing sweep
+player_grimoire_levels  -- built (migrations 009 / 013); ownership + per-Grimoire combat level
+player_stat_bonuses     -- built; milestone stat grants (written by CombatXPManager)
+-- Guild tables built (migrations 002, 010-018)
 ```
+
+Scheduled jobs are pg_cron SQL functions (not Deno Edge Functions), all scheduled + active + running
+clean (verified 2026-08-21 via cron.job / cron.job_run_details):
+`close-expired-guild-votes` (7-day vote close, migration 019), `sweep-expired-merchant-listings` (019),
+`sweep-expired-exchange-listings` + `close-ended-auctions` + `sweep-expired-buy-orders` (035).
 
 ---
 
