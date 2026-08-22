@@ -185,7 +185,14 @@ There is no TalentCategory.Processing. Do not create it.
 
 ## 6. As-Built Bench Components vs Per-Item Tables
 
-**The as-built Assembly bench uses shared components per quality band, not per-item:**
+> **As-built update (2026-08-22, bug 1b4cdbb3):** the shared-per-band model below was replaced by
+> **talent-keyed recipes** in `AssemblyManager`. The recipe now varies by the item's `assemblerTalent`
+> (Runesmithing / Timber Shaping / Tailoring / Artificing), each with a craft-appropriate rare
+> (Runesmithing -> Gemstone, Timber & Tailoring -> Amber, Artificing -> Binding Sigil), stepping by
+> band. Items with no/unknown talent fall back to the generic set below. This uses only existing
+> material assets; the full per-item tables in Sections 7-9 remain the future ceiling.
+
+**The original as-built Assembly bench used shared components per quality band, not per-item:**
 
 | Target quality | Component 1 | Component 2 | Rare material |
 |---------------|-------------|-------------|---------------|
