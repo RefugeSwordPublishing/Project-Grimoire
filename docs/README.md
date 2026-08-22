@@ -21,6 +21,7 @@ Raw base: `https://raw.githubusercontent.com/RefugeSwordPublishing/Project-Grimo
 - hub-hud-station-brief.md, Main Hub HUD: 4 station props (Quest Board, Upgrade Terminal, Slayer Hub, Notice Board) + 5 ambient props, PixelLab prompts (ui_hub_stations / ui_hub_ambient), portrait placement + parallax depth spec, badge/notification behavior, and the Claude-Code dependency list to wire the hub scene
 - enemy-sprite-prompts-backfill.md, PixelLab base-sprite prompts + weak-point notes for the 45 enemies that had no prompt (Cinderpeak T3B, Veilborn/Shattered T4, Ashenwold/Elder T5, and 8 dungeon bosses). Loaded into the tracker's asset_prompts; anim frames derive from the approved base
 - phase1-sprite-prompts.md, Layer.ai prompt library (characters, enemies, items, UI)
+- background-art-prompts.md, painterly parallax BACKGROUND prompt library (FLUX/Gemini): per-layer prompts for all 10 zones (far/mid/near) + 10 dungeon interiors, feeding the built Build3DCombatScene parallax layers. ~40 images for full coverage; Tier 1/2 mid layers are the MVP
 - guild-hall-art-spec.md, Guild Hall background dimensions/safe-zones + 8 prestige-stage prompts
 - stat-scaling-combat-formulas.md, combat math, stat formulas, hit/evasion/block
 - talent-spec-sheets.md, all talents, level unlocks, XP curve
