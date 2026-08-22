@@ -30,6 +30,7 @@ Raw base: `https://raw.githubusercontent.com/RefugeSwordPublishing/Project-Grimo
 - combat-balance-reconcile.md, bow active-shot multiplier model (crit 1.6, ability ring replaces crit, Armor Piercer additive, Long Shot 3.0, cap 2.5, DEX bug fix, zone-1 defense 10-18) (as-built)
 - combat-balance-reconcile-REQUEST.md, the design ask (RESOLVED by combat-balance-reconcile.md; kept for history)
 - combat-engagement-spec.md, zones/dungeons/raids engagement model
+- combat-screen-clarity-spec.md, combat UI redesign (Chat): three states (Hub/In-Zone/Elsewhere), Combat Hub hierarchy with locked-tile arithmetic, in-zone disclosure tiers, 11 element tooltips, 6-step coach marks + milestone marks, collapse defaults, retire the resume pill. Fixes f9ffe182 clarity half
 
 ## Systems
 - guild-system.md, guild rules, tax, voting, merchant _(voting + merchant reconciled to as-built)_
