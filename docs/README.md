@@ -42,7 +42,7 @@ Raw base: `https://raw.githubusercontent.com/RefugeSwordPublishing/Project-Grimo
 - equipment-tier-design.md, CANONICAL two-axis model: quality (instance flag + badge, raised at the bench) plus tier (crafted item ladder Bronze->Void); supersedes the old "quality tier" tables
 - material-economy.md, CANONICAL material economy: Delving + Smelting talents, ore->bar->component pipeline, leather renames, acquisition per material
 - material-economy-REQUEST.md, the design ask (RESOLVED by material-economy.md; kept for history)
-- upgrade-component-economy.md, CANONICAL (Chat): fixes bug #41. Runesmithing crafts the 4 Fittings + Runic Cog; Inscription crafts the 4 Binding Sigils; Artificing bench recipe uses Apparatus in place of a Fitting; Gleaning sigil/cog rares re-roled to shortcuts. 9 new recipes + 1 AssemblyManager edit. Producer + bench tables in sections 8-9
+- upgrade-component-economy.md, CANONICAL v2.0 (Chat): fixes bug #41. Runesmithing crafts the 4 Fittings (from bars); Artificing bench recipe uses Apparatus in place of a Fitting. Binding Sigils + Runic Cog STAY Gleaning rare drops (v2 retracts v1's Inscription/Runesmithing crafts). Scarcity fix = a DEFERRED idle-vs-attuned rate split (keep idle rate, add elevated attuned rate) that depends on a not-yet-built Gleaning attunement window (section 7). Bench + producer tables in sections 8-9
 - upgrade-component-economy-REQUEST.md, the design ask (RESOLVED by upgrade-component-economy.md; kept for history)
 - tanning-hide-alignment.md, leather-chain drop fix (as-built): pelts come from Trapping, not kills; added Wolf Trap + re-leveled Direwolf, stripped stray/dead pelt drops from 10 enemies. Fixes bug 1c8db6e3
 

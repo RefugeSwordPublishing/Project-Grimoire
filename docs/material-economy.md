@@ -113,12 +113,13 @@ Rare Material: Runic Cog (from Gleaning)
      the Crude/Rough/Refined/Pristine graded variants above never existed as items. -->
 
 **Quality-upgrade bench components (canonical):** the per-discipline, per-band component +
-rare tables and the producer for every component live in `upgrade-component-economy.md`
+rare tables and the producer for every component live in `upgrade-component-economy.md` v2.0
 (sections 8-9), and the as-built recipes are `AssemblyManager.Recipes` (code wins on conflict).
-Summary: Runesmithing crafts all four **Fittings** (from bars, L10/30/60/80) and **Runic Cog**
-(L40); Inscription crafts all four **Binding Sigils** (from Rune Shards/Enchant Seals + Vellum,
-L10/30/55/75); the Artificing bench recipe uses **Apparatus** in place of a Fitting. Gleaning's
-Binding-Sigil / Runic-Cog rare drops stay, re-roled from "only source" to "skip the craft".
+Summary: Runesmithing crafts all four **Fittings** (from bars, L10/30/60/80); the Artificing
+bench recipe uses **Apparatus** in place of a Fitting. **Binding Sigils and Runic Cog stay
+Gleaning rare drops** (not crafts). The scarcity fix for the sigils is a deferred idle-vs-attuned
+rate split (keep the idle rate, add an elevated rate gated on active attunement), which depends on
+a Gleaning attunement window that is not built yet, see upgrade-component-economy.md section 7.
 
 
 Higher quality Forge reduces processing time and adds a small attunement-gated chance
