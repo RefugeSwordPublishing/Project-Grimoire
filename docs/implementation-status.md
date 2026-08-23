@@ -12,6 +12,31 @@ implemented in code** where the two diverge. When they conflict, the code (and t
 Claude Code updates this file as features land; Claude Chat should read it before any design work
 so it builds on the current state rather than the original design.
 
+## Session 2026-08-23, data-safety + combat UI rebuild (shipped 0.1.2, gear-backing for 0.1.3)
+
+- **Save-races-load data loss fixed:** the 4s autosave could fire before inventory/talents/currency
+  finished loading on a cold boot and clobber the server. Per-section load gates
+  (`_currencyLoaded`/`_talentsLoaded`/`_inventoryLoaded` in `GameManager`) now block a save until each
+  section confirms loaded. Fixed accounts reverting on update (potions/gold/talent XP).
+- **Server-backed equipped gear (migration 046, applied live):** `player_equipment` table + one JSON blob
+  per player + `upsert_player_equipment` RPC (RLS own-row). `EquipmentManager.LoadFromServer` loads on boot
+  (prefers server, migrates prefs-only players up, gated against boot-time clobber), `Persist()` writes
+  server + PlayerPrefs cache. Fixes worn gear lost on reinstall/new-device (equipping removes the item from
+  the server inventory, so prefs-only loss was permanent). Also guarded `UnequipOverTier` so it can't strip
+  gear while the combat level reads the unloaded default of 1. **Client lands in the build AFTER 0.1.2.**
+- **Combat UI rebuild** (`combat-screen-clarity-spec.md` + `combat-navigation-flow-spec.md`): Combat nav
+  opens the encounter list directly (section menu deleted); locked tiles show the arithmetic; pinned
+  Grimoire header (name/level/XP + See-all deep-link); inline dungeon sub-rows; Raids placeholder; Continue
+  row; Leave shows a session summary; back keeps combat running; baked dungeon result screen with Run Again;
+  coach-mark tours + milestone marks; per-element `[i]` tooltips (`InfoTip`/`CombatTooltips`). All baked/
+  skinnable via `Bake Combat Hub` / `Bake Combat Result` / `Bake Coach Marks`; runtime fallbacks exist.
+  Retired the Resume Combat pill (MinimizedCombatBarUI is the single minimized surface).
+- **Other 0.1.2 fixes:** tanning/hide economy realigned to the Trapping talent (added Wolf Trap, re-leveled
+  Direwolf, stripped 10 stray/dead pelt drops); upgrade recipes now vary by assembler talent
+  (`AssemblyManager`, no new items); Exchange buy-order raw-error leak wrapped; ingredient-source tap
+  resolves on any tap of the name; post-choice onboarding hub guide; DevConsole guarded against the new
+  Input System (legacy `Input` was throwing every frame).
+
 ## Session 2026-08-20, Economy/UX/combat batch + bug tracker pass
 
 - **Icon atlases fixed:** the old Reassign mis-mapped 92 item icons (atlas layout != cell manifest);
