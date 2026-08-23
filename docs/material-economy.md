@@ -104,10 +104,22 @@ Rare Material: Runic Cog (from Gleaning)
 | Quality Target | Runesmithing Component | Artificing Component | Rare Material |
 |---------------|------------------------|----------------------|---------------|
 | Crude | Bronze Forge Frame | Iron Bellows | None |
-| Rough | Iron Forge Frame | Steel Bellows | Crude Runic Cog |
-| Refined | Steel Forge Frame | Steel Clockwork Bellows | Rough Runic Cog |
-| Pristine | Mithril Forge Frame | Mithril Bellows | Refined Runic Cog |
-| Masterwork | Void Forge Frame | Adamantine Bellows | Pristine Runic Cog |
+| Rough | Iron Forge Frame | Steel Bellows | Runic Cog |
+| Refined | Steel Forge Frame | Steel Clockwork Bellows | Runic Cog |
+| Pristine | Mithril Forge Frame | Mithril Bellows | Runic Cog |
+| Masterwork | Void Forge Frame | Adamantine Bellows | Runic Cog |
+
+<!-- Runic Cog is a single ungraded item (Runesmithing craft, upgrade-component-economy.md 6);
+     the Crude/Rough/Refined/Pristine graded variants above never existed as items. -->
+
+**Quality-upgrade bench components (canonical):** the per-discipline, per-band component +
+rare tables and the producer for every component live in `upgrade-component-economy.md`
+(sections 8-9), and the as-built recipes are `AssemblyManager.Recipes` (code wins on conflict).
+Summary: Runesmithing crafts all four **Fittings** (from bars, L10/30/60/80) and **Runic Cog**
+(L40); Inscription crafts all four **Binding Sigils** (from Rune Shards/Enchant Seals + Vellum,
+L10/30/55/75); the Artificing bench recipe uses **Apparatus** in place of a Fitting. Gleaning's
+Binding-Sigil / Runic-Cog rare drops stay, re-roled from "only source" to "skip the craft".
+
 
 Higher quality Forge reduces processing time and adds a small attunement-gated chance
 to produce an extra bar per smelt.
