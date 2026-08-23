@@ -10,29 +10,29 @@ whether fittings and apparatus can be combined.
 ## The problem
 
 The quality-upgrade bench (`AssemblyManager`: Crude → Rough → Refined → Pristine → Masterwork) consumes,
-per step, two components + one rare, chosen by the item's assembler talent. **Two of those component
-families cannot be obtained by any means:**
+per step, two components + one rare, chosen by the item's assembler talent. Two problems:
 
-| Component family | Used by | Produced by |
-|------------------|---------|-------------|
-| **Fitting** (Iron / Steel / Mithral / Adamant) | **every** upgrade recipe | **nothing** |
-| **Binding Sigil** (Rough / Refined / Pristine / Masterwork) | Runesmithing + Artificing recipes | **nothing** |
+| Component family | Used by | Availability |
+|------------------|---------|--------------|
+| **Fitting** (Iron / Steel / Mithral / Adamant) | **every** upgrade recipe | **NO source at all** (not a talent output, not a drop) |
+| **Binding Sigil** (Rough / Refined / Pristine / Masterwork) | Runesmithing + Artificing recipes | Gleaning **rare** drop only, at **0.4-1%** (effectively unfindable) |
 
-They exist as item assets (`Assets/Data/Items/Assembly/`) and are referenced by recipes, but no talent
-activity outputs them and they are not enemy drops. So **the entire upgrade system is unusable** as soon
-as it needs a Fitting, which is immediately. This pre-dates the recent talent-keyed recipe change; the old
-shared recipe used Fittings too.
+Because **every** recipe needs a Fitting and Fittings have no source, **the entire upgrade bench is unusable**.
+Binding Sigils do exist (Gleaning `rareLoot`: Runic Deposits→Rough @1%, Deep Runes→Refined @0.8%, Ancient
+Runes→Pristine @0.6%, Voidtouched→Masterwork @0.4%) but the rates are so low that #41's tester couldn't
+find them, a tuning problem layered on top of the Fitting dead-end. Runic Cog is likewise a Gleaning rare.
+This pre-dates the recent talent-keyed recipe change; the old shared recipe used Fittings too.
 
 ## What the current recipes ask for (talent-keyed, as-built)
 
 | Talent (item kind) | Component 1 | Component 2 | Rare |
 |--------------------|-------------|-------------|------|
-| Runesmithing (weapons/plate) | **Fitting** ✗ | **Binding Sigil** ✗ | Gemstone ✓ |
+| Runesmithing (weapons/plate) | **Fitting** ✗ | Binding Sigil ~ | Gemstone ✓ |
 | Timber Shaping (bows/wood tools) | Haft ✓ | **Fitting** ✗ | Amber ✓ |
 | Tailoring (leather/cloth) | Leather grade ✓ | **Fitting** ✗ | Amber ✓ |
-| Artificing (arcane apparatus) | **Fitting** ✗ | Haft ✓ | **Binding Sigil** ✗ |
+| Artificing (arcane apparatus) | **Fitting** ✗ | Haft ✓ | Binding Sigil ~ |
 
-✓ = obtainable, ✗ = unobtainable.
+✓ = obtainable · ~ = obtainable but very rare (Gleaning 0.4-1%) · ✗ = no source.
 
 ## What IS produced (the component roster)
 
@@ -42,11 +42,11 @@ Two parallel axes exist today:
   - Bars (Smelting), Limbs (Runesmithing), **Apparatus** (Artificing), Hafts (Timber Shaping),
     Leather grades (Tanning).
 - **Quality-band ladder** (Rough → Masterwork), the upgrade components:
-  - **Haft** band overlaps the tier hafts (Ash/Oak/Ironwood/Heartwood) ✓ produced.
-  - **Fitting** band ✗ no producer.
-  - **Binding Sigil** band ✗ no producer.
-- **Rares** (by combat tier): Gemstone, Amber (enemy drops / Delving) ✓; Gleaning makes Rune Shards +
-  Enchant Seals (not sigils/cogs, despite the old spec note).
+  - **Haft** band overlaps the tier hafts (Ash/Oak/Ironwood/Heartwood) ✓ produced (Timber Shaping).
+  - **Binding Sigil** band ~ Gleaning `rareLoot` only, 0.4-1% (too rare to rely on).
+  - **Fitting** band ✗ no producer at all, the hard blocker.
+- **Rares** (by combat tier): Gemstone, Amber (enemy drops / Delving) ✓. Gleaning's regular output is Rune
+  Shards + Enchant Seals; Binding Sigils and Runic Cogs are its rare drops.
 
 ## Dustin's question: combine Fittings and Apparatus?
 
@@ -56,10 +56,10 @@ problem is not too many component types, it is that two band components have no 
 
 ## Options for Chat to choose / refine
 
-1. **Give the missing components producers (smallest).** Add crafting activities so Fittings + Binding
-   Sigils are obtainable, e.g. Fittings from Smelting or Runesmithing (1x matching Bar → 1x Fitting per
-   band), Binding Sigils from Gleaning or Inscription (Rune Shard + Enchant Seal → Sigil). ~8 activities,
-   keeps the current recipe tables intact.
+1. **Give Fittings a producer + make Binding Sigils reliably obtainable (smallest).** Add Fitting crafting
+   activities (e.g. Smelting or Runesmithing: 1x matching Bar → 1x Fitting per band), and either raise the
+   Gleaning Binding-Sigil rare rates or add a deterministic Sigil craft (e.g. Inscription: Rune Shard +
+   Enchant Seal → Sigil). Keeps the current recipe tables intact.
 
 2. **Rework upgrade recipes onto produced items (fewer types).** Retire Fittings/Binding Sigils and build
    the upgrade recipes from components that already exist: Bars, Hafts, Apparatus, Leather grades, plus the
