@@ -1,6 +1,6 @@
 ---
 type: implementation-status
-updated: 2026-08-17
+updated: 2026-08-24
 purpose: Single source of truth for WHAT IS ACTUALLY BUILT vs. design intent in the specs.
 audience: Claude (Chat or Code) starting a session. Read this FIRST, then the relevant spec.
 ---
@@ -11,6 +11,20 @@ The spec files in `docs/` describe **design intent**. This file records **what i
 implemented in code** where the two diverge. When they conflict, the code (and this file) win.
 Claude Code updates this file as features land; Claude Chat should read it before any design work
 so it builds on the current state rather than the original design.
+
+## Session 2026-08-24, XP curve audit (gathering/Cookery no longer regress, for 0.1.3)
+
+- **Rising xp/sec for the 7 pure-gathering/processing talents** (Delving, Dredging, Felling, Foraging,
+  Gleaning, Trapping, Cookery). They previously had xp/sec **decreasing** with tier: higher-tier nodes use
+  longer cycles (thematic) but paid a roughly flat `xpPerCycle`, so an XP-optimizing player never left tier 1
+  (the "5-every-15s beats 7-every-24s" trap). Reset `xpPerCycle = round(cycleSeconds * (0.35 + level*0.008))`,
+  giving a monotonically rising ~0.33 -> ~1.05 xp/sec across L1->L88. Cycle times unchanged; rare-loot and
+  attunement fields untouched. **Talent .asset edits only, no baker needed** (Unity auto-reimports).
+- **Crafting main ladders were already correct** and left alone: `IdleManager.RecipeXpMultiplier` scales
+  xpPerCycle by input count + total units + avg material tier (clamped 1-6x), so higher-tier weapons/staves/
+  bows/apparatus already rise (e.g. Runesmithing swords 1.36 -> 11.44 xp/sec). Component/processing sub-recipes
+  (Fittings, Bars, Vellum, Limbs, distillations) sit below the main ladder but are **not a trap**: at every
+  level the best option is the main ladder, which rises. Left as-is to avoid churning the v2 component economy.
 
 ## Session 2026-08-23, data-safety + combat UI rebuild (shipped 0.1.2, gear-backing for 0.1.3)
 
