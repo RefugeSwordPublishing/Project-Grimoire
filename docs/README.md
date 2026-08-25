@@ -44,6 +44,7 @@ Raw base: `https://raw.githubusercontent.com/RefugeSwordPublishing/Project-Grimo
 - material-economy-REQUEST.md, the design ask (RESOLVED by material-economy.md; kept for history)
 - upgrade-component-economy.md, CANONICAL v2.0 (Chat): fixes bug #41. Runesmithing crafts the 4 Fittings (from bars); Artificing bench recipe uses Apparatus in place of a Fitting. Binding Sigils + Runic Cog STAY Gleaning rare drops (v2 retracts v1's Inscription/Runesmithing crafts). Scarcity fix = a DEFERRED idle-vs-attuned rate split (keep idle rate, add elevated attuned rate) that depends on a not-yet-built Gleaning attunement window (section 7). Bench + producer tables in sections 8-9
 - upgrade-component-economy-REQUEST.md, the design ask (RESOLVED by upgrade-component-economy.md; kept for history)
+- upgrade-recipe-thematic-REQUEST.md, OPEN design ask (for Chat): reorganize the quality-upgrade recipes so components match the item's material class (metal Fittings should not appear on leather/cloth/wood; cloth vestments are a botanical line and must drop hide+metal). Gives Chat the current AssemblyManager recipe table, the (assemblerTalent, armorType) resolver hook, the two Tailoring supply chains, and the component-producer map. Awaiting Chat's v3 spec.
 - tanning-hide-alignment.md, leather-chain drop fix (as-built): pelts come from Trapping, not kills; added Wolf Trap + re-leveled Direwolf, stripped stray/dead pelt drops from 10 enemies. Fixes bug 1c8db6e3
 
 - assembly-materials-crafting-system.md, crafting + assembly (design; reconciled to the two-axis model)
