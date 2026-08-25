@@ -12,6 +12,32 @@ implemented in code** where the two diverge. When they conflict, the code (and t
 Claude Code updates this file as features land; Claude Chat should read it before any design work
 so it builds on the current state rather than the original design.
 
+## Session 2026-08-24, four tester bug fixes #44-#47 (for 0.1.3)
+
+All four from playtester Ryan (Android), all code-only fixes (no baker / tool runs needed):
+
+- **#47 (critical) combat XP resets on leave:** `CombatXPManager` was the only persisted system with
+  no server-load gate. `LoadFromServer` cleared `_grimoires` up front, so combat started during the
+  async load window saw an empty dict, `EnsureGrimoire` fabricated a level-1 row, and `PersistLevel`
+  PATCHed it over the real server value. Added a `_serverLoaded` gate (same pattern as inventory/
+  talents/currency/equipment): the clear now happens inside the GET callback; `PersistLevel`/
+  `FlushDirty`/`EnsureGrimoire` writes are blocked until the load resolves; pending XP flushes before a
+  reload overwrites in-memory state.
+- **#45 (high) quest combat XP awards 0:** `QuestManager.GrantOne` passed the raw `subclassName` to
+  `AddCombatXP`, but the dict is keyed by the normalized `ToLower().Replace(" ","")` id every other
+  caller uses, so the lookup missed and awarded 0 while the toast still read "+Combat XP". Normalized
+  the id. Same raw-id bug also fixed in `ZoneCombatView.HasWeakPointRevealTalent` (was making the
+  Warden weak-point reveal never unlock).
+- **#44 (medium) "Earn 8,000 talent XP" quest needed 16,800:** authored title/description embed a base
+  count, but `QuestScaler` derives the live target from player state (weekly `EarnTalentXP` =
+  `0.60 x 3.5 x xpToNext`). Added `QuestBoardUI.Requantify()` to rewrite the stale number to the real
+  `targetCount` so header, description, and progress bar agree. Generalizes to every scaled quest.
+- **#46 (critical) can't select Ready on a zone boss:** the co-op pre-boss lobby canvas sat at
+  `sortingOrder` 5200, below the 5300 transient panels (`EatQuantityUI`/`RoyalMerchantUI`/
+  `SlayingPanelUI`), so it opened behind them with Ready/START unreachable. Raised to 5400. Also made
+  START independent of the ready handshake for a solo host (`PartySize <= 1`). Lobby kept for party play
+  (per decision); solo is not bypassed.
+
 ## Session 2026-08-24, XP curve audit (gathering/Cookery no longer regress, for 0.1.3)
 
 - **Rising xp/sec for the 7 pure-gathering/processing talents** (Delving, Dredging, Felling, Foraging,
