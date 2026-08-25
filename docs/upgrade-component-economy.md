@@ -1,384 +1,336 @@
 ---
 type: design-spec
-version: 2.0
-updated: 2026-08-22
-supersedes: upgrade-component-economy.md v1.0 (same path, do not implement v1.0)
+version: 3.0
+updated: 2026-08-24
+supersedes: upgrade-component-economy.md v2.0
 path: docs/upgrade-component-economy.md
-resolves: upgrade-component-economy-REQUEST.md, playtest bug #41
-folds-into: material-economy.md (sections 8 and 9 below become the canonical tables)
-implements: AssemblyManager.Recipes, Runesmithing activities, Gleaning attunement
-            window, Gleaning rareLoot rate split
-depends-on: Gleaning active attunement, not yet built, see section 7.3
+resolves: upgrade-recipe-thematic-REQUEST.md
+implements: AssemblyManager.Recipes, Tanning activities, Tailoring activities
+carries-forward: v2.0 sections on Fitting production and Gleaning attunement rate split
 ---
 
 # Upgrade Component Economy
-### Version 2.0
+### Version 3.0, thematic recipe pass
 
 ---
 
-## 0. Correction Notice, Read This First
+## 0. What Changed From v2.0
 
-**Version 1.0 of this document was wrong on one point and must not be implemented.**
+v2.0 fixed supply. Every component in the table had a producer and the bench worked.
+It did not ask whether the components belonged on the items they were upgrading, and
+they largely did not. A cloth vestment woven from herbs and petals was upgraded with
+rabbit hide and an iron buckle.
 
-v1.0 proposed moving Binding Sigils to an Inscription craft and Runic Cog to a
-Runesmithing craft, on the reasoning that a sub-2% rare drop cannot be a required
-recipe input. That reasoning failed to account for why the rates were set low in the
-first place.
+v3.0 keeps every supply decision from v2.0 and re-cuts the recipe table so each line
+pulls from its own material family.
 
-The 0.4% to 1% rates are deliberate. They exist because gathering runs unattended
-overnight, and any rate high enough to feel reasonable in a 30-minute active session
-prints a fortune across an 8-hour idle session. The rate was tuned against the
-overnight case on purpose, to protect the economy.
+**Carried forward unchanged from v2.0:**
+- Fittings are produced by Runesmithing from Smelting bars, four recipes, yield 3.
+- Binding Sigils and Runic Cog stay Gleaning rare drops with the attunement-gated rate
+  split (idle rate unchanged, 8 to 16 percent on successful attunement).
+- The Apparatus swap on the Artificing row.
+- The Forge table cleanup (plain Runic Cog, no quality prefix).
 
-So the problem was never the rate and never the drop model. It is that a single global
-rate has to serve two session types roughly 20 times apart in duration. Tune for
-overnight and active play starves. Tune for active and overnight breaks the economy.
-No single number satisfies both. That is a rate-model problem wearing a supply-bug
-costume, and v1.0 treated the costume.
-
-**What v2.0 changes instead:** rare drops stay rare drops, produced by Gleaning, at
-their existing idle rate. An elevated rate is attached to active attunement, which idle
-play cannot trigger. See section 7.
-
-**What survives from v1.0 unchanged:** the Fitting producer (section 3) and the
-Apparatus swap on the Artificing bench row (section 4). Neither touches drop rates.
+**Changed in v3.0:**
+- The metal Fitting is removed from Timber Shaping and Tailoring.
+- Tailoring splits into two recipes keyed on `armorType`, Leather and Vestments.
+- Two new component families, Sinew Cord (Tanning) and Spun Thread (Tailoring).
+- Vestments move off leather and metal entirely and onto fiber plus botanicals.
 
 ---
 
-## 1. The Three Decisions
+## 1. Recipe Table
 
-**Fittings get a producer.** Runesmithing crafts them from the matching Smelting bar,
-one recipe per band. A Fitting is manufactured hardware with no source at all today,
-and hardware is not something a player finds in the dirt. This is the only genuine
-dead component in the system.
+One row per resolver key. Components in brackets, rare after the arrow.
 
-**Fittings and Apparatus are not merged.** Different axes. What changes is one token:
-Artificing's bench recipe uses its own Apparatus in place of a Fitting. Section 4.
+| assemblerTalent, armorType | Covers | Rough | Refined | Pristine | Masterwork |
+|---|---|---|---|---|---|
+| **Runesmithing**, None or Plate | metal weapons, Plate armor (44 items) | [Iron Fitting, Rough Binding Sigil] -> Crude Gemstone | [Steel Fitting, Refined Binding Sigil] -> Rough Gemstone | [Mithral Fitting, Pristine Binding Sigil] -> Refined Gemstone | [Adamant Fitting, Masterwork Binding Sigil] -> Pristine Gemstone |
+| **Timber Shaping**, None | bows (6 items) | [Ash Haft, Rabbit Sinew Cord] -> Crude Amber | [Oak Haft, Fox Sinew Cord] -> Rough Amber | [Ironwood Haft, Wolf Sinew Cord] -> Refined Amber | [Heartwood Haft, Direwolf Sinew Cord] -> Pristine Amber |
+| **Tailoring**, Leather | leather armor (25 items) | [Rabbit Hide, Rabbit Sinew Cord] -> Crude Amber | [Fox Leather, Fox Sinew Cord] -> Rough Amber | [Wolf Leather, Wolf Sinew Cord] -> Refined Amber | [Direwolf Leather, Direwolf Sinew Cord] -> Pristine Amber |
+| **Tailoring**, Vestments | cloth vestments (25 items) | [Plain Thread, Herb Extract] -> Rough Binding Sigil | [Woven Thread, Rare Herb] -> Refined Binding Sigil | [Fine Thread, Moonbloom Petal] -> Pristine Binding Sigil | [Masterspun Thread, Shadow Essence] -> Masterwork Binding Sigil |
+| **Artificing**, None | wands, staves, foci (17 items) | [Iron Apparatus, Ash Haft] -> Rough Binding Sigil | [Steel Apparatus, Oak Haft] -> Refined Binding Sigil | [Mithril Apparatus, Ironwood Haft] -> Pristine Binding Sigil | [Adamantine Apparatus, Heartwood Haft] -> Masterwork Binding Sigil |
+| **Generic** fallback | unmapped items only | [Iron Fitting, Ash Haft] -> Rough Binding Sigil | [Steel Fitting, Oak Haft] -> Refined Binding Sigil | [Mithral Fitting, Ironwood Haft] -> Pristine Binding Sigil | [Adamant Fitting, Heartwood Haft] -> Masterwork Binding Sigil |
 
-**Binding Sigils and Runic Cog stay Gleaning rare drops.** Their idle rate does not
-change. An elevated rate is added, gated behind active attunement so that unattended
-sessions cannot access it. Section 7.
+### 1.1 Line by line reasoning
 
----
+**Metal, unchanged.** Fitting is metal hardware on a metal item and Runesmithing means
+smithing runes into steel, so a Binding Sigil is the correct second component rather
+than a foreign arcane import. Gemstone as the rare reads as pommel stones and setting
+work. Nothing here was broken.
 
-## 2. Diagnosis
+**Wood, Fitting out, Sinew Cord in.** A bow is a stave, a string, and a grip wrap. The
+haft covers the stave, sinew covers the string, and Amber covers the resin used to glue
+nocks and seal the limbs. There is no metal on a self bow anywhere.
 
-Two separate faults were reported together, and they are not the same fault.
+**Leather, Fitting out, Sinew Cord in.** Leather armor is hide stitched to hide. Sinew
+is the thread it is stitched with, drawn from the same animals as the panels. Amber
+stays as the rare because it is the organic rare and it is already the leather line's
+rare today.
 
-**Fault one, Fittings.** Required by all four bench recipes, produced by nothing. This
-is a straightforward dead component and it has a straightforward fix: give it a recipe.
-Every other component family in the bench already has a producer.
+**Vestments, the largest change.** Leather and metal are both gone. Vestments are woven
+from botanical material and their entire craft ladder is Herb Extract, Rare Herb,
+Moonbloom Petal, Shadow Essence. The upgrade now uses fiber (Spun Thread) plus the
+matching botanical from that same ladder, with a Binding Sigil as the rare because
+enchanted robes are the one armor line where an arcane rare belongs.
 
-**Fault two, Binding Sigils at 0.4% to 1%.** Not a dead component. A working drop with
-a rate correctly tuned for the wrong session type. Gleaning runs unattended overnight,
-so the rate had to be set against an 8-hour unsupervised session. That protects the
-economy and it is the right instinct. The side effect is that a player doing 40 minutes
-of hands-on Gleaning sees nothing, which is what bug #41 actually reported.
+**Arcane, kept.** Apparatus plus Haft plus Binding Sigil. A staff has a wooden shaft and
+a wand has a wooden core, so the haft is defensible and it keeps Timber Shaping selling
+into the arcane line. No change.
 
-The governing observation is that these two faults want opposite fixes. Fittings need a
-new producer. Sigils need their existing producer to distinguish between a player who is
-present and one who is asleep.
+### 1.2 Why wood and leather share both Sinew Cord and Amber
 
-**Principle to adopt:**
+Two lines drawing on one component family and one rare looks like a shortcut. It is
+deliberate. Both are organic lines fed by animals and trees, both already shared Amber
+before this pass, and giving each its own bespoke cord and its own bespoke rare would
+add four items and a rare family to save a table row from looking repetitive.
 
-> When a drop rate must serve both idle and active play, do not pick a compromise
-> number. Split the roll: keep the idle rate, and attach the elevated rate to
-> attunement, which idle cannot reach.
-
-This generalises past Gleaning. Any future rare that faces the same overnight problem
-gets the same treatment rather than a new tuning argument.
-
----
-
-## 3. Fittings, New Runesmithing Recipes
-
-Unchanged from v1.0. Runesmithing owns Fitting production, which gives three of the four
-benches a Runesmithing supplier and makes the talent economically load-bearing.
-
-| Output | Inputs | Runesmithing level | Time | Yield |
-|--------|--------|-------------------|------|-------|
-| Iron Fitting | 1x Iron Bar | 10 | 30s | 3 |
-| Steel Fitting | 1x Steel Bar | 30 | 45s | 3 |
-| Mithral Fitting | 1x Mithril Bar | 60 | 90s | 3 |
-| Adamant Fitting | 1x Void Alloy | 80 | 120s | 3 |
-
-### 3.1 Why yield 3, uniformly
-
-The bench consumes components on failure as well as success, so the true cost of an
-upgrade is one component times expected attempts, not one component.
-
-| Band | Base success | Expected attempts | At assembler 100 | Expected attempts |
-|------|-------------|------------------|-----------------|------------------|
-| Rough | 70% | 1.43 | 88% | 1.14 |
-| Refined | 55% | 1.82 | 73% | 1.37 |
-| Pristine | 35% | 2.86 | 53% | 1.89 |
-| Masterwork | 20% | 5.00 | 38% | 2.63 |
-
-A flat yield of 3 covers a Rough or Refined chain comfortably, roughly covers a Pristine
-chain, and covers about 60% of a Masterwork chain. Cost escalation comes from the input
-bar getting dramatically more expensive up the ladder, not from a yield curve. One
-number to remember and the economy still steepens correctly.
-
-### 3.2 Level placement
-
-Each Fitting unlocks at or just above the Smelting level producing its input bar. Iron
-Bar is Smelting 10 and Iron Fitting is Runesmithing 10. Steel Bar is Smelting 30 and
-Steel Fitting is Runesmithing 30. Mithril and Void follow at 60 and 80 against Smelting
-60 and 85.
+The lines stay distinguishable because component 1 differs and carries the identity:
+Haft for a bow, Leather for armor.
 
 ---
 
-## 4. The Fitting versus Apparatus Question, Answered
+## 2. New Components
 
-Unchanged from v1.0.
+Two families, eight items. Every other component in the table already exists.
 
-**Do not merge them.** Apparatus is a tier intermediate consumed by Staff, Wand, Alchemy
-Kit, Cookery Set, Tanning Knife, and Forge crafting. Collapsing it into the band-keyed
-Fitting family strands all six of those tier recipes. The merge trades one dead
-component for six.
+### 2.1 Sinew Cord, produced by Tanning
 
-**Do swap Apparatus in for Fitting on the Artificing bench row only.** As built,
-Artificing produces none of its own upgrade components while depending on Runesmithing,
-Timber Shaping, and Gleaning simultaneously. Every other discipline contributes
-something from its own or an immediately adjacent talent. Artificing already makes
-exactly the right item.
+Serves Timber Shaping and Tailoring/Leather. Grades follow the leather naming
+convention (source animal, not a quality word) so the item never reads as a quality
+grade.
 
-One token, one row. It satisfies the instinct behind the question without the structural
-damage of a global merge.
+| Name | Talent | Activity | Unlock | Inputs | Cycle | Yield |
+|------|--------|----------|--------|--------|-------|-------|
+| Rabbit Sinew Cord | Tanning | Draw Sinew, Rabbit | 8 | 2x Rabbit Pelt | 20s | 2 |
+| Fox Sinew Cord | Tanning | Draw Sinew, Fox | 25 | 2x Fox Fur | 30s | 2 |
+| Wolf Sinew Cord | Tanning | Draw Sinew, Wolf | 45 | 2x Wolf Pelt | 45s | 2 |
+| Direwolf Sinew Cord | Tanning | Draw Sinew, Direwolf | 68 | 1x Direwolf Hide | 60s | 2 |
 
-Band mapping on the bench: Iron, Steel, Mithril, Adamantine Apparatus. Steel Clockwork
-Apparatus stays a tier-only intermediate and is not used by the bench.
+**Ladder placement.** Tanning's leather recipes sit at 1, 20, 40, 65. Sinew sits just
+above each corresponding leather recipe at 8, 25, 45, 68, using the same tier of pelt.
+The player unlocks the leather grade first and the cord shortly after, which is the
+correct reading order and keeps the two recipes from competing for the same unlock beat.
 
----
+**Curve safety.** Cycle times are shorter than the corresponding leather recipe and XP
+per cycle should be set slightly lower, so xp per second lands close to the leather
+recipe of the same tier and continues rising with tier. Do not make sinew the fastest
+XP per second in Tanning at any tier. It is a side product, not a bypass.
 
-## 5. Binding Sigils Stay Gleaning Drops
+**Supply pressure note.** Sinew competes with leather for the same pelts, which is
+intended. It gives Trapping more demand and gives the player a real allocation decision
+between panels and stitching.
 
-**Reversing v1.0.** No Inscription craft. Binding Sigils remain Gleaning rare drops,
-found not made. Gleaning's identity is finding the valuable thing, and moving its
-signature output into another talent's recipe list would demote a talent that does not
-need demoting.
+### 2.2 Spun Thread, produced by Tailoring
 
-The four bands and their existing Gleaning sources are unchanged:
+Serves Tailoring/Vestments only. This is the "cloth" material the game currently lacks.
 
-| Item | Gleaning source node |
-|------|---------------------|
-| Rough Binding Sigil | Runic Deposits |
-| Refined Binding Sigil | Deep Runes |
-| Pristine Binding Sigil | Ancient Runes |
-| Masterwork Binding Sigil | Voidtouched |
+| Name | Talent | Activity | Unlock | Inputs | Cycle | Yield |
+|------|--------|----------|--------|--------|-------|-------|
+| Plain Thread | Tailoring | Spin Thread | 10 | 3x Wildgrass Clump | 25s | 2 |
+| Woven Thread | Tailoring | Weave Thread | 30 | 1x Plain Thread + 4x Wildgrass Clump | 40s | 2 |
+| Fine Thread | Tailoring | Spin Fine Thread | 55 | 1x Woven Thread + 5x Wildgrass Clump | 60s | 2 |
+| Masterspun Thread | Tailoring | Masterspin | 75 | 1x Fine Thread + 6x Wildgrass Clump | 85s | 2 |
 
-What changes is the rate model, not the source. Section 7.
+**Ladder placement.** Tailoring is currently an assembly talent with no processing
+activities of its own. These four give it a production ladder and make it the only
+discipline that both produces and consumes its own upgrade component, which suits a
+weaving talent.
 
----
+**Deliberately fiber-only.** The thread ladder takes no botanicals. The botanical enters
+as component 2 in the recipe. Putting petals in both places would double-charge the
+player for the same flavor and would make the botanical ladder illegible.
 
-## 6. Runic Cog Stays a Gleaning Drop
+**Curve safety.** Escalating Wildgrass counts plus the previous grade give a rising
+input cost per cycle. Set XP per cycle so xp per second rises across the four and lands
+in the same band as Tanning's leather ladder at equivalent levels.
 
-**Reversing v1.0.** No Runesmithing craft. Runic Cog remains a Gleaning rare drop and
-receives the same attunement treatment as Binding Sigils.
+**This gives Wildgrass Clump a sink.** Foraging produces it today with, as far as I can
+tell, no meaningful consumer. Flag in section 5 for verification.
 
-One genuine cleanup does still apply. The Forge upgrade table in material-economy.md
-section 3 references quality-graded Runic Cogs (Crude, Rough, Refined, Pristine) that do
-not exist as items. Runic Cog is a single ungraded component. Update those four rows to
-reference plain Runic Cog with no quality prefix. This is an asset-reference bug, not an
-economy change.
+### 2.3 The leaner alternative, if you want zero new vestment items
 
----
+If eight new items is too many, the vestment row can drop Spun Thread and run on two
+botanicals instead:
 
-## 7. The Rate Split, Idle Versus Attuned
+| Band | Alternative vestment recipe |
+|------|----------------------------|
+| Rough | [Herb Extract, Common Herb] -> Rough Binding Sigil |
+| Refined | [Rare Herb, Herb Extract] -> Refined Binding Sigil |
+| Pristine | [Moonbloom Petal, Rare Herb] -> Pristine Binding Sigil |
+| Masterwork | [Shadow Essence, Moonbloom Petal] -> Masterwork Binding Sigil |
 
-The fix for bug #41. One item, one drop table, two roll rates.
+This costs nothing to build and is consistent with how vestments are crafted. I do not
+recommend it, for one reason: every other line has a material component that reads as
+part of the garment (Fitting, Haft, Leather grade), and a vestment upgraded entirely
+from reagents reads like brewing a potion rather than reinforcing armor. Spun Thread
+also solves the Wildgrass sink problem as a side effect.
 
-### 7.1 The model
-
-| Gathering action | Rare roll rate |
-|-----------------|---------------|
-| Idle gather, unattended | Existing rate, unchanged, 0.4% to 1% by band |
-| Successful attunement, active | Elevated rate, 8% to 16% by band |
-| Active gather without attunement | Idle rate, unchanged |
-
-Attunement requires a timed player input on the gathering window. It cannot fire while
-the app is backgrounded or the player is asleep, so an overnight session accrues at
-exactly the rate you already tuned it to. The overnight economy is protected by
-construction rather than by picking a compromise number.
-
-Note the third row. Merely being in the app is not enough. The elevated rate attaches to
-a successful attunement, not to an active session, which keeps the reward tied to
-attention rather than presence.
-
-### 7.2 Rates by band
-
-Elevated rates scale down by band so Masterwork stays the scarcest thing in the ladder
-and the relative rarity ordering the current table already establishes is preserved.
-
-| Item | Idle rate (unchanged) | Attuned rate |
-|------|----------------------|-------------|
-| Rough Binding Sigil | 1.0% | 16% |
-| Refined Binding Sigil | 0.8% | 13% |
-| Pristine Binding Sigil | 0.6% | 10% |
-| Masterwork Binding Sigil | 0.4% | 8% |
-| Runic Cog | existing | 12% |
-
-Ancient Sigil and Master Glyph are genuine rares rather than recipe inputs. They may
-receive the attuned bonus at the implementer's discretion, but they are not required to
-and nothing depends on them.
-
-### 7.3 Dependency, Gleaning attunement is not built yet
-
-Gleaning has no active attunement window today. It is next on the build list. This
-section cannot ship before that lands.
-
-**Sequencing for Code:**
-
-1. Build the Gleaning attunement window, matching the pattern already used by the other
-   gathering talents.
-2. Then wire the rare-roll split in section 7.1, keyed on attunement success.
-3. Ship the Fitting recipes (section 3) and the Artificing row edit (section 4)
-   independently. Neither depends on attunement, and together they close the hard
-   blocker in bug #41.
-
-Steps 1 and 2 fix the scarcity complaint. Step 3 fixes the dead component. Step 3 can
-and should go first, because the bench is unusable until it does.
+Your call. The recipe table in section 1 assumes Spun Thread.
 
 ---
 
-## 8. Canonical Bench Recipe Table
+## 3. Resolver Note
 
-Fold this into material-economy.md. Every entry references an item with a real producer,
-listed in section 9.
+The recipe key is `(assemblerTalent, armorType)`. No new field is required.
 
-### Runesmithing, weapons and Plate armour
-Rare axis: Gemstone (Delving)
+Mapping:
 
-| Band | Component 1 | Component 2 | Rare |
-|------|------------|------------|------|
-| Rough | Iron Fitting | Rough Binding Sigil | Crude Gemstone |
-| Refined | Steel Fitting | Refined Binding Sigil | Rough Gemstone |
-| Pristine | Mithral Fitting | Pristine Binding Sigil | Refined Gemstone |
-| Masterwork | Adamant Fitting | Masterwork Binding Sigil | Pristine Gemstone |
+```
+(Runesmithing, None)      -> metal row
+(Runesmithing, Plate)     -> metal row, same recipe
+(Timber Shaping, None)    -> wood row
+(Tailoring, Leather)      -> leather row
+(Tailoring, Vestments)    -> vestment row
+(Artificing, None)        -> arcane row
+anything else             -> Generic fallback
+```
 
-### Timber Shaping, bows and wooden tools
-Rare axis: Amber (Delving)
-
-| Band | Component 1 | Component 2 | Rare |
-|------|------------|------------|------|
-| Rough | Ash Haft | Iron Fitting | Crude Amber |
-| Refined | Oak Haft | Steel Fitting | Rough Amber |
-| Pristine | Ironwood Haft | Mithral Fitting | Refined Amber |
-| Masterwork | Heartwood Haft | Adamant Fitting | Pristine Amber |
-
-### Tailoring, leather armour, Vestments, Quiver
-Rare axis: Amber (Delving)
-
-| Band | Component 1 | Component 2 | Rare |
-|------|------------|------------|------|
-| Rough | Rabbit Hide | Iron Fitting | Crude Amber |
-| Refined | Fox Leather | Steel Fitting | Rough Amber |
-| Pristine | Wolf Leather | Mithral Fitting | Refined Amber |
-| Masterwork | Direwolf Leather | Adamant Fitting | Pristine Amber |
-
-### Artificing, staves, wands, arcane tools
-Rare axis: Binding Sigil (Gleaning)
-Change from as-built: Apparatus replaces Fitting in component slot 1.
-
-| Band | Component 1 | Component 2 | Rare |
-|------|------------|------------|------|
-| Rough | Iron Apparatus | Ash Haft | Rough Binding Sigil |
-| Refined | Steel Apparatus | Oak Haft | Refined Binding Sigil |
-| Pristine | Mithril Apparatus | Ironwood Haft | Pristine Binding Sigil |
-| Masterwork | Adamantine Apparatus | Heartwood Haft | Masterwork Binding Sigil |
-
-### Crude band
-Crude items are built fresh from tier components in the owning talent and do not use the
-bench. No Crude row exists in any table above.
+`(Runesmithing, Plate)` and `(Runesmithing, None)` intentionally resolve to the same
+recipe. Plate and metal weapons are the same material family and splitting them would
+add a row that says the same thing twice.
 
 ---
 
-## 9. Producer for Every Referenced Component
+## 4. Asset Change Checklist
 
-| Component | Producer | Activity | Level | Status |
-|-----------|---------|----------|-------|--------|
-| Iron Fitting | Runesmithing | 1x Iron Bar to 3x | 10 | NEW |
-| Steel Fitting | Runesmithing | 1x Steel Bar to 3x | 30 | NEW |
-| Mithral Fitting | Runesmithing | 1x Mithril Bar to 3x | 60 | NEW |
-| Adamant Fitting | Runesmithing | 1x Void Alloy to 3x | 80 | NEW |
-| Rough Binding Sigil | Gleaning | Runic Deposits, rare drop | existing | rate split |
-| Refined Binding Sigil | Gleaning | Deep Runes, rare drop | existing | rate split |
-| Pristine Binding Sigil | Gleaning | Ancient Runes, rare drop | existing | rate split |
-| Masterwork Binding Sigil | Gleaning | Voidtouched, rare drop | existing | rate split |
-| Runic Cog | Gleaning | rare drop | existing | rate split |
-| Ash / Oak / Ironwood / Heartwood Haft | Timber Shaping | Log to Haft | existing | built |
-| Rabbit Hide / Fox / Wolf / Direwolf Leather | Tanning | Pelt to Leather | existing | built |
-| Iron / Steel / Mithril / Adamantine Apparatus | Artificing | Bar plus sigil input | existing | built |
-| Crude / Rough / Refined / Pristine Gemstone | Delving | Idle gather, gem deposits | existing | built |
-| Crude / Rough / Refined / Pristine Amber | Delving | Idle gather, cave resin | existing | built |
-| Iron / Steel / Mithril Bar, Void Alloy | Smelting | Ore to bar | existing | built |
+**Talent .asset files gaining activities:**
 
-Four new recipes on one talent. Everything else is an existing producer, with five
-Gleaning entries gaining a second roll rate.
+| File | Activities added |
+|------|-----------------|
+| Tanning | 4, Draw Sinew Rabbit / Fox / Wolf / Direwolf |
+| Tailoring | 4, Spin Thread / Weave Thread / Spin Fine Thread / Masterspin |
 
----
+**New ItemData assets to create (8):**
 
-## 10. Resulting Supply Dependencies
+```
+Rabbit Sinew Cord
+Fox Sinew Cord
+Wolf Sinew Cord
+Direwolf Sinew Cord
+Plain Thread
+Woven Thread
+Fine Thread
+Masterspun Thread
+```
 
-| Discipline | Depends on |
-|-----------|-----------|
-| Runesmithing | Smelting (bars), Delving (gems), Gleaning (sigils) |
-| Timber Shaping | Felling (logs), Runesmithing (fittings), Delving (amber) |
-| Tailoring | Tanning (leather), Runesmithing (fittings), Delving (amber) |
-| Artificing | Smelting (bars), Timber Shaping (hafts), Gleaning (sigils) |
+All eight are crafting components, not equipment. No `armorType`, no `weaponType`, no
+quality authored on the asset.
 
-Every discipline needs two or three suppliers and every discipline supplies someone
-else. Runesmithing becomes the hardware supplier for three of the four benches. Delving
-and Gleaning are the two load-bearing gathering talents. No discipline is fully
-self-sufficient and none is a dead end.
+**Producers that change:** none. Every existing producer keeps its current outputs.
+Tanning and Tailoring gain activities, they do not lose any.
+
+**Recipe table edits in `AssemblyManager`:** replace all five rows plus Generic per
+section 1. The Tailoring entry becomes two entries keyed on `armorType`.
+
+**Art needed:** 8 new 64x64 item icons. Sinew cords read as coiled tan and grey cord,
+graded by darkness and sheen. Threads read as wound spools, graded pale cream through
+deep shadow-purple to mirror the vestment ladder.
 
 ---
 
-## 11. What Claude Code Builds
+## 5. Reality Check, Materials to Verify Before Implementing
 
-**Ship first, closes the hard blocker, no dependencies:**
+I cannot read the Unity assets, so confirm these exist before wiring recipes to them.
+If any is missing, create it rather than letting the resolver fall through to Generic.
 
-1. **Four Fitting recipes** on Runesmithing, section 3. ItemData assets already exist in
-   `Assets/Data/Items/Assembly/` and only lack producers.
-2. **One recipe-table edit** in `AssemblyManager.Recipes`: the Artificing row's component
-   1 changes from Fitting to Apparatus, section 8.
-3. **Forge table cleanup**: material-economy.md section 3 references quality-graded Runic
-   Cogs that do not exist. Change all four rows to plain Runic Cog.
-4. **Fold sections 8 and 9 into material-economy.md** as the canonical component tables.
+| Material | Expected source | Confidence |
+|----------|----------------|-----------|
+| Wildgrass Clump | Foraging idle gather, T1 | Listed in the Foraging item sheet. Verify it is an authored ItemData and not just a tracker row. |
+| Herb Extract | Alchemy, 3x Common Herb | Named in material-economy.md section 7. High. |
+| Rare Herb | Foraging, low rate, T2 | High. |
+| Moonbloom Petal | Foraging, rare, T3 | High. |
+| Shadow Essence | Alchemy, 3x Shadow Pelt at Alchemy 60 | High. |
+| Rabbit Pelt, Fox Fur, Wolf Pelt, Direwolf Hide | Trapping | High. |
+| Ash / Oak / Ironwood / Heartwood Haft | Timber Shaping | High. |
+| Iron / Steel / Mithril / Adamantine Apparatus | Artificing | High. |
 
-**Ship after Gleaning attunement lands:**
-
-5. **Gleaning active attunement window**, matching the pattern used by the other
-   gathering talents.
-6. **Rare-roll rate split**, section 7. Idle rate unchanged, attuned rate 8% to 16% by
-   band, keyed on attunement success and not merely on an active session.
-
-**Do not build:** the Inscription Binding Sigil recipes or the Runesmithing Runic Cog
-recipe proposed in v1.0 of this document. Both are retracted.
+Wildgrass Clump is the one I would check first. The whole Spun Thread ladder depends on
+it and it is the material I have the least confirmation of.
 
 ---
 
-## 12. Acceptance Criteria
+## 6. Component Sinks After This Change
 
-- Every component named in section 8 resolves to an item with a producer in section 9.
-- A player can craft an Iron Fitting from an Iron Bar at Runesmithing 10.
-- The Artificing bench recipe consumes an Apparatus, not a Fitting.
-- Apparatus items remain consumable by Staff, Wand, and tool tier crafting. Nothing that
-  previously consumed an Apparatus has stopped working.
-- The Forge upgrade table references plain Runic Cog with no quality prefix.
-- Binding Sigils and Runic Cog are obtainable only from Gleaning. No craft recipe exists
-  for either.
-- An 8-hour unattended idle Gleaning session yields the same expected number of rares as
-  it does today. The idle rate is byte-identical to the pre-change value.
-- A successful Gleaning attunement rolls the elevated rate. An active gather without
-  attunement rolls the idle rate.
-- Bug #41 closes in two parts: items 1 and 2 make the bench operable at all, and items 5
-  and 6 make Sigil supply reachable through active play.
+Nothing is stranded. Checked family by family.
+
+| Component | Sinks before | Sinks after | Status |
+|-----------|-------------|------------|--------|
+| Fitting | Runesmithing, Timber, Tailoring, Generic | Runesmithing, Generic | Reduced but healthy. Runesmithing is 44 items, the largest line in the game, so Fitting demand stays the highest of any component. |
+| Haft | Timber, Artificing, Generic | Timber, Artificing, Generic | Unchanged |
+| Apparatus | Artificing | Artificing | Unchanged |
+| Binding Sigil | Runesmithing, Artificing | Runesmithing, Artificing, Vestments | Gained a sink |
+| Leather grades | Tailoring (both types) | Tailoring/Leather only | Reduced. Offset by Sinew Cord competing for the same pelts, so Tanning throughput demand is roughly flat. |
+| Gemstone | Runesmithing | Runesmithing | Unchanged |
+| Amber | Timber, Tailoring | Timber, Tailoring/Leather | Slightly reduced, vestments no longer draw on it |
+| Wildgrass Clump | none that I can find | Spun Thread ladder | Gained its first real sink |
+
+The one to watch is Amber. It loses the vestment line and now serves only 31 items
+across two rows. If Amber supply feels loose after this ships, the fix is to raise the
+Amber cost on the leather line rather than to reintroduce it to vestments.
+
+---
+
+## 7. Things In The Current Design I Think Are Wrong
+
+The brief asked for this, so here it is, beyond the fittings issue.
+
+**7.1 The Generic fallback fires silently.** With `(assemblerTalent, armorType)` covering
+every authored line, Generic should now only catch items with an empty `assemblerTalent`,
+which is a data bug rather than a legitimate case. Recommend logging a warning whenever
+Generic resolves, naming the item. Keep the row so nothing hard-fails, but make it
+audible. A silent fallback is how the vestment problem survived this long.
+
+**7.2 Masterwork will be the dominant Binding Sigil sink and may break the v2 rate model.**
+Masterwork is 20 percent base success and the rare is consumed on failure, so one
+successful Masterwork upgrade costs about 5 Binding Sigils. Sigils are attunement-gated
+rare drops at 8 to 16 percent. Three of the five recipe rows now use a Sigil as the rare
+and one more uses it as a component. Before shipping, instrument actual Sigil throughput
+against Masterwork attempt volume. If a Masterwork upgrade costs more Gleaning time than
+it plausibly should, the lever is the attuned rate, not the recipe.
+
+**7.3 Consuming the rare on failure is worth revisiting separately.** At Masterwork the
+expected cost is five of everything, including the rare. That is a defensible endgame
+tax, but it means the rare is doing double duty as both a rarity gate and a failure
+tax. If Masterwork upgrades test as punishing, consider returning the rare on failure
+while still consuming the components. That change is out of scope here and I am flagging
+it, not proposing it.
+
+**7.4 Drake Leather has no band.** The leather bands top out at Direwolf, so Drake
+Leather is a tier material with no role in the upgrade bench. This is correct given
+quality and tier are separate axes, but it will read as an omission to a player holding
+Drake Leather and wondering why it does nothing at the bench. Worth a line of UI copy on
+the item rather than a design change.
+
+**7.5 The vestment line had no material component at all.** Worth stating plainly as the
+root cause rather than a symptom. Metal, wood, and leather all have a material family
+with grades. Cloth never got one, so whoever wrote the original table reached for the
+nearest graded soft material, which was leather, and then needed a fastener, which was
+the Fitting. The fix is not to pick better substitutes, it is to give the line the
+material it was always missing. That is what Spun Thread is for.
+
+---
+
+## 8. Acceptance Criteria
+
+- Upgrading a Vestment consumes no leather and no metal at any band.
+- Upgrading a bow consumes no metal at any band.
+- Upgrading leather armor consumes no metal at any band.
+- `(Tailoring, Leather)` and `(Tailoring, Vestments)` resolve to different recipes.
+- `(Runesmithing, None)` and `(Runesmithing, Plate)` resolve to the same recipe.
+- All eight new components are craftable by a player who has levelled the producing
+  talent to the listed unlock, using inputs that talent or its supplier already produces.
+- Tanning xp per second still rises monotonically with tier after the four sinew
+  activities are added.
+- Tailoring xp per second rises monotonically across the four thread activities.
+- The Generic fallback logs a warning naming any item that resolves to it.
+- No new rarity enum exists. No quality field is named "tier". No Legendary item is
+  authored.
+- Every material referenced in section 1 resolves to an authored ItemData asset.
 
 ---
 
 *Path: docs/upgrade-component-economy.md*
-*Version 2.0 supersedes 1.0. Corrections in section 0.*
-*Decisions: Fittings get a Runesmithing producer, Apparatus replaces Fitting on the*
-*Artificing bench row only, Binding Sigils and Runic Cog stay Gleaning rare drops with*
-*an attunement-gated elevated rate that idle play cannot reach.*
+*Version 3.0 supersedes 2.0. Supply decisions from v2.0 carry forward unchanged.*
+*Two new component families, eight items, two talents gain activities, one resolver*
+*key change from assemblerTalent to (assemblerTalent, armorType).*

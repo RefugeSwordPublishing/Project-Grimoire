@@ -12,6 +12,34 @@ implemented in code** where the two diverge. When they conflict, the code (and t
 Claude Code updates this file as features land; Claude Chat should read it before any design work
 so it builds on the current state rather than the original design.
 
+## Session 2026-08-25, thematic upgrade recipes (upgrade-component-economy v3, IMPLEMENTED)
+
+Chat's v3 spec built in full (the Spun Thread path, not the lean alternative). Upgrade materials now
+match the item's material class; the metal Fitting no longer appears on wood, leather, or cloth.
+
+- **`AssemblyManager` recipe table + resolver rewritten.** `ResolveRecipe` now takes the `ItemData` and
+  keys on `(assemblerTalent, armorType)`: Tailoring splits into `Tailoring:Leather` and
+  `Tailoring:Vestments`; every other discipline keys on the talent alone. A Generic fallback now
+  `Debug.LogWarning`s naming the item (per spec 7.1, so the next silent-fallback data bug is audible).
+  New recipes: Timber Shaping = Haft + **Sinew Cord** + Amber; Leather = hide grade + **Sinew Cord** +
+  Amber; Vestments = **Spun Thread** + matching botanical (Herb Extract/Rare Herb/Moonbloom Petal/Shadow
+  Essence) + Binding Sigil. Runesmithing and Artificing unchanged.
+- **8 new component ItemData assets** in `Assets/Data/Items/Assembly/` (category RawMaterials, no
+  equip/quality): Rabbit/Fox/Wolf/Direwolf **Sinew Cord** (materialTier 1-4) and Plain/Woven/Fine/
+  **Masterspun Thread** (tier 1-4). Added to `Assets/ItemRegistry.asset` (308 -> 316 items). Icons are
+  **placeholders** (Sinew reuses the Rabbit Hide icon, Thread the Wildgrass Clump icon); 8 real 64x64
+  icons are pending an art pass.
+- **8 new producer activities.** Tanning gains Draw Sinew Rabbit/Fox/Wolf/Direwolf (L8/25/45/68, cycle
+  20/30/45/60s, yield 2, xpPerCycle 7/15/26/36 -> raw xp/s 0.35/0.50/0.58/0.60, rising and just below the
+  leather ladder). Tailoring gains Spin Thread / Weave Thread / Spin Fine Thread / Masterspin
+  (L10/30/55/75, cycle 25/40/60/85s, yield 2, xpPerCycle 10/20/35/53 -> raw xp/s 0.40/0.50/0.58/0.62,
+  rising and well below the armor ladder). Neither is the fastest xp/s in its talent, so neither is an XP
+  bypass. Thread inputs escalate Wildgrass Clump (its first real sink) + the previous grade.
+- **Notes:** Drake Leather remains a tier material with no upgrade band (bands top out at Direwolf); this
+  is correct under Quality-vs-Tier and flagged in the spec as a UI-copy item, not a design change. The
+  8 talent-`.asset` edits and item assets need **no baker** (Unity auto-reimports), but the registry and
+  new assets require Unity to reimport on focus.
+
 ## Session 2026-08-24, four tester bug fixes #44-#47 (for 0.1.3)
 
 All four from playtester Ryan (Android), all code-only fixes (no baker / tool runs needed):
