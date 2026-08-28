@@ -34,8 +34,24 @@ so it builds on the current state rather than the original design.
   bonus (`EquipmentStats.BonusPrimary/Secondary` are quality-only). So a caster's INT (which drives
   damage) rises with quality but not tier, making a low-tier upgraded piece beat a fresh higher-tier one.
   Handed to Chat for a `TierPrimaryBonus`/`TierSecondaryBonus` curve (`tier-quality-stat-curve-REQUEST.md`).
-- **Still open:** #51 (editable consumable hotbar, feature), #52 (dungeon entry / safe room, needs the
-  tester screenshot), #53 (explain what meals do, UX).
+- **#53 (don't know what meals do):** the 4 craftable Cookery meals had `effectType: None` + empty
+  `buffStats`, so eating them did nothing. Authored timed buffs per consumables-spec.md (Simple Stew
+  VIT +2, Herb Broth WIL +2, Traveler's Ration HP regen +2/sec, Warden's Feast DEX +3/LCK +2) and
+  clearer descriptions; `BuffManager.ApplyMeal` already applies them and `ItemStats.BuffLine`
+  auto-generates the on-item text. Data-only, no baker. (Note: the spec's other meals, e.g. Roasted
+  Rabbit/Venison Stew, exist as items but aren't in the current Cookery talent, a later reconciliation.)
+- **#52 (broken dungeon screen / safe room):** the combat UI rebuild left `ZoneCombatView` with no
+  dungeon awareness; `EnterDungeon` nulls `CurrentZone`, so the title stayed the scene default "Zone" and
+  non-combat rooms showed the bare "..." enemy placeholder. `ZoneCombatView` now sets the header to the
+  dungeon name during a crawl (`RefreshHeader`, subscribed to `OnDungeonRoom`) and shows a room label
+  ("Safe Room. Recover, then Advance." etc.) when a room has no enemy. The safe-room logic itself was
+  already correct (heal + mark cleared; advancing is the `DungeonRunUI` banner button). **Follow-up
+  flagged:** `EnterDungeon` skips `StartZoneCombat`, so it never sets `_grimoireId`/`_subclass`/`_tally`,
+  meaning dungeon combat XP + the WYWA tally are only correct if a zone was entered earlier that session.
+- **#51 (editable consumable hotbar):** scoped, not built. `CombatHotbarUI` is a 3-slot auto-fill bar
+  (best HP / class resource / antidote), text-only, no persistence, whose own comment flags manual
+  assignment + `player_settings` persistence as a planned later step. Feature = persist a slot->item
+  choice, a baked edit panel in the character menu, sprites on the bar. Medium effort; awaiting go-ahead.
 
 ## Session 2026-08-25, thematic upgrade recipes (upgrade-component-economy v3, IMPLEMENTED)
 
