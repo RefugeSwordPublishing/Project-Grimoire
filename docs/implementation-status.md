@@ -1,6 +1,6 @@
 ---
 type: implementation-status
-updated: 2026-08-24
+updated: 2026-08-28
 purpose: Single source of truth for WHAT IS ACTUALLY BUILT vs. design intent in the specs.
 audience: Claude (Chat or Code) starting a session. Read this FIRST, then the relevant spec.
 ---
@@ -11,6 +11,31 @@ The spec files in `docs/` describe **design intent**. This file records **what i
 implemented in code** where the two diverge. When they conflict, the code (and this file) win.
 Claude Code updates this file as features land; Claude Chat should read it before any design work
 so it builds on the current state rather than the original design.
+
+## Session 2026-08-28, tester bug pass #48-#54 (send/guild/merchant fixes; #54 to Chat)
+
+- **#49 (send-to-friend button greys out after first send):** `SendToPlayerUI.OnConfirm` disabled the
+  confirm button while sending and re-enabled it only on failure; a successful send left it disabled, so
+  the next open showed a greyed button. `Open()` now resets `interactable`.
+- **#50 (guild bank deposit: no quantity picker + items vanish):** the inventory "To Guild Bank" paths
+  (`InventoryContextMenuUI.OnSendGuild`, `InventoryUI.OnBulkSendToGuildBank`) called
+  `GuildBankManager.Deposit` (in-memory only) and never wrote the `upsert_guild_bank_slot` RPC, so items
+  left the bag but were wiped on the next `LoadFromServer`. Single-item now routes through the donate
+  panel (quantity picker + persist); bulk routes through new `GuildBankUI.DepositManyAndPersist`
+  (loads the guild once via `EnsureLoaded`, then `DoDeposit` + persist per stack). Guarded
+  `OnDonateConfirm` so it can't remove an item when the deposit can't persist.
+- **#48 (Auto-Eat: Quick "Confirm does nothing"):** the confirm button was wired correctly; the defect
+  was `RoyalMerchantUI.PurchaseMerchant` swallowing every failure (only `Debug.LogWarning`) and calling
+  `onApplied` unconditionally. Now the unlock is gated on `res.success`, failures show a `LootToastUI`
+  message, and an `already_purchased` error (server granted it but the client's success response was
+  dropped, looping the row on Buy) self-heals by applying the unlock locally and syncing.
+- **#54 (Ash staff weaker than upgraded Pine staff):** root-caused. Tier bonuses apply to the physical
+  weapon band + armour rating (`TierWeaponBonus`/`Tier*Bonus`) but NOT to the primary/secondary stat
+  bonus (`EquipmentStats.BonusPrimary/Secondary` are quality-only). So a caster's INT (which drives
+  damage) rises with quality but not tier, making a low-tier upgraded piece beat a fresh higher-tier one.
+  Handed to Chat for a `TierPrimaryBonus`/`TierSecondaryBonus` curve (`tier-quality-stat-curve-REQUEST.md`).
+- **Still open:** #51 (editable consumable hotbar, feature), #52 (dungeon entry / safe room, needs the
+  tester screenshot), #53 (explain what meals do, UX).
 
 ## Session 2026-08-25, thematic upgrade recipes (upgrade-component-economy v3, IMPLEMENTED)
 
