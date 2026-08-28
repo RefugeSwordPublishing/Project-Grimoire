@@ -204,10 +204,21 @@ All four from playtester Ryan (Android), all code-only fixes (no baker / tool ru
   wires the 8 approved sprites (Ignis/Glacius/Tempest/Ventus/Terra/Vita/Umbra/Lux) from
   `Assets/Art/GeneratedUI/combat_spell_projectiles` (staged from the tracker, flipped to Imported). Run it
   in the combat scene + save.
-- **Tracker art staged:** 27 approved item icons (arcanist/vanguard materials) exported to `GeneratedIcons`
-  + manifest (run `Import Generated Icons`), flipped to Imported. Still Approved with NO importer (needs
-  building or manual placement): backgrounds (`bg_*`, 18), `dungeon_hazards` (18), `ui_guild_emblems` (16),
-  `ui_hub_stations`/`ui_hub_ambient` (6), `ui_inventory_tabs` (5), `ui_debuff_icons` (3),
+- **Element spell projectile FIX:** the bolt is a mesh Quad (not a SpriteRenderer), so the first cut
+  showed the plain yellow quad. `FireBolt`/`ApplyBoltSprite` now texture the quad's per-instance material
+  (UVs mapped to the sprite rect, white tint over the sheet yellow), square it to the sprite aspect, and
+  face spell bolts at the camera (shots fly into the screen).
+- **More tracker art imported + APPLIED** (importers + wiring built):
+  - **Import Debuff Icons** -> `ZoneCombatView._debuffIcons` (poison/barbed/hemorrhage); the enemy debuff
+    row already renders them.
+  - **Import Inventory Tab Icons** -> the 5 `InventoryUI` category-tab buttons (adds an `Icon` child Image
+    per tab; reposition/skin in-editor).
+  - **Import Hazard Icons** -> `DungeonRunUI._hazardSprites`; a new hazard chip (icon + readable name) on
+    the dungeon banner shows when the current room is hazardous (`HazardArtIndex` maps the many
+    `DungeonHazard` values onto the 6 art icons).
+- **Tracker art staged:** 27 item icons (arcanist/vanguard materials, run `Import Generated Icons`) + the
+  three sets above, all flipped to Imported. Still Approved with NO importer (needs building or manual
+  placement): backgrounds (`bg_*`, 18), `ui_guild_emblems` (16), `ui_hub_stations`/`ui_hub_ambient` (6),
   `ui_guild_banner_kit` (1).
 - **Other 0.1.2 fixes:** tanning/hide economy realigned to the Trapping talent (added Wolf Trap, re-leveled
   Direwolf, stripped 10 stray/dead pelt drops); upgrade recipes now vary by assembler talent
