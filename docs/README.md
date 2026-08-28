@@ -67,6 +67,7 @@ Raw base: `https://raw.githubusercontent.com/RefugeSwordPublishing/Project-Grimo
 - player-account-system.md, push-notification-triggers.md, monetization-scope.md, infrastructure-cost-planning.md
 - royal-merchant-store-spec.md, full categorized Royal Merchant store (Chat v1.0): 5 tabs (Consumables/Inventory/Quests & Tasks/Cosmetics/Grimoires & DLC), GM-live rows + stubbed IAP, RoyalMerchantManager + purchase_merchant_item RPC + merchant_purchases column. Stays a top-level nav page (not an Exchange tab).
 - royal-merchant-store-REQUEST.md, the design ask (RESOLVED by royal-merchant-store-spec.md; kept for history)
+- chat-dock-panel-REQUEST.md, OPEN design ask (for Chat): redesign chat into ONE docked multi-channel panel (RuneScape/Idle Clans style) that minimizes to a single line and expands upward above the idle bar, with World/Guild/Private group filters + per-group unread and @username pings. Amends multiplayer-chat-spec.md's overlay-pill UI decision; keeps its data model. Notes the as-built reality (POLLING not realtime; single-channel ChatManager; general channel not built).
 - multiplayer-chat-spec.md, DESIGN (not built): friend system + guild/lobby/DM/general chat. Locked decisions (realtime transport, general chat deferred, overlay-pill UI), new tables (chat_messages/read_state/friendships/blocks/presence) + per-channel RLS, the realtime de-risk task, moderation, and P0-P4 phasing. Reuses guild/lobby RLS + FCM.
 
 ## Phase 3 content
