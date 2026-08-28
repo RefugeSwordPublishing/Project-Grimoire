@@ -48,6 +48,15 @@ so it builds on the current state rather than the original design.
   already correct (heal + mark cleared; advancing is the `DungeonRunUI` banner button). **Follow-up
   flagged:** `EnterDungeon` skips `StartZoneCombat`, so it never sets `_grimoireId`/`_subclass`/`_tally`,
   meaning dungeon combat XP + the WYWA tally are only correct if a zone was entered earlier that session.
+- **#54 (Ash staff), IMPLEMENTED (Chat's tier-quality-stat-curve v1.0):** tier now raises a piece's STAT
+  bonus, not just the physical band. Added 4 flat tables to `EquipmentStats` (`TierWeaponPrimary/Secondary`
+  {7,15,24,34}/{5,11,18,26} for weapons/foci; gentler `TierArmorPrimary/Secondary` {4,9,14,20}/{3,7,11,16}
+  for armour, to avoid compounding across 5 slots) and added the tier term in `EquipmentManager`'s weapon +
+  armour stat additions. One tier = two quality steps: a fresh Tier N piece beats a Tier N-1 upgraded once,
+  ties one upgraded twice, loses to one upgraded three times (verified: Ash T2 Crude INT 9 vs Pine T1 Rough
+  5 / Refined 9 / Pristine 14). **Not applied (Chat flagged for a decision):** the `TierWeaponBonus`
+  physical-band acceleration at T5 (section 4.2), and Chat wants the armour-rating quality table to verify
+  the armour tier bonuses. Expect an endgame enemy HP/defense tuning pass (~2.2x primary-stat gear inflation).
 - **#52 follow-up (dungeon combat XP), FIXED:** extracted `CombatManager.BeginCombatSession` (grimoire
   resolve, WYWA tally, XP hook, aggro, Summoner constructs) and call it from both `StartZoneCombat` and
   `EnterDungeon`, which previously skipped it, so dungeon combat XP + tally are now correct and a Summoner

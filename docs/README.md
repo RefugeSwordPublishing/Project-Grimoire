@@ -45,7 +45,14 @@ Raw base: `https://raw.githubusercontent.com/RefugeSwordPublishing/Project-Grimo
 - upgrade-component-economy.md, CANONICAL v3.0 (Chat, thematic recipe pass, IMPLEMENTED): upgrade materials now match the item's material class. Metal Fitting removed from wood/leather/cloth. Tailoring splits on armorType: Leather (hide + Sinew Cord + Amber), Vestments (Spun Thread + botanical + Binding Sigil). Two new component families: Sinew Cord (Tanning, 4 grades) + Spun Thread (Tailoring, 4 grades), 8 new items total. Resolver keys on (assemblerTalent, armorType); Generic fallback now logs a warning. v2.0 supply decisions (Fittings from Runesmithing, Sigils as Gleaning drops) carry forward unchanged
 - upgrade-component-economy-REQUEST.md, the design ask (RESOLVED by upgrade-component-economy.md; kept for history)
 - upgrade-recipe-thematic-REQUEST.md, the design ask (RESOLVED by upgrade-component-economy.md v3.0; kept for history)
-- tier-quality-stat-curve-REQUEST.md, OPEN design ask (for Chat): bug #54, tiering a gear piece up raises only its physical band (weapon damage / armour rating), NOT its stat bonus (INT/STR/etc.), which is quality-only. So a lower-tier piece upgraded one quality step out-performs a fresh higher-tier one. Asks Chat for TierPrimaryBonus/TierSecondaryBonus tables + the intended "one tier = N quality steps" relationship. Awaiting Chat's spec.
+- tier-quality-stat-curve.md, CANONICAL v1.0 (Chat, IMPLEMENTED): fixes bug #54. Tier now also raises a
+  piece's STAT bonus, not just the physical band. Rule: one material tier = two quality steps of stat.
+  Four flat tables in EquipmentStats: TierWeaponPrimary/Secondary {7,15,24,34}/{5,11,18,26} and the gentler
+  TierArmorPrimary/Secondary {4,9,14,20}/{3,7,11,16} (armour split avoids compounding across 5 slots).
+  OPEN follow-ups Chat flagged (not applied): TierWeaponBonus accelerates past the quality span at T5
+  (section 4.2 suggests {20,42,68,98}); and Chat wants the armour-rating quality table to verify the
+  armour tier bonuses.
+- tier-quality-stat-curve-REQUEST.md, the design ask (RESOLVED by tier-quality-stat-curve.md v1.0; kept for history)
 - tanning-hide-alignment.md, leather-chain drop fix (as-built): pelts come from Trapping, not kills; added Wolf Trap + re-leveled Direwolf, stripped stray/dead pelt drops from 10 enemies. Fixes bug 1c8db6e3
 
 - assembly-materials-crafting-system.md, crafting + assembly (design; reconciled to the two-axis model)
