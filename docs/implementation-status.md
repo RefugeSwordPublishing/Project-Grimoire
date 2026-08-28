@@ -157,6 +157,23 @@ All four from playtester Ryan (Android), all code-only fixes (no baker / tool ru
   coach-mark tours + milestone marks; per-element `[i]` tooltips (`InfoTip`/`CombatTooltips`). All baked/
   skinnable via `Bake Combat Hub` / `Bake Combat Result` / `Bake Coach Marks`; runtime fallbacks exist.
   Retired the Resume Combat pill (MinimizedCombatBarUI is the single minimized surface).
+- **Combat menu HUB REDESIGN, Stages 1-3 BUILT** (`combat-menu-hub-spec.md`, Chat; amends
+  `combat-navigation-flow-spec.md` section 5). Client-side only; needs `Bake Combat Hub` re-run + a skin
+  pass + Dustin to assign the 7 room-type icons on `CombatHubUI._roomTypeIcons`. Replaces the flat card
+  list with a hub: a Continue strip, then the zone ladder as tier-grouped **two-column TILES** (`TIER`
+  header + a `GridLayoutGroup` per tier), then Raids. **Tapping a tile body opens a separate
+  `ZoneDetailPanel` surface** (not an in-place expansion, the root cause of the "deep menu" feel): hero
+  art, description, enemies as **chips grouped Standard/Elite/Boss** (spawn % on standard only; a marker on
+  elites/bosses), and `ENTER ZONE` + `Dungeon` buttons at the bottom. The tile's own Enter button enters
+  directly (cold start stays 2 taps). The Dungeon button honours progressive disclosure (hidden until a
+  zone has been entered) and, when not enterable, shows disabled with the reason. The Dungeon button opens
+  a baked **`DungeonInfoPopup`** (name, tier + recommended level, room count = pool min/max + the 3 fixed
+  rooms, boss name via `DungeonData.boss`, first-clear XP, room-type mix chips) with `ENTER LOBBY` /
+  `Cancel`. **Stage 4 (the dungeon lobby) is NOT built:** `BossLobbyManager` is server-backed and deeply
+  coupled to boss identity (`boss_lobby` table, `boss_id`, shared `boss_current_hp/max_hp`,
+  `StartFight(bossBaseHP)`), so until Stage 4, `ENTER LOBBY` starts the solo dungeon run directly.
+  `Bake Combat Hub` builds/wires all nine new baked templates; runtime is populate-only (grid cell sizes
+  authored in the baker per spec 7.3); the legacy flat-card list stays as the pre-bake fallback.
 - **Other 0.1.2 fixes:** tanning/hide economy realigned to the Trapping talent (added Wolf Trap, re-leveled
   Direwolf, stripped 10 stray/dead pelt drops); upgrade recipes now vary by assembler talent
   (`AssemblyManager`, no new items); Exchange buy-order raw-error leak wrapped; ingredient-source tap

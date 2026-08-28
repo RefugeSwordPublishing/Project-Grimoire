@@ -52,7 +52,8 @@ Raw base: `https://raw.githubusercontent.com/RefugeSwordPublishing/Project-Grimo
   OPEN follow-ups Chat flagged (not applied): TierWeaponBonus accelerates past the quality span at T5
   (section 4.2 suggests {20,42,68,98}); and Chat wants the armour-rating quality table to verify the
   armour tier bonuses.
-- combat-menu-hub-REQUEST.md, OPEN design ask (for Chat): redesign the combat menu to feel like a hub (not a deep list), show a zone's enemies as a compact GROUP, put Enter Zone as a bottom button with a Dungeon button below it, a dungeon info popup (Enter Lobby / Cancel), and a single-player dungeon lobby reusing the boss lobby (PreBossLobbyUI/BossLobbyManager) with invites. Awaiting Chat's spec.
+- combat-menu-hub-spec.md, CANONICAL v1.0 (Chat, IMPLEMENTING): reshapes the combat menu from a scrolling list into a hub. Stage 1 banner + tier-grouped two-column zone TILE grid + Continue strip + Raids. Stage 2 a separate ZoneDetailPanel surface (not in-place expansion) with enemies as grouped chips (Standard/Elite/Boss), Enter Zone + Dungeon buttons at the bottom. Stage 3 DungeonInfoPopup (name/tier/rooms/boss/first-clear + Enter Lobby/Cancel). Stage 4 dungeon lobby reusing PreBossLobbyUI/BossLobbyManager via a LobbyContext generalization, with tappable empty-slot invites. Nine new baked templates; amends combat-navigation-flow-spec.md section 5.
+- combat-menu-hub-REQUEST.md, the design ask (RESOLVED by combat-menu-hub-spec.md v1.0; kept for history)
 - tier-quality-stat-curve-REQUEST.md, the design ask (RESOLVED by tier-quality-stat-curve.md v1.0; kept for history)
 - tanning-hide-alignment.md, leather-chain drop fix (as-built): pelts come from Trapping, not kills; added Wolf Trap + re-leveled Direwolf, stripped stray/dead pelt drops from 10 enemies. Fixes bug 1c8db6e3
 
