@@ -48,10 +48,18 @@ so it builds on the current state rather than the original design.
   already correct (heal + mark cleared; advancing is the `DungeonRunUI` banner button). **Follow-up
   flagged:** `EnterDungeon` skips `StartZoneCombat`, so it never sets `_grimoireId`/`_subclass`/`_tally`,
   meaning dungeon combat XP + the WYWA tally are only correct if a zone was entered earlier that session.
-- **#51 (editable consumable hotbar):** scoped, not built. `CombatHotbarUI` is a 3-slot auto-fill bar
-  (best HP / class resource / antidote), text-only, no persistence, whose own comment flags manual
-  assignment + `player_settings` persistence as a planned later step. Feature = persist a slot->item
-  choice, a baked edit panel in the character menu, sprites on the bar. Medium effort; awaiting go-ahead.
+- **#52 follow-up (dungeon combat XP), FIXED:** extracted `CombatManager.BeginCombatSession` (grimoire
+  resolve, WYWA tally, XP hook, aggro, Summoner constructs) and call it from both `StartZoneCombat` and
+  `EnterDungeon`, which previously skipped it, so dungeon combat XP + tally are now correct and a Summoner
+  gets its construct HP pool in dungeons.
+- **#51 (editable consumable hotbar), BUILT:** 3 slots, fully free-assign, combat instants only
+  (HP/Mana/Stamina/Cure). Assignments store the base consumable TYPE in `SettingsManager.HotbarSlots`
+  (persisted to `player_settings.hotbar_slots`, migration 047, gated behind the settings load) and the bar
+  surfaces the player's best quality of each (`CombatHotbarUI.ResolveBest`); falls back to the old auto-fill
+  when unassigned. Sprites now show per slot. Editor `HotbarEditUI` lives in the character panel.
+  **Bakers to run (Dustin):** `Tools > Grimoire > Build > Bake Hotbar Icons` (adds skinnable Icon to the
+  existing combat bar, surgical) and `Bake Hotbar Editor` (appends a skinnable editor section after the
+  character page ToolRow, touches nothing existing). Then skin + save the scene.
 
 ## Session 2026-08-25, thematic upgrade recipes (upgrade-component-economy v3, IMPLEMENTED)
 
