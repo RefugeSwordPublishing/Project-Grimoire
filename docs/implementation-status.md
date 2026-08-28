@@ -197,6 +197,18 @@ All four from playtester Ryan (Android), all code-only fixes (no baker / tool ru
   boundaries** (deferred): puzzles/hazards are client-local; "Run Again" from the result screen re-runs
   solo; a KO'd member drops out and the rest continue; orphaned `active` lobby rows aren't swept yet.
   **Untested, needs 2-device co-op verification.**
+- **Element spell projectiles BUILT + APPLIED.** Arcanist casts fire the element's own projectile sprite:
+  `CombatSceneController._spellProjectiles` (per-`RuneType` sprite) + `FireSpellBolt(rune)` /
+  `FireBolt(spriteOverride)`; `ZoneCombatView.OnSpellCastVisual` paints the bolt with the spell's lead
+  rune (`spell.sequence[0]`), plain-bolt fallback when unassigned. Editor tool **Import Spell Projectiles**
+  wires the 8 approved sprites (Ignis/Glacius/Tempest/Ventus/Terra/Vita/Umbra/Lux) from
+  `Assets/Art/GeneratedUI/combat_spell_projectiles` (staged from the tracker, flipped to Imported). Run it
+  in the combat scene + save.
+- **Tracker art staged:** 27 approved item icons (arcanist/vanguard materials) exported to `GeneratedIcons`
+  + manifest (run `Import Generated Icons`), flipped to Imported. Still Approved with NO importer (needs
+  building or manual placement): backgrounds (`bg_*`, 18), `dungeon_hazards` (18), `ui_guild_emblems` (16),
+  `ui_hub_stations`/`ui_hub_ambient` (6), `ui_inventory_tabs` (5), `ui_debuff_icons` (3),
+  `ui_guild_banner_kit` (1).
 - **Other 0.1.2 fixes:** tanning/hide economy realigned to the Trapping talent (added Wolf Trap, re-leveled
   Direwolf, stripped 10 stray/dead pelt drops); upgrade recipes now vary by assembler talent
   (`AssemblyManager`, no new items); Exchange buy-order raw-error leak wrapped; ingredient-source tap
