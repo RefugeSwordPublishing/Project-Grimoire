@@ -182,9 +182,21 @@ All four from playtester Ryan (Android), all code-only fixes (no baker / tool ru
   (new seeded overload) + `CombatManager.EnterDungeon(d, seed)` make **every member build the IDENTICAL
   room layout**. Guests who were invited resolve the `DungeonData` from `dungeon_id` via
   `CombatHubUI.ResolveDungeon`. The Dungeon popup's `ENTER LOBBY` now opens this lobby (solo fallback if
-  the lobby UI is absent). **Phase 2 (NOT built): shared room-by-room combat** (shared enemy-HP pool +
-  host-authoritative advance, mirroring the boss shared-HP sync). Until Phase 2, party members crawl the
-  same layout but fight their own room instances.
+  the lobby UI is absent).
+- **Stage 4 CO-OP DUNGEON, Phase 2 BUILT** (shared enemy HP). **Migration 049** adds a `dungeon_encounter`
+  table (`lobby_id, seq, current_hp, max_hp`, RLS on, participant-read) + a SECURITY DEFINER
+  `dungeon_take_damage(lobby, seq, max, amount)` RPC that upserts the pool at max on first contact and
+  decrements atomically, mirroring `boss_take_damage`. Client: `CombatManager.EnterDungeon(d, seed,
+  lobbyId, partySize)` marks the run co-op; each dungeon combat enemy shares its HP with the party keyed
+  by `_coopSeq`, a **deterministic per-combat-enemy counter** identical on every client (the room/enemy
+  sequence is seeded and the room queue is array-order with no RNG). Enemy HP scales by party size via
+  `ScaledBossHP`. The same accrue -> flush -> adopt loop as the boss fight (`ReportDungeonDamage`), so
+  mobs melt faster with more attackers and the server-confirmed kill advances everyone together. Rooms and
+  the Advance button stay each client's own; a client that drifts ahead just fights the next seq's pool
+  until the others catch up (graceful, no lockstep). Degrades to local HP on any network error. **Known
+  boundaries** (deferred): puzzles/hazards are client-local; "Run Again" from the result screen re-runs
+  solo; a KO'd member drops out and the rest continue; orphaned `active` lobby rows aren't swept yet.
+  **Untested, needs 2-device co-op verification.**
 - **Other 0.1.2 fixes:** tanning/hide economy realigned to the Trapping talent (added Wolf Trap, re-leveled
   Direwolf, stripped 10 stray/dead pelt drops); upgrade recipes now vary by assembler talent
   (`AssemblyManager`, no new items); Exchange buy-order raw-error leak wrapped; ingredient-source tap
