@@ -169,11 +169,22 @@ All four from playtester Ryan (Android), all code-only fixes (no baker / tool ru
   zone has been entered) and, when not enterable, shows disabled with the reason. The Dungeon button opens
   a baked **`DungeonInfoPopup`** (name, tier + recommended level, room count = pool min/max + the 3 fixed
   rooms, boss name via `DungeonData.boss`, first-clear XP, room-type mix chips) with `ENTER LOBBY` /
-  `Cancel`. **Stage 4 (the dungeon lobby) is NOT built:** `BossLobbyManager` is server-backed and deeply
-  coupled to boss identity (`boss_lobby` table, `boss_id`, shared `boss_current_hp/max_hp`,
-  `StartFight(bossBaseHP)`), so until Stage 4, `ENTER LOBBY` starts the solo dungeon run directly.
-  `Bake Combat Hub` builds/wires all nine new baked templates; runtime is populate-only (grid cell sizes
-  authored in the baker per spec 7.3); the legacy flat-card list stays as the pre-bake fallback.
+  `Cancel`. `Bake Combat Hub` builds/wires all nine new baked templates; runtime is populate-only (grid
+  cell sizes authored in the baker per spec 7.3); the legacy flat-card list stays as the pre-bake fallback.
+- **Stage 4 CO-OP DUNGEON LOBBY, Phase 1 BUILT** (shared lobby + shared layout). Rather than a parallel
+  system, the boss-lobby infra is generalized: **migration 048** adds `kind`/`dungeon_id`/`run_seed` to
+  `boss_lobby` and makes `boss_id` nullable (the join/leave RPCs, participant RLS, and realtime from 027
+  are unchanged, they key on the party columns only). `BossLobbyManager` gains `CreateDungeonLobby` /
+  `StartDungeon(seed)` and `IsDungeonLobby`/`DungeonId`/`RunSeed`. `PreBossLobbyUI.OpenForDungeon(zone)`
+  reuses the whole boss-lobby screen (party slots, Ready, **invite-on-empty-slot via the existing
+  guild-invite path**, party chat, poll sync); the header shows the dungeon name and the start button
+  reads `ENTER DUNGEON`. On start the host stamps a random `run_seed`; `DungeonGenerator.Generate(d, seed)`
+  (new seeded overload) + `CombatManager.EnterDungeon(d, seed)` make **every member build the IDENTICAL
+  room layout**. Guests who were invited resolve the `DungeonData` from `dungeon_id` via
+  `CombatHubUI.ResolveDungeon`. The Dungeon popup's `ENTER LOBBY` now opens this lobby (solo fallback if
+  the lobby UI is absent). **Phase 2 (NOT built): shared room-by-room combat** (shared enemy-HP pool +
+  host-authoritative advance, mirroring the boss shared-HP sync). Until Phase 2, party members crawl the
+  same layout but fight their own room instances.
 - **Other 0.1.2 fixes:** tanning/hide economy realigned to the Trapping talent (added Wolf Trap, re-leveled
   Direwolf, stripped 10 stray/dead pelt drops); upgrade recipes now vary by assembler talent
   (`AssemblyManager`, no new items); Exchange buy-order raw-error leak wrapped; ingredient-source tap
