@@ -14,6 +14,15 @@ and a deferred general chat. Plus the friend system that friend chat and blockin
 This is a design spec, nothing here is built yet. It is grounded in the existing multiplayer
 plumbing (boss lobby, guild RLS, FCM) so it reuses rather than reinvents.
 
+> **AMENDED by `chat-dock-panel-spec.md` v1.0 (2026-08-28).** Three of the locked decisions below no
+> longer hold; the data model, channel types, RLS shape, friend graph, and block model still stand.
+> 1. **Transport is POLLING, not websocket realtime.** The shipped chat polls (ChatManager, 3s), which
+>    is what the dock spec designs for. Decision 1 below is retired.
+> 2. **General (World) chat is UN-DEFERRED.** It ships as a single full-server room in the dock spec's
+>    Stage 2, not P4. Decision 2 below is superseded.
+> 3. **UI is a single docked multi-channel panel**, not the overlay pill + tabbed panel. Decision 3 is
+>    superseded by the dock spec.
+
 ---
 
 ## Decisions locked (2026-08-17 scoping)
