@@ -52,6 +52,7 @@ Raw base: `https://raw.githubusercontent.com/RefugeSwordPublishing/Project-Grimo
   OPEN follow-ups Chat flagged (not applied): TierWeaponBonus accelerates past the quality span at T5
   (section 4.2 suggests {20,42,68,98}); and Chat wants the armour-rating quality table to verify the
   armour tier bonuses.
+- combat-menu-hub-REQUEST.md, OPEN design ask (for Chat): redesign the combat menu to feel like a hub (not a deep list), show a zone's enemies as a compact GROUP, put Enter Zone as a bottom button with a Dungeon button below it, a dungeon info popup (Enter Lobby / Cancel), and a single-player dungeon lobby reusing the boss lobby (PreBossLobbyUI/BossLobbyManager) with invites. Awaiting Chat's spec.
 - tier-quality-stat-curve-REQUEST.md, the design ask (RESOLVED by tier-quality-stat-curve.md v1.0; kept for history)
 - tanning-hide-alignment.md, leather-chain drop fix (as-built): pelts come from Trapping, not kills; added Wolf Trap + re-leveled Direwolf, stripped stray/dead pelt drops from 10 enemies. Fixes bug 1c8db6e3
 
