@@ -197,6 +197,30 @@ All four from playtester Ryan (Android), all code-only fixes (no baker / tool ru
   boundaries** (deferred): puzzles/hazards are client-local; "Run Again" from the result screen re-runs
   solo; a KO'd member drops out and the rest continue; orphaned `active` lobby rows aren't swept yet.
   **Untested, needs 2-device co-op verification.**
+- **MATERIAL RECYCLING Stage 1 BUILT** (`material-recycling-spec.md`). Reclaimed Essence is a bound
+  per-player token (`PlayerData.ReclaimedEssence`, `player_currency.reclaimed_essence`, migration 052),
+  client-authoritative like SM/GM. `RecycleManager` holds the essence value table (quality x tier, spec
+  3.3) with Preview/Recycle; guardrails exclude protected/locked/placeholder/Legendary, and BULK touches
+  only Crude/Rough/Refined (Pristine/Masterwork need single-item recycle, a later pass, so no confirm
+  modal is needed to prevent valuable loss). `InventoryUI` gains a Recycle bulk action + an Essence chip;
+  `GameManager.PersistAfterRecycle` saves inventory + currency. Editor tool **Bake Recycle UI** clones the
+  Discard button + gold label into a Recycle button + Essence chip. **Stages 2-4 NOT built:** Stage 2
+  (Royal Merchant Reclamation sink) needs an essence-purchase path + cross-system effect wiring; Stage 3
+  (talent-XP return) is blocked, items carry no source-talent field; Stage 4 (auto-recycle) is QoL.
+- **DOCKED CHAT PANEL Stages 1-3 BUILT** (`chat-dock-panel-spec.md`), replacing the chat pill. **Stage 1:**
+  `ChatManager` multi-channel dock API (`OpenDock`/`SetDockExpanded`/`CloseDock`, merged `fetch_chat_feed`
+  poll at 3s expanded / 10s minimized, `OnFeedChanged`, `SendTo`; migration 053 adds the RLS-respecting
+  merged-feed RPC). New `ChatDockUI` (populate-only): minimized one-line preview + expanded merged feed
+  with Guild/Private/Lobby filter chips, group-tagged rows, a cycling send target, and a reply pill routing
+  Send to a tapped DM. Subscribes to guild + every DM thread + the current lobby. **Bake Chat Dock** builds
+  + wires it and removes `ChatPill` (do NOT re-run Build Chat Pill). **Stage 2:** World/general channel
+  (migration 054, general read policy + `chat_can_post` allows general; the 500-char cap + 5/10s rate limit
+  were already in `send_chat_message`); the dock always subscribes to World with a World chip + target.
+  **Stage 3:** @mentions, migration 055 adds `chat_mentions` + server-side mention extraction inside
+  `send_chat_message` + `chat_mention_count`; the dock highlights @names (self stronger), shows a
+  self-mention overlay, and a mention pip on the minimized line. **Stage 4 NOT built** (FCM push for
+  backgrounded mentions/DMs, per-group mute, resize handle). Run Bake Chat Dock, skin, position above the
+  idle bar, save. DM-thread subscription is present but per-group unread beyond Private is a refinement.
 - **BOSS LOBBY REPAIR.** The live `boss_lobby` table was missing `host_ready`/`p2_ready`/`p3_ready` and
   `boss_max_hp` (migration 027 used `create table if not exists` over an earlier reduced table, so the
   ready flags + HP snapshot were never added). The client wrote them, so `SetReady` PATCHed a nonexistent
