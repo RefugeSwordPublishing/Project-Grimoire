@@ -197,6 +197,20 @@ All four from playtester Ryan (Android), all code-only fixes (no baker / tool ru
   boundaries** (deferred): puzzles/hazards are client-local; "Run Again" from the result screen re-runs
   solo; a KO'd member drops out and the rest continue; orphaned `active` lobby rows aren't swept yet.
   **Untested, needs 2-device co-op verification.**
+- **HP PROGRESSION Stages 1-3 BUILT** (`hp-progression-spec.md`, fixes squishy-tier-scaling). **Stage 1:**
+  `PlayerData.GetMaxHP` is now `round((50 + TotalCombatLevel*2.5 + totalVIT*6) * HPPoolMultiplier)`. Two
+  changes from as-built: a Total-Combat-Level baseline term couples survivability to the content gate, and
+  VIT is a flat 6 HP/point (killed the old 4-base-vs-7-bonus/equip double-count). `totalVIT` now also
+  includes the **Grimoire milestone VIT channel** (`CombatXP.GetStatBonus("VIT")`), which the old formula
+  omitted, so per-path VIT milestones actually raise HP. **Stage 2:** `GrimoireManager.ApplyHPPool` reads a
+  per-subclass `HPPoolMultiplier` table (Warlord 1.25, Bulwark 1.40, Shadowblade/Sharpshot 1.00, Lone
+  Wanderer 0.95, Runeweaver/Summoner 0.90, Lifebinder 1.60) instead of the Lifebinder-only 1.6. **Stage 3:**
+  `CombatXPManager.Milestones` gains VIT ladders for every path (Vanguard +8 total, Warden +4, Arcanist +3);
+  Warden/Arcanist previously gained zero permanent HP. **Migration 050** adds `stat_type` to the
+  `player_stat_bonuses` PK so Vanguard's two Lv-23 grants (STR+VIT) no longer collide on insert. Existing
+  high-level accounts get the new VIT on the next level-past-milestone or offline table rebuild. **Stage 4
+  NOT built** (flagged): mitigation cap at 75%, revive 10%->25% + immunity, percentage healing. The
+  uncapped-mitigation immortality risk pre-exists and is independent of the HP change.
 - **Element spell projectiles BUILT + APPLIED.** Arcanist casts fire the element's own projectile sprite:
   `CombatSceneController._spellProjectiles` (per-`RuneType` sprite) + `FireSpellBolt(rune)` /
   `FireBolt(spriteOverride)`; `ZoneCombatView.OnSpellCastVisual` paints the bolt with the spell's lead
