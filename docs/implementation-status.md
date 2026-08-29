@@ -197,6 +197,16 @@ All four from playtester Ryan (Android), all code-only fixes (no baker / tool ru
   boundaries** (deferred): puzzles/hazards are client-local; "Run Again" from the result screen re-runs
   solo; a KO'd member drops out and the rest continue; orphaned `active` lobby rows aren't swept yet.
   **Untested, needs 2-device co-op verification.**
+- **BOSS LOBBY REPAIR.** The live `boss_lobby` table was missing `host_ready`/`p2_ready`/`p3_ready` and
+  `boss_max_hp` (migration 027 used `create table if not exists` over an earlier reduced table, so the
+  ready flags + HP snapshot were never added). The client wrote them, so `SetReady` PATCHed a nonexistent
+  column (Ready button did nothing) and `StartFight` PATCHed `boss_max_hp` (400 -> status never went
+  active -> solo host could not start). **Migration 051** adds the four columns; this fixes the current
+  0.1.3 build with no rebuild (client already writes them). Also widened the invite "recently active"
+  window from 5 to 30 minutes (`BossLobbyManager`), since 5 min made the invite list read as empty in an
+  idle game (needs the next build). The empty invite list was not a bug on its own: no other guildmate was
+  actually online. **AUDIT FOLLOW-UP:** other `create table if not exists` migrations may have the same
+  drift; worth checking columns vs. code for boss_lobby's siblings.
 - **HP PROGRESSION Stages 1-3 BUILT** (`hp-progression-spec.md`, fixes squishy-tier-scaling). **Stage 1:**
   `PlayerData.GetMaxHP` is now `round((50 + TotalCombatLevel*2.5 + totalVIT*6) * HPPoolMultiplier)`. Two
   changes from as-built: a Total-Combat-Level baseline term couples survivability to the content gate, and
