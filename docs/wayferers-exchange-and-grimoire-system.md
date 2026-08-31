@@ -25,7 +25,7 @@ The single unified currency used across all transactions in the game, market lis
 | **Silver Mark** | SM | Day-to-day transactions, consumables, common materials, low-tier gear |
 | **Gold Mark** | GM | Mid-to-high tier items, rare materials, Assembly components, Grimoire purchases |
 
-**Conversion:** 1,000 Silver Marks = 1 Gold Mark
+**Conversion:** 100 Silver Marks = 1 Gold Mark. One direction only (GM to SM); there is no SM to GM path anywhere in the game, since GM is real-money purchasable. Canonicalized in traveling-merchant-spec.md v1.0 (the older 1,000:1 figure predated current quest-reward tuning and is retired).
 
 **Price Range by Rarity:**
 | Item Tier | Typical Price Range |
