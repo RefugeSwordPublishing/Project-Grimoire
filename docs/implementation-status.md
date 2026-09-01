@@ -46,9 +46,10 @@ bounties replace the generic pool. **Not yet compiled in Unity or baked**, so tr
 **Pool expanded to 85 (2026-09-01):** `CreateQuests.cs` now authors the full v2.1 pool from
 `daily-weekly-quest-system-pool.md` (Chat): 55 daily + 30 weekly, all 15 non-combat talents (>=2 daily +
 1 weekly) + all 6 factions, 4 new givers (Tamsin Kettle / Brother Aldis / Nessa Fen / Old Harl). Every
-item/faction/gear name vetted against real ItemData. Re-run **Create Quests** to regenerate. Caveat:
-`nessa_zone` (the one ReachZone quest) only completes if accepted while standing in Saltmarsh Shore, since
-zone-entry tracking is not wired into QuestProgressTracker (NotifyZoneReached is never called).
+item/faction/gear name vetted against real ItemData. Re-run **Create Quests** to regenerate. `nessa_zone`
+(the one ReachZone quest) targets `zone_1b` (Saltmarsh Shore); zone-entry tracking is now wired
+(`CombatManager.OnZoneEntered` -> `QuestProgressTracker` -> `NotifyZoneReached`), so it completes on entering
+that zone.
 
 **As-built deviations from the spec (Dustin-approved / reconciliation):** (1) XP is a small side bonus
 (base 120 daily / 500 weekly, tier-scaled), NOT the spec's primary talent-scaled XP. (2) Four bonus items
