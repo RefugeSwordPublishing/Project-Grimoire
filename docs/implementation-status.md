@@ -43,6 +43,13 @@ bounties replace the generic pool. **Not yet compiled in Unity or baked**, so tr
   `NotifyExchangeSale(1)`, so the previously-dead SellOnExchange path now advances (`quinn_exchange` counts
   each earnings collection; count set to 3).
 
+**Pool expanded to 85 (2026-09-01):** `CreateQuests.cs` now authors the full v2.1 pool from
+`daily-weekly-quest-system-pool.md` (Chat): 55 daily + 30 weekly, all 15 non-combat talents (>=2 daily +
+1 weekly) + all 6 factions, 4 new givers (Tamsin Kettle / Brother Aldis / Nessa Fen / Old Harl). Every
+item/faction/gear name vetted against real ItemData. Re-run **Create Quests** to regenerate. Caveat:
+`nessa_zone` (the one ReachZone quest) only completes if accepted while standing in Saltmarsh Shore, since
+zone-entry tracking is not wired into QuestProgressTracker (NotifyZoneReached is never called).
+
 **As-built deviations from the spec (Dustin-approved / reconciliation):** (1) XP is a small side bonus
 (base 120 daily / 500 weekly, tier-scaled), NOT the spec's primary talent-scaled XP. (2) Four bonus items
 that have no `ItemData` (Refined/Pristine Phantom Pelt + Void Spore) swapped to Amber (undead) / Gemstone
