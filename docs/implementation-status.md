@@ -12,6 +12,43 @@ implemented in code** where the two diverge. When they conflict, the code (and t
 Claude Code updates this file as features land; Claude Chat should read it before any design work
 so it builds on the current state rather than the original design.
 
+## Session 2026-08-31, themed quests v2.0 (accept-to-pin bounties + Delivery turn-in) [built, pending bake + Unity compile]
+
+Reworked the daily/weekly quest system per `daily-weekly-quest-system.md` v2.0 (from Chat). Themed NPC-giver
+bounties replace the generic pool. **Not yet compiled in Unity or baked**, so treat as landed-but-unverified.
+
+- **Data model:** `QuestDefinition` gains `giverName`, `fulfillment` (Delivery|Track), and gear-delivery
+  fields (`deliverWeaponType` / `deliverArmorType` / `maxDeliverQuality`). `PlayerQuest` gains `accepted` +
+  `acceptedAtTicks`. Migration **059 (applied live + verified)** adds `player_quests.accepted` (bool default
+  false) + `accepted_at` (timestamptz).
+- **Accept-to-pin (`QuestManager`):** `EnsureCadence` now draws a BOARD of offers (6 daily / 4 weekly,
+  `accepted=false`) instead of auto-active quests. `Accept()` enforces the accept cap (3 daily / 2 weekly +
+  Royal Merchant bonus slots, now feeding the cap not the board size), stamps `acceptedAt`, and completes a
+  ReachZone-while-already-there edge case. Every `Notify*` progress path is gated on `q.accepted`.
+- **Delivery turn-in (client-authoritative, merchant rails):** Delivery quests (Gather/Process/Craft) are
+  NOT event-counted; progress is the live inventory balance (`DeliveryHave`, excludes locked/protected).
+  `TurnIn()` consumes lowest-quality-first (skips locked), grants rewards, and persists inventory + SM via
+  `PersistAfterRecycle()` (same path as the Traveling Merchant sell); `PatchTurnIn` marks the row done.
+  Gear quests match by weapon/armour CATEGORY with a Rough quality cap (`MatchesDelivery`), which the old
+  name-only matcher could not do. Track quests still claim through `collect_quest_reward`.
+- **Scaling (`QuestScaler`):** Delivery SM scales by the item-count multiplier (keeps the ~1.8x merchant-floor
+  ratio flat across tiers); gear counts stay fixed and scale reward by tier only.
+- **Pool (`CreateQuests.cs`, re-run required):** 17 daily + 11 weekly, 10 named givers, SM-led rewards, GM
+  only on 3 weekly capstones. `EarnTalentXP` retired as an objective (enum kept for save-compat).
+- **UI (`QuestBoardUI` + `BakeQuestBoard`, re-bake required):** Daily/Weekly tabs now show an ACCEPTED
+  section over TODAY'S BOARD with Accept buttons, Delivery Turn-In (+ a confirm modal that names the consumed
+  quality), and Track Claim. Bounties tab unchanged. Five new baked templates (QuestOfferCard /
+  QuestActiveCard / SectionHeader / QuestTurnInModal / QuestLineRow). **Re-baking re-skins the quest board.**
+- **Exchange-sale wiring:** `MarketManager.OnEarningsCollected` (new) -> `QuestProgressTracker` ->
+  `NotifyExchangeSale(1)`, so the previously-dead SellOnExchange path now advances (`quinn_exchange` counts
+  each earnings collection; count set to 3).
+
+**As-built deviations from the spec (Dustin-approved / reconciliation):** (1) XP is a small side bonus
+(base 120 daily / 500 weekly, tier-scaled), NOT the spec's primary talent-scaled XP. (2) Four bonus items
+that have no `ItemData` (Refined/Pristine Phantom Pelt + Void Spore) swapped to Amber (undead) / Gemstone
+(void); "rare material" placeholders -> Gemstone. (3) "Sword or Dagger" gear quest is Sword-only (single
+`deliverWeaponType`). (4) SellOnExchange counts earnings-collections, not individual items sold.
+
 ## Session 2026-08-28, tester bug pass #48-#54 (send/guild/merchant fixes; #54 to Chat)
 
 - **#49 (send-to-friend button greys out after first send):** `SendToPlayerUI.OnConfirm` disabled the
