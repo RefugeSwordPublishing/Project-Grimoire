@@ -12,6 +12,29 @@ implemented in code** where the two diverge. When they conflict, the code (and t
 Claude Code updates this file as features land; Claude Chat should read it before any design work
 so it builds on the current state rather than the original design.
 
+## Session 2026-09-04, weapon handedness revision [built, pending Create Equipment + compile]
+
+Built `weapon-handedness-revision-spec.md` v2.0 (supersedes the shields-crossbow-followup handedness). The
+base melee + wand are now one-handed and shield-capable; the two-handed set is Staff/Shortbow/Longbow + a
+new Greataxe. **Not yet recompiled or re-authored in Unity.**
+
+- **Handedness:** `ItemData.IsOneHanded` = Sword, Dagger, Axe, Wand, Crossbow. Two-handed: Staff, Shortbow,
+  Longbow, Greataxe (new `WeaponType.Greataxe`, appended; ArmingSword/HandAxe kept in the enum, deprecated,
+  for save deserialization). Off-hand slot, block channel, swap/refusal rules unchanged.
+- **Balance (`WeaponSpeed`):** the DPS gradient is now the ONE-handed baseline. Wand `damageFactor` 0.72 ->
+  0.83 (the 1H penalty is deleted), Staff 1.13 -> 1.37 (a +14.8% two-handed premium, since it has no mechanic
+  to differentiate it from the wand). New Greataxe: speed 1.35 (2.70s) / damage 1.49 (+15% over Axe). The two
+  drawn bows are UNCHANGED (they already carry the Bowstring weak-point as their two-handed premium). Removed
+  the ArmingSword/HandAxe rows.
+- **Items:** `CreateEquipment` drops Arming Sword + Hand Axe (re-running purges those 10 assets) and adds 5
+  Greataxe (Bronze..Void, metal-named). **Re-run Create Equipment.**
+- **Save migration:** `ItemRegistry.Get` name fallback now remaps "X Arming Sword" -> "X Sword" and
+  "X Hand Axe" -> "X Axe" (alongside the existing "X Bow" -> "X Longbow"), so a saved variant loads as the
+  base weapon of the same tier (slightly stronger; nobody loses anything). Client-side on load, no SQL pass.
+- **Tracker:** weapons sheet swaps the two variant slots for a Greataxe slot; `sync-tracker-items.mjs` WEAPON
+  array gains Greataxe; the 10 Arming Sword/Hand Axe game_items rows were removed. Pushed (asset tracker
+  c6c7f9d). EquipmentStats/GearTalents updated (Greataxe = STR/DEX, Runesmith).
+
 ## Session 2026-09-04, party ally cards, FEATURE COMPLETE (all 3 slices) [pending 2-account co-op verify]
 
 All of `party-ally-cards-spec.md` v1.0 is built. Migrations 060 (lobby_member_state + sync_member_state)
