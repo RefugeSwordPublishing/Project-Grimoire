@@ -12,7 +12,17 @@ implemented in code** where the two diverge. When they conflict, the code (and t
 Claude Code updates this file as features land; Claude Chat should read it before any design work
 so it builds on the current state rather than the original design.
 
-## Session 2026-09-04, party ally cards, server slice 1 [applied; client not built]
+## Session 2026-09-04, party ally cards, FEATURE COMPLETE (all 3 slices) [pending 2-account co-op verify]
+
+All of `party-ally-cards-spec.md` v1.0 is built. Migrations 060 (lobby_member_state + sync_member_state)
+and 061 (inspect_player) are APPLIED. Client: `MemberStateSync` (four-tier cadence, one-RPC write+read,
+status serialization, freshness), `AllyCardsUI` (cards with name/class/live HP, debuff chip row, downed/
+left/stale states, tap-to-inspect runtime modal), `BakeAllyCards` (non-destructive baker above the player
+HP bar). `CombatManager.CoopLobbyId` feeds the lobby id. inspect_player was reconciled to the real schema
+(no derived stat columns; INT emitted as "intl"; equipment = player_equipment.data). Raid plumbing (5-slot)
+is in; raid combat stays deferred. Remaining is a live 2-account co-op test.
+
+## Session 2026-09-04, party ally cards, server slice 1 [superseded by the entry above]
 
 Started `party-ally-cards-spec.md` v1.0 (co-op ally cards + live member-state sync). **Migration 060
 APPLIED to prod.** Client is NOT built yet.
