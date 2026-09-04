@@ -12,6 +12,37 @@ implemented in code** where the two diverge. When they conflict, the code (and t
 Claude Code updates this file as features land; Claude Chat should read it before any design work
 so it builds on the current state rather than the original design.
 
+## Session 2026-09-04, shields for melee/arcane (Q2) + follow-up decisions [built, pending Create Equipment + compile]
+
+Built the Question 2 half of `shields-crossbow-followup-spec.md` v1.0. Question 1 (crossbow technique
+conversions) is NOT built and should not be, see the note at the end.
+
+- **Two one-handed weapon types (`WeaponType`, append-only):** `ArmingSword` (0.90 / 1.80s / dmg 0.80) and
+  `HandAxe` (1.10 / 2.20s / dmg 0.94), both ~13% below the two-handed DPS gradient, the band cut being the
+  price of the off-hand. `ItemData.IsOneHanded` now covers Crossbow, ArmingSword, HandAxe, and Wand.
+- **Wand reclassified one-handed (Dustin's call, spec 6.3):** `damageFactor` 0.83 -> 0.72, speed unchanged
+  (1.60s). This is a LIVE nerf to every shipped Wand (~13% less offence) in exchange for off-hand access;
+  chosen over adding a separate Focus weapon because the tester population is tiny. The Wand asset is
+  unchanged (weaponType stays Wand); only the code table moved.
+- **Favoured stats / accuracy / crafting talent:** ArmingSword = STR/VIT/acc 6 (like Sword), HandAxe =
+  STR/DEX/acc 3 (like Axe), both Runesmithing.
+- **Shield aggro 15% -> 10%, flat for all paths** (spec 6.1, `ShieldStats.AggroBonusPct`). Still inert until
+  Phase 4 parties. Vanguard combos are NOT gated on two-handedness (the band cut flows through the combo
+  multiplier, so a one-handed combo build is simply lower, spec 6.2). No per-class shield restriction (spec
+  6.4): the damageFactor penalty is the gate.
+- **Rename fallout fixed:** the v1.0 Bow->Longbow rename had silently broken Corwin's "craft a Bow" delivery
+  quests (they matched `WeaponType.Bow`, which no item is anymore). `QuestManager.WeaponMatches` now treats a
+  Bow-typed delivery quest as "any bow archetype" (Shortbow/Longbow/Crossbow). Runtime-only, no quest re-author.
+- **Authoring:** `CreateEquipment` gains Arming Sword + Hand Axe rows (10 new ItemData, metal-named). **Re-run
+  Create Equipment.** New weapon types have NO icon atlas entry yet (`ImportGeneratedIcons`), that is art-pass
+  work, not a blocker.
+- **Question 1 deliberately NOT built:** the spec's crossbow technique-conversion table assumes the Warden
+  technique tree is a wired runtime system. It is not, `WardenTechniqueLibrary` is DISPLAY-ONLY handbook text
+  (only the 3-ability ring, draw crit, Fade, Barbed bleed, and Armor Piercer are actually wired). So the
+  conversions are a display-text change now + real mechanical wiring later, when/if the technique system is
+  built. The one real mechanical part, "a crossbow can never weak-point", already shipped in v1.0. Chat's
+  audit (Sharpshot 12/15 draw-dead, Lone Wanderer nearly crossbow-ready) is kept as the blueprint for that work.
+
 ## Session 2026-09-04, Warden weapons + shield off-hand [built, pending Create Equipment + Unity compile]
 
 Implemented `warden-weapons-shield-spec.md` v1.0 (from Chat). Three real bow archetypes, a shield off-hand,
