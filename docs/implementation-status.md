@@ -12,6 +12,26 @@ implemented in code** where the two diverge. When they conflict, the code (and t
 Claude Code updates this file as features land; Claude Chat should read it before any design work
 so it builds on the current state rather than the original design.
 
+## Session 2026-09-04, party ally cards, server slice 1 [applied; client not built]
+
+Started `party-ally-cards-spec.md` v1.0 (co-op ally cards + live member-state sync). **Migration 060
+APPLIED to prod.** Client is NOT built yet.
+
+- **`lobby_member_state` table (migration 060, live):** one row per member per lobby (current_hp, max_hp,
+  statuses jsonb, member_status alive/downed/left, denormalized username/grimoire_id/combat_level). Self
+  -referential RLS ("read the party if you're in the party") so it works at any party size. Chosen over
+  widening `boss_lobby` so five clients writing ~3x/sec never contend on one shared row.
+- **`sync_member_state(lobby_id, hp, max_hp, statuses, full)` RPC (live):** writes the caller's own row and
+  returns every OTHER member's state in one round trip (the halving that makes a 300ms cadence affordable).
+  Self-healing UPSERT (row created on first sync, static fields from `players`), so the working join RPC is
+  untouched. Membership gated against the real `boss_lobby` roster including the new raid slots. `p_full`
+  toggles fast shape (hp+ms+ts) vs full (adds roster + status list). `leave_member_state` marks 'left'.
+- **`boss_lobby` gains player_4_id/player_5_id (+ready) (live):** nullable, inert until raids; lets the gate
+  be written raid-ready once. Raid COMBAT stays deferred.
+- **NOT built:** the whole client (MemberStateSync cadence controller, AllyCardContainer + baker, debuff
+  row, states, inspect panel) and the `inspect_player` RPC (slice 3; its spec SQL needs column reconciliation,
+  see docs/README.md note). Build order: slice 1 (C1+C3) = cards with name/class/live HP.
+
 ## Session 2026-09-04, shields for melee/arcane (Q2) + follow-up decisions [built, pending Create Equipment + compile]
 
 Built the Question 2 half of `shields-crossbow-followup-spec.md` v1.0. Question 1 (crossbow technique
