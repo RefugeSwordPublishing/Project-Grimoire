@@ -12,6 +12,40 @@ implemented in code** where the two diverge. When they conflict, the code (and t
 Claude Code updates this file as features land; Claude Chat should read it before any design work
 so it builds on the current state rather than the original design.
 
+## Session 2026-09-04, Warden weapons + shield off-hand [built, pending Create Equipment + Unity compile]
+
+Implemented `warden-weapons-shield-spec.md` v1.0 (from Chat). Three real bow archetypes, a shield off-hand,
+and a player block channel. **Not yet compiled or re-authored in Unity**, so treat as landed-but-unverified.
+
+- **Weapon types (`ItemData.WeaponType`, append-only):** added `Shortbow` / `Longbow` / `Crossbow`; `Bow`
+  kept but DEPRECATED. `WeaponSpeed` rows: Shortbow 0.82 (1.64s, "Brisk"), Longbow 1.18 (2.36s, "Weighty"),
+  Crossbow 1.45 (2.90s, "Ponderous", the slowest weapon in the game). Deprecated `Bow` now resolves to
+  Longbow's numbers. `ItemData.IsOneHanded => weaponType == Crossbow` (only the crossbow; sword+shield later).
+- **Bow rename + save migration:** the five per-tier bows become **Longbows** (CreateEquipment renames in
+  place and purges the old "X Bow" assets). `ItemRegistry.Get` falls back "X Bow" -> "X Longbow", so any
+  saved equipment row / inventory entry / recipe naming a legacy bow still resolves. One mapping, no data loss.
+- **Off-hand slot (`EquipmentSlot.OffHand`, append-only):** shields only. Distinct from the Quiver (a crossbow
+  Warden wears Crossbow + Quiver + Shield at once). `EquipmentManager` adds it to `GearSlots`; handedness rules
+  in `Equip`/`EquipBlockReason`: equipping a 2H weapon stows an equipped shield first (refuses "No room to stow
+  your shield" if the bag is full, via new `InventoryManager.HasFreeSlot`); equipping a shield is refused
+  unless a 1H weapon is in hand ("Two-handed weapon equipped." / "Equip a one-handed weapon first.").
+- **Shields + block (`ShieldStats.cs`, new):** block is a NET-NEW third defensive channel. `PlayerData` gains
+  `blockChance` (0-100), `blockReduction` (0-1), `braceActive`, and `GetBlockChance/GetBlockReduction` (fold in
+  the Brace boost). `CombatManager.ResolveEnemyAttack` inserts the roll **between evade and mitigate**: a chance
+  to REDUCE the hit by a percentage, never negate. Chance scales with quality (20-34%), reduction with tier
+  (50-58%); shields carry only token armour (2/tier) and an authored-but-inert +15% aggro (Phase 4). Effective
+  HP ~16-25%. Item card shows the block line + a handedness line on weapons.
+- **Crossbow = idle/emergency build:** `ResolveAttack` forces `isActivePlay = false` when a Crossbow is
+  equipped, so it can NEVER roll the Bowstring weak-point (pure auto-fire). It keeps quiver coatings/bleeds and
+  per-swing proc normalization (PlayerInterval already reads the crossbow's 2.90s). Character page shows a
+  runtime-cloned `Slot_OffHand` (mirrors the Accessory slot) with locked / empty / filled states.
+- **Authoring:** `CreateEquipment` (Content menu) now writes 20 ItemData: 5 renamed Longbows + 5 Shortbows +
+  5 Crossbows + 5 metal Shields, and rebuilds the registry. **Run Create Equipment.** No new baker.
+- **DEFERRED (flagged to Dustin, spec allows):** Brace crossbow active (fields ready, no input wiring, spec
+  5.2); the crossbow progression gap (spec 5.3, draw-gated Warden techniques do nothing on a crossbow, needs a
+  design call before crossbow ships); real bow/shield art; sword+shield (spec 7). Note: weapons are not
+  path-gated in this codebase, so the shield is crossbow-gated by handedness rather than Warden-only.
+
 ## Session 2026-08-31, themed quests v2.0 (accept-to-pin bounties + Delivery turn-in) [built, pending bake + Unity compile]
 
 Reworked the daily/weekly quest system per `daily-weekly-quest-system.md` v2.0 (from Chat). Themed NPC-giver
