@@ -1,81 +1,80 @@
-# Mobile Playtest Checklist, 0.1.3 "Tempered"
+# Mobile Playtest Checklist, 0.1.4
 
-What to verify on the 0.1.3 phone build. Grouped by the release notes. Check items off as you confirm
-them on device. Earlier-build checks (hub reskin, quest board, summoner combos, BUG-001..009) passed in
-prior builds and are dropped here; pull them from git history if you need to re-run one.
-
----
-
-## Step 0, Unity editor (done this build)
-
-All run and the scene saved before the build:
-
-- [x] **Build > Bake Combat Hub** (hub redesign templates + mobile fixes)
-- [x] **Art > Import Generated Icons** (27 item icons)
-- [x] **Art > Import Spell Projectiles**
-- [x] **Art > Import Debuff Icons**
-- [x] **Art > Import Inventory Tab Icons**
-- [x] **Art > Import Hazard Icons**
-- [ ] **STILL PENDING (manual, inspector):** assign `CombatHubUI._roomTypeIcons` (7 sprites: Standard, Elite, Safe, Boss, Puzzle, Treasure, Trap) and a dungeon glyph on the Dungeon button / popup Icon. Until then, the dungeon popup's room-type chips show no icon and the Dungeon button/popup icon is blank. Not a blocker for testing the rest.
+What to verify on the 0.1.4 phone build, grouped by the release notes. Check items off as you confirm
+them on device. Passed 0.1.3 checks (data safety, combat hub redesign, dungeon popup, hotbar, thematic
+upgrades, XP curve) are dropped here; pull them from git history if you need to re-run one.
 
 ---
 
-## 1. Fixes (retest)
+## Step 0, Unity editor (run + save the scene before building)
 
-- [ ] **Data safe on restart.** Force-close and relaunch a few times, including a cold start. Your account loads from the server; you never see an old local copy that looks like a reset.
-- [ ] **Combat XP saves.** Fight, leave, relaunch: XP is intact (not reset to zero). A dungeon run awards XP like a zone fight.
-- [ ] **Guild bank deposit.** Add an item to the guild bank: you get a quantity picker, and the item appears in the bank.
-- [ ] **Send to a friend, repeated.** Send an item, then send another. The send button stays usable after the first.
-- [ ] **Auto-Eat: Quick purchase.** Buy it from the Royal Merchant; Confirm completes instead of doing nothing.
-- [ ] **Zone boss Ready.** Spawn a zone boss and open its lobby; the Ready control is reachable and the fight starts.
-- [ ] **Dungeon screen.** Entering a dungeon shows the dungeon + room name; a safe room reads as a safe room, not a blank screen.
-- [ ] **Quest honesty.** A combat-XP quest pays out; the weekly talent-XP quest shows the real target number.
+- [ ] **Content > Create Equipment** and **Content > Add Gear Crafting Recipes** (new bows, greataxe, shields + recipes)
+- [ ] **Art > Import Generated Icons** (assigns the bow / shield / greataxe icons)
+- [ ] **Build > Bake Merchant Sell UI**, **Build Eat Quantity UI**, **Bake Send To Player Panel**, **Build Guild Bank UI** (shared quantity picker)
+- [ ] **Fix > Add Friends Button To Chat Dock** (Friends button on the dock)
+- [ ] **Fix > Upgrade Zone HeroArt to Cover** (zone banner fills without stretching)
+- [ ] **Fix > Dedup Combat Hub Panels** (one ZoneDetailPanel / DungeonInfoPopup)
+- [ ] **Build > Bake Pre-Boss Lobby** (NEW, the lobby is now baked; placeholder-skinned for this build)
+- [ ] **STILL PENDING (inspector):** assign `CombatHubUI._roomTypeIcons` (7: Standard, Elite, Safe, Boss, Puzzle, Treasure, Trap) + a dungeon glyph. Not a blocker.
 
-## 2. Combat menu hub (new)
+---
 
-- [ ] The Combat menu reads as a **hub**: zones are **tiles grouped by tier**, not one long list.
-- [ ] Tapping a tile's **Enter** button enters the zone directly (two taps from the bottom nav).
-- [ ] Tapping the tile **body** opens the zone's own page (a separate screen, not an expanding row).
-- [ ] Zone page shows enemies as **chips grouped Standard / Elite / Boss** (spawn % on standard; a marker on elites/bosses), with **Enter Zone** and a **Dungeon** button at the bottom.
-- [ ] The **Dungeon button is hidden until you have entered a zone at least once**, and shows disabled with a reason when the dungeon is not reachable yet.
-- [ ] Nothing runs off the **right edge** on the phone (zone tiles, enemy chips, and dungeon room chips all fit two columns).
+## 1. Weapons, shields, handedness (new)
 
-## 3. Dungeon info popup + co-op (new; co-op is early, needs a second device)
+- [ ] Craft and equip a **shortbow, longbow, and crossbow**; each equips and shows its own speed on the item card.
+- [ ] Equip a **greataxe** (two-handed) and a one-handed weapon; the two-handed weapon stows any shield.
+- [ ] Equip a **shield** in the off-hand with a one-handed weapon (sword, dagger, axe, wand, crossbow). It grants a block chance / defense on the character sheet.
+- [ ] Equipping a two-handed weapon (staff, shortbow, longbow, greataxe) **blocks the off-hand** and stows the shield; re-equipping a one-hander frees it.
+- [ ] In combat, a shielded loadout **blocks some hits** (reduced damage), and the two-handed sets hit harder.
 
-- [ ] The Dungeon button opens an **info popup**: name, tier + recommended level, room count, boss, first-clear reward, and the room-type mix, with **Enter Lobby** and **Cancel**.
-- [ ] **Solo:** Enter Lobby, then Enter Dungeon (party of one), drops you into the run.
-- [ ] **Co-op:** invite a guildmate into a lobby slot; they see the lobby within a few seconds. Both Ready, host taps **Enter Dungeon**.
-- [ ] Both players land in the **same dungeon layout** (same rooms in the same order).
-- [ ] **Shared enemy health:** a mob fought by both dies faster than solo, and both players advance together.
-- [ ] Leaving / a knockout: the other player keeps going (co-op is a first pass, note anything that soft-locks).
+## 2. Combat feel
 
-## 4. Combat feel + effects
+- [ ] **Attack speed varies by weapon.** A dagger swings noticeably faster than a greataxe; procs and auto-eat keep pace on the tick.
+- [ ] **Parallax.** Combat backgrounds have a gentle sway / depth, no visible seams or jitter.
 
-- [ ] **Element spells.** An Arcanist cast fires the **element you drew** (Ignis reads as fire, Glacius as ice, and so on), not a plain yellow box.
-- [ ] **Enemy debuffs.** Poison and bleed effects show as **icons above the enemy**.
-- [ ] **Dungeon hazards.** A hazardous room shows a **chip naming the danger** on the dungeon banner. (Icon appears once the hazard art is assigned; the name shows regardless.)
+## 3. Co-op ally cards (needs a second device)
 
-## 5. New systems
+- [ ] In a party fight, teammates show **ally cards** with live HP.
+- [ ] Status effects on a partner show as **chips** on their card; a downed or left partner reads as such.
+- [ ] **Tap an ally card** to inspect that partner's gear and stats.
 
-- [ ] **Editable hotbar.** Set the three combat consumable slots from the combat screen and from the character page; the loadout persists across relaunch. Only combat instants are eligible.
-- [ ] **Thematic upgrades.** Leather and cloth gear upgrade with **sinew cord / spun thread**, not a metal fitting. The two new component lines are craftable.
+## 4. Concurrent idle (new)
 
-## 6. Balance + feel
+- [ ] Start a **gather / craft / cook** action, then enter a zone or dungeon. The idle bar **keeps ticking** during combat (it used to stop).
+- [ ] No production tap target pops over the combat screen; leaving combat, the action is still running.
+- [ ] Reverse order works: start a production action **while already in a fight**, combat is not interrupted.
+- [ ] Starting a new production action still **replaces** the running one.
 
-- [ ] **Rising XP.** Higher-tier gathering and cooking earns **more XP per second**; moving to a new tier is never a step backward.
-- [ ] **Tier raises stats.** A fresh higher-tier weapon or armor beats a once-upgraded lower-tier piece (a new Ash staff over an upgraded Pine one).
-- [ ] **Meals.** Every cooked dish grants a **timed buff**, and the item card names it.
+## 5. While You Were Away
 
-## 7. Art
+- [ ] Return from an idle session that leveled a talent: the level-ups **float up as toasts** over the away screen (the XP and item totals still list on the summary).
 
-- [ ] **Inventory tabs** show icons for All, Materials, Consumables, Equipment, and Quests.
-- [ ] **Item icons** are correct (check the new arcanist / vanguard crafting materials, plus the earlier batch).
-- [ ] The **app icon** is the new one on the home screen.
+## 6. Selling + quantity control (new)
+
+- [ ] **Sell to the Traveling Merchant**, single item and a bulk selection, both pay out Silver Marks.
+- [ ] The quantity control is the **same everywhere**, Merchant sell, Eat, Send to Player, and Guild Bank deposit + withdraw: **type a number**, **drag the slider**, and **Max** all agree and cap at what you hold.
+
+## 7. Friends from the chat dock (new)
+
+- [ ] Expand the chat dock and tap **Friends**, the Friends panel opens (previously only reachable through chat).
+
+## 8. Art
+
+- [ ] The **shortbow, crossbow, greataxe, and shield** show their new icons in inventory / crafting.
+- [ ] A zone's **hero banner** on the zone detail page fills cleanly (cropped, not stretched).
+
+## 9. Fixes (retest)
+
+- [ ] **Navigation.** Every bottom-nav / drawer button opens its panel (no dead menu).
+- [ ] **Combat hub.** Only one zone-detail panel and one dungeon popup; opening a zone detail shows the skinned version.
+- [ ] **XP bar.** The combat-hub Grimoire XP bar fills to the real fraction (not always full, not stretched).
+- [ ] **Auto-eat.** Only eats from draughts you carry (potion-gated); runs out when the draughts do.
 
 ---
 
 ## Known-early / deferred (do not expect these yet)
 
-- **Co-op dungeons** are a first pass and untested on two devices. In co-op, puzzles and hazards are handled per-player, "Run Again" from the result screen re-runs solo, and an ended lobby is not swept.
-- **Dungeon popup room-type icons + the dungeon glyph** are blank until `CombatHubUI._roomTypeIcons` and the dungeon icon are assigned in the editor (Step 0 pending item).
-- Backgrounds, guild emblems, hub-station props, and the guild banner kit are approved but not yet imported.
+- **Pre-boss / dungeon lobby** is now baked but **not skinned** for 0.1.4, it uses placeholder art. Function should be intact (open, ready, invite, start).
+- **Co-op** (ally cards, shared dungeons) is a first pass; note anything that soft-locks with two devices.
+- **Room-type icons + dungeon glyph** are blank until assigned in the editor (Step 0 pending item).
+- Backgrounds, guild emblems, hub-station props, and the guild banner kit are approved but not all imported.
