@@ -22,18 +22,22 @@ assets carry only a free-text `lootNote`, not a mechanical drop table, so they a
 
 - **Root cause (Bucket 1):** drop tables used a `Crude/Rough/Refined/Pristine/Masterwork <material>`
   scheme the item system never adopted. Quality is a per-stack instance flag and crafting recipes consume
-  base names. Fix: created the 4 base materials that had no asset at any rung (Void Spore, Phantom Pelt,
-  Abyssal Pearl, Aetheric Filament) and stripped the stale prefixes off 61 drop rows so they resolve to
+  base names. Fix: created the 3 base materials that had no asset at any rung (Void Spore, Phantom Pelt,
+  Abyssal Pearl) and stripped the stale prefixes off 60 drop rows so they resolve to
   the base. Two exceptions kept their per-tier identity: the gem ladder (Amber, Gemstone) uses distinct
   per-tier assets, so the missing top rungs Masterwork Amber and Masterwork Gemstone were created rather
   than folded. Masterwork Ancient Sigil already exists as a distinct asset and was left as a literal drop.
+  The drop "Crude Aetheric Filament" was repointed to the canonical existing rare reagent Aetheric Fragment
+  (per the asset-tracker rare-reagents sheet), not made into a new item. Open for Chat: whether Void Spore,
+  Phantom Pelt, and Abyssal Pearl should stay as new rare materials or be repointed to existing canonical
+  rares (Void Core/Crystal/Shard, Shadow Pelt, Black Pearl). See phantom-drops-followup-REQUEST.md.
 - **Bucket 2:** created 25 creature/gathered raw materials as `RawMaterials` (quality Crude, sell 3 to 8):
   Bear Claw, Wolf Fang, Drake Fang, Wyvern Talon, Venom Sac, Feathers, Fish Scraps, Ancient Bark, Deadwood,
   Blightbark, Bog Herb, Ectoplasm, Spectral Essence, Ember Core, Ember Shard, Mountain Core, Mountain Quartz,
   Iron Scraps, Worn Cloth, Rough Cloth, Grave Cloth, Void Ichor, Aquatic Reagent, Ashfen Spore, Crude Sword.
   Drops are now real. Icons and crafting-recipe wiring are still open (handed to Chat).
-- **Total created:** 31 ItemData assets in `Assets/Data/Items/Materials/`, all appended to `ItemRegistry.asset`
-  (336 -> 367). All new items have `icon: {fileID: 0}`; they render iconless in the WYWA until the sprite pass.
+- **Total created:** 30 ItemData assets in `Assets/Data/Items/Materials/`, all appended to `ItemRegistry.asset`
+  (336 -> 366). All new items have `icon: {fileID: 0}`; they render iconless in the WYWA until the sprite pass.
 - **Bucket 3 (19 boss/dungeon trophies), NOT created:** each needs decided type/faction/stats. Design request
   in `phantom-boss-trophies-REQUEST.md`. Until authored, those boss drops stay dead. Re-running the sweep now
   reports exactly these 19 as the only remaining phantoms.
