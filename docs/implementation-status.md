@@ -31,27 +31,32 @@ assets carry only a free-text `lootNote`, not a mechanical drop table, so they a
   (per the asset-tracker rare-reagents sheet), not made into a new item. Open for Chat: whether Void Spore,
   Phantom Pelt, and Abyssal Pearl should stay as new rare materials or be repointed to existing canonical
   rares (Void Core/Crystal/Shard, Shadow Pelt, Black Pearl). See phantom-drops-followup-REQUEST.md.
-- **Bucket 2:** created 25 creature/gathered raw materials as `RawMaterials` (quality Crude, sell 3 to 8):
+- **Bucket 2:** created 24 creature/gathered raw materials as `RawMaterials` (quality Crude, sell 3 to 8):
   Bear Claw, Wolf Fang, Drake Fang, Wyvern Talon, Venom Sac, Feathers, Fish Scraps, Ancient Bark, Deadwood,
   Blightbark, Bog Herb, Ectoplasm, Spectral Essence, Ember Core, Ember Shard, Mountain Core, Mountain Quartz,
-  Iron Scraps, Worn Cloth, Rough Cloth, Grave Cloth, Void Ichor, Aquatic Reagent, Ashfen Spore, Crude Sword.
-  Drops are now real. Icons and crafting-recipe wiring are still open (handed to Chat).
-- **Total created:** 30 ItemData assets in `Assets/Data/Items/Materials/`, all appended to `ItemRegistry.asset`
-  (336 -> 366). All new items have `icon: {fileID: 0}`; they render iconless in the WYWA until the sprite pass.
+  Iron Scraps, Worn Cloth, Rough Cloth, Grave Cloth, Void Ichor, Aquatic Reagent, Ashfen Spore. ("Crude Sword"
+  was removed entirely per Dustin: item deleted, its two drop rows (Rotting Soldier, Warband Raider) removed.)
+  **Recipes WIRED (spec v1.1 section 9):** 24 new non-destructive TalentActivity recipes added across Smelting (4),
+  Artificing (5), Tailoring (3), Timber Shaping (4), Cookery (1), Alchemy (7). Each consumes a Bucket 2 mat into
+  an existing intermediate at the mat's tier level; no existing recipe was modified, so no craftable got more
+  expensive. RecipeValidator-clean by construction (every primary input is an enemy drop, so never a hard lock;
+  secondary inputs Iron Bar/Mithril Ore are obtainable at/below each recipe level). xp/cycle are first-pass
+  mirrors of the Smelting scale, tunable. **Run Tools > Grimoire > Validate > Recipe Level Locks to confirm.**
+- **Total created:** 48 ItemData (24 Bucket 2 mats + 5 Bucket 1 rares + 19 trophies), appended to
+  `ItemRegistry.asset` (336 -> 384). Material/trophy icons are `icon: {fileID: 0}`; iconless until the sprite pass.
 - **Bucket 3 (19 boss/dungeon trophies), NOW AUTHORED** per `phantom-boss-trophies-spec.md` v1.1: 7 faction
   accessories (band under the shipped T4/T5 dungeon trophies: T1 4/5, T2 6/7, T3 8/10; Archbishop's Seal
   inverted 6/12), 9 Refined equipment at zone material tier (Deserter's Arms = Gloves, Turncoat's Blade =
   one-handed Sword, Ironspine Colossus Pauldrons in Chest), 2 Inscription Codex tomes (ScrollsAndCodex,
   Spectral 25 / Summoner's 40), and Aldric's Key (QuestItems, protected, consumed-on-use is game logic still
-  to wire). Registry now 385 items (336 base + 30 material fixes + 19 trophies). **The phantom sweep across all
+  to wire). Registry now 384 items (336 base + 29 material fixes + 19 trophies). **The phantom sweep across all
   enemy/zone drop tables now reports ZERO remaining phantoms.**
-- **Still open (Chat spec v1.1, not yet in code):** Bucket 2 recipe WIRING (25 mats into Talent recipes per
-  spec section 9, with a RecipeValidator pass, and the Crude-Sword-is-material-vs-equipment confirm); the
-  Bucket 1 rare reconciliation (Void Spore / Phantom Pelt / Abyssal Pearl ratify-or-repoint); Aldric's Key
-  consume-on-use logic; and all icons (30 material + 19 trophy cells are added to the asset tracker but Pending,
-  awaiting Chat art prompts + the sprite pass, including the new `boss_trophies_equipment` atlas).
-- **Follow-ups:** re-run **Populate Item Registry** in-editor (idempotent; confirms the 49 hand-added GUIDs);
-  wire Bucket 2 recipes; run the sprite pass.
+- **Still open:** Bucket 1 rare reconciliation (Void Spore / Phantom Pelt / Abyssal Pearl ratify-or-repoint,
+  Chat); Aldric's Key consume-on-use game logic; and all icons (48 new cells added to the asset tracker but
+  Pending, awaiting Chat art prompts + the sprite pass, including the new `boss_trophies_equipment` atlas).
+- **Follow-ups (in-editor, Dustin):** run **Tools > Grimoire > Validate > Recipe Level Locks** to confirm the
+  Bucket 2 wiring is deadlock-free (expected clean); re-run **Populate Item Registry** (idempotent; confirms the
+  48 hand-added GUIDs); run the sprite pass. Recipe xp/cycle values are first-pass and open to balancing.
 
 ## Session 2026-09-04, weapon handedness revision [built, pending Create Equipment + compile]
 
