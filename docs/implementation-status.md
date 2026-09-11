@@ -38,11 +38,20 @@ assets carry only a free-text `lootNote`, not a mechanical drop table, so they a
   Drops are now real. Icons and crafting-recipe wiring are still open (handed to Chat).
 - **Total created:** 30 ItemData assets in `Assets/Data/Items/Materials/`, all appended to `ItemRegistry.asset`
   (336 -> 366). All new items have `icon: {fileID: 0}`; they render iconless in the WYWA until the sprite pass.
-- **Bucket 3 (19 boss/dungeon trophies), NOT created:** each needs decided type/faction/stats. Design request
-  in `phantom-boss-trophies-REQUEST.md`. Until authored, those boss drops stay dead. Re-running the sweep now
-  reports exactly these 19 as the only remaining phantoms.
-- **Follow-ups:** re-run **Populate Item Registry** in-editor (idempotent; confirms the 31 hand-added GUIDs);
-  wire Bucket 2 mats into crafting recipes per the Chat pass; assign icons in the sprite pass.
+- **Bucket 3 (19 boss/dungeon trophies), NOW AUTHORED** per `phantom-boss-trophies-spec.md` v1.1: 7 faction
+  accessories (band under the shipped T4/T5 dungeon trophies: T1 4/5, T2 6/7, T3 8/10; Archbishop's Seal
+  inverted 6/12), 9 Refined equipment at zone material tier (Deserter's Arms = Gloves, Turncoat's Blade =
+  one-handed Sword, Ironspine Colossus Pauldrons in Chest), 2 Inscription Codex tomes (ScrollsAndCodex,
+  Spectral 25 / Summoner's 40), and Aldric's Key (QuestItems, protected, consumed-on-use is game logic still
+  to wire). Registry now 385 items (336 base + 30 material fixes + 19 trophies). **The phantom sweep across all
+  enemy/zone drop tables now reports ZERO remaining phantoms.**
+- **Still open (Chat spec v1.1, not yet in code):** Bucket 2 recipe WIRING (25 mats into Talent recipes per
+  spec section 9, with a RecipeValidator pass, and the Crude-Sword-is-material-vs-equipment confirm); the
+  Bucket 1 rare reconciliation (Void Spore / Phantom Pelt / Abyssal Pearl ratify-or-repoint); Aldric's Key
+  consume-on-use logic; and all icons (30 material + 19 trophy cells are added to the asset tracker but Pending,
+  awaiting Chat art prompts + the sprite pass, including the new `boss_trophies_equipment` atlas).
+- **Follow-ups:** re-run **Populate Item Registry** in-editor (idempotent; confirms the 49 hand-added GUIDs);
+  wire Bucket 2 recipes; run the sprite pass.
 
 ## Session 2026-09-04, weapon handedness revision [built, pending Create Equipment + compile]
 
