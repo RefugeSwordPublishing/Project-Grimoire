@@ -411,3 +411,16 @@ if you can do better. Currency and Grimoires are skipped (Grimoires carry their 
 ## QuestItems
 
 - Aldric's Key  _(QuestItems)_  [current: "Opens the strongbox in Aldric's Warren's safe room. Quest item, consumed on use."]  -> 
+
+---
+
+## Resolution (weaponType check, section 0 of Chat's reply)
+
+Reporting bug in the skeleton generator, NOT a data bug. Verified in the inspector against the real
+enum `WeaponType { None, Bow, Sword, Dagger, Staff, Wand, Axe, Shortbow, Longbow, Crossbow,
+ArmingSword, HandAxe, Greataxe }`: Bronze Sword = 2 (Sword), Bronze Dagger = 3 (Dagger),
+Bronze Battle Axe = 6 (Axe), Bronze Greataxe = 12 (Greataxe), Ash Staff = 4 (Staff),
+Ash Wand = 5 (Wand), Turncoat's Blade = 2 (Sword). All correct. The skeleton printed labels from a
+mis-guessed array (a phantom "Mace" shifted the melee/arcane block). The assets carry the right types,
+so speed/damage/handedness are fine, and no items are renamed: the tier weapons keep their distinct
+names and the flavor lines key on item name.
