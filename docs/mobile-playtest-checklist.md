@@ -78,3 +78,28 @@ upgrades, XP curve) are dropped here; pull them from git history if you need to 
 - **Co-op** (ally cards, shared dungeons) is a first pass; note anything that soft-locks with two devices.
 - **Room-type icons + dungeon glyph** are blank until assigned in the editor (Step 0 pending item).
 - Backgrounds, guild emblems, hub-station props, and the guild banner kit are approved but not all imported.
+
+---
+
+## 10. Current build, playtester bug fixes + session changes (retest)
+
+**Character page**
+- [ ] Both the **primary weapon slot** and the **off-hand slot** are visible (no overlap), the **Grimoire slot** is back in place, and the **Quiver slot is gone** (BUG-092).
+
+**Combat**
+- [ ] **Warden**: the ability-ring stack shows more than just Full Draw at your level (rings unlock by level again).
+- [ ] **Warlord**: Surge combos resolve (Savage Strike / Power Blow / Warcry, etc.); the combo queue shows tapped buttons + previews the ability name.
+- [ ] **Zone boss**: beat one, keep fighting, it does NOT reappear within seconds (180s cooldown, BUG-088).
+
+**Economy / items**
+- [ ] Tap an inventory item, the detail popup **grows to fit** its text and shows a **flavor line** on every item, materials included (BUG-093).
+- [ ] **Royal Merchant > Merchant tab**: buy Daily Sell Cap 1,000 (400 GM) / 2,000 (900 GM); the merchant sell cap bar shows the new limit (BUG-089).
+- [ ] **Bronze bars** are cheaper to smelt (BUG-090); **bows** craft from thread, **crossbows** from limbs (BUG-094).
+
+**Guild**
+- [ ] Tap the treasury **SM/GM balance** ("tap to donate") to move your own Marks into the guild bank (BUG-091).
+
+**Other**
+- [ ] **Quest board** does not flicker on expand / minimize / accept, or during idle gathering.
+- [ ] **Exchange Browse**: the Store / Auction / Buy Order filter switches the Fresh Market feed.
+- [ ] **Offline combat, cold launch**: enter a zone fight, background, force-stop the app, relaunch, the While-You-Were-Away screen shows the away combat.
