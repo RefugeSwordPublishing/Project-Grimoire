@@ -27,14 +27,17 @@ The single unified currency used across all transactions in the game, market lis
 
 **Conversion:** 100 Silver Marks = 1 Gold Mark. One direction only (GM to SM); there is no SM to GM path anywhere in the game, since GM is real-money purchasable. Canonicalized in traveling-merchant-spec.md v1.0 (the older 1,000:1 figure predated current quest-reward tuning and is retired).
 
-**Price Range by Rarity:**
-| Item Tier | Typical Price Range |
+**Price Range by Quality:**
+| Quality | Typical Price Range |
 |-----------|-------------------|
-| Common | 10 - 500 SM |
-| Uncommon | 500 SM - 5,000 SM |
-| Rare | 5,000 SM - 50,000 SM (5-50 GM) |
-| Epic | 50,000 SM - 500,000 SM (50-500 GM) |
-| Legendary | 500,000 SM - 5,000,000 SM (500-5,000 GM) |
+| Crude | 10 - 500 SM |
+| Rough | 500 SM - 5,000 SM |
+| Refined | 5,000 SM - 50,000 SM (5-50 GM) |
+| Pristine | 50,000 SM - 500,000 SM (50-500 GM) |
+| Masterwork | 500,000 SM - 5,000,000 SM (500-5,000 GM) |
+| Legendary | 5,000,000 SM - 50,000,000 SM (5,000-50,000 GM) |
+
+Quality is the rarity axis (`ItemQuality`), distinct from Tier (level gating, Bronze to Void). Legendary is authored for future content; no base-game item ships at that quality yet.
 
 **Currency Sources:**
 - Slaying enemies (direct drops)
