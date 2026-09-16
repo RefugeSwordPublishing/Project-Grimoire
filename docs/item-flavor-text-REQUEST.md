@@ -1,0 +1,413 @@
+# Item Flavor Text, Chat Authoring Request
+
+### Status: awaiting Chat
+### Purpose
+BUG-093 follow-up. The inventory detail popup now shows `ItemData.description` as a flavor line for
+every item. Write ONE brief, evocative flavor line per item: a hint at what it is or is used for.
+Short (roughly 6 to 14 words), in the game's dark-medieval-fantasy voice. No em/en dashes, no emojis.
+Claude Code will patch each line into that item's `ItemData.description`.
+
+### How to fill
+Fill the blank after each `->`. A line tagged `[current: "..."]` already has some text; replace it only
+if you can do better. Currency and Grimoires are skipped (Grimoires carry their own lore).
+
+
+## RawMaterials
+
+- Adamant Fitting  _(RawMaterials)_  -> 
+- Adamantine Apparatus  _(RawMaterials)_  -> 
+- Ancient Bark  _(RawMaterials)_  [current: "Bark peeled from an ancient treant."]  -> 
+- Ancient Fossil  _(RawMaterials)_  -> 
+- Aquatic Reagent  _(RawMaterials)_  [current: "Alchemical reagent gathered from the shore."]  -> 
+- Arcane Residue  _(RawMaterials)_  -> 
+- Ash Haft  _(RawMaterials)_  -> 
+- Ash Log  _(RawMaterials)_  -> 
+- Ashfen Spore  _(RawMaterials)_  [current: "Spore cluster from an Ashfen spore crawler."]  -> 
+- Base Oil  _(RawMaterials)_  -> 
+- Bear Claw  _(RawMaterials)_  [current: "Claw torn from a Grimwood bear."]  -> 
+- Binding Stone  _(RawMaterials)_  -> 
+- Blightbark  _(RawMaterials)_  [current: "Diseased bark from a blighted tree."]  -> 
+- Bog Herb  _(RawMaterials)_  [current: "Pungent herb pulled from bog water."]  -> 
+- Bone Fragment  _(RawMaterials)_  -> 
+- Bronze Apparatus  _(RawMaterials)_  -> 
+- Bronze Bar  _(RawMaterials)_  -> 
+- Bronze Limbs  _(RawMaterials)_  -> 
+- Clear Extract  _(RawMaterials)_  -> 
+- Coal  _(RawMaterials)_  -> 
+- Common Herb  _(RawMaterials)_  -> 
+- Copper Bar  _(RawMaterials)_  -> 
+- Copper Ore  _(RawMaterials)_  -> 
+- Crab Shell  _(RawMaterials)_  -> 
+- Crude Rune Shard  _(RawMaterials)_  -> 
+- Deadwood  _(RawMaterials)_  [current: "Rotted wood from the mire."]  -> 
+- Direwolf Hide  _(RawMaterials)_  -> 
+- Direwolf Sinew Cord  _(RawMaterials)_  -> 
+- Drake Fang  _(RawMaterials)_  [current: "Fang of a highland drake."]  -> 
+- Drake Scale  _(RawMaterials)_  -> 
+- Ectoplasm  _(RawMaterials)_  [current: "Residue left by a dissipated wraith."]  -> 
+- Eel Skin  _(RawMaterials)_  -> 
+- Ember Core  _(RawMaterials)_  [current: "Smouldering core of a fire elemental."]  -> 
+- Ember Shard  _(RawMaterials)_  [current: "Shard of a greater fire elemental."]  -> 
+- Feathers  _(RawMaterials)_  [current: "Flight feathers from a mountain hawk."]  -> 
+- Fine Thread  _(RawMaterials)_  -> 
+- Fish Scraps  _(RawMaterials)_  [current: "Discarded scraps from cleaned fish."]  -> 
+- Flint Fragment  _(RawMaterials)_  -> 
+- Fossil Shard  _(RawMaterials)_  -> 
+- Fox Fur  _(RawMaterials)_  -> 
+- Fox Gland  _(RawMaterials)_  -> 
+- Fox Sinew Cord  _(RawMaterials)_  -> 
+- Grave Cloth  _(RawMaterials)_  [current: "Burial wrappings taken from the undead."]  -> 
+- Heartwood Haft  _(RawMaterials)_  -> 
+- Heartwood Log  _(RawMaterials)_  -> 
+- Herb Extract  _(RawMaterials)_  -> 
+- Iron Apparatus  _(RawMaterials)_  -> 
+- Iron Bar  _(RawMaterials)_  -> 
+- Iron Fitting  _(RawMaterials)_  -> 
+- Iron Limbs  _(RawMaterials)_  -> 
+- Iron Ore  _(RawMaterials)_  -> 
+- Iron Scraps  _(RawMaterials)_  [current: "Salvaged iron from broken gear."]  -> 
+- Ironroot Chunk  _(RawMaterials)_  -> 
+- Ironwood Haft  _(RawMaterials)_  -> 
+- Ironwood Log  _(RawMaterials)_  -> 
+- Masterspun Thread  _(RawMaterials)_  -> 
+- Mithral Fitting  _(RawMaterials)_  -> 
+- Mithril Apparatus  _(RawMaterials)_  -> 
+- Mithril Bar  _(RawMaterials)_  -> 
+- Mithril Limbs  _(RawMaterials)_  -> 
+- Mithril Ore  _(RawMaterials)_  -> 
+- Mithril Scrap  _(RawMaterials)_  -> 
+- Mountain Core  _(RawMaterials)_  [current: "Dense core from an awakened stone sentinel."]  -> 
+- Mountain Quartz  _(RawMaterials)_  [current: "Quartz cluster from Ironspine rock."]  -> 
+- Oak Haft  _(RawMaterials)_  -> 
+- Oak Log  _(RawMaterials)_  -> 
+- Oil Residue  _(RawMaterials)_  -> 
+- Pine Haft  _(RawMaterials)_  -> 
+- Pine Log  _(RawMaterials)_  -> 
+- Plain Thread  _(RawMaterials)_  -> 
+- Pond Fish  _(RawMaterials)_  -> 
+- Pond Weed  _(RawMaterials)_  -> 
+- Rabbit Meat  _(RawMaterials)_  -> 
+- Rabbit Pelt  _(RawMaterials)_  -> 
+- Rabbit Sinew Cord  _(RawMaterials)_  -> 
+- Resin Shard  _(RawMaterials)_  -> 
+- River Stone  _(RawMaterials)_  -> 
+- River Trout  _(RawMaterials)_  -> 
+- Rough Cloth  _(RawMaterials)_  [current: "Coarse cloth from smugglers' garb."]  -> 
+- Saltmarsh Eel  _(RawMaterials)_  -> 
+- Salvaged Component  _(RawMaterials)_  -> 
+- Serpent Scale  _(RawMaterials)_  -> 
+- Soul Residue  _(RawMaterials)_  -> 
+- Soulite Dust  _(RawMaterials)_  -> 
+- Spectral Essence  _(RawMaterials)_  [current: "Condensed essence of a barrow revenant."]  -> 
+- Starstone Ore Chunk  _(RawMaterials)_  -> 
+- Steel Apparatus  _(RawMaterials)_  -> 
+- Steel Bar  _(RawMaterials)_  -> 
+- Steel Clockwork Apparatus  _(RawMaterials)_  -> 
+- Steel Fitting  _(RawMaterials)_  -> 
+- Steel Limbs  _(RawMaterials)_  -> 
+- Tanning Wax  _(RawMaterials)_  -> 
+- Thornwood Bark  _(RawMaterials)_  -> 
+- Tin Bar  _(RawMaterials)_  -> 
+- Tin Ore  _(RawMaterials)_  -> 
+- Venom Sac  _(RawMaterials)_  [current: "Venom gland cut from a saltmarsh serpent."]  -> 
+- Void Alloy  _(RawMaterials)_  -> 
+- Void Creature Part  _(RawMaterials)_  -> 
+- Void Foci  _(RawMaterials)_  -> 
+- Void Ichor  _(RawMaterials)_  [current: "Corrosive ichor from a void-touched beast."]  -> 
+- Void Limbs  _(RawMaterials)_  -> 
+- Wildgrass Clump  _(RawMaterials)_  -> 
+- Wolf Fang  _(RawMaterials)_  [current: "Fang of a wolfpack predator."]  -> 
+- Wolf Pelt  _(RawMaterials)_  -> 
+- Wolf Sinew Cord  _(RawMaterials)_  -> 
+- Worn Cloth  _(RawMaterials)_  [current: "Threadbare cloth stripped from bandits."]  -> 
+- Woven Thread  _(RawMaterials)_  -> 
+- Wyvern Talon  _(RawMaterials)_  [current: "Talon of a Cinderpeak wyvern."]  -> 
+
+## Craftables
+
+- Adamantine Bellows  _(Craftables)_  -> 
+- Bronze Forge Frame  _(Craftables)_  -> 
+- Crude Tool  _(Craftables)_  -> 
+- Direwolf Leather  _(Craftables)_  [current: "Heavy tanned leather from direwolf hide."]  -> 
+- Drake Leather  _(Craftables)_  -> 
+- Fine Vellum  _(Craftables)_  [current: "Treated hide prepared as a writing surface."]  -> 
+- Fox Leather  _(Craftables)_  [current: "Supple tanned leather from fox fur."]  -> 
+- Iron Bellows  _(Craftables)_  -> 
+- Iron Forge Frame  _(Craftables)_  -> 
+- Ironbone Relic  _(consumable)_  -> 
+- Lost Schematic  _(Craftables)_  -> 
+- Mithril Bellows  _(Craftables)_  -> 
+- Mithril Forge Frame  _(Craftables)_  -> 
+- Rabbit Hide  _(Craftables)_  [current: "Soft tanned leather from rabbit pelts."]  -> 
+- Runed Vellum  _(Craftables)_  [current: "Treated hide prepared as a writing surface."]  -> 
+- Shell Trinket  _(Craftables)_  -> 
+- Steel Bellows  _(Craftables)_  -> 
+- Steel Clockwork Bellows  _(Craftables)_  -> 
+- Steel Forge Frame  _(Craftables)_  -> 
+- Stone Totem  _(consumable)_  -> 
+- Vellum  _(Craftables)_  [current: "Treated hide prepared as a writing surface."]  -> 
+- Void Forge Frame  _(Craftables)_  -> 
+- Wolf Leather  _(Craftables)_  [current: "Tough tanned leather from wolf pelts."]  -> 
+
+## Consumables
+
+- Ancient Glyph  _(consumable)_  [current: "Inscribed vellum. Grants a timed bonus; using more extends the timer."]  -> 
+- Broth  _(consumable)_  -> 
+- Clarity Tonic  _(consumable)_  -> 
+- Codex of Insight  _(consumable)_  [current: "Inscribed vellum. Grants a timed bonus; using more extends the timer."]  -> 
+- Codex of the Hunt  _(consumable)_  [current: "Inscribed vellum. Grants a timed bonus; using more extends the timer."]  -> 
+- Crude Healing Draught  _(consumable)_  -> 
+- Detailed Map - Grimwood Fringe  _(consumable)_  [current: "A detailed map of Grimwood Fringe. While active, increases gathering"]  -> 
+- Detailed Map - Saltmarsh Shore  _(consumable)_  [current: "A detailed map of Saltmarsh Shore. While active, increases gathering"]  -> 
+- Energy Cake  _(consumable)_  -> 
+- Healing Salve  _(consumable)_  -> 
+- Hearty Stew  _(consumable)_  -> 
+- Herb Broth  _(consumable)_  [current: "A warming herb broth. Grants WIL +2 for 20 minutes."]  -> 
+- Master Map - Grimwood Fringe  _(consumable)_  [current: "A master map of Grimwood Fringe. While active, increases gathering"]  -> 
+- Master Map - Saltmarsh Shore  _(consumable)_  [current: "A master map of Saltmarsh Shore. While active, increases gathering"]  -> 
+- Masterwork Healing Draught  _(consumable)_  -> 
+- Power Elixir  _(consumable)_  -> 
+- Refined Antidote  _(consumable)_  -> 
+- Refined Endurance Draught  _(consumable)_  -> 
+- Refined Healing Draught  _(consumable)_  -> 
+- Refined Mana Vial  _(consumable)_  -> 
+- Roasted Rabbit  _(consumable)_  -> 
+- Rough Map - Grimwood Fringe  _(consumable)_  [current: "A rough map of Grimwood Fringe. While active, increases gathering"]  -> 
+- Rough Map - Saltmarsh Shore  _(consumable)_  [current: "A rough map of Saltmarsh Shore. While active, increases gathering"]  -> 
+- Scroll of Precision  _(consumable)_  [current: "Inscribed vellum. Grants a timed bonus; using more extends the timer."]  -> 
+- Scroll of Warding  _(consumable)_  [current: "Inscribed vellum. Grants a timed bonus; using more extends the timer."]  -> 
+- Simple Stew  _(consumable)_  [current: "A hearty stew. Eat before a fight for VIT +2 for 20 minutes."]  -> 
+- Speed Draught  _(consumable)_  -> 
+- Standard Map - Grimwood Fringe  _(consumable)_  [current: "A standard map of Grimwood Fringe. While active, increases gathering"]  -> 
+- Standard Map - Saltmarsh Shore  _(consumable)_  [current: "A standard map of Saltmarsh Shore. While active, increases gathering"]  -> 
+- Traveler's Ration  _(consumable)_  [current: "Dense trail food. Restores 2 HP per second in combat for 15 minutes."]  -> 
+- Warden's Feast  _(consumable)_  [current: "A ranger's feast. Grants DEX +3 and LCK +2 for 20 minutes."]  -> 
+
+## Equipment
+
+- Alchemy Kit  _(tool (Alchemy))_  -> 
+- Aldrath's Signet  _(armor/equipment)_  [current: "Aldrath the Sunken's signet. +6% damage vs Undead, 7% Undead resistance."]  -> 
+- Arcane Focus Shard  _(armor/equipment)_  [current: "Slayer Hunt trophy. +2% damage vs Arcane."]  -> 
+- Archbishop's Seal  _(armor/equipment)_  [current: "The Hollow Archbishop's seal. +6% damage vs Undead, 12% Undead resistance."]  -> 
+- Archbishop's Vestments  _(armor/equipment)_  [current: "The Hollow Archbishop's vestments. Refined vestment chest."]  -> 
+- Artificer's Tools  _(tool (Artificing))_  -> 
+- Ash Staff  _(Mace)_  -> 
+- Ash Wand  _(Staff)_  -> 
+- Ashfen Lich Crown  _(armor/equipment)_  [current: "The Ashfen Lich's crown. Refined vestment helm."]  -> 
+- Barrow Knight Armor  _(armor/equipment)_  [current: "Plate stripped from a barrow knight. Refined plate chest."]  -> 
+- Beast Fang Necklace  _(armor/equipment)_  [current: "Slayer Hunt trophy. +2% damage vs Beast."]  -> 
+- Bronze Battle Axe  _(Wand)_  -> 
+- Bronze Crossbow  _(Crossbow)_  -> 
+- Bronze Dagger  _(Axe)_  -> 
+- Bronze Greataxe  _(HandAxe)_  -> 
+- Bronze Longbow  _(Longbow)_  -> 
+- Bronze Plate Boots  _(armor/equipment)_  -> 
+- Bronze Plate Chest  _(armor/equipment)_  -> 
+- Bronze Plate Gloves  _(armor/equipment)_  -> 
+- Bronze Plate Helm  _(armor/equipment)_  -> 
+- Bronze Plate Legs  _(armor/equipment)_  -> 
+- Bronze Shield  _(armor/equipment)_  -> 
+- Bronze Shortbow  _(Shortbow)_  -> 
+- Bronze Sword  _(Dagger)_  -> 
+- Cloth Vestment Boots  _(armor/equipment)_  -> 
+- Cloth Vestment Chest  _(armor/equipment)_  -> 
+- Cloth Vestment Gloves  _(armor/equipment)_  -> 
+- Cloth Vestment Helm  _(armor/equipment)_  -> 
+- Cloth Vestment Legs  _(armor/equipment)_  -> 
+- Colossus Core  _(armor/equipment)_  [current: "Core of the Ironspine Colossus. +6% damage vs Arcane, 7% Arcane resistance."]  -> 
+- Cookery Set  _(tool (Cookery))_  -> 
+- Corsair's Coat  _(armor/equipment)_  [current: "Captain Mirra Vane's coat. Refined leather chest."]  -> 
+- Deserter's Arms  _(armor/equipment)_  [current: "A deserter's plate vambraces. Refined plate gloves."]  -> 
+- Direwolf Boots  _(armor/equipment)_  -> 
+- Direwolf Chest  _(armor/equipment)_  -> 
+- Direwolf Gloves  _(armor/equipment)_  -> 
+- Direwolf Helm  _(armor/equipment)_  -> 
+- Direwolf Legs  _(armor/equipment)_  -> 
+- Drake Scale Boots  _(armor/equipment)_  -> 
+- Drake Scale Chest  _(armor/equipment)_  -> 
+- Drake Scale Gloves  _(armor/equipment)_  -> 
+- Drake Scale Helm  _(armor/equipment)_  -> 
+- Drake Scale Legs  _(armor/equipment)_  -> 
+- Emberpetal Vestment Boots  _(armor/equipment)_  -> 
+- Emberpetal Vestment Chest  _(armor/equipment)_  -> 
+- Emberpetal Vestment Gloves  _(armor/equipment)_  -> 
+- Emberpetal Vestment Helm  _(armor/equipment)_  -> 
+- Emberpetal Vestment Legs  _(armor/equipment)_  -> 
+- Felling Axe  _(tool (Felling))_  -> 
+- Firststone Key  _(armor/equipment)_  [current: "The Firststone Warden's key. +12% damage vs Arcane, 15% Arcane resistance."]  -> 
+- Fishing Rod  _(tool (Dredging))_  -> 
+- Foraging Sickle  _(tool (Foraging))_  -> 
+- Forge  _(tool (Smelting))_  -> 
+- Fox Leather Boots  _(armor/equipment)_  -> 
+- Fox Leather Chest  _(armor/equipment)_  -> 
+- Fox Leather Gloves  _(armor/equipment)_  -> 
+- Fox Leather Helm  _(armor/equipment)_  -> 
+- Fox Leather Legs  _(armor/equipment)_  -> 
+- Gleaner's Kit  _(tool (Gleaning))_  -> 
+- Harbinger's Mark  _(armor/equipment)_  [current: "The Veil Harbinger's sigil. +10% damage vs Void, 12% Void resistance."]  -> 
+- Heartwood Staff  _(Mace)_  -> 
+- Heartwood Wand  _(Staff)_  -> 
+- Ignarath's Fang  _(armor/equipment)_  [current: "Fang of Ignarath the Ashborn. +8% damage vs Beast, 10% Beast resistance."]  -> 
+- Inscription Set  _(tool (Inscription))_  -> 
+- Iron Battle Axe  _(Wand)_  -> 
+- Iron Crossbow  _(Crossbow)_  -> 
+- Iron Dagger  _(Axe)_  -> 
+- Iron Greataxe  _(HandAxe)_  -> 
+- Iron Longbow  _(Longbow)_  -> 
+- Iron Plate Boots  _(armor/equipment)_  -> 
+- Iron Plate Chest  _(armor/equipment)_  -> 
+- Iron Plate Gloves  _(armor/equipment)_  -> 
+- Iron Plate Helm  _(armor/equipment)_  -> 
+- Iron Plate Legs  _(armor/equipment)_  -> 
+- Iron Shield  _(armor/equipment)_  -> 
+- Iron Shortbow  _(Shortbow)_  -> 
+- Iron Sword  _(Dagger)_  -> 
+- Ironspine Colossus Pauldrons  _(armor/equipment)_  [current: "Harness plate from the Ironspine Colossus. Refined plate chest."]  -> 
+- Ironwood Staff  _(Mace)_  -> 
+- Ironwood Wand  _(Staff)_  -> 
+- Mirra's Compass  _(armor/equipment)_  [current: "Captain Mirra Vane's compass. +4% damage vs Outlaw, 5% Outlaw resistance."]  -> 
+- Mithril Battle Axe  _(Wand)_  -> 
+- Mithril Crossbow  _(Crossbow)_  -> 
+- Mithril Dagger  _(Axe)_  -> 
+- Mithril Greataxe  _(HandAxe)_  -> 
+- Mithril Longbow  _(Longbow)_  -> 
+- Mithril Plate Boots  _(armor/equipment)_  -> 
+- Mithril Plate Chest  _(armor/equipment)_  -> 
+- Mithril Plate Gloves  _(armor/equipment)_  -> 
+- Mithril Plate Helm  _(armor/equipment)_  -> 
+- Mithril Plate Legs  _(armor/equipment)_  -> 
+- Mithril Shield  _(armor/equipment)_  -> 
+- Mithril Shortbow  _(Shortbow)_  -> 
+- Mithril Sword  _(Dagger)_  -> 
+- Nature Crown  _(armor/equipment)_  [current: "Slayer Hunt trophy. +2% damage vs Nature."]  -> 
+- Oak Staff  _(Mace)_  -> 
+- Oak Wand  _(Staff)_  -> 
+- Outlaw Trophy  _(armor/equipment)_  [current: "Slayer Hunt trophy. +2% damage vs Outlaw."]  -> 
+- Pickaxe  _(tool (Delving))_  -> 
+- Pine Staff  _(Mace)_  -> 
+- Pine Wand  _(Staff)_  -> 
+- Rabbit-Hide Boots  _(armor/equipment)_  -> 
+- Rabbit-Hide Chest  _(armor/equipment)_  -> 
+- Rabbit-Hide Gloves  _(armor/equipment)_  -> 
+- Rabbit-Hide Helm  _(armor/equipment)_  -> 
+- Rabbit-Hide Legs  _(armor/equipment)_  -> 
+- Shadow Vestment Boots  _(armor/equipment)_  -> 
+- Shadow Vestment Chest  _(armor/equipment)_  -> 
+- Shadow Vestment Gloves  _(armor/equipment)_  -> 
+- Shadow Vestment Helm  _(armor/equipment)_  -> 
+- Shadow Vestment Legs  _(armor/equipment)_  -> 
+- Steel Battle Axe  _(Wand)_  -> 
+- Steel Crossbow  _(Crossbow)_  -> 
+- Steel Dagger  _(Axe)_  -> 
+- Steel Greataxe  _(HandAxe)_  -> 
+- Steel Longbow  _(Longbow)_  -> 
+- Steel Plate Boots  _(armor/equipment)_  -> 
+- Steel Plate Chest  _(armor/equipment)_  -> 
+- Steel Plate Gloves  _(armor/equipment)_  -> 
+- Steel Plate Helm  _(armor/equipment)_  -> 
+- Steel Plate Legs  _(armor/equipment)_  -> 
+- Steel Shield  _(armor/equipment)_  -> 
+- Steel Shortbow  _(Shortbow)_  -> 
+- Steel Sword  _(Dagger)_  -> 
+- Tanning Knife  _(tool (Tanning))_  -> 
+- Trapper's Kit  _(tool (Trapping))_  -> 
+- Turncoat's Blade  _(Dagger)_  [current: "Commander Valdris's sword. Refined one-handed sword, shield-capable."]  -> 
+- Valdren's Apparatus Key  _(armor/equipment)_  [current: "A key from Valdren's apparatus. +10% damage vs Arcane, 12% Arcane"]  -> 
+- Valdris's War Banner  _(armor/equipment)_  [current: "Commander Valdris's banner. +6% damage vs Outlaw, 7% Outlaw resistance."]  -> 
+- Void Battle Axe  _(Wand)_  -> 
+- Void Crossbow  _(Crossbow)_  -> 
+- Void Dagger  _(Axe)_  -> 
+- Void Greataxe  _(HandAxe)_  -> 
+- Void Longbow  _(Longbow)_  -> 
+- Void Plate Boots  _(armor/equipment)_  -> 
+- Void Plate Chest  _(armor/equipment)_  -> 
+- Void Plate Gloves  _(armor/equipment)_  -> 
+- Void Plate Helm  _(armor/equipment)_  -> 
+- Void Plate Legs  _(armor/equipment)_  -> 
+- Void Shard Pendant  _(armor/equipment)_  [current: "Slayer Hunt trophy. +2% damage vs Void."]  -> 
+- Void Shield  _(armor/equipment)_  -> 
+- Void Shortbow  _(Shortbow)_  -> 
+- Void Sword  _(Dagger)_  -> 
+- Void Vestment Boots  _(armor/equipment)_  -> 
+- Void Vestment Chest  _(armor/equipment)_  -> 
+- Void Vestment Gloves  _(armor/equipment)_  -> 
+- Void Vestment Helm  _(armor/equipment)_  -> 
+- Void Vestment Legs  _(armor/equipment)_  -> 
+- Warden's Seal  _(armor/equipment)_  [current: "The Pale Vault Warden's seal. +12% damage vs Void, 15% Void resistance."]  -> 
+- Warlord's Badge  _(armor/equipment)_  [current: "The Ironspine Warlord's badge. +6% damage vs Outlaw, 7% Outlaw resistance."]  -> 
+- Wolfhide Boots  _(armor/equipment)_  -> 
+- Wolfhide Chest  _(armor/equipment)_  -> 
+- Wolfhide Gloves  _(armor/equipment)_  -> 
+- Wolfhide Helm  _(armor/equipment)_  -> 
+- Wolfhide Legs  _(armor/equipment)_  -> 
+- Worn Bandit Cowl  _(armor/equipment)_  [current: "A bandit's worn leather cowl. Refined leather helm from Garrik the Wolf."]  -> 
+- Woven Vestment Boots  _(armor/equipment)_  -> 
+- Woven Vestment Chest  _(armor/equipment)_  -> 
+- Woven Vestment Gloves  _(armor/equipment)_  -> 
+- Woven Vestment Helm  _(armor/equipment)_  -> 
+- Woven Vestment Legs  _(armor/equipment)_  -> 
+- Wraith Binding  _(armor/equipment)_  [current: "Slayer Hunt trophy. +2% damage vs Undead."]  -> 
+- Wyvern Hide Armor  _(armor/equipment)_  [current: "Armor cured from wyvern hide. Refined leather chest."]  -> 
+
+## RareMaterials
+
+- Abyssal Pearl  _(RareMaterials)_  [current: "Deep-water pearl with a faint inner glow."]  -> 
+- Aetheric Fragment  _(RareMaterials)_  -> 
+- Ancient Fang  _(RareMaterials)_  -> 
+- Arcane Dust  _(RareMaterials)_  -> 
+- Ashbone  _(RareMaterials)_  -> 
+- Black Pearl  _(RareMaterials)_  -> 
+- Crude Amber  _(RareMaterials)_  -> 
+- Crude Gemstone  _(RareMaterials)_  -> 
+- Deep Clam  _(RareMaterials)_  -> 
+- Dire Fang  _(RareMaterials)_  -> 
+- Grimoire Steel Fragment  _(RareMaterials)_  -> 
+- Masterwork Amber  _(RareMaterials)_  [current: "The finest grade of preserved amber."]  -> 
+- Masterwork Ancient Sigil  _(RareMaterials)_  -> 
+- Masterwork Binding Sigil  _(RareMaterials)_  -> 
+- Masterwork Gemstone  _(RareMaterials)_  [current: "A flawless cut gemstone of the highest grade."]  -> 
+- Moonbloom Petal  _(RareMaterials)_  -> 
+- Phantom Pelt  _(RareMaterials)_  [current: "Spectral hide shed by phantom beasts."]  -> 
+- Pristine Amber  _(RareMaterials)_  -> 
+- Pristine Binding Sigil  _(RareMaterials)_  -> 
+- Pristine Gemstone  _(RareMaterials)_  -> 
+- Pure Catalyst  _(RareMaterials)_  -> 
+- Rare Earth  _(RareMaterials)_  -> 
+- Rare Herb  _(RareMaterials)_  -> 
+- Rare Ore  _(RareMaterials)_  -> 
+- Rare Spice  _(RareMaterials)_  -> 
+- Refined Amber  _(RareMaterials)_  -> 
+- Refined Binding Sigil  _(RareMaterials)_  -> 
+- Refined Gemstone  _(RareMaterials)_  -> 
+- Rough Amber  _(RareMaterials)_  -> 
+- Rough Binding Sigil  _(RareMaterials)_  -> 
+- Rough Gemstone  _(RareMaterials)_  -> 
+- Runic Cog  _(RareMaterials)_  -> 
+- Shadow Essence  _(RareMaterials)_  -> 
+- Shadow Pelt  _(RareMaterials)_  -> 
+- Soul Essence  _(RareMaterials)_  -> 
+- Soulite Crystal  _(RareMaterials)_  -> 
+- Soulite Fragment  _(RareMaterials)_  -> 
+- Starstone Fragment  _(RareMaterials)_  -> 
+- Swift Essence  _(RareMaterials)_  -> 
+- Valdren's Lens  _(RareMaterials)_  -> 
+- Veil Sovereign's Mantle  _(RareMaterials)_  -> 
+- Void Core  _(RareMaterials)_  -> 
+- Void Crystal  _(RareMaterials)_  -> 
+- Void Shard  _(RareMaterials)_  -> 
+- Void Spore  _(RareMaterials)_  [current: "Corrupted spore harvested from void-touched growths."]  -> 
+- Worldtree Shard  _(RareMaterials)_  -> 
+- Wyvern Heart  _(RareMaterials)_  -> 
+
+## ScrollsAndCodex
+
+- Ancient Sigil  _(ScrollsAndCodex)_  -> 
+- Master Glyph  _(ScrollsAndCodex)_  -> 
+- Minor Enchant Seal  _(ScrollsAndCodex)_  -> 
+- Refined Mark  _(ScrollsAndCodex)_  -> 
+- Spectral Tome  _(ScrollsAndCodex)_  [current: "A spectral codex. Mid-tier Inscription Codex input."]  -> 
+- Summoner's Tome  _(ScrollsAndCodex)_  [current: "A summoner's codex. High-tier Inscription Codex input."]  -> 
+
+## QuestItems
+
+- Aldric's Key  _(QuestItems)_  [current: "Opens the strongbox in Aldric's Warren's safe room. Quest item, consumed on use."]  -> 

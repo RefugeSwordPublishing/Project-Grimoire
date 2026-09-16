@@ -116,6 +116,7 @@ Raw base: `https://raw.githubusercontent.com/RefugeSwordPublishing/Project-Grimo
 - attunement-data-spec.md, phase2-attunement-data-spec.md
 
 ## Constraints
+- item-flavor-text-REQUEST.md, Chat authoring ask (BUG-093 follow-up): one brief flavor line per item for the inventory detail popup. 379 items grouped by category (297 need a line, 82 have current text). Claude Code patches the filled lines into ItemData.description.
 - deferred-systems-dlc-notes.md, what NOT to build yet (DLC / post-launch)
 
 > Note: the top-level `CLAUDE.md` briefing's "locked design decisions" section has known-stale lines
