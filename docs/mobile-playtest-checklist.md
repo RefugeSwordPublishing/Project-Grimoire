@@ -1,105 +1,60 @@
-# Mobile Playtest Checklist, 0.1.4
+# Mobile Playtest Checklist, 0.1.5
 
-What to verify on the 0.1.4 phone build, grouped by the release notes. Check items off as you confirm
-them on device. Passed 0.1.3 checks (data safety, combat hub redesign, dungeon popup, hotbar, thematic
-upgrades, XP curve) are dropped here; pull them from git history if you need to re-run one.
+What to verify on the 0.1.5 phone build ("The World Stirs"), grouped by the release notes. Check items
+off as you confirm them on device. Passed 0.1.4 checks (weapons/shields, attack speed, ally cards, concurrent
+idle, merchant sell, shared quantity picker) are dropped here; pull them from git history if you need to re-run one.
 
 ---
 
 ## Step 0, Unity editor (run + save the scene before building)
 
-- [ ] **Content > Create Equipment** and **Content > Add Gear Crafting Recipes** (new bows, greataxe, shields + recipes)
-- [ ] **Art > Import Generated Icons** (assigns the bow / shield / greataxe icons)
-- [ ] **Build > Bake Merchant Sell UI**, **Build Eat Quantity UI**, **Bake Send To Player Panel**, **Build Guild Bank UI** (shared quantity picker)
-- [ ] **Fix > Add Friends Button To Chat Dock** (Friends button on the dock)
-- [ ] **Fix > Upgrade Zone HeroArt to Cover** (zone banner fills without stretching)
-- [ ] **Fix > Dedup Combat Hub Panels** (one ZoneDetailPanel / DungeonInfoPopup)
-- [ ] **Build > Bake Pre-Boss Lobby** (NEW, the lobby is now baked; placeholder-skinned for this build)
-- [ ] **STILL PENDING (inspector):** assign `CombatHubUI._roomTypeIcons` (7: Standard, Elite, Safe, Boss, Puzzle, Treasure, Trap) + a dungeon glyph. Not a blocker.
+- [ ] **Assets > Refresh** so Unity imports the newly staged art (enemy strips, zone backgrounds, splash mp4).
+- [ ] **Art > Import Enemy Animations** (slices the 16-frame strips and wires icon / idle / attack / death on ~67 enemies). Console should log "Wired 36 base, 68 idle, 68 attack, 20 death".
+- [ ] **Art > Import Zone Parallax** then **Build > Combat > Bake Combat Parallax** (wires each zone's far/mid/near planes + ParallaxSway).
+- [ ] **Build Exchange UI**, then **Build > Panels > Bake Fresh Market**, then **Art > Copy Donate Skin To Quantity Popups** (in that order; each Build Exchange UI resets the Fresh Market, so re-bake it after).
+- [ ] **Build > Panels > Bake Auth Gate Splash Video** (looping splash behind the sign-in gate). Requires the mp4 imported first.
+- [ ] **Audio (optional this build):** on GameManager's AudioManager, assign the Forest of the Whispering stems + Moonlit Caravan clip and tick each stem's context boxes. If left empty, the game is silent but stable.
+- [ ] **STILL PENDING (inspector, not a blocker):** assign `CombatHubUI._roomTypeIcons` (7) + a dungeon glyph.
 
 ---
 
-## 1. Weapons, shields, handedness (new)
+## 1. Enemy animations (new)
 
-- [ ] Craft and equip a **shortbow, longbow, and crossbow**; each equips and shows its own speed on the item card.
-- [ ] Equip a **greataxe** (two-handed) and a one-handed weapon; the two-handed weapon stows any shield.
-- [ ] Equip a **shield** in the off-hand with a one-handed weapon (sword, dagger, axe, wand, crossbow). It grants a block chance / defense on the character sheet.
-- [ ] Equipping a two-handed weapon (staff, shortbow, longbow, greataxe) **blocks the off-hand** and stows the shield; re-equipping a one-hander frees it.
-- [ ] In combat, a shielded loadout **blocks some hits** (reduced damage), and the two-handed sets hit harder.
+- [ ] Enter combat in several zones (early, mid, and a Phase 4 zone like Veilborn or Ashenwold). Enemies **animate at rest** (idle sway), not a static frame.
+- [ ] On an enemy's turn, it plays an **attack animation**; the swing reads from the correct side (check the Ashen Sovereign's flaming greatsword swings from his sword side).
+- [ ] A **boss** plays a death animation when defeated. Standard enemies simply vanish (no death anim by design).
+- [ ] No stray **white boxes / halos** behind any enemy sprite (spot-check Ashen Revenant, Corruption Ancient, Void Archon, Bound Lantern-Spirit).
 
-## 2. Combat feel
+## 2. Zone parallax backgrounds (new)
 
-- [ ] **Attack speed varies by weapon.** A dagger swings noticeably faster than a greataxe; procs and auto-eat keep pace on the tick.
-- [ ] **Parallax.** Combat backgrounds have a gentle sway / depth, no visible seams or jitter.
+- [ ] Every zone's combat backdrop shows **layered depth** with a gentle independent drift on the far / mid / near planes, no seams, no hard edges where a layer ends.
+- [ ] Backdrops fill the screen on a **tall phone** without stretching or leaving gaps (cover-crop).
+- [ ] The enemy stands **in front of the mid layer** and behind the near framing.
 
-## 3. Co-op ally cards (needs a second device)
+## 3. Animated splash (new)
 
-- [ ] In a party fight, teammates show **ally cards** with live HP.
-- [ ] Status effects on a partner show as **chips** on their card; a downed or left partner reads as such.
-- [ ] **Tap an ally card** to inspect that partner's gear and stats.
+- [ ] At cold launch / sign-out, the **sign-in screen** shows the animated grimoire splash looping behind the login form (embers rising, runes drifting), with the form still readable over it.
+- [ ] The loop has **no visible jump** when it repeats.
+- [ ] The onboarding walkthrough (new account) uses the same intro backdrop feel.
 
-## 4. Concurrent idle (new)
+## 4. Wayfarer's Exchange (changed)
 
-- [ ] Start a **gather / craft / cook** action, then enter a zone or dungeon. The idle bar **keeps ticking** during combat (it used to stop).
-- [ ] No production tap target pops over the combat screen; leaving combat, the action is still running.
-- [ ] Reverse order works: start a production action **while already in a fight**, combat is not interrupted.
-- [ ] Starting a new production action still **replaces** the running one.
+- [ ] From the bag, **Create Listing** goes straight to a Guild / Exchange choice (no Auction / Sell Order step). Guild opens the guild composer; Exchange opens the new-listing page.
+- [ ] A **store listing shows a Price Each row with SM and GM fields**; leaving one blank posts a single-currency listing; both filled posts dual-currency.
+- [ ] Store and auction **quantity uses the type / drag / Max control** inside the listing window, capped at what you own.
+- [ ] The store/auction and auction-duration **toggles read as lit vs dimmed** (no yellow highlight).
+- [ ] The **Fresh Market** band (Just Listed + Recently Sold + the Store/Auction/Buy-Order filter) is present on the browse tab.
 
-## 5. While You Were Away
+## 5. Audio (system only this build)
 
-- [ ] Return from an idle session that leveled a talent: the level-ups **float up as toasts** over the away screen (the XP and item totals still list on the summary).
+- [ ] If stems are assigned: music **layers up in combat** and **calms in the hub / menus**; the **intro / sign-in plays the Moonlit track**; an attunement tap window gives a brief **swell**. If no stems assigned: confirm the build is simply silent with no errors.
 
-## 6. Selling + quantity control (new)
+## 6. Regression spot-checks
 
-- [ ] **Sell to the Traveling Merchant**, single item and a bulk selection, both pay out Silver Marks.
-- [ ] The quantity control is the **same everywhere**, Merchant sell, Eat, Send to Player, and Guild Bank deposit + withdraw: **type a number**, **drag the slider**, and **Max** all agree and cap at what you hold.
-
-## 7. Friends from the chat dock (new)
-
-- [ ] Expand the chat dock and tap **Friends**, the Friends panel opens (previously only reachable through chat).
-
-## 8. Art
-
-- [ ] The **shortbow, crossbow, greataxe, and shield** show their new icons in inventory / crafting.
-- [ ] A zone's **hero banner** on the zone detail page fills cleanly (cropped, not stretched).
-
-## 9. Fixes (retest)
-
-- [ ] **Navigation.** Every bottom-nav / drawer button opens its panel (no dead menu).
-- [ ] **Combat hub.** Only one zone-detail panel and one dungeon popup; opening a zone detail shows the skinned version.
-- [ ] **XP bar.** The combat-hub Grimoire XP bar fills to the real fraction (not always full, not stretched).
-- [ ] **Auto-eat.** Only eats from draughts you carry (potion-gated); runs out when the draughts do.
+- [ ] Combat, idle gather/craft, dungeon runs, and the merchant sell / quantity popups all still work (the exchange and audio wiring touched shared UI and manager code).
+- [ ] Navigation between hub and every panel is responsive.
 
 ---
 
-## Known-early / deferred (do not expect these yet)
-
-- **Pre-boss / dungeon lobby** is now baked but **not skinned** for 0.1.4, it uses placeholder art. Function should be intact (open, ready, invite, start).
-- **Co-op** (ally cards, shared dungeons) is a first pass; note anything that soft-locks with two devices.
-- **Room-type icons + dungeon glyph** are blank until assigned in the editor (Step 0 pending item).
-- Backgrounds, guild emblems, hub-station props, and the guild banner kit are approved but not all imported.
-
----
-
-## 10. Current build, playtester bug fixes + session changes (retest)
-
-**Character page**
-- [ ] Both the **primary weapon slot** and the **off-hand slot** are visible (no overlap), the **Grimoire slot** is back in place, and the **Quiver slot is gone** (BUG-092).
-
-**Combat**
-- [ ] **Warden**: the ability-ring stack shows more than just Full Draw at your level (rings unlock by level again).
-- [ ] **Warlord**: Surge combos resolve (Savage Strike / Power Blow / Warcry, etc.); the combo queue shows tapped buttons + previews the ability name.
-- [ ] **Zone boss**: beat one, keep fighting, it does NOT reappear within seconds (180s cooldown, BUG-088).
-
-**Economy / items**
-- [ ] Tap an inventory item, the detail popup **grows to fit** its text and shows a **flavor line** on every item, materials included (BUG-093).
-- [ ] **Royal Merchant > Merchant tab**: buy Daily Sell Cap 1,000 (400 GM) / 2,000 (900 GM); the merchant sell cap bar shows the new limit (BUG-089).
-- [ ] **Bronze bars** are cheaper to smelt (BUG-090); **bows** craft from thread, **crossbows** from limbs (BUG-094).
-
-**Guild**
-- [ ] Tap the treasury **SM/GM balance** ("tap to donate") to move your own Marks into the guild bank (BUG-091).
-
-**Other**
-- [ ] **Quest board** does not flicker on expand / minimize / accept, or during idle gathering.
-- [ ] **Exchange Browse**: the Store / Auction / Buy Order filter switches the Fresh Market feed.
-- [ ] **Offline combat, cold launch**: enter a zone fight, background, force-stop the app, relaunch, the While-You-Were-Away screen shows the away combat.
+*The adaptive music tracks are assigned in the next pass; a silent 0.1.5 is expected and fine. Guild / Exchange
+window scrolling music is deferred.*

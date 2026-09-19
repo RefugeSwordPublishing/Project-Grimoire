@@ -12,6 +12,40 @@ implemented in code** where the two diverge. When they conflict, the code (and t
 Claude Code updates this file as features land; Claude Chat should read it before any design work
 so it builds on the current state rather than the original design.
 
+## Session 2026-09-18, v0.1.5 art + audio wiring ("The World Stirs")
+
+**Enemy animations wired.** New `EnemyAnimMap` (full tracker cell -> enemy/role table) + `ImportEnemyAnimations`
+(Tools > Grimoire > Art) slice the 16-frame horizontal strips (bottom-centre pivot) and set `EnemyData.icon`
++ `idleFrames`/`attackFrames`/`deathFrames`. 192 approved cells imported (36 base, 68 idle, 68 attack, 20 death)
+across ~67 enemies; those tracker cells flipped to "Imported to Unity". Death anims are BOSS-ONLY now (standard/elite
+enemies get base+idle+attack; ~36 existing non-boss deaths left in place, not purged). `CombatSceneController`
+already played these arrays, so enemies now animate in combat. Supersedes the base-only `ImportEnemyIcons`.
+
+**Zone parallax (real, all 10 zones).** `ZoneData` gained `backgroundMid`/`backgroundNear` (tracker C2/C3);
+`CombatSceneController.SetParallax(far,mid,near)` + `ImportZoneParallax` (matches each ZoneData to its
+`Assets/Sprites/Backgrounds/<Zone>/` C1/C2/C3) + updated `BakeCombatParallax` (wires the mid/near renderers into
+the controller). Backgrounds generated via Layer.ai flux-2-dev heroes -> Seedream Layerize into far/mid/near.
+The old "single-backdrop by design" note is superseded; every zone is A1 backdrop + A2 crop + C1/C2/C3 planes.
+
+**Animated splash.** Seamless-loop grimoire clip (`Assets/UI/Splash/splash_loop.mp4`) + `BakeAuthGateSplashVideo`
+(VideoPlayer -> RenderTexture -> RawImage behind the AuthGate, cover-crop + dimming scrim). Still image stays the
+tracker's `ui_splash A2`.
+
+**Adaptive music system (wired, tracks TBD).** `AudioManager` reworked from single-clip-per-state to stem-layered
+vertical remixing: `MusicStem[]` for "Forest of the Whispering" (all stems play sample-locked, volumes crossfade per
+`MusicContext`) + Moonlit Caravan for Intro. Context flags resolve by priority Intro > Combat > Attunement > Idle >
+Hub/Menu. Triggers wired: AuthGate/Onboarding (Intro), ZoneCombatView show/hide (Combat), IdleManager (Idle),
+AttunementUI window (Attunement), NavigationDrawer (Hub/Menu ambient). Clips + per-stem context checkboxes are assigned
+in the GameManager > AudioManager inspector next pass; empty = silent + stable. Guild/Exchange scroll music deferred.
+
+**Exchange UI.** Inventory listing flow goes straight Guild/Exchange (no Auction/Sell-Order sub-step); store listings
+take dual currency (SM+GM, either blank = 0); store + auction quantity use the shared QuantityPicker; toggle tints are
+light/dark instead of yellow. Bakers: `BuildExchangeUI` + `CopyQuantityPopupSkin` updated; re-run order is Build Exchange
+UI -> Bake Fresh Market -> Copy Donate Skin (each Build resets the Fresh Market band).
+
+**Enemy sprite fixes.** White-fill chroma-keyed on Phase 4 zones (Ashenwold/Shattered/Veilborn); Ashen Sovereign attack
+re-rolled to swing from the sword side; Veilborn Wraith idle rebuilt (was a broken grid).
+
 ## Session 2026-09-11, phantom drop audit [Buckets 1 and 2 fixed in data; Bucket 3 deferred to spec]
 
 Swept every enemy and zone drop table (`Assets/Data/Enemies/**`, `Assets/Data/Zones/*`) against the
