@@ -39,6 +39,7 @@ Raw base: `https://raw.githubusercontent.com/RefugeSwordPublishing/Project-Grimo
 - wayferers-exchange-and-grimoire-system.md, economy, market listings, Grimoire binding
 - exchange-unlock-flow.md, Exchange unlock gating
 - inventory-character-system.md, inventory + character sheet
+- almanac-unlock-visibility-spec.md, CANONICAL v1.0 (Chat, retention pick 1/5, IN PROGRESS): unlock visibility with NO new screen. A baked UnlockLadderSection (3 next unlocks + 1 teaser + expander) on the 15 Talent pages, the Slaying page, and the Grimoire Book, plus two "Next Up" lines on the WYWA tail. Pull-not-push, descriptive-not-imperative, no badges/counts outside an opened surface. Runtime only populates + toggles baked UI
 - equipment-tier-design.md, CANONICAL two-axis model: quality (instance flag + badge, raised at the bench) plus tier (crafted item ladder Bronze->Void); supersedes the old "quality tier" tables
 - material-economy.md, CANONICAL material economy: Delving + Smelting talents, ore->bar->component pipeline, leather renames, acquisition per material
 - material-economy-REQUEST.md, the design ask (RESOLVED by material-economy.md; kept for history)
