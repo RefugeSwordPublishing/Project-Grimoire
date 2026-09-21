@@ -12,6 +12,22 @@ implemented in code** where the two diverge. When they conflict, the code (and t
 Claude Code updates this file as features land; Claude Chat should read it before any design work
 so it builds on the current state rather than the original design.
 
+## Session 2026-09-21, HD-2D combat props imported (55 sprites)
+
+Submodule `136afa8`, parent `6d36340`. The approved PixelLab combat/hub props were pulled from the asset
+tracker into `Assets/Sprites/Props/<Zone>/` and configured to match the existing Grimwood props (Point
+filter, PPU 100, Single sprite, BottomCenter pivot, alpha-is-transparency). 55 sprites total:
+
+- **9 zones x 5 props** (`C2-D3` on each `bg_<zone>` tracker sheet): Saltmarsh, Ashfen, Ironspine, Dreadhollow,
+  Cinderpeak, Veilborn, Shattered, Ashenwold, Elder. Each set is organic/gritty and matched to that zone's
+  backdrop theme (e.g. Ironspine arid sandstone + dead wood, Shattered cold blue stone + arcane cyan).
+- **Hub** (`Props/GuildHall/`): hero campfire + 4 bare trees.
+- **Common** (`Props/Common/`): sit log, boulder, grass tuft, bush, rock cluster (shared across zones).
+
+Grimwood props were already native (the style reference) and were not re-imported. Zone FLOOR textures are
+NOT imported yet (separate Layer.ai gpt-image pipeline, still pending tracker approval). **Editor step (Dustin):**
+the sprites are imported but not yet PLACED, dressing them into the combat scenes + hub is the manual editor pass.
+
 ## Session 2026-09-21, retention suite complete (Bestiary, Expeditions, Ascension)
 
 The four-part retention loop is built on top of the Almanac unlock-visibility base (retention 1/5).
