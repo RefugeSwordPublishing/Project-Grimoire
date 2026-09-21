@@ -1,6 +1,6 @@
 ---
 type: implementation-status
-updated: 2026-08-28
+updated: 2026-09-21
 purpose: Single source of truth for WHAT IS ACTUALLY BUILT vs. design intent in the specs.
 audience: Claude (Chat or Code) starting a session. Read this FIRST, then the relevant spec.
 ---
@@ -11,6 +11,48 @@ The spec files in `docs/` describe **design intent**. This file records **what i
 implemented in code** where the two diverge. When they conflict, the code (and this file) win.
 Claude Code updates this file as features land; Claude Chat should read it before any design work
 so it builds on the current state rather than the original design.
+
+## Session 2026-09-21, retention suite complete (Bestiary, Expeditions, Ascension)
+
+The four-part retention loop is built on top of the Almanac unlock-visibility base (retention 1/5).
+Submodule `8bbaeff`, parent `e23135c`. Migrations 065/066/067 applied to Supabase.
+
+**Bestiary (2/5).** `migration 065` adds `player_bestiary` (own-row RLS) + `increment_bestiary(p_kills jsonb)`
+(batch increment, never overwrite). `BestiaryManager` tracks kills keyed by `enemyName`, classes each enemy
+Standard/Elite/Boss, and grades Observed/Studied/Mastered by kill thresholds (Standard 10/50/150, Elite 3/10/30,
+Boss 1/3/10). Each Mastered entry grants +2% mastery damage against that enemy. 15s flush via the RPC,
+`LoadFromServer` on startup. `BestiaryEntryPanel` (runtime populator over a baked panel) + `BakeBestiaryEntry`;
+the CombatHub enemy chip shows progress ("73/150" or "MAX" when mastered). Combat wires `RecordKill` and the
+mastery multiplier at the affix seam in `CombatManager`.
+
+**Expeditions (3/5).** `migration 066` adds `player_expeditions` + `upsert_expeditions(p_rows jsonb)` (monotonic
+progress, stamps `completed_at` once). `ExpeditionManager` runs a per-zone 12-task achievement diary
+(5 Novice / 4 Adept / 3 Expert) across 8 templates (DefeatEnemy, DefeatZoneBoss, CompleteDungeon,
+CompleteDungeonNoDown, GatherMaterial, CraftZoneItem, ReachTalentLevel, MasterBestiaryEntry), fed by the existing
+quest event rails. Tier completion grants standing multipliers: Novice +10% gather yield, Adept +15% rare drop,
+Expert halves that zone's Bestiary thresholds, plus a cosmetic zone title. `ZoneExpeditionData` SO +
+`ZoneData.expedition`; `GenerateZoneExpeditions` authors 10 zones x 12 tasks and wires the manager (PC step, needs
+the scene open). Interlocks live in `IdleManager` (gather yield) and the Bestiary/loot paths.
+
+**Grimoire Ascension (4/5, closes the suite).** `migration 067` adds `ascension_rank` + `peak_level` to
+`player_grimoire_levels` and a server-authoritative `ascend_grimoire(text)` RPC (re-validates level 100, bumps rank
+to a cap of 10, banks `peak_level`, resets level/xp to 1/0). `CombatXPManager`: `TotalCombatLevel` now sums
+`max(level, peakLevel)` so ascending never lowers TCL or zone access (this auto-propagates to `GetMaxHP` and the
+cached `players.combat_level`); +8% combat XP per rank (damage-scoped in `AwardDamageXP`); +1 to the path primary
+per rank, routed through the same `GetStatBonus` channel as the level milestones (so it shows on the character sheet
+as a Grimoire bonus and, like those milestones, does not yet feed the offense formulas, that is the same deferred
+stat-pipeline task). `AscendGrimoire` calls the RPC and mirrors the row. `GrimoireBookUI` gains a frontispiece Ascend
+button (shown only at level 100, below cap) + a confirmation modal that names the relock cost before the rewards
+(grimoire-ascension-spec section 5); `BakeGrimoireBook` builds both. Ability rings relock for free (they gate on the
+current level, which the reset drops to 1).
+
+**Also merged this session:** talent tile XP-bar skin guard + auto-save in `BuildTalentTileTemplate` (fill bar no
+longer reverts to a blank box).
+
+**Outstanding PC/editor steps (Dustin, at the PC):** Generate Zone Expeditions (scene open); Bake Bestiary Entry +
+re-Bake Combat Hub; re-Bake Grimoire Book (DELETE `GrimoireBookRoot` + `GrimoireBookTemplates` first, the baker
+early-returns on an existing root) for the Ascend UI; skin the new panels. **Still TODO in code:** the Expeditions
+UI section (task list) on the zone detail panel.
 
 ## Session 2026-09-18, v0.1.5 art + audio wiring ("The World Stirs")
 
