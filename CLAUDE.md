@@ -207,7 +207,7 @@ Layer.ai; do not treat it as the project's art tool.)
 
 See `docs/deferred-systems-dlc-notes.md` for full list. Hard stops:
 - Raids (Phase 4, grid turn-based system not yet ready)
-- Faction system, Guild Bounties (post-launch)
+- Faction system, Guild Bounties (post-launch) [UPDATE 2026-09-22: Guild Bounties is now IN base game, migration 068 + GuildBountyManager, async multi-track guild goal; only the Faction system remains post-launch]
 - Bloodweaver, Warlock, Kensei, Beastbond, Bard/Minstrel (DLC)
 - Divination Talent (show "???" placeholder on Talents page)
 - Black Ledger (removed from base game)
