@@ -108,6 +108,7 @@ Raw base: `https://raw.githubusercontent.com/RefugeSwordPublishing/Project-Grimo
 - phase4-enemy-content-brief.md, all T4/T5 EnemyData (24 standard/elite + 4 zone bosses) + the four ZoneData + new material/trophy ItemData. As-built via CreatePhase4Enemies + CreatePhase4Items.
 - phase4-enemy-content-REQUEST.md, the design ask (RESOLVED by phase4-enemy-content-brief.md; kept for history)
 - dungeon-room-pools-t4t5-REQUEST.md, the design ask (RESOLVED by dungeon-room-pools-t4t5-brief.md; kept for history)
+- dungeon-diegetic-puzzles-brief.md, BRIEF for Chat (2026-09-23): make dungeon puzzles diegetic in the HD-2D scene, tap a physical puzzle prop to open the puzzle framed as examining the object ("lean over the map/rune table" feel). Current DungeonPuzzleUI panel -> in-world props; 6 puzzle-prop sprites listed. Chat designs the interaction, Claude Code makes the art.
 - grimoire-talent-reference.xlsx, talent reference workbook (per-talent activities, tiers, unlocks)
 - phase3-attunement-data-spec.md, Tanning tiered attunement, Smelting HeatGauge attunement, combat zone events, Delving node placement
 - phase3-enemy-content-brief.md, all T3 EnemyData (HP, damage, weak points, drops, new mechanics)
