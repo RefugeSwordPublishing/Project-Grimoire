@@ -12,6 +12,53 @@ implemented in code** where the two diverge. When they conflict, the code (and t
 Claude Code updates this file as features land; Claude Chat should read it before any design work
 so it builds on the current state rather than the original design.
 
+## Session 2026-09-23, late-zone enemies + dungeon art generated & imported
+
+Big art-production + import pass. **Layer.ai is now MCP-connected** (drive it directly; the CLAUDE.md
+"NO MCP connection" line is stale). Enemy base art via Layer `gemini-3.1-flash-image` (image-editing,
+style-locked to existing enemies) + bg-removed via Layer `birefnet-v2` or a local PIL flood-fill key;
+enemy ANIMATIONS via PixelLab `animate_image_pixminimax` -> `GET /v2/background-jobs/{id}` base64 frames
+-> packed into horizontal 16-frame strips (the game's format). Dungeon/prop art via Layer gemini + local key.
+
+**Enemies IMPORTED (verified 13/13 wired via `ImportEnemyAnimations`):** the late-zone rosters now have
+base icon + 16-frame idle + 16-frame attack (+ 16-frame death on bosses):
+- **Elder Reaches (enemies_elder):** Ancient Wyvern, Elder Relic, Primordial Drake, World Golem, Primordial
+  Alpha, Rune Colossus, The World Warden. (Non-boss death cells intentionally omitted per boss-only rule.)
+- **Veilborn (enemies_veilborn):** Sundered Revenant, Veil Stalker, The Veil Sovereign (elites/boss anims;
+  base creatures were already in).
+- **T4-5 dungeon bosses (enemies_dungeons_t45):** Firststone Warden, Pale Vault Warden, Veil Harbinger,
+  Valdren the Unfinished (full base+idle+attack+death).
+- **Attack direction fix:** pixminimax defaulted attacks to a side-swing; all 14 attacks regenerated with
+  `direction:"south"` + `enhance_prompt` so they strike FORWARD toward the camera.
+- **Overhead-clip reframe:** an edge-clip audit found 6 enemies whose raised weapon/arms ran off-frame
+  (Firststone/World Warden/Pale Vault hammer&sword, Rune Colossus, Ancient Wyvern, Primordial Alpha). Each
+  full set (base+idle+attack+death) was reframed into the lower ~60-66% of the frame (headroom for the swing);
+  `EnemyData.sizeScale` set to 1.5-1.7 on those 6 (via the Unity bridge) so they render boss-sized with the
+  arc living above the enemy line. Re-audited to 0-3% edge contact.
+
+**Dungeon environment art GENERATED + STAGED (not dressed):** ~78 sprites on the tracker (Approved), files
+placed into Unity for the manual dressing pass:
+- **7 bespoke dungeons** (Gravenspire, Warden's Folly, Ignarath's Maw, Firststone Sanctum, Pale Vault, The
+  Breach, Valdren's Keep): portrait backdrop + top-down floor + 6 organic dressing props each. Staged at
+  `Assets/Sprites/backgrounds/Dungeons/<Dungeon>/` (backdrop.png, floor.png, prop_*.png).
+- **12 shared hero props** (chest/dais/campfire-shrine/trap x 3 tier variants) + **10 puzzle props**
+  (6 idle + 4 examine) staged at `Assets/Sprites/Props/DungeonHero/` and `Props/DungeonPuzzle/`.
+- 6 empty `Env_Dungeon_*` prefab scaffolds exist; the 3 dungeons with prior interior art + these 7 still need
+  Dustin's Prefab-Mode dressing (assign backdrop/floor + place props + URP 2D lights). `DungeonData.environmentPrefab`
+  stays null (host-zone fallback) until dressed. Also 2 Saltmarsh combat props (bg_saltmarsh D1/D2) regenerated.
+
+**Tracker:** dungeon art slots added to grimoire-asset-tracker `sheets.js` (7 `bg_dungeon_*` + `dungeon_hero_props`
++ `dungeon_puzzle_props`, category Dungeon; pushed). Wired enemy cells flipped to "Imported to Unity".
+
+**Design (Chat, NOT built):** `docs/dungeon-diegetic-puzzles-spec.md` v1.0 - diegetic tap-a-prop puzzle
+presentation (ExamineFrame + InRoomPuzzleController + RoomDressing; 2 modes: 4 examine, 2 in-room; world-space
+framing + screen-space input; room variety from camera-yaw x layout x dressing subsets). Art (puzzle props) done.
+
+**Git:** enemy `EnemyData` (icon/frames/sizeScale) + ~144 staged art files are uncommitted in the SUBMODULE
+(Dustin's tree) - he commits + bumps the submodule. Scene NOT modified (enemies are assets; no Ctrl+S needed).
+**Pending (Dustin, editor):** dress the `Env_Dungeon_*` prefabs with the staged art; build the diegetic-puzzle
+system per spec; approve remaining Generated cells; per-tier weapon/UI/item icon imports (separate pipelines).
+
 ## Session 2026-09-21, HD-2D combat props imported (55 sprites)
 
 Submodule `136afa8`, parent `6d36340`. The approved PixelLab combat/hub props were pulled from the asset
