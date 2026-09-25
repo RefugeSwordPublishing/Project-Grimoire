@@ -1,6 +1,6 @@
 ---
 type: implementation-status
-updated: 2026-09-21
+updated: 2026-09-25
 purpose: Single source of truth for WHAT IS ACTUALLY BUILT vs. design intent in the specs.
 audience: Claude (Chat or Code) starting a session. Read this FIRST, then the relevant spec.
 ---
@@ -11,6 +11,34 @@ The spec files in `docs/` describe **design intent**. This file records **what i
 implemented in code** where the two diverge. When they conflict, the code (and this file) win.
 Claude Code updates this file as features land; Claude Chat should read it before any design work
 so it builds on the current state rather than the original design.
+
+## Session 2026-09-25, bridge pass + bug fixes + icon backlog cleared
+
+Long Unity-bridge session. All changes committed + pushed (submodule + parent).
+
+- **Editor/bridge tasks:** deleted the 2 dead talent panels (Crafting/Processing); `AssignEnemyAttackCadence`
+  (86/86 enemies, 1.8–3.4s); `GenerateZoneExpeditions` (10 ZoneExpedition assets + ExpeditionManager wired);
+  CombatHub `_roomTypeIcons` (7) + ui_misc icons (locked overlay -> `_lockedOverlaySprite`, dungeon marker ->
+  `_zoneDetailDungeonIcon`, Settings gear into `Nav_Settings`); Grimoire Book Ascend UI verified already baked.
+- **Guild Bounties:** `Bake Guild Bounty Activate` (Fund control, skinned). **Pool tuned in GuildBountyManager:**
+  real ItemData rewards (Void Core / Starstone Fragment / Soul Essence / Runic Cog via pending_transfers); NEW
+  4th boss-kill bounty "Cull the Champions" (gb_slay) on a real `boss` track (OnKill counts `EnemyData.isBoss`
+  -> `_bossKills` -> `Contribute("boss")`, server-weighted, no migration); targets are PER-MEMBER, scaled by
+  `_guild.member_count` in `Activate(...)`. 4 bounties / 4-week rotation. OPEN: confirm the guild-buff system
+  applies `guild_active_buffs` (buff names may be flavor-only).
+- **Royal Merchant:** Gold->Silver converter now uses the shared QuantityPicker **drag bar** (`_convertPicker`
+  baked into the confirm Card by `BuildRoyalMerchantUI.EnsureConvertPicker`, skinned via the donate-skin copy tool).
+- **Bug fixes:** talent activity **Sort/filter row** never rendered because `MakeSortButton` didn't parent SortRow
+  to `_tierContainer` (fixed). **WYWA double-toast**: `LootToastUI.ShowGrimoireLevelUp` now honors
+  `IdleManager.ApplyingOfflineResult` (matches the talent path).
+- **Icons:** recreated `scratchpad/export_icons.py` (tracker Approved Items -> manifest); `ImportGeneratedIcons`
+  assigned **82 item icons -> 380/381 ItemData now iconned** (only Flint Fragment lacks art; 12 bows/Yew staff+wand
+  blocked on weapon ItemData renames). 6 dungeon hazard icons wired (`ImportHazardIcons` covers only A1-B2). 15
+  enemy anim cells reconciled. 32 orphan tracker status rows purged.
+- **Art (Layer + PixelLab):** guild hall reframed to PROP-DRESSED (backdrop + sprite props); 3 new far-layer
+  backdrops + 20 shared props; 6 Summoner Constructs (back-facing; Storm Wisp = gritty cloud); 4 ui_misc icons;
+  Aldric/Bandit forward-attack regens — all imported. **Tool-quality upgrade left as-is** (intended); only the
+  idle-time tooltip reworded to a %.
 
 ## Session 2026-09-23, late-zone enemies + dungeon art generated & imported
 
