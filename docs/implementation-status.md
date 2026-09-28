@@ -1,6 +1,6 @@
 ---
 type: implementation-status
-updated: 2026-09-25
+updated: 2026-09-28
 purpose: Single source of truth for WHAT IS ACTUALLY BUILT vs. design intent in the specs.
 audience: Claude (Chat or Code) starting a session. Read this FIRST, then the relevant spec.
 ---
@@ -11,6 +11,28 @@ The spec files in `docs/` describe **design intent**. This file records **what i
 implemented in code** where the two diverge. When they conflict, the code (and this file) win.
 Claude Code updates this file as features land; Claude Chat should read it before any design work
 so it builds on the current state rather than the original design.
+
+## Session 2026-09-28, guild banner customization system
+
+**Officer-designed guild banners (migrations 069-071, all live).** A guild banner is a cloth
+tincture + up to 3 decals, each with its own emblem, metal, position, rotation and scale.
+
+- **Schema:** `guilds.banner_cloth` (smallint 0-11) + `guilds.banner_decals` (jsonb array of
+  `{e,m,x,y,r,s}`, max 3). RPC `set_guild_banner(guild_id, cloth, decals jsonb)` SECURITY DEFINER,
+  officer/guild_master gated, validates ranges + decal count.
+- **Special gated emblems:** indices 16 Early Access / 17 Creator / 18 Supporter (tintable like the
+  16 base emblems). `player_entitlements` table (read-own RLS, service-granted only) +
+  `banner_emblem_entitlement()` map; the RPC rejects a special-emblem decal unless the applying
+  officer holds the matching grant. Server-enforced, unspoofable.
+- **Client:** `GuildBannerPalette` (12 cloth / 6 metal / 19 emblem names + entitlement map),
+  `GuildBannerArt` (Resources ScriptableObject; luminance-preserving CPU tint, mask-ready via an
+  optional `base_cloth_mask.png`, blits scaled/rotated/positioned decals), `GuildBannerState`
+  (loaded from GuildBankUI), `GuildBannerView` (paints UI Image or world SpriteRenderer),
+  `GuildBannerEditorUI` (officer designer, gated emblems lock). Built by
+  `Tools/Grimoire/Build/Guild/Build Guild Banner Editor`.
+- **PENDING (edit-time):** run the baker in GameScene + skin the panel + move the "Design Banner"
+  button into the guild Settings tab; author `base_cloth_mask.png` to confine the tint; drop a
+  GuildBannerView on the guild-hall pole prop once those props exist.
 
 ## Session 2026-09-25, bridge pass + bug fixes + icon backlog cleared
 
