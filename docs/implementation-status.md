@@ -34,6 +34,15 @@ tincture + up to 3 decals, each with its own emblem, metal, position, rotation a
   button into the guild Settings tab; author `base_cloth_mask.png` to confine the tint; drop a
   GuildBannerView on the guild-hall pole prop once those props exist.
 
+**Player chat badges (migration 072, live).** A player may display one entitlement emblem next to
+their chat name. `players.badge` (a trigger guarantees it is null or an entitlement the player holds,
+on any write path); `set_player_badge(text)` sets/clears it; `chat_badge(uuid)` resolves it for the
+feed; `fetch_chat_feed` now returns `badge` per row (ChatMessage.badge). ChatPanelUI renders a small
+emblem before the name (MessageRow gained a NameLine + Badge Image via BakeChatBadge). Players pick
+their badge in `ChatBadgePickerUI` (built by `Tools/Grimoire/Build/Chat/Build Chat Badge Picker`).
+- **PENDING (edit-time):** run the picker baker in GameScene + move its "Chat Badge" button into
+  Settings > Account (or the chat dock) + skin; re-bake reruns are idempotent.
+
 ## Session 2026-09-25, bridge pass + bug fixes + icon backlog cleared
 
 Long Unity-bridge session. All changes committed + pushed (submodule + parent).
