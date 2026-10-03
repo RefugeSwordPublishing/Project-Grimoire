@@ -1,6 +1,6 @@
 ---
 type: implementation-status
-updated: 2026-09-28
+updated: 2026-10-02
 purpose: Single source of truth for WHAT IS ACTUALLY BUILT vs. design intent in the specs.
 audience: Claude (Chat or Code) starting a session. Read this FIRST, then the relevant spec.
 ---
@@ -11,6 +11,38 @@ The spec files in `docs/` describe **design intent**. This file records **what i
 implemented in code** where the two diverge. When they conflict, the code (and this file) win.
 Claude Code updates this file as features land; Claude Chat should read it before any design work
 so it builds on the current state rather than the original design.
+
+## Session 2026-10-02, floor art pass + talent-card templates + guild tab merges
+
+**Floor art (gritty-pixel terrain pass).** The painterly/illustrated combat floors were replaced with
+minimal, even gritty-pixel terrain textures (references: the Ironspine/Saltmarsh/HUB/Grimwood floors).
+Regenerated via Layer (Nano Banana) and imported as SIDECAR files `<zone>/floor_pixel.png` beside the
+originals (originals untouched; Point-filter metas). Done: 7 zones (Elder, Ashenwold, Ashfen,
+Cinderpeak, Dreadhollow, Shattered, Veilborn) + 9 dungeons (AldricsWarren, Breach, CrestfallCove,
+FirststoneSanctum, Gravenspire, IgnarathMaw, MirefallBarrow, PaleVault, WardensFolly). PENDING:
+ValdrensKeep floor; swapping `floor_pixel` onto each floor material in-editor.
+
+**Talent pages (CategoryTalentPanelUI) now template-driven + skinnable.** Three editable templates are
+baked under GatheringPanel and cloned+filled at runtime: `TalentTileTemplate` (list tile + XP bar,
+`PopulateTalentTile`), `SortFilterRowTemplate` (`_sortFilterTemplate`/`PopulateSortFilterRow`),
+`ActivityCardTemplate` (recipe/gather cards, `_activityCardTemplate`/`PopulateActivityCard`). Bakers:
+`Tools/Grimoire/Build/Panels/Bake {Talent Tile|Sort-Filter Row|Activity Card} Template`. The runtime
+olive state-tint that overwrote the editor skin is replaced by `ApplyCardState`: a skinned card keeps
+its sprite (dims grey when locked, shows an optional `ActiveHighlight` child when active); unskinned
+cards still fall back to the flat colours. `UISkin.fillXP` rebound to the `fill_gold_0` sub-sprite and
+`RefreshUISkin.ImportFill` is now Multiple-sprite-aware, so the gold XP fill no longer reverts to a
+blank box.
+
+**Guild page (GuildBankUI) tab merges (instance-level; BuildGuildBankUI NOT re-run).** Prestige is
+folded into the Upgrades tab (its 5 items reparented below the buff shop; Prestige tab hidden).
+Merchant is split into the Bank tab: MerchantPanel = top half, BankPanel = bottom half, independent
+scroll; `ShowTab` shows both on index 2, the Merchant tab is hidden, and the "List an Item" deep-links
+land on the Bank tab. Result: 5 tabs (Home, Roster, Bank, Upgrades, Settings).
+
+**Guild banner nav fix.** `GuildBannerView` now composes a BLANK default banner (default cloth, no
+decals) when the player is guildless instead of disabling the Image. The banner doubles as the nav
+control into the guild page, so guildless players can still open it to create/join; it auto-refreshes
+to the real banner on join (GuildBannerState.Changed).
 
 ## Session 2026-09-28, guild banner customization system
 
