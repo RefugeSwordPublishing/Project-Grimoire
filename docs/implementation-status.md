@@ -12,6 +12,18 @@ implemented in code** where the two diverge. When they conflict, the code (and t
 Claude Code updates this file as features land; Claude Chat should read it before any design work
 so it builds on the current state rather than the original design.
 
+## Session 2026-10-09, modal dim full-screen (BUG-095)
+
+Modal dim scrims were parented INSIDE a panel's `SafeArea`, so they only covered the safe-area rect
+and left the notch/status-bar strip undimmed ("dim fits the safe zone"). Fixed by reparenting the dim
+out of SafeArea to the full-screen panel root (sibling of SafeArea, first child so it sits behind the
+card): QuestsPanel `Backdrop`, SendToPlayerPanel `Dim`, InventoryContextMenu `Dim`. The cards stay
+safe-area-fitted; tap-to-close is preserved (dims are serialized refs / baked listeners, not path
+lookups). Left as-is: the quest turn-in sub-modal Backdrop (referenced by path within the sub-modal;
+the now-full-screen main backdrop sits behind it). NOTE: the bakers still build these dims inside
+SafeArea, so a clean re-bake would reintroduce it. (The tab selected-state note in the ticket is a
+skin pass Dustin is handling.)
+
 ## Session 2026-10-09, Royal Merchant Gold->Silver drag bar (BUG-096)
 
 The Gold->Silver converter showed a fixed "exchange 1 GM" confirm (no quantity bar). The drag-bar code
