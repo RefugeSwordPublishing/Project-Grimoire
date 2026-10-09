@@ -12,6 +12,16 @@ implemented in code** where the two diverge. When they conflict, the code (and t
 Claude Code updates this file as features land; Claude Chat should read it before any design work
 so it builds on the current state rather than the original design.
 
+## Session 2026-10-09, quest board polish (BUG-087)
+
+Two issues on the Quest Board. (1) Completed quests looked "wonky": the `CompleteStamp` on the
+`QuestActiveCard` template had been resized to a tall-narrow rect (64x212), so "COMPLETE" wrapped one
+letter per line into a vertical stack. Fixed to a wide single-line diagonal stamp (520x130, 28deg,
+NoWrap, autosize 40-120). (2) Requirements were hidden behind the expand tap: `BuildOfferCard` only
+showed the `ObjectiveLine` when expanded. Now the objective is always visible on the collapsed offer
+card (rewards + bonus were already shown), so the player sees what's required and what they get without
+tapping; the story flavour + Accept still open on expand.
+
 ## Session 2026-10-09, inventory detail popup text expansion (BUG-093)
 
 The inventory context-menu item-detail stats text overflowed one line and clipped/overlapped the action
