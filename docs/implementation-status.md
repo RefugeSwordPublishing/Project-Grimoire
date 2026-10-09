@@ -32,6 +32,16 @@ LayoutElement overrides (preferredHeight/minHeight/flexibleHeight = -1) so TMP d
 (The ticket also suggests brief per-item flavor text: the mechanism already exists - `ItemData.description`
 is shown as the flavor line - but most items have no authored description yet; that is a content pass.)
 
+## Session 2026-10-09, fix BUG-095 regression (nav blocked)
+
+The BUG-095 fix reparented each modal dim to its panel root. That was wrong for `InventoryContextMenu`,
+whose root is ALWAYS active: the dim became a permanently-active full-screen raycast Button that blocked
+all input (tapping Menu flickered the drawer but it couldn't open). Reverted that one: the context-menu
+Dim is back inside its toggled `Popup` (safe-area-inset again, acceptable for a small anchored popup).
+SendToPlayerPanel + QuestsPanel were fine (their roots toggle inactive, so their full-screen dims only
+show when the panel opens). Lesson: a modal dim may only move to a root that shares the modal's toggled
+active-state.
+
 ## Session 2026-10-09, modal dim full-screen (BUG-095)
 
 Modal dim scrims were parented INSIDE a panel's `SafeArea`, so they only covered the safe-area rect
