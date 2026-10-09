@@ -12,6 +12,16 @@ implemented in code** where the two diverge. When they conflict, the code (and t
 Claude Code updates this file as features land; Claude Chat should read it before any design work
 so it builds on the current state rather than the original design.
 
+## Session 2026-10-09, inventory detail popup text expansion (BUG-093)
+
+The inventory context-menu item-detail stats text overflowed one line and clipped/overlapped the action
+buttons instead of growing the popup. The wrapping + ContentSizeFitter chain (StatsLabel -> StatsCard
+-> MenuBox) was already built, but `StatsLabel`'s LayoutElement had a stray fixed `preferredHeight`
+(~34.5, one line) that overrode TMP's wrapped-text height, so the box never grew. Fix: cleared the
+LayoutElement overrides (preferredHeight/minHeight/flexibleHeight = -1) so TMP drives the height.
+(The ticket also suggests brief per-item flavor text: the mechanism already exists - `ItemData.description`
+is shown as the flavor line - but most items have no authored description yet; that is a content pass.)
+
 ## Session 2026-10-09, modal dim full-screen (BUG-095)
 
 Modal dim scrims were parented INSIDE a panel's `SafeArea`, so they only covered the safe-area rect
