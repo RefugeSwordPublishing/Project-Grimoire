@@ -1,6 +1,6 @@
 ---
 type: implementation-status
-updated: 2026-10-02
+updated: 2026-10-09
 purpose: Single source of truth for WHAT IS ACTUALLY BUILT vs. design intent in the specs.
 audience: Claude (Chat or Code) starting a session. Read this FIRST, then the relevant spec.
 ---
@@ -11,6 +11,16 @@ The spec files in `docs/` describe **design intent**. This file records **what i
 implemented in code** where the two diverge. When they conflict, the code (and this file) win.
 Claude Code updates this file as features land; Claude Chat should read it before any design work
 so it builds on the current state rather than the original design.
+
+## Session 2026-10-09, dungeon lobby-entry fix (BUG-097)
+
+**Co-op/invite lobby dungeon entry showed a blank combat screen.** `PreBossLobbyUI.BeginDungeonRun`
+(and its offline fallback) opened the combat view BEFORE calling `CombatManager.EnterDungeon`.
+`ZoneCombatView` builds its header, enemy and scenery from the live combat state on open, so opening
+first left it on the empty pre-dungeon state (generic "Zone" header, black stage, no enemy). The solo
+path (`CombatHubUI.EnterFromSection`) already entered first then opened. Fix: reorder both lobby paths
+to `EnterDungeon(...)` then `OpenCombatView()`. Affected every dungeon entered via the lobby, not just
+Aldric's Warren; the dungeon data was intact.
 
 ## Session 2026-10-02, floor art pass + talent-card templates + guild tab merges
 
