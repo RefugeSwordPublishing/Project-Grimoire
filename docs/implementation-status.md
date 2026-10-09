@@ -12,6 +12,16 @@ implemented in code** where the two diverge. When they conflict, the code (and t
 Claude Code updates this file as features land; Claude Chat should read it before any design work
 so it builds on the current state rather than the original design.
 
+## Session 2026-10-09, Royal Merchant Gold->Silver drag bar (BUG-096)
+
+The Gold->Silver converter showed a fixed "exchange 1 GM" confirm (no quantity bar). The drag-bar code
+already existed (`RoyalMerchantUI._convertPicker` + `OpenConverter`, pick 1..all Gold, live balance
+preview), but the shared QuantityPicker wasn't baked into the confirm modal, so it fell back to the
+single-GM step. Added a non-destructive baker `Tools/Grimoire/Build/Panels/Bake Royal Merchant Convert
+Bar` (runs only `EnsureConvertPicker`, not the chrome-rebuilding `EditorBuild`) and ran it: the
+`ConvertQuantityPicker` (QtyInput/QtySlider/QtyMax) is now seated in the confirm Card above the buttons
+and wired. Still needs a skin pass on the bar to match the other quantity popups.
+
 ## Session 2026-10-09, dungeon lobby-entry fix (BUG-097)
 
 **Co-op/invite lobby dungeon entry showed a blank combat screen.** `PreBossLobbyUI.BeginDungeonRun`
